@@ -1,0 +1,34 @@
+{
+    "name": "silhouette-people",
+    "version": "0.0.1",
+    "description": "The game called Silhouette People.",
+    "main": "dist/src/index.js",
+    "types": "dist/src/index.d.ts",
+    "scripts": {
+        "build": "./node_modules/.bin/webpack",
+        "start": "./node_modules/.bin/webpack-dev-server --host 0.0.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "author": "Gergely Santa",
+    "license": "MIT",
+    "devDependencies": {
+        "webpack": "^4.43.0",
+        "webpack-bundle-analyzer": "^3.6.0",
+        "webpack-cli": "^3.3.10",
+        "webpack-dev-server": "^3.9.0"
+    },
+    "dependencies": {
+        "@types/jest": "^26.0.20",
+        "babylonjs": "^4.2.0",
+        "babylonjs-loaders": "^4.2.0",
+        "css-loader": "^5.1.1",
+        "file-loader": "^6.2.0",
+        "mini-css-extract-plugin": "^1.3.9",
+        "raw-loader": "^4.0.2",
+        "sass-loader": "^11.0.1",
+        "ts-loader": "^8.0.17",
+        "typescript": "^4.2.2"
+    }
+}
