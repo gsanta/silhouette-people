@@ -23,6 +23,7 @@ function initGame(world: World) {
     const engine = new Engine(canvas, true);
     const scene = new Scene(engine);
 
+    MeshBuilder.CreateGround('ground', {width: 10, height: 10});
 
     const camera = new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new Vector3(0, 0, 0), scene);
     camera.attachControl(canvas, true);

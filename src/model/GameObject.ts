@@ -7,6 +7,7 @@ import { World } from "./World";
 
 export class GameObject {
     velocity: Vector3;
+    rotation: Vector3 = new Vector3(0, 0, 0);
     mesh: Mesh;
 
     private inputComponent: IComponent;
