@@ -1,12 +1,28 @@
-import { ArcRotateCamera, Engine, HemisphericLight, MeshBuilder, Scene, SceneLoader, Vector3 } from "babylonjs";
+import { ArcRotateCamera, Engine, HemisphericLight, Mesh, MeshBuilder, Scene, SceneLoader, Vector3 } from "babylonjs";
 import 'babylonjs-loaders';
+import { GameObject } from "./model/GameObject";
+import { World } from "./model/World";
+import * as ReactDOM from 'react-dom';
+import React from "react";
+import { MainUI } from './ui/MainUI';
 
 export function createGame() {
+    const root = <HTMLCanvasElement> document.getElementById("root");
+    
+    const world = new World();
+
+    ReactDOM.render(
+        React.createElement(MainUI, { world: world, onReady: () => initGame(world) }),
+        root
+    );
+}
+
+function initGame(world: World) {
     const canvas = <HTMLCanvasElement> document.getElementById("game-canvas");
+
     const engine = new Engine(canvas, true);
     const scene = new Scene(engine);
 
-    MeshBuilder.CreateBox("box", {})
 
     const camera = new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new Vector3(0, 0, 0), scene);
     camera.attachControl(canvas, true);
@@ -14,6 +30,7 @@ export function createGame() {
 
     engine.runRenderLoop(function () {
             scene.render();
+            world.gameObjects.forEach(gameObject => gameObject.update(world));
     });
     
     window.addEventListener("resize", function () {
@@ -21,8 +38,8 @@ export function createGame() {
     });
 
     SceneLoader.ImportMesh('', "./models/", "character.glb", scene, function (meshes, particleSystems, skeletons) {
+        world.gameObjects.push(new GameObject(meshes[0] as Mesh));
         // do something with the meshes and skeletons
         // particleSystems are always null for glTF assets
     });
-
 }
