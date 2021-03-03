@@ -13,14 +13,16 @@ export class GameObject {
     private inputComponent: IComponent;
     private physicsComponent: IComponent;
 
-    constructor(mesh: Mesh) {
+    constructor(mesh: Mesh, inputComponent: InputComponent, physicsComponent: PhysicsComponent) {
+        mesh.checkCollisions = true;
+        mesh.showBoundingBox = true;
         this.mesh = mesh;
-        this.inputComponent = new InputComponent();
-        this.physicsComponent = new PhysicsComponent();
+        this.inputComponent = inputComponent;
+        this.physicsComponent = physicsComponent;
     }
 
     update(world: World) {
-        this.inputComponent.update(this, world);
-        this.physicsComponent.update(this, world);
+        this.inputComponent && this.inputComponent.update(this, world);
+        this.physicsComponent && this.physicsComponent.update(this, world);
     }
 }
