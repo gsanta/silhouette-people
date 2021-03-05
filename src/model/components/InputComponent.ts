@@ -22,9 +22,9 @@ export class InputComponent implements IComponent {
         }
 
         if (world.keyboard.activeKeys.has('a')) {
-            rotation.y += this.rotationSpeed;
-        } else if (world.keyboard.activeKeys.has('d')) {
             rotation.y -= this.rotationSpeed;
+        } else if (world.keyboard.activeKeys.has('d')) {
+            rotation.y += this.rotationSpeed;
         }
 
         gameObject.velocity = velocity;
