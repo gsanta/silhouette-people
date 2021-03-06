@@ -1,7 +1,11 @@
 import { Axis, Mesh, MeshBuilder, PhysicsImpostor, SceneLoader, Space, StandardMaterial } from "babylonjs";
+import { Skeleton } from "babylonjs/Bones/skeleton";
+import { CharacterObject } from "./character/CharacterObject";
+import { AbstractCharacterState } from "./character/ICharacterState";
+import { IdleCharacterState } from "./character/IdleCharacterState";
 import { InputComponent } from "./components/InputComponent";
 import { PhysicsComponent } from "./components/PhyisicsComponent";
-import { GameObject, GameObjectJson } from "./GameObject";
+import { GameObject, GameObjectJson, GameObjectType } from "./GameObject";
 import { World } from "./World";
 
 
@@ -9,11 +13,26 @@ export class GameObjectFactory {
 
     static async create(json: GameObjectJson, world: World): Promise<GameObject> {
         const result = await SceneLoader.ImportMeshAsync('', "./models/", json.modelPath, world.scene);
-        
+
+        result.animationGroups.forEach(animationGroup => animationGroup.stop());
+
         const mainMesh = <Mesh> result.meshes[0];
         mainMesh.name = json.id;
         
-        const gameObject = new GameObject(mainMesh);
+        let state: AbstractCharacterState;
+
+        switch(json.type) {
+            case GameObjectType.Character:
+                state = new IdleCharacterState();
+            break;
+            case GameObjectType.Static:
+                state = undefined;
+            break;
+        }
+
+        const gameObject = new GameObject(mainMesh, state);
+        gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
+        gameObject.animationGroups = result.animationGroups;
 
         if (json.collider) {
             this.applyCollider(gameObject, json, world);
@@ -63,5 +82,6 @@ export class GameObjectFactory {
         const cameraTarget = MeshBuilder.CreateBox(`${json.id}-camera-target`, { width: 0.5, depth: 0.5, height: 0.5}, world.scene);
         gameObject.cameraTargetMesh = cameraTarget;
         cameraTarget.parent = gameObject.colliderMesh;
+        cameraTarget.isVisible = false;
     }
 }

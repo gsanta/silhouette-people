@@ -1,12 +1,20 @@
 import { Mesh, Vector3 } from "babylonjs";
+import { AnimationGroup } from "babylonjs/Animations/animationGroup";
+import { Skeleton } from "babylonjs/Bones/skeleton";
+import { AbstractCharacterState } from "./character/ICharacterState";
+import { IdleCharacterState } from "./character/IdleCharacterState";
 import { IComponent } from "./components/IComponent";
-import { InputComponent } from "./components/InputComponent";
-import { PhysicsComponent } from "./components/PhyisicsComponent";
 import { GameObjectFactory } from "./GameObjectFactory";
 import { World } from "./World";
 
+export enum GameObjectType {
+    Character = 'Character',
+    Static = 'Static'
+}
+
 export interface GameObjectJson {
     id: string;
+    type: GameObjectType;
     modelPath: string;
     position: Vector3;
 
@@ -27,13 +35,18 @@ export class GameObject {
     mesh: Mesh;
     colliderMesh: Mesh;
     cameraTargetMesh: Mesh;
+    skeleton: Skeleton;
+    animationGroups: AnimationGroup[];
+
+    state: AbstractCharacterState;
 
     inputComponent: IComponent;
     physicsComponent: IComponent;
 
-    constructor(mesh: Mesh) {
-        // mesh.checkCollisions = true;
+    constructor(mesh: Mesh, startState?: AbstractCharacterState) {
         this.mesh = mesh;
+
+        this.state = startState;
     }
 
     debug(isDebug: boolean) {
@@ -49,8 +62,27 @@ export class GameObject {
     }
 
     update(world: World) {
-        this.inputComponent && this.inputComponent.update(this, world);
-        this.physicsComponent && this.physicsComponent.update(this, world);
+        let newState: AbstractCharacterState = undefined;
+
+        if (this.state) {
+            newState = this.state.updateInput(this, world);
+            this.handleStateChangeIfNeeded(newState, world);
+            if (!newState) {
+                newState = this.state.updatePhysics(this, world);
+                this.handleStateChangeIfNeeded(newState, world);
+            }
+        }
+    }
+
+    private handleStateChangeIfNeeded(newState: AbstractCharacterState, world: World) {
+        if (newState) {
+            if (this.state) {
+                this.state.exit(this, world);
+            }
+            this.state = newState;
+
+            this.state.enter(this, world);
+        }
     }
 
     static create(json: GameObjectJson, world: World) {

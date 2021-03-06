@@ -25,6 +25,7 @@ function initGame(world: World) {
 
     const engine = new Engine(canvas, true);
     const scene = new Scene(engine);
+    world.scene = scene;
     scene.collisionsEnabled = true;
     scene.enablePhysics(null, new CannonJSPlugin());
     scene.clearColor = new Color4(0.52, 0.73, 0.4, 1);
@@ -66,8 +67,8 @@ function initGame(world: World) {
         GameObject.create(gameObject, world)
         .then((m) => {
             // m.debug(true);
-            if (m.cameraTargetMesh) {
-                camera.lockedTarget = m.cameraTargetMesh; 
+            if (m.cameraTargetMesh) {                
+                camera.lockedTarget = m.cameraTargetMesh;
             }
         })
     });
