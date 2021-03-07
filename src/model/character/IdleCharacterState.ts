@@ -21,7 +21,15 @@ export class IdleCharacterState extends AbstractCharacterState {
         }
     }
 
+    updateAnimation(gameObject: GameObject) {
+        gameObject.runAnimation('Idle');
+    }
+
     updatePhysics(gameObject: GameObject, world: World) {
         return undefined;
+    }
+
+    exit(gameObject: GameObject) {
+        gameObject.stopCurrentAnimation();
     }
 }

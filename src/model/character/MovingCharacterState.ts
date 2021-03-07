@@ -2,6 +2,7 @@ import { Axis, Space, Vector3 } from "babylonjs";
 import { GameObject } from "../GameObject";
 import { World } from "../World";
 import { AbstractCharacterState } from "./ICharacterState";
+import { IdleCharacterState } from "./IdleCharacterState";
 
 
 export class MovingCharacterState extends AbstractCharacterState {
@@ -9,6 +10,8 @@ export class MovingCharacterState extends AbstractCharacterState {
     private readonly rotationSpeed = Math.PI / 30;
 
     updateInput(gameObject: GameObject, world: World): AbstractCharacterState {
+        const keyboard = world.keyboard;
+
         const velocity = new Vector3(0, 0, 0);
         const rotation = new Vector3(0, 0, 0);
 
@@ -29,10 +32,26 @@ export class MovingCharacterState extends AbstractCharacterState {
         gameObject.velocity = velocity;
         gameObject.rotation = rotation;
 
-        return this;
+        if (
+            !keyboard.checker.isMoveForward() &&
+            !keyboard.checker.isMoveBackward() &&
+            !keyboard.checker.isTurnLeft() &&
+            !keyboard.checker.isTurnRight()
+        ) {
+            return new IdleCharacterState();
+        }
+
+        return undefined;
+    }
+
+    updateAnimation(gameObject: GameObject, world: World): void {
+        if (!gameObject.isAnimationRunning('Walk')) {
+            gameObject.runAnimation('Walk');
+        }
     }
 
     updatePhysics(gameObject: GameObject, world: World): AbstractCharacterState {
+        console.log('in movestate updatePhysics')
         const mesh = gameObject.colliderMesh ? gameObject.colliderMesh : gameObject.mesh;
         var forward = gameObject.velocity;	
         var direction = gameObject.mesh.getDirection(forward);
@@ -40,6 +59,10 @@ export class MovingCharacterState extends AbstractCharacterState {
         mesh.moveWithCollisions(direction);
         mesh.rotate(Axis.Y, gameObject.rotation.y, Space.LOCAL);
 
-        return this;
+        return undefined;
+    }
+
+    exit(gameObject: GameObject) {
+        gameObject.stopCurrentAnimation();
     }
 }

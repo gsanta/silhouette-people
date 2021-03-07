@@ -43,6 +43,8 @@ export class GameObject {
     inputComponent: IComponent;
     physicsComponent: IComponent;
 
+    private currentAnimation: AnimationGroup;
+
     constructor(mesh: Mesh, startState?: AbstractCharacterState) {
         this.mesh = mesh;
 
@@ -68,11 +70,31 @@ export class GameObject {
             newState = this.state.updateInput(this, world);
             this.handleStateChangeIfNeeded(newState, world);
             if (!newState) {
+                this.state.updateAnimation(this, world);
                 newState = this.state.updatePhysics(this, world);
                 this.handleStateChangeIfNeeded(newState, world);
             }
         }
     }
+
+    isAnimationRunning(name: string) {
+        return this.currentAnimation && this.currentAnimation.name === name;
+    }
+
+    runAnimation(name: string) {
+        const animationGroup = this.animationGroups.find(group => group.name === name);
+        if (animationGroup) {
+            animationGroup.start(true);
+            this.currentAnimation = animationGroup;
+        }
+    }
+
+    stopCurrentAnimation() {
+        if (this.currentAnimation) {
+            this.currentAnimation.stop();
+            this.currentAnimation = undefined;
+        }
+    } 
 
     private handleStateChangeIfNeeded(newState: AbstractCharacterState, world: World) {
         if (newState) {

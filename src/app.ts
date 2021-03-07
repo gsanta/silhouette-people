@@ -1,4 +1,4 @@
-import { ArcRotateCamera, Axis, CannonJSPlugin, Color3, Color4, Engine, FollowCamera, HemisphericLight, Mesh, MeshBuilder, PhysicsImpostor, Scene, SceneLoader, Space, StandardMaterial, Vector3 } from "babylonjs";
+import { ArcRotateCamera, CannonJSPlugin, Color3, Color4, Engine, FollowCamera, HemisphericLight, Mesh, MeshBuilder, PhysicsImpostor, Scene, SceneLoader, Space, StandardMaterial, Texture, Vector3 } from "babylonjs";
 import 'babylonjs-loaders';
 import { GameObject } from "./model/GameObject";
 import { World } from "./model/World";
@@ -8,6 +8,7 @@ import { MainUI } from './ui/MainUI';
 import { InputComponent } from "./model/components/InputComponent";
 import { PhysicsComponent } from "./model/components/PhyisicsComponent";
 import { gameobjects } from "./model/gameobjects";
+import { TerrainMaterial } from "babylonjs-materials";
 
 export function createGame() {
     const root = <HTMLCanvasElement> document.getElementById("root");
@@ -31,10 +32,33 @@ function initGame(world: World) {
     scene.clearColor = new Color4(0.52, 0.73, 0.4, 1);
     // scene.gravity = new Vector3(0, -0.15, 0);
 
-    const ground = MeshBuilder.CreateBox('ground', {width: 70, height: 0.2, depth: 70});
+    
+
+	var terrainMaterial = new TerrainMaterial("terrainMaterial", scene);
+    terrainMaterial.specularColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+    terrainMaterial.specularPower = 64;
+	
+	// Set the mix texture (represents the RGB values)
+    terrainMaterial.mixTexture = new Texture("textures/mixMap.png", scene);
+	
+	// Diffuse textures following the RGB values of the mix map
+	// diffuseTexture1: Red
+	// diffuseTexture2: Green
+	// diffuseTexture3: Blue
+    terrainMaterial.diffuseTexture1 = new Texture("textures/floor.png", scene);
+    terrainMaterial.diffuseTexture2 = new Texture("textures/rock.png", scene);
+    terrainMaterial.diffuseTexture3 = new Texture("textures/grass.png", scene);
+
+    var groundWithheightMap = Mesh.CreateGroundFromHeightMap("groundWithheightMap", "assets/textures/heightMap.png", 100, 100, 100, 0, 10, scene, false);
+	groundWithheightMap.position.y = -0.2;
+	groundWithheightMap.material = terrainMaterial;
+    
+    const ground = MeshBuilder.CreateBox('ground', {width: 100, height: 0.2, depth: 100});
+
     ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
     const groundMaterial = new StandardMaterial('ground-material', scene);
-    groundMaterial.diffuseColor = Color3.FromHexString('#85BB65');
+    groundMaterial.alpha = 0;
+    // groundMaterial.diffuseColor = Color3.FromHexString('#85BB65');
     ground.material = groundMaterial;
 
     // const camera = new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new Vector3(0, 0, 0), scene);
