@@ -1,7 +1,7 @@
 import { Axis, Mesh, MeshBuilder, PhysicsImpostor, SceneLoader, Space, StandardMaterial } from "babylonjs";
 import { Skeleton } from "babylonjs/Bones/skeleton";
 import { CharacterObject } from "./character/CharacterObject";
-import { AbstractCharacterState } from "./character/ICharacterState";
+import { AbstractCharacterState } from "./character/AbstractCharacterState";
 import { IdleCharacterState } from "./character/IdleCharacterState";
 import { InputComponent } from "./components/InputComponent";
 import { PhysicsComponent } from "./components/PhyisicsComponent";

@@ -1,7 +1,7 @@
 import { Mesh, Vector3 } from "babylonjs";
 import { AnimationGroup } from "babylonjs/Animations/animationGroup";
 import { Skeleton } from "babylonjs/Bones/skeleton";
-import { AbstractCharacterState } from "./character/ICharacterState";
+import { AbstractCharacterState } from "./character/AbstractCharacterState";
 import { IdleCharacterState } from "./character/IdleCharacterState";
 import { IComponent } from "./components/IComponent";
 import { GameObjectFactory } from "./GameObjectFactory";

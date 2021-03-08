@@ -1,9 +1,7 @@
 import { GameObject } from "../GameObject";
 import { World } from "../World";
-import { AbstractCharacterState } from "./ICharacterState";
+import { AbstractCharacterState } from "./AbstractCharacterState";
 import { MovingCharacterState } from "./MovingCharacterState";
-
-
 
 export class IdleCharacterState extends AbstractCharacterState {
 

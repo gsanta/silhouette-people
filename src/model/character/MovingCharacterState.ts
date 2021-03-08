@@ -1,7 +1,7 @@
 import { Axis, Space, Vector3 } from "babylonjs";
 import { GameObject } from "../GameObject";
 import { World } from "../World";
-import { AbstractCharacterState } from "./ICharacterState";
+import { AbstractCharacterState } from "./AbstractCharacterState";
 import { IdleCharacterState } from "./IdleCharacterState";
 
 

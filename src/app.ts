@@ -45,9 +45,9 @@ function initGame(world: World) {
 	// diffuseTexture1: Red
 	// diffuseTexture2: Green
 	// diffuseTexture3: Blue
-    terrainMaterial.diffuseTexture1 = new Texture("textures/floor.png", scene);
+    terrainMaterial.diffuseTexture1 = new Texture("textures/rock.png", scene);
     terrainMaterial.diffuseTexture2 = new Texture("textures/rock.png", scene);
-    terrainMaterial.diffuseTexture3 = new Texture("textures/grass.png", scene);
+    terrainMaterial.diffuseTexture3 = new Texture("textures/rock.png", scene);
 
     var groundWithheightMap = Mesh.CreateGroundFromHeightMap("groundWithheightMap", "assets/textures/heightMap.png", 100, 100, 100, 0, 10, scene, false);
 	groundWithheightMap.position.y = -0.2;

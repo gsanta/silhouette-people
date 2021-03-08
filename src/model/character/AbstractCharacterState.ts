@@ -2,8 +2,8 @@ import { GameObject } from "../GameObject";
 import { World } from "../World";
 
 export abstract class AbstractCharacterState {
-    abstract updateInput(gameObject: GameObject, world: World): AbstractCharacterState;
-    abstract updatePhysics(gameObject: GameObject, world: World): AbstractCharacterState;
+    updateInput(gameObject: GameObject, world: World): AbstractCharacterState { return undefined; }
+    updatePhysics(gameObject: GameObject, world: World): AbstractCharacterState { return undefined; }
     
     updateAnimation(gameObject: GameObject, world: World): void {};
 

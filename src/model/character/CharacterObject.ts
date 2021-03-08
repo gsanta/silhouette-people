@@ -1,6 +1,6 @@
 import { Mesh } from "babylonjs";
 import { GameObject } from "../GameObject";
-import { AbstractCharacterState } from "./ICharacterState";
+import { AbstractCharacterState } from "./AbstractCharacterState";
 import { IdleCharacterState } from "./IdleCharacterState";
 import { MovingCharacterState } from "./MovingCharacterState";
 
