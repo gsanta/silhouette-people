@@ -1,19 +1,19 @@
-import { ArcRotateCamera, CannonJSPlugin, Color3, Color4, Engine, FollowCamera, HemisphericLight, Mesh, MeshBuilder, PhysicsImpostor, Scene, SceneLoader, Space, StandardMaterial, Texture, Vector3 } from "babylonjs";
+import { ArcRotateCamera, CannonJSPlugin, Color4, Engine, FollowCamera, HemisphericLight, Mesh, MeshBuilder, PhysicsImpostor, Scene, StandardMaterial, Texture, Vector2, Vector3 } from "babylonjs";
 import 'babylonjs-loaders';
-import { GameObject } from "./model/GameObject";
-import { World } from "./model/World";
-import * as ReactDOM from 'react-dom';
-import React from "react";
-import { MainUI } from './ui/MainUI';
-import { InputComponent } from "./model/components/InputComponent";
-import { PhysicsComponent } from "./model/components/PhyisicsComponent";
-import { gameobjects } from "./model/gameobjects";
 import { TerrainMaterial } from "babylonjs-materials";
+import React from "react";
+import * as ReactDOM from 'react-dom';
+import { AreaMap } from "./controller/ai/AreaMap";
+import { GameObject } from "./model/GameObject";
+import { gameobjects } from "./model/gameobjects";
+import { World } from "./model/World";
+import { MainUI } from './ui/MainUI';
 
 export function createGame() {
     const root = <HTMLCanvasElement> document.getElementById("root");
     
     const world = new World();
+    (window as any).world = world;
 
     ReactDOM.render(
         React.createElement(MainUI, { world: world, onReady: () => initGame(world) }),
@@ -52,8 +52,11 @@ function initGame(world: World) {
     var groundWithheightMap = Mesh.CreateGroundFromHeightMap("groundWithheightMap", "assets/textures/heightMap.png", 100, 100, 100, 0, 10, scene, false);
 	groundWithheightMap.position.y = -0.2;
 	groundWithheightMap.material = terrainMaterial;
-    
+
     const ground = MeshBuilder.CreateBox('ground', {width: 100, height: 0.2, depth: 100});
+    const groundMin = ground.getBoundingInfo().boundingBox.minimum;
+    const groundMax = ground.getBoundingInfo().boundingBox.maximum;
+    world.areaMap = new AreaMap(new Vector2(groundMin.x, groundMin.z), new Vector2(groundMax.x, groundMax.z), 1);
 
     ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
     const groundMaterial = new StandardMaterial('ground-material', scene);
@@ -61,20 +64,20 @@ function initGame(world: World) {
     // groundMaterial.diffuseColor = Color3.FromHexString('#85BB65');
     ground.material = groundMaterial;
 
-    // const camera = new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new Vector3(0, 0, 0), scene);
-    // camera.attachControl(canvas, true);
+    const camera = new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new Vector3(0, 0, 0), scene);
+    camera.attachControl(canvas, true);
 
-    var camera = new FollowCamera("FollowCam", new Vector3(0, 20, 0), scene);
-    // The goal distance of camera from target
-    camera.radius = 15;
-    // The goal height of camera above local origin (centre) of target
-    camera.heightOffset = 20;
-    // The goal rotation of camera around local origin (centre) of target in x y plane
-    camera.rotationOffset = Math.PI / 2;
-    // Acceleration of camera in moving from current to goal position
-    camera.cameraAcceleration = 0.05;
-    // The speed at which acceleration is halted
-    camera.maxCameraSpeed = 10;
+    // var camera = new FollowCamera("FollowCam", new Vector3(0, 20, 0), scene);
+    // // The goal distance of camera from target
+    // camera.radius = 15;
+    // // The goal height of camera above local origin (centre) of target
+    // camera.heightOffset = 20;
+    // // The goal rotation of camera around local origin (centre) of target in x y plane
+    // camera.rotationOffset = Math.PI / 2;
+    // // Acceleration of camera in moving from current to goal position
+    // camera.cameraAcceleration = 0.05;
+    // // The speed at which acceleration is halted
+    // camera.maxCameraSpeed = 10;
 
     const light = new HemisphericLight("light", new Vector3(1, 1, 0), scene);
 
@@ -87,14 +90,25 @@ function initGame(world: World) {
             engine.resize();
     });
 
+    const gos: GameObject[] = [];
+    const promises: Promise<GameObject>[] = [];
+
     gameobjects.forEach(gameObject => {
-        GameObject.create(gameObject, world)
-        .then((m) => {
+        const p = GameObject.create(gameObject, world);
+        promises.push(p);
+
+        p.then((m) => {
+            gos.push(m);
             // m.debug(true);
             if (m.cameraTargetMesh) {                
-                camera.lockedTarget = m.cameraTargetMesh;
+                // camera.lockedTarget = m.cameraTargetMesh;
             }
         })
+    });
+
+    Promise.all(promises).then(gos => {
+        world.areaMap.fill(gos.map(go => go.colliderMesh));
+        world.areaMap.visualize({ height: 5 }, world);
     });
 
     // SceneLoader.ImportMesh('', "./models/", "character.glb", scene, function (meshes, particleSystems, skeletons) {
