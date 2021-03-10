@@ -6,8 +6,6 @@ import { AreaMapVisualizer, AreaVisualizerConfig } from "./AreaMapVisualizer";
 export class AreaMap {
     readonly topLeft: Vector2;
     readonly botRight: Vector2;
-    private readonly offsetX: number;
-    private readonly offsetY: number;
 
     readonly columns: number;
     readonly rows: number;
@@ -20,10 +18,8 @@ export class AreaMap {
         this.botRight = botRight;
         this.gridSize = gridSize;
 
-        this.columns = this.botRight.x - this.topLeft.x;
-        this.rows = this.botRight.y - this.topLeft.y;
-
-        this.init;
+        this.columns = (this.botRight.x - this.topLeft.x) / gridSize;
+        this.rows = (this.botRight.y - this.topLeft.y) / gridSize;
     }
 
     block(index: number) {
@@ -35,42 +31,12 @@ export class AreaMap {
         const yNum = Math.ceil((max.z - min.z) / this.gridSize);
         const topLeftIndex = this.getIndexAtWorldCoordinate(new Vector2(min.x, min.z));
         const [tlX, tlY] = this.getGridCoordinate(topLeftIndex);
-        debugger;
-        for (let i = tlY; i < tlY + yNum; i++) {
-            for (let j = tlX; j < tlX + xNum; j++) {
+
+        for (let i = tlY; i <= tlY + yNum; i++) {
+            for (let j = tlX; j <= tlX + xNum; j++) {
                 this.block(this.getIndexAtGridCoordinate(i, j));
             }
         }
-        // let [min2, max2] = this.getBoundedRect(min, max);
-
-        // const minGridX = min.x 
-    }
-
-    private getBoundedRect(min: Vector3, max: Vector3): [Vector2, Vector2] {
-        const min2 = this.offsetPoint(min);
-        const max2 = this.offsetPoint(max);
-
-        if (min2.x < this.topLeft.x) {
-            min2.x = this.topLeft.x;
-        }
-
-        if (min2.y < this.topLeft.y) {
-            min2.y = this.topLeft.y;
-        }
-
-        if (max2.x > this.botRight.x) {
-            max2.x = this.botRight.x;
-        }
-
-        if (max2.y > this.botRight.y) {
-            max2.y = this.botRight.y;
-        }
-
-        return [min2, max2];
-    }
-
-    private offsetPoint(point: Vector3): Vector2 {
-        return new Vector2(point.x - this.topLeft.x, point.y - this.topLeft.y);
     }
 
     setEmpty(row: number, column: number) {
@@ -103,22 +69,27 @@ export class AreaMap {
         return new Vector2(x, y);
     }
 
+    getAs2dArray(): number[][] {
+        const arr: number[][] = [];
+
+        this.map.forEach((item, index) => {
+            const pos = index % this.columns;
+
+            if (pos === 0) {
+                arr.push([]);
+            }
+
+            arr[arr.length].push(item);
+        });
+
+        return arr;
+    }
+
     visualize(config: AreaVisualizerConfig, world: World) {
         new AreaMapVisualizer(world).visualize(config, this);
     }
 
     fill(meshes: Mesh[]) {
         new AreaMapFiller().fill(this, meshes);
-    }
-
-    private init() {
-        this.map = [];
-
-        for (let i = 0; i < this.rows; i++) {
-            for (let j = 0; j < this.columns; j++) {
-                const index = this.getIndexAtGridCoordinate(j, i)
-                this.map[index] = 0;
-            }
-        }
     }
 }

@@ -17,7 +17,8 @@ export class AreaMapVisualizer {
 
     visualize(config: AreaVisualizerConfig, areaMap: AreaMap) {
         this.config = config;
-        this.baseInstance = MeshBuilder.CreateBox(`grid-base-instance`, { width: 0.9, height: 0.9, depth: 0.9});
+        const cubeSize = areaMap.gridSize - 0.1;
+        this.baseInstance = MeshBuilder.CreateBox(`grid-base-instance`, { width: cubeSize, height: cubeSize, depth: cubeSize});
         this.baseInstance.thinInstanceRegisterAttribute("color", 4);
 
 
@@ -41,9 +42,5 @@ export class AreaMapVisualizer {
         } else {
             this.baseInstance.thinInstanceSetAttributeAt("color", idx, [0.5, 0.5, 0.5, 1]);
         }
-        // mesh.translate(new Vector3(worldPos.x, 0, worldPos.y), 1, Space.WORLD);
-        
-        const material = new StandardMaterial(`grid-${index}-mat`, this.world.scene);
-        // material.wireframe = true;
     }
 }

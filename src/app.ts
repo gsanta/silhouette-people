@@ -54,9 +54,10 @@ function initGame(world: World) {
 	groundWithheightMap.material = terrainMaterial;
 
     const ground = MeshBuilder.CreateBox('ground', {width: 100, height: 0.2, depth: 100});
-    const groundMin = ground.getBoundingInfo().boundingBox.minimum;
-    const groundMax = ground.getBoundingInfo().boundingBox.maximum;
-    world.areaMap = new AreaMap(new Vector2(groundMin.x, groundMin.z), new Vector2(groundMax.x, groundMax.z), 1);
+    const groundMin = ground.getBoundingInfo().boundingBox.minimumWorld;
+    const groundMax = ground.getBoundingInfo().boundingBox.maximumWorld;
+    const extend = ground.getBoundingInfo().boundingBox.extendSizeWorld;
+    world.areaMap = new AreaMap(new Vector2(groundMin.x + extend.x, groundMin.z), new Vector2(groundMax.x, groundMax.z - extend.z), 0.5);
 
     ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
     const groundMaterial = new StandardMaterial('ground-material', scene);
