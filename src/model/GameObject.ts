@@ -7,14 +7,15 @@ import { IComponent } from "./components/IComponent";
 import { GameObjectFactory } from "./GameObjectFactory";
 import { World } from "./World";
 
-export enum GameObjectType {
-    Character = 'Character',
+export enum GameObjectRole {
+    Player = 'Player',
+    Enemy = 'Enemy',
     Static = 'Static'
 }
 
 export interface GameObjectJson {
     id: string;
-    type: GameObjectType;
+    role: GameObjectRole;
     modelPath: string;
     position: Vector3;
 

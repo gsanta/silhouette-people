@@ -51,7 +51,6 @@ export class MovingCharacterState extends AbstractCharacterState {
     }
 
     updatePhysics(gameObject: GameObject, world: World): AbstractCharacterState {
-        console.log('in movestate updatePhysics')
         const mesh = gameObject.colliderMesh ? gameObject.colliderMesh : gameObject.mesh;
         var forward = gameObject.velocity;	
         var direction = gameObject.mesh.getDirection(forward);

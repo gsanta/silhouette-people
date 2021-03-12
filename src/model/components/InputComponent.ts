@@ -3,8 +3,6 @@ import { GameObject } from "../GameObject";
 import { World } from "../World";
 import { IComponent } from "./IComponent";
 
-
-
 export class InputComponent implements IComponent {
     private speed = 0.04;
     private rotationSpeed = Math.PI / 30;

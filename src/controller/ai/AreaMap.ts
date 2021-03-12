@@ -52,8 +52,11 @@ export class AreaMap {
     }
 
     getIndexAtWorldCoordinate(coordinate: Vector2): number {
-        const col = Math.floor((coordinate.x - this.topLeft.x) / this.gridSize);
-        const row = Math.floor((coordinate.y - this.topLeft.y) / this.gridSize);
+        let col = Math.floor((coordinate.x - this.topLeft.x) / this.gridSize);
+        col = col < 0 ? 0 : col >= this.columns ? this.columns - 1 : col;
+
+        let row = Math.floor((coordinate.y - this.topLeft.y) / this.gridSize);
+        row = row < 0 ? 0 : row >= this.rows ? this.rows - 1 : row;
 
         return row * this.rows + col;
     }
@@ -67,22 +70,6 @@ export class AreaMap {
         const x = this.topLeft.x + col * this.gridSize + this.gridSize / 2;
         const y = this.topLeft.y + row * this.gridSize + this.gridSize / 2;
         return new Vector2(x, y);
-    }
-
-    getAs2dArray(): number[][] {
-        const arr: number[][] = [];
-
-        this.map.forEach((item, index) => {
-            const pos = index % this.columns;
-
-            if (pos === 0) {
-                arr.push([]);
-            }
-
-            arr[arr.length].push(item);
-        });
-
-        return arr;
     }
 
     visualize(config: AreaVisualizerConfig, world: World) {
