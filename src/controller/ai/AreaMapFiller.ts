@@ -9,7 +9,7 @@ export class AreaMapFiller {
             const minimum = mesh.getBoundingInfo().boundingBox.minimumWorld;
             const maximum = mesh.getBoundingInfo().boundingBox.maximumWorld;
     
-            areaMap.blockRect(minimum, maximum);
+            areaMap.fillRect(minimum, maximum, 1);
         });
     }
 }

@@ -1,9 +1,13 @@
 import { GameObject } from "../GameObject";
 import { World } from "../World";
-import { AbstractCharacterState } from "./AbstractCharacterState";
+import { AbstractCharacterState, GameObjectStateType } from "./AbstractCharacterState";
 import { MovingCharacterState } from "./MovingCharacterState";
 
 export class IdleCharacterState extends AbstractCharacterState {
+
+    constructor() {
+        super(GameObjectStateType.Idle);
+    }
 
     updateInput(gameObject: GameObject, world: World) {
         const keyboard = world.keyboard;

@@ -23,41 +23,48 @@ export class WorldAxisHelper {
     }
 
     private createAxis(yPos: number, size: number) {
-            const scene = this.world.scene;
-            // var makeTextPlane = function(text, color, size) {
-            // var dynamicTexture = new BABYLON.DynamicTexture("DynamicTexture", 50, scene, true);
-            // dynamicTexture.hasAlpha = true;
-            // dynamicTexture.drawText(text, 5, 40, "bold 36px Arial", color , "transparent", true);
-            // var plane = new BABYLON.Mesh.CreatePlane("TextPlane", size, scene, true);
-            // plane.material = new BABYLON.StandardMaterial("TextPlaneMaterial", scene);
-            // plane.material.backFaceCulling = false;
-            // plane.material.specularColor = new BABYLON.Color3(0, 0, 0);
-            // plane.material.diffuseTexture = dynamicTexture;
-            // return plane;
-            //  };
+        const scene = this.world.scene;
+        const origin = new Vector3(0, yPos, 0);
+        
+        this.meshes = [];
 
-            const origin = new Vector3(0, yPos, 0);
-
-            var axisX = Mesh.CreateLines("axisX", [ 
+        const axisX = Mesh.CreateLines("axisX",
+            [ 
                 origin,
                 origin.add(new Vector3(size, 0, 0)),
                 origin.add(new Vector3(size * 0.95, 0.05 * size, 0)), 
                 origin.add(new Vector3(size, 0, 0)),
                 origin.add(new Vector3(size * 0.95, -0.05 * size, 0))
-                ],
-                scene
-            );
-            
-            axisX.color = new Color3(1, 0, 0);
-            var axisY = Mesh.CreateLines("axisY", [
-                Vector3.Zero(), new Vector3(0, size, 0), new Vector3( -0.05 * size, size * 0.95, 0), 
-                new Vector3(0, size, 0), new Vector3( 0.05 * size, size * 0.95, 0)
-                ], scene);
-            axisY.color = new Color3(0, 1, 0);
-            var axisZ = Mesh.CreateLines("axisZ", [
-                Vector3.Zero(), new Vector3(0, 0, size), new Vector3( 0 , -0.05 * size, size * 0.95),
-                new Vector3(0, 0, size), new Vector3( 0, 0.05 * size, size * 0.95)
-                ], scene);
-            axisZ.color = new Color3(0, 0, 1);
+            ],
+            scene
+        );
+        axisX.color = new Color3(1, 0, 0);
+        this.meshes.push(axisX);
+        
+        const axisY = Mesh.CreateLines("axisY",
+            [
+                origin,
+                origin.add(new Vector3(0, size, 0)),
+                origin.add(new Vector3( -0.05 * size, size * 0.95, 0)), 
+                origin.add(new Vector3(0, size, 0)),
+                origin.add(new Vector3( 0.05 * size, size * 0.95, 0))
+            ],
+            scene
+        );
+        axisY.color = new Color3(0, 1, 0);
+        this.meshes.push(axisY);
+        
+        var axisZ = Mesh.CreateLines("axisZ",
+            [
+                origin,
+                origin.add(new Vector3(0, 0, size)),
+                origin.add(new Vector3( 0 , -0.05 * size, size * 0.95)),
+                origin.add(new Vector3(0, 0, size)),
+                origin.add(new Vector3( 0, 0.05 * size, size * 0.95))
+            ],
+            scene
+        );
+        axisZ.color = new Color3(0, 0, 1);
+        this.meshes.push(axisZ);
     }
 }

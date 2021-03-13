@@ -3,6 +3,7 @@ import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
 import { AreaMap } from "./controller/ai/AreaMap";
+import { debugInfo } from "./model/debugInfo";
 import { GameObject } from "./model/GameObject";
 import { gameobjects } from "./model/gameobjects";
 import { World } from "./model/World";
@@ -97,11 +98,11 @@ function initGame(world: World) {
     });
 
     Promise.all(promises).then(gos => {
-        world.areaMap.fill(gos.map(go => go.colliderMesh));
+        world.areaMap.fillMeshes(gos.map(go => go.colliderMesh));
         world.areaMap.visualize({ height: 5 }, world);
     });
 
-    world.debug.setWorldAxisVisibility(true);
+    world.debug.setWorldAxisVisibility(debugInfo.worldAxis.show, debugInfo.worldAxis.y);
 
     // SceneLoader.ImportMesh('', "./models/", "character.glb", scene, function (meshes, particleSystems, skeletons) {
     //     world.gameObjects.push(new GameObject(meshes[0] as Mesh, new InputComponent(), new PhysicsComponent()));

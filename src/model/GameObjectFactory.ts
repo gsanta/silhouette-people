@@ -32,6 +32,7 @@ export class GameObjectFactory {
         let state: AbstractCharacterState = new IdleCharacterState();
 
         const gameObject = new GameObject(mainMesh, state);
+        gameObject.role = json.role;
         gameObject.skeleton = importedMeshes.skeletons.length > 0 ? importedMeshes.skeletons[0] : undefined;
         gameObject.animationGroups = importedMeshes.animationGroups;
 
@@ -65,6 +66,7 @@ export class GameObjectFactory {
         let state: AbstractCharacterState = new SearchingEnemyState(world);
 
         const gameObject = new GameObject(mainMesh, state);
+        gameObject.role = json.role;
         gameObject.skeleton = importedMeshes.skeletons.length > 0 ? importedMeshes.skeletons[0] : undefined;
         gameObject.animationGroups = importedMeshes.animationGroups;
 
@@ -90,6 +92,7 @@ export class GameObjectFactory {
         let state: AbstractCharacterState;
 
         const gameObject = new GameObject(mainMesh, state);
+        gameObject.role = json.role;
         gameObject.skeleton = importedMeshes.skeletons.length > 0 ? importedMeshes.skeletons[0] : undefined;
         gameObject.animationGroups = importedMeshes.animationGroups;
 

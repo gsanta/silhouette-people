@@ -31,6 +31,7 @@ export interface GameObjectJson {
 
 
 export class GameObject {
+    role: GameObjectRole;
     velocity: Vector3;
     rotation: Vector3 = new Vector3(0, 0, 0);
     mesh: Mesh;
@@ -43,6 +44,7 @@ export class GameObject {
 
     inputComponent: IComponent;
     physicsComponent: IComponent;
+    miscComponents: IComponent[] = [];
 
     private currentAnimation: AnimationGroup;
 
@@ -76,6 +78,8 @@ export class GameObject {
                 this.handleStateChangeIfNeeded(newState, world);
             }
         }
+
+        this.miscComponents.forEach(comp => comp.update(this, world));
     }
 
     isAnimationRunning(name: string) {

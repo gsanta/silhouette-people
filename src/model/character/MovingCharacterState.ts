@@ -1,13 +1,17 @@
 import { Axis, Space, Vector3 } from "babylonjs";
 import { GameObject } from "../GameObject";
 import { World } from "../World";
-import { AbstractCharacterState } from "./AbstractCharacterState";
+import { AbstractCharacterState, GameObjectStateType } from "./AbstractCharacterState";
 import { IdleCharacterState } from "./IdleCharacterState";
 
 
 export class MovingCharacterState extends AbstractCharacterState {
     private readonly speed = 0.04;
     private readonly rotationSpeed = Math.PI / 30;
+
+    constructor() {
+        super(GameObjectStateType.Walking);
+    }
 
     updateInput(gameObject: GameObject, world: World): AbstractCharacterState {
         const keyboard = world.keyboard;

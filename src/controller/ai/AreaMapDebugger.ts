@@ -6,7 +6,7 @@ export interface AreaVisualizerConfig {
     height: number;
 }
 
-export class AreaMapVisualizer {
+export class AreaMapDebugger {
     private world: World;
     private baseInstance: Mesh;
     private config: AreaVisualizerConfig;

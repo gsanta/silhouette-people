@@ -15,4 +15,8 @@ export class DebugFacade {
     setWorldAxisVisibility(isVisible: boolean, yPos: number = 1) {
         isVisible ? this.worldAxisHelper.show(yPos) : this.worldAxisHelper.hide();
     }
+
+    setEnemyPathVisibility(isVisible: boolean) {
+        
+    }
 }

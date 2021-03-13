@@ -1,7 +1,7 @@
 import { Mesh, Vector2, Vector3 } from "babylonjs";
 import { World } from "../../model/World";
 import { AreaMapFiller } from "./AreaMapFiller";
-import { AreaMapVisualizer, AreaVisualizerConfig } from "./AreaMapVisualizer";
+import { AreaMapDebugger, AreaVisualizerConfig } from "./AreaMapDebugger";
 
 export class AreaMap {
     readonly topLeft: Vector2;
@@ -22,11 +22,11 @@ export class AreaMap {
         this.rows = (this.botRight.y - this.topLeft.y) / gridSize;
     }
 
-    block(index: number) {
-        this.map[index] = 1;
+    fillGrid(index: number, num: number) {
+        this.map[index] = num;
     }
 
-    blockRect(min: Vector3, max: Vector3) {
+    fillRect(min: Vector3, max: Vector3, num: number) {
         const xNum = Math.ceil((max.x - min.x) / this.gridSize);
         const yNum = Math.ceil((max.z - min.z) / this.gridSize);
         const topLeftIndex = this.getIndexAtWorldCoordinate(new Vector2(min.x, min.z));
@@ -34,9 +34,17 @@ export class AreaMap {
 
         for (let i = tlY; i <= tlY + yNum; i++) {
             for (let j = tlX; j <= tlX + xNum; j++) {
-                this.block(this.getIndexAtGridCoordinate(i, j));
+                this.fillGrid(this.getIndexAtGridCoordinate(i, j), num);
             }
         }
+    }
+
+    fillPath(path: Vector2[], num: number) {
+        path.forEach(point => this.fillGrid(this.getIndexAtWorldCoordinate(point), num));
+    }
+
+    fillMeshes(meshes: Mesh[]) {
+        new AreaMapFiller().fill(this, meshes);
     }
 
     setEmpty(row: number, column: number) {
@@ -45,6 +53,10 @@ export class AreaMap {
 
     isBlocked(index: number) {
         return this.map[index] === 1;
+    }
+
+    getNum(index: number): number {
+        return this.map[index];
     }
 
     getIndexAtGridCoordinate(x: number, y: number) {
@@ -73,10 +85,6 @@ export class AreaMap {
     }
 
     visualize(config: AreaVisualizerConfig, world: World) {
-        new AreaMapVisualizer(world).visualize(config, this);
-    }
-
-    fill(meshes: Mesh[]) {
-        new AreaMapFiller().fill(this, meshes);
+        new AreaMapDebugger(world).visualize(config, this);
     }
 }
