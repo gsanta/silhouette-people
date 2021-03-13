@@ -1,6 +1,4 @@
-import { Mesh, Vector3 } from "babylonjs";
-import { AnimationGroup } from "babylonjs/Animations/animationGroup";
-import { Skeleton } from "babylonjs/Bones/skeleton";
+import { AnimationGroup, Mesh, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { AbstractCharacterState } from "./character/AbstractCharacterState";
 import { IdleCharacterState } from "./character/IdleCharacterState";
 import { IComponent } from "./components/IComponent";
@@ -80,6 +78,11 @@ export class GameObject {
         }
 
         this.miscComponents.forEach(comp => comp.update(this, world));
+    }
+
+    get2dPos(): Vector2 {
+        const pos = this.colliderMesh.getAbsolutePosition();
+        return new Vector2(pos.x, pos.z);
     }
 
     isAnimationRunning(name: string) {

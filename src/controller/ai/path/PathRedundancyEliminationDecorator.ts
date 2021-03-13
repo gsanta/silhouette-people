@@ -41,10 +41,6 @@ export class PathRedundancyEliminationDecorator implements IPathFinder {
         if (prev.x === curr.x && next.x === curr.x) { return true; }
         if (prev.y === curr.y && next.y === curr.y) { return true; }
         if (this.isDiagonal(prev, curr, next)) { return true; }
-        // if (this.isDiagonalBottomLeft(prev, curr) && this.isDiagonalBottomLeft(curr, next)) { return true; }
-        // if (this.isDiagonalTopLeft(prev, curr) && this.isDiagonalTopLeft(curr, next)) { return true; }
-        // if (this.isDiagonalTopRight(prev, curr) && this.isDiagonalTopRight(curr, next)) { return true; }
-        // if (this.isDiagonalBottomRight(prev, curr) && this.isDiagonalBottomRight(curr, next)) { return true; }
 
         return false;
     }
@@ -58,20 +54,4 @@ export class PathRedundancyEliminationDecorator implements IPathFinder {
         
         return true;
     }
-
-    // private isDiagonalTopRight(prev: Vector2, next: Vector2) {
-    //     return prev.x < next.x && prev.y > next.y;
-    // }
-
-    // private isDiagonalTopLeft(prev: Vector2, next: Vector2) {
-    //     return prev.x > next.x && prev.y > next.y;
-    // }
-
-    // private isDiagonalBottomLeft(prev: Vector2, next: Vector2) {
-    //     return prev.x > next.x && prev.y < next.y;
-    // }
-
-    // private isDiagonalBottomRight(prev: Vector2, next: Vector2) {
-    //     return prev.x > next.x && prev.y > next.y;
-    // }
 }
