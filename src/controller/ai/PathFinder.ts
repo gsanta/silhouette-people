@@ -12,7 +12,7 @@ export class PathFinder {
     findPath(from: Vector2, to: Vector2): Vector2[] {
         const areaMap = this.aiFacade.areaMap;
 
-        var graph = new Graph(this.convertGraph());
+        var graph = new Graph(this.convertGraph(), { diagonal: false });
         const startGrid = areaMap.getGridCoordinate(areaMap.getIndexAtWorldCoordinate(from));
         const endGrid = areaMap.getGridCoordinate(areaMap.getIndexAtWorldCoordinate(to));
 
@@ -27,13 +27,17 @@ export class PathFinder {
     private convertGraph(): number[][] {
         const areaMap = this.aiFacade.areaMap;
 
+        let str = ''
+
         const arr: number[][] = [];
 
         for (let i = 0; i < areaMap.rows; i++) {
             arr.push([]);
+            str += '\n';
             for (let j = 0; j < areaMap.columns; j++) {
-                const index = areaMap.getIndexAtGridCoordinate(i, j);
-                arr[i][j] = areaMap.isBlocked(index) ? 0 : 1;
+                const index = areaMap.getIndexAtGridCoordinate(j, i);
+                arr[i][j] = areaMap.getNum(index);
+                str += arr[i][j]
             }
         }
 

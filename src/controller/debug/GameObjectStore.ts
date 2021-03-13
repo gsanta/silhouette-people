@@ -11,4 +11,8 @@ export class GameObjectStore {
     getByRole(role: GameObjectRole): GameObject[] {
         return this.gameObjects.filter(gameObject => gameObject.role === role);
     }
+
+    getAll(): GameObject[] {
+        return this.gameObjects;
+    }
 }

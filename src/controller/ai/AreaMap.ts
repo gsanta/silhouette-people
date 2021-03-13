@@ -19,7 +19,7 @@ export class AreaMap {
         this.gridSize = gridSize;
 
         this.columns = (this.botRight.x - this.topLeft.x) / gridSize;
-        this.rows = (this.botRight.y - this.topLeft.y) / gridSize;
+        this.rows = (this.topLeft.y - this.botRight.y) / gridSize;
     }
 
     fillGrid(index: number, num: number) {
@@ -29,7 +29,7 @@ export class AreaMap {
     fillRect(min: Vector3, max: Vector3, num: number) {
         const xNum = Math.ceil((max.x - min.x) / this.gridSize);
         const yNum = Math.ceil((max.z - min.z) / this.gridSize);
-        const topLeftIndex = this.getIndexAtWorldCoordinate(new Vector2(min.x, min.z));
+        const topLeftIndex = this.getIndexAtWorldCoordinate(new Vector2(min.x, max.z));
         const [tlX, tlY] = this.getGridCoordinate(topLeftIndex);
 
         for (let i = tlY; i <= tlY + yNum; i++) {
@@ -67,8 +67,8 @@ export class AreaMap {
         let col = Math.floor((coordinate.x - this.topLeft.x) / this.gridSize);
         col = col < 0 ? 0 : col >= this.columns ? this.columns - 1 : col;
 
-        let row = Math.floor((coordinate.y - this.topLeft.y) / this.gridSize);
-        row = row < 0 ? 0 : row >= this.rows ? this.rows - 1 : row;
+        let row = Math.abs(Math.floor((coordinate.y - this.topLeft.y) / this.gridSize));
+        row = row < 0 ? 0 : row >= this.getHeight() ? this.rows - 1 : row;
 
         return row * this.rows + col;
     }
@@ -80,11 +80,15 @@ export class AreaMap {
     getWorldCoordinate(index: number) {
         const [row, col] = this.getGridCoordinate(index);
         const x = this.topLeft.x + col * this.gridSize + this.gridSize / 2;
-        const y = this.topLeft.y + row * this.gridSize + this.gridSize / 2;
+        const y = this.topLeft.y - row * this.gridSize - this.gridSize / 2;
         return new Vector2(x, y);
     }
 
-    visualize(config: AreaVisualizerConfig, world: World) {
-        new AreaMapDebugger(world).visualize(config, this);
+    getHeight() {
+        return Math.abs(this.botRight.y - this.topLeft.y) / this.gridSize;
+    }
+
+    getWidth() {
+        return this.botRight.x - this.topLeft.x;
     }
 }

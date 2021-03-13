@@ -52,7 +52,7 @@ export class GameObjectFactory {
             this.applyPhysics(gameObject, json, world);
         }
 
-        world.gameObjects.push(gameObject);
+        world.store.add(gameObject);
 
         return gameObject;
     }
@@ -73,12 +73,13 @@ export class GameObjectFactory {
         if (json.collider) {
             this.applyCollider(gameObject, json, world);
         }
+        gameObject.colliderMesh.showBoundingBox = true;
 
         if (json.physics) {
             this.applyPhysics(gameObject, json, world);
         }
 
-        world.gameObjects.push(gameObject);
+        world.store.add(gameObject);
 
         return gameObject;
     }
@@ -104,7 +105,7 @@ export class GameObjectFactory {
             this.applyPhysics(gameObject, json, world);
         }
 
-        world.gameObjects.push(gameObject);
+        world.store.add(gameObject);
 
         return gameObject;
     }

@@ -1,5 +1,6 @@
 import { GameObjectRole } from "../../model/GameObject";
 import { World } from "../../model/World";
+import { EnemyPathDebugComponent } from "./EnemyPathDebugComponent";
 
 
 export class EnemyPathDebugger {
@@ -11,7 +12,7 @@ export class EnemyPathDebugger {
 
     show() {
         const enemies = this.world.store.getByRole(GameObjectRole.Enemy);
-        enemies.forEach(enemy => enemy.miscComponents.push())
+        enemies.forEach(enemy => enemy.miscComponents.push(new EnemyPathDebugComponent()));
     }
 
     hide() {

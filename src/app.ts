@@ -46,8 +46,8 @@ function initGame(world: World) {
     const groundMin = ground.getBoundingInfo().boundingBox.minimumWorld;
     const groundMax = ground.getBoundingInfo().boundingBox.maximumWorld;
     const extend = ground.getBoundingInfo().boundingBox.extendSizeWorld;
-    world.ai.areaMap = new AreaMap(new Vector2(groundMin.x + extend.x, groundMin.z), new Vector2(groundMax.x, groundMax.z - extend.z), 0.5);
-    // world.ai.areaMap = new AreaMap(new Vector2(0, 0), new Vector2(5, 5), 0.5);
+    // world.ai.areaMap = new AreaMap(new Vector2(groundMin.x + extend.x, groundMin.z + extend.z), new Vector2(groundMax.x, groundMin.z), 0.5);
+    world.ai.areaMap = new AreaMap(new Vector2(0, 0), new Vector2(10, -10), 0.5);
 
     ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
     const groundMaterial = new StandardMaterial('ground-material', scene);
@@ -74,7 +74,9 @@ function initGame(world: World) {
 
     engine.runRenderLoop(function () {
             scene.render();
-            world.gameObjects.forEach(gameObject => gameObject.update(world));
+            setTimeout(() => {
+                world.store.getAll().forEach(gameObject => gameObject.update(world));
+            }, 3000)
     });
     
     window.addEventListener("resize", function () {
@@ -98,8 +100,9 @@ function initGame(world: World) {
     });
 
     Promise.all(promises).then(gos => {
-        world.areaMap.fillMeshes(gos.map(go => go.colliderMesh));
-        world.areaMap.visualize({ height: 5 }, world);
+        world.ai.areaMap.fillMeshes(gos.map(go => go.colliderMesh));
+        world.debug.areaMapDebugger.visualize({ height: 0 });
+        world.debug.setEnemyPathVisibility(debugInfo.enemy.path);
     });
 
     world.debug.setWorldAxisVisibility(debugInfo.worldAxis.show, debugInfo.worldAxis.y);
