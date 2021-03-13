@@ -46,8 +46,8 @@ function initGame(world: World) {
     const groundMin = ground.getBoundingInfo().boundingBox.minimumWorld;
     const groundMax = ground.getBoundingInfo().boundingBox.maximumWorld;
     const extend = ground.getBoundingInfo().boundingBox.extendSizeWorld;
-    // world.ai.areaMap = new AreaMap(new Vector2(groundMin.x + extend.x, groundMin.z + extend.z), new Vector2(groundMax.x, groundMin.z), 0.5);
-    world.ai.areaMap = new AreaMap(new Vector2(0, 0), new Vector2(10, -10), 0.5);
+    world.ai.areaMap = new AreaMap(new Vector2(groundMin.x + extend.x, groundMin.z + extend.z), new Vector2(groundMax.x, groundMin.z), 0.5);
+    // world.ai.areaMap = new AreaMap(new Vector2(0, 0), new Vector2(10, -10), 0.5);
 
     ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
     const groundMaterial = new StandardMaterial('ground-material', scene);

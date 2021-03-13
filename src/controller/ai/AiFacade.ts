@@ -1,11 +1,12 @@
 import { AreaMap } from "./AreaMap";
-import { PathFinder } from "./PathFinder";
+import { IPathFinder } from "./path/IPathFinder";
+import { MasterPathFinder } from "./path/MasterPathFinder";
 
 export class AiFacade {
-    pathFinder: PathFinder;
+    pathFinder: IPathFinder;
     areaMap: AreaMap;
 
     constructor() {
-        this.pathFinder = new PathFinder(this);
+        this.pathFinder = new MasterPathFinder();
     }
 }

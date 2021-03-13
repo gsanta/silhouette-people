@@ -30,17 +30,24 @@ export class AreaMap {
         const xNum = Math.ceil((max.x - min.x) / this.gridSize);
         const yNum = Math.ceil((max.z - min.z) / this.gridSize);
         const topLeftIndex = this.getIndexAtWorldCoordinate(new Vector2(min.x, max.z));
-        const [tlX, tlY] = this.getGridCoordinate(topLeftIndex);
-
-        for (let i = tlY; i <= tlY + yNum; i++) {
-            for (let j = tlX; j <= tlX + xNum; j++) {
-                this.fillGrid(this.getIndexAtGridCoordinate(i, j), num);
+        if (topLeftIndex) {
+            const [tlX, tlY] = this.getGridCoordinate(topLeftIndex);
+    
+            for (let i = tlY; i <= tlY + yNum; i++) {
+                for (let j = tlX; j <= tlX + xNum; j++) {
+                    this.fillGrid(this.getIndexAtGridCoordinate(i, j), num);
+                }
             }
         }
     }
 
     fillPath(path: Vector2[], num: number) {
-        path.forEach(point => this.fillGrid(this.getIndexAtWorldCoordinate(point), num));
+        path.forEach(point => {
+            const index = this.getIndexAtWorldCoordinate(point);
+            if (index !== undefined) {
+                this.fillGrid(index, num);
+            }
+        });
     }
 
     fillMeshes(meshes: Mesh[]) {
@@ -65,10 +72,14 @@ export class AreaMap {
 
     getIndexAtWorldCoordinate(coordinate: Vector2): number {
         let col = Math.floor((coordinate.x - this.topLeft.x) / this.gridSize);
-        col = col < 0 ? 0 : col >= this.columns ? this.columns - 1 : col;
+        if (col < 0 || col >= this.columns) {
+            return undefined;
+        }
 
-        let row = Math.abs(Math.floor((coordinate.y - this.topLeft.y) / this.gridSize));
-        row = row < 0 ? 0 : row >= this.getHeight() ? this.rows - 1 : row;
+        let row = Math.abs(Math.ceil((coordinate.y - this.topLeft.y) / this.gridSize));
+        if (row < 0 || row >= this.getHeight()) {
+            return undefined;
+        }
 
         return row * this.rows + col;
     }
@@ -90,5 +101,23 @@ export class AreaMap {
 
     getWidth() {
         return this.botRight.x - this.topLeft.x;
+    }
+
+    toString() {
+        let str = ''
+
+        const arr: number[][] = [];
+
+        for (let i = 0; i < this.rows; i++) {
+            arr.push([]);
+            str += '\n';
+            for (let j = 0; j < this.columns; j++) {
+                const index = this.getIndexAtGridCoordinate(j, i);
+                arr[i][j] = this.isBlocked(index) ? 0 : 1;
+                str += arr[i][j]
+            }
+        }
+
+        console.log(str);
     }
 }

@@ -20,8 +20,8 @@ export class SearchingEnemyState extends AbstractCharacterState {
     updatePhysics(gameObject: GameObject, world: World) {
         if (!this.path) {
             const pos = gameObject.colliderMesh.getAbsolutePosition();
-            // this.path = world.ai.pathFinder.findPath(new Vector2(pos.x, pos.z), new Vector2(pos.x + 40, pos.z - 5));
-            this.path = world.ai.pathFinder.findPath(new Vector2(pos.x, pos.z), new Vector2(8, -5));
+            this.path = world.ai.pathFinder.findPath(new Vector2(pos.x, pos.z), new Vector2(pos.x + 40, pos.z - 5), world.ai.areaMap);
+            // this.path = world.ai.pathFinder.findPath(new Vector2(pos.x, pos.z), new Vector2(8, -5));
             this.dest = this.path[this.path.length - 1];
 
             const destMesh = MeshBuilder.CreateBox('destination', { size: 1 }, world.scene);

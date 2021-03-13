@@ -42,6 +42,39 @@ export const gameobjects: GameObjectJson[] = [
         }
     },
     {
+        id: 'tree_temp2',
+        role: GameObjectRole.Static,
+        modelPath: 'tree.glb',
+        position: new Vector3(3, 1, -7),
+        input: false,
+        physics: false,
+        collider: {
+            dimensions: new Vector3(0.5, 10, 0.5)
+        }
+    },
+    {
+        id: 'tree_temp3',
+        role: GameObjectRole.Static,
+        modelPath: 'tree.glb',
+        position: new Vector3(6, 1, -4),
+        input: false,
+        physics: false,
+        collider: {
+            dimensions: new Vector3(0.5, 10, 0.5)
+        }
+    },
+    {
+        id: 'tree_temp4',
+        role: GameObjectRole.Static,
+        modelPath: 'tree.glb',
+        position: new Vector3(5, 1, -6),
+        input: false,
+        physics: false,
+        collider: {
+            dimensions: new Vector3(0.5, 10, 0.5)
+        }
+    },
+    {
         id: 'tree',
         role: GameObjectRole.Static,
         modelPath: 'tree.glb',

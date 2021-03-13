@@ -15,22 +15,6 @@ export class EnemyPathDebugComponent implements IComponent {
             world.ai.areaMap.fillPath(state.path, 2);
             world.debug.areaMapDebugger.updateColors();
             this.isReady = true;
-
-            let str = ''
-
-            const arr: number[][] = [];
-    
-            for (let i = 0; i < areaMap.rows; i++) {
-                arr.push([]);
-                str += '\n';
-                for (let j = 0; j < areaMap.columns; j++) {
-                    const index = areaMap.getIndexAtGridCoordinate(j, i);
-                    arr[i][j] = areaMap.isBlocked(index) ? 0 : 1;
-                    str += arr[i][j]
-                }
-            }
-    
-            console.log(str);
         }
     }
 }
