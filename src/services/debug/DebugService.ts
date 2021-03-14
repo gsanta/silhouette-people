@@ -1,19 +1,19 @@
 import { World } from "../../model/World";
-import { AreaMapDebugger, AreaVisualizerConfig } from "../ai/AreaMapDebugger";
-import { EnemyPathDebugger } from "./EnemyPathDebugger";
+import { AreaMapDebugger } from "./AreaMapDebugger";
+import { RouteDebugger } from "./RouteDebugger";
 import { WorldAxisHelper } from "./WorldAxisHelper";
 
 
-export class DebugFacade {
+export class DebugService {
     private world: World;
     private worldAxisHelper: WorldAxisHelper;
-    private enemyPathDebugger: EnemyPathDebugger;
+    private enemyPathDebugger: RouteDebugger;
     areaMapDebugger: AreaMapDebugger;
 
     constructor(world: World) {
         this.world = world;
         this.worldAxisHelper = new WorldAxisHelper(world);
-        this.enemyPathDebugger = new EnemyPathDebugger(world);
+        this.enemyPathDebugger = new RouteDebugger(world);
         this.areaMapDebugger = new AreaMapDebugger(world);
     }
 

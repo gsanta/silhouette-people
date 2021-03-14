@@ -2,9 +2,9 @@ import { ArcRotateCamera, CannonJSPlugin, Color4, Engine, FollowCamera, Hemisphe
 import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
-import { AreaMap } from "./controller/ai/AreaMap";
+import { AreaMap } from "./model/area/AreaMap";
 import { debugInfo } from "./model/debugInfo";
-import { GameObject } from "./model/GameObject";
+import { GameObject } from "./model/game_object/GameObject";
 import { gameobjects } from "./model/gameobjects";
 import { World } from "./model/World";
 import { MainUI } from './ui/MainUI';

@@ -1,4 +1,4 @@
-import { GameObject, GameObjectRole } from "../../model/GameObject";
+import { GameObject, GameObjectRole } from "../model/game_object/GameObject";
 
 
 export class GameObjectStore {

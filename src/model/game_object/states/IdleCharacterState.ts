@@ -1,16 +1,18 @@
 import { GameObject } from "../GameObject";
-import { World } from "../World";
+import { World } from "../../World";
 import { AbstractCharacterState, GameObjectStateType } from "./AbstractCharacterState";
 import { MovingCharacterState } from "./MovingCharacterState";
 
 export class IdleCharacterState extends AbstractCharacterState {
+    private world: World;
 
-    constructor() {
-        super(GameObjectStateType.Idle);
+    constructor(gameObject: GameObject, world: World) {
+        super(GameObjectStateType.Idle, gameObject);
+        this.world = world;
     }
 
-    updateInput(gameObject: GameObject, world: World) {
-        const keyboard = world.keyboard;
+    updateInput() {
+        const keyboard = this.world.keyboard;
         const activeCommands = keyboard.checker.getActiveCommands();
 
         if (
@@ -19,19 +21,19 @@ export class IdleCharacterState extends AbstractCharacterState {
             keyboard.checker.isTurnLeft() ||
             keyboard.checker.isTurnRight()
         ) {
-            return new MovingCharacterState();
+            return new MovingCharacterState(this.gameObject, this.world);
         }
     }
 
-    updateAnimation(gameObject: GameObject) {
-        gameObject.runAnimation('Idle');
+    updateAnimation() {
+        this.gameObject.runAnimation('Idle');
     }
 
-    updatePhysics(gameObject: GameObject, world: World) {
+    updatePhysics() {
         return undefined;
     }
 
-    exit(gameObject: GameObject) {
-        gameObject.stopCurrentAnimation();
+    exit() {
+        this.gameObject.stopCurrentAnimation();
     }
 }

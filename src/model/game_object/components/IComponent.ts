@@ -1,5 +1,5 @@
 import { GameObject } from "../GameObject";
-import { World } from "../World";
+import { World } from "../../World";
 
 
 export interface IComponent {

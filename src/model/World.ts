@@ -1,7 +1,7 @@
 import { Scene } from "babylonjs";
-import { AiFacade } from "../controller/ai/AiFacade";
-import { DebugFacade } from "../controller/debug/DebugFacade";
-import { GameObjectStore } from "../controller/debug/GameObjectStore";
+import { AreaService } from "../services/area/AreaService";
+import { DebugService } from "../services/debug/DebugService";
+import { GameObjectStore } from "../stores/GameObjectStore";
 import { KeyboardHandler } from "../controller/KeyboardHandler";
 
 export class World {
@@ -9,8 +9,8 @@ export class World {
 
     scene: Scene;
 
-    ai: AiFacade;
-    debug: DebugFacade;
+    ai: AreaService;
+    debug: DebugService;
 
     store: GameObjectStore;
 
@@ -19,8 +19,8 @@ export class World {
 
     constructor() {
         this.keyboard = new KeyboardHandler();
-        this.ai = new AiFacade();
-        this.debug = new DebugFacade(this);
+        this.ai = new AreaService();
+        this.debug = new DebugService(this);
         this.store = new GameObjectStore();
     }
 

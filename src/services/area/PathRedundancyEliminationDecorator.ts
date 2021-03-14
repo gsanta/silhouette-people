@@ -1,5 +1,5 @@
 import { Vector2 } from "babylonjs";
-import { AreaMap } from "../AreaMap";
+import { AreaMap } from "../../model/area/AreaMap";
 import { IPathFinder } from "./IPathFinder";
 
 export class PathRedundancyEliminationDecorator implements IPathFinder {

@@ -1,9 +1,8 @@
 import { AnimationGroup, Mesh, Skeleton, Vector2, Vector3 } from "babylonjs";
-import { AbstractCharacterState } from "./character/AbstractCharacterState";
-import { IdleCharacterState } from "./character/IdleCharacterState";
+import { AbstractCharacterState } from "./states/AbstractCharacterState";
 import { IComponent } from "./components/IComponent";
-import { GameObjectFactory } from "./GameObjectFactory";
-import { World } from "./World";
+import { GameObjectFactory } from "../GameObjectFactory";
+import { World } from "../World";
 
 export enum GameObjectRole {
     Player = 'Player',
@@ -40,16 +39,12 @@ export class GameObject {
 
     state: AbstractCharacterState;
 
-    inputComponent: IComponent;
-    physicsComponent: IComponent;
     miscComponents: IComponent[] = [];
 
     private currentAnimation: AnimationGroup;
 
-    constructor(mesh: Mesh, startState?: AbstractCharacterState) {
+    constructor(mesh: Mesh) {
         this.mesh = mesh;
-
-        this.state = startState;
     }
 
     debug(isDebug: boolean) {
@@ -64,15 +59,23 @@ export class GameObject {
         }
     }
 
+    move(speed: number) {
+        var forward = new Vector3(0, 0, 1);
+        var direction = this.mesh.getDirection(forward);
+        direction.normalize().multiplyInPlace(new Vector3(speed, speed, speed));
+        
+        this.getMesh().moveWithCollisions(direction);
+    }
+
     update(world: World) {
         let newState: AbstractCharacterState = undefined;
 
         if (this.state) {
-            newState = this.state.updateInput(this, world);
+            newState = this.state.updateInput();
             this.handleStateChangeIfNeeded(newState, world);
             if (!newState) {
-                this.state.updateAnimation(this, world);
-                newState = this.state.updatePhysics(this, world);
+                this.state.updateAnimation();
+                newState = this.state.updatePhysics();
                 this.handleStateChangeIfNeeded(newState, world);
             }
         }
@@ -107,12 +110,16 @@ export class GameObject {
     private handleStateChangeIfNeeded(newState: AbstractCharacterState, world: World) {
         if (newState) {
             if (this.state) {
-                this.state.exit(this, world);
+                this.state.exit();
             }
             this.state = newState;
 
-            this.state.enter(this, world);
+            this.state.enter();
         }
+    }
+
+    private getMesh() {
+        return this.colliderMesh ? this.colliderMesh : this.mesh;
     }
 
     static create(json: GameObjectJson, world: World) {

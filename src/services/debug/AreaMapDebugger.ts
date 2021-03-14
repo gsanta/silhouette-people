@@ -1,6 +1,6 @@
 import { Matrix, Mesh, MeshBuilder, Space, StandardMaterial, Vector3 } from "babylonjs";
 import { World } from "../../model/World";
-import { AreaMap } from "./AreaMap";
+import { AreaMap } from "../../model/area/AreaMap";
 
 export interface AreaVisualizerConfig {
     height: number;

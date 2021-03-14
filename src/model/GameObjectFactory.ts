@@ -1,11 +1,9 @@
 import { Axis, ISceneLoaderAsyncResult, Mesh, MeshBuilder, PhysicsImpostor, SceneLoader, Space, StandardMaterial } from "babylonjs";
-import { AbstractCharacterState } from "./character/AbstractCharacterState";
-import { IdleCharacterState } from "./character/IdleCharacterState";
-import { InputComponent } from "./components/InputComponent";
-import { PhysicsComponent } from "./components/PhyisicsComponent";
-import { GameObject, GameObjectJson, GameObjectRole } from "./GameObject";
+import { SearchingEnemyState } from "./game_object/states/SearchingEnemyState";
+import { AbstractCharacterState } from "./game_object/states/AbstractCharacterState";
+import { IdleCharacterState } from "./game_object/states/IdleCharacterState";
+import { GameObject, GameObjectJson, GameObjectRole } from "./game_object/GameObject";
 import { World } from "./World";
-import { SearchingEnemyState } from "../controller/ai/SearchingEnemyState";
 
 
 export class GameObjectFactory {
@@ -29,19 +27,15 @@ export class GameObjectFactory {
         const mainMesh = <Mesh> importedMeshes.meshes[0];
         mainMesh.name = json.id;
         
-        let state: AbstractCharacterState = new IdleCharacterState();
-
-        const gameObject = new GameObject(mainMesh, state);
+        
+        const gameObject = new GameObject(mainMesh);
+        gameObject.state = new IdleCharacterState(gameObject, world);
         gameObject.role = json.role;
         gameObject.skeleton = importedMeshes.skeletons.length > 0 ? importedMeshes.skeletons[0] : undefined;
         gameObject.animationGroups = importedMeshes.animationGroups;
 
         if (json.collider) {
             this.applyCollider(gameObject, json, world);
-        }
-
-        if (json.input) {
-            this.applyInput(gameObject, json, world);
         }
 
         if (json.cameraTarget) {
@@ -63,9 +57,8 @@ export class GameObjectFactory {
         const mainMesh = <Mesh> importedMeshes.meshes[0];
         mainMesh.name = json.id;
         
-        let state: AbstractCharacterState = new SearchingEnemyState(world);
-
-        const gameObject = new GameObject(mainMesh, state);
+        const gameObject = new GameObject(mainMesh);
+        gameObject.state = new SearchingEnemyState(gameObject, world);
         gameObject.role = json.role;
         gameObject.skeleton = importedMeshes.skeletons.length > 0 ? importedMeshes.skeletons[0] : undefined;
         gameObject.animationGroups = importedMeshes.animationGroups;
@@ -92,7 +85,8 @@ export class GameObjectFactory {
         
         let state: AbstractCharacterState;
 
-        const gameObject = new GameObject(mainMesh, state);
+        const gameObject = new GameObject(mainMesh);
+        gameObject.state = state;
         gameObject.role = json.role;
         gameObject.skeleton = importedMeshes.skeletons.length > 0 ? importedMeshes.skeletons[0] : undefined;
         gameObject.animationGroups = importedMeshes.animationGroups;
@@ -126,11 +120,6 @@ export class GameObjectFactory {
 
     private static applyPhysics(gameObject: GameObject, json: GameObjectJson, world: World) {
         gameObject.colliderMesh.physicsImpostor = new PhysicsImpostor(gameObject.colliderMesh, PhysicsImpostor.BoxImpostor, { mass: 1,  }, world.scene);
-    }
-
-    private static applyInput(gameObject: GameObject, json: GameObjectJson, world: World) {
-        gameObject.physicsComponent = new PhysicsComponent();
-        gameObject.inputComponent = new InputComponent();  
     }
 
     private static applyCameraTarget(gameObject: GameObject, json: GameObjectJson, world: World) {

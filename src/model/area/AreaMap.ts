@@ -1,7 +1,4 @@
 import { Mesh, Vector2, Vector3 } from "babylonjs";
-import { World } from "../../model/World";
-import { AreaMapFiller } from "./AreaMapFiller";
-import { AreaMapDebugger, AreaVisualizerConfig } from "./AreaMapDebugger";
 
 export class AreaMap {
     readonly topLeft: Vector2;
@@ -51,7 +48,13 @@ export class AreaMap {
     }
 
     fillMeshes(meshes: Mesh[]) {
-        new AreaMapFiller().fill(this, meshes);
+        meshes.forEach(mesh => {
+            mesh.computeWorldMatrix();
+            const minimum = mesh.getBoundingInfo().boundingBox.minimumWorld;
+            const maximum = mesh.getBoundingInfo().boundingBox.maximumWorld;
+    
+            this.fillRect(minimum, maximum, 1);
+        });
     }
 
     setEmpty(row: number, column: number) {

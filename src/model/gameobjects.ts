@@ -1,5 +1,5 @@
 import { Vector3 } from "babylonjs";
-import { GameObjectJson, GameObjectRole } from "./GameObject";
+import { GameObjectJson, GameObjectRole } from "./game_object/GameObject";
 
 export const gameobjects: GameObjectJson[] = [
     // {

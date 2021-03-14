@@ -1,6 +1,6 @@
 import { Vector2 } from "babylonjs";
 import { astar, Graph } from 'javascript-astar';
-import { AreaMap } from "../AreaMap";
+import { AreaMap } from "../../model/area/AreaMap";
 import { IPathFinder } from "./IPathFinder";
 
 export class PathFinder implements IPathFinder {
