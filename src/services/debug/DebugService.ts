@@ -24,4 +24,20 @@ export class DebugService {
     setEnemyPathVisibility(isVisible: boolean) {
         this.enemyPathDebugger.show();
     }
+
+    setColliderMeshVisibility(isVisible: boolean) {
+        if (isVisible) {
+            this.world.store.getAll().forEach(gameObject => gameObject.colliderMesh && (gameObject.colliderMesh.showBoundingBox = true));
+        } else {
+            this.world.store.getAll().forEach(gameObject => gameObject.colliderMesh && (gameObject.colliderMesh.showBoundingBox = false));
+        }
+    }
+
+    setMeshBoundingBoxVisibility(isVisible: boolean) {
+        if (isVisible) {
+            this.world.store.getAll().forEach(gameObject => gameObject.mesh && (gameObject.mesh.showBoundingBox = true));
+        } else {
+            this.world.store.getAll().forEach(gameObject => gameObject.mesh && (gameObject.mesh.showBoundingBox = false));
+        }
+    }
 }

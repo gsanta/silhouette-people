@@ -65,12 +65,7 @@ export class Route {
         const pos = this.gameObject.get2dPos();
         
         this.path = this.world.ai.pathFinder.findPath(pos, new Vector2(pos.x + 40, pos.y - 5), this.world.ai.areaMap);
-        // this.path = world.ai.pathFinder.findPath(new Vector2(pos.x, pos.z), new Vector2(8, -5));
         this.fromPoint = pos;
         this.toPoint = this.path[1];
-
-        const destMesh = MeshBuilder.CreateBox('destination', { size: 1 }, this.world.scene);
-        destMesh.translate(Axis.X, this.toPoint.x, Space.WORLD);
-        destMesh.translate(Axis.Z, this.toPoint.y, Space.WORLD);
     }
 }

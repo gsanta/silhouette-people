@@ -66,8 +66,7 @@ export class GameObjectFactory {
         if (json.collider) {
             this.applyCollider(gameObject, json, world);
         }
-        gameObject.colliderMesh.showBoundingBox = true;
-
+        
         if (json.physics) {
             this.applyPhysics(gameObject, json, world);
         }
