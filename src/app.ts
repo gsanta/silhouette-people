@@ -1,10 +1,8 @@
-import { ArcRotateCamera, CannonJSPlugin, Color4, Engine, FollowCamera, HemisphericLight, Mesh, MeshBuilder, PhysicsImpostor, Scene, StandardMaterial, Texture, Vector2, Vector3 } from "babylonjs";
+import { ArcRotateCamera, CannonJSPlugin, Color4, Engine, HemisphericLight, MeshBuilder, PhysicsImpostor, Scene, StandardMaterial, Vector2, Vector3 } from "babylonjs";
 import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
 import { AreaMap } from "./model/area/AreaMap";
-import { GameObject } from "./model/game_object/GameObject";
-import { gameobjects } from "./model/gameobjects";
 import { World } from "./model/World";
 import { MainUI } from './ui/MainUI';
 
@@ -82,42 +80,11 @@ function initGame(world: World) {
             engine.resize();
     });
 
-    const gos: GameObject[] = [];
-    const promises: Promise<GameObject>[] = [];
-
-    gameobjects.forEach(gameObject => {
-        const p = GameObject.create(gameObject, world);
-        promises.push(p);
-
-        p.then((m) => {
-            gos.push(m);
-            // m.debug(true);
-            if (m.cameraTargetMesh) {                
-                // camera.lockedTarget = m.cameraTargetMesh;
-            }
-        })
-    });
-
-    Promise.all(promises).then(gos => {
-        world.ai.areaMap.fillMeshes(gos.map(go => go.colliderMesh));
-        // world.debug.areaMapDebugger.visualize({ height: 0 });
-        // world.debug.setEnemyPathVisibility(debugInfo.enemy.path);
-    });
-
-    // SceneLoader.ImportMesh('', "./models/", "character.glb", scene, function (meshes, particleSystems, skeletons) {
-    //     world.gameObjects.push(new GameObject(meshes[0] as Mesh, new InputComponent(), new PhysicsComponent()));
-    //     meshes[1].physicsImpostor = new PhysicsImpostor(meshes[1], PhysicsImpostor.BoxImpostor, { mass: 1,  }, scene);
-    //     meshes[0].translate(Axis.Y, 0.1, Space.WORLD);
-    //     // do something with the meshes and skeletons
-    //     // particleSystems are always null for glTF assets
-    // });
-
-    // SceneLoader.ImportMesh('', "./models/", "tree.glb", scene, function (meshes, particleSystems, skeletons) {
-    //     const collider = MeshBuilder.CreateBox('collider', { width: 2, depth: 2, height: 80}, scene);
-    //     collider.parent = meshes[1];
-    //     world.gameObjects.push(new GameObject(collider as Mesh));
-    //     meshes[1].translate(Axis.X, 5, Space.WORLD);
-    //     // do something with the meshes and skeletons
-    //     // particleSystems are always null for glTF assets
-    // });
+    world.level.loadLevel();
+    world.level.onLevelLoaded(() => {
+        const player = world.store.getAll().find(gameObject => gameObject.cameraTargetMesh);
+        if (player) {                
+            // camera.lockedTarget = player.cameraTargetMesh;
+        }
+    })
 }
