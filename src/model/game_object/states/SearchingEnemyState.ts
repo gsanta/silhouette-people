@@ -19,7 +19,11 @@ export class SearchingEnemyState extends AbstractCharacterState {
     }
 
     updatePhysics() {
-        this.route.update();
+        if (this.route.isFinished) {
+            this.route.createRandomDest();
+        } else {
+            this.route.update();
+        }
 
         return undefined;
     }

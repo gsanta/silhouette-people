@@ -12,7 +12,7 @@ export class RouteDebuggerComponent implements IComponent {
         if (!this.isReady && gameObject.state.type === GameObjectStateType.EnemySearching) {
             const state = <SearchingEnemyState> gameObject.state;
             world.ai.areaMap.fillPath(state.route.path, 2);
-            world.debug.areaMapDebugger.updateColors();
+            world.debug.areaMapDebugger.update({ height: 0 });
             this.isReady = true;
         }
     }

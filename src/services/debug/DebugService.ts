@@ -21,8 +21,13 @@ export class DebugService {
         isVisible ? this.worldAxisHelper.show(yPos) : this.worldAxisHelper.hide();
     }
 
-    setEnemyPathVisibility(isVisible: boolean) {
-        this.enemyPathDebugger.show();
+    setRouteDebuggerVisibility(isVisible: boolean) {
+        if (isVisible) {
+            this.world.debug.areaMapDebugger.update({ height: 0 });
+            this.enemyPathDebugger.show();
+        } else {
+            this.world.debug.areaMapDebugger.clear();
+        }
     }
 
     setColliderMeshVisibility(isVisible: boolean) {

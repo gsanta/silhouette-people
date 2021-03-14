@@ -1,4 +1,5 @@
 import { Mesh, Vector2, Vector3 } from "babylonjs";
+import { Rect } from "../Rect";
 
 export class AreaMap {
     readonly topLeft: Vector2;
@@ -19,6 +20,10 @@ export class AreaMap {
         this.rows = (this.topLeft.y - this.botRight.y) / gridSize;
     }
 
+    len() {
+        return this.rows * this.columns;
+    }
+
     fillGrid(index: number, num: number) {
         this.map[index] = num;
     }
@@ -28,10 +33,10 @@ export class AreaMap {
         const yNum = Math.ceil((max.z - min.z) / this.gridSize);
         const topLeftIndex = this.getIndexAtWorldCoordinate(new Vector2(min.x, max.z));
         if (topLeftIndex) {
-            const [tlX, tlY] = this.getGridCoordinate(topLeftIndex);
+            const pos = this.getGridCoordinate(topLeftIndex);
     
-            for (let i = tlY; i <= tlY + yNum; i++) {
-                for (let j = tlX; j <= tlX + xNum; j++) {
+            for (let i = pos.x; i <= pos.x + yNum; i++) {
+                for (let j = pos.y; j <= pos.y + xNum; j++) {
                     this.fillGrid(this.getIndexAtGridCoordinate(i, j), num);
                 }
             }
@@ -87,15 +92,25 @@ export class AreaMap {
         return row * this.rows + col;
     }
 
-    getGridCoordinate(index: number): [number, number] {
-        return [Math.floor(index / this.columns), index % this.columns];
+    getGridCoordinate(index: number): Vector2 {
+        return new Vector2(index % this.columns, Math.floor(index / this.columns));
     }
 
     getWorldCoordinate(index: number) {
-        const [row, col] = this.getGridCoordinate(index);
-        const x = this.topLeft.x + col * this.gridSize + this.gridSize / 2;
-        const y = this.topLeft.y - row * this.gridSize - this.gridSize / 2;
+        const pos = this.getGridCoordinate(index);
+        const x = this.topLeft.x + pos.x * this.gridSize + this.gridSize / 2;
+        const y = this.topLeft.y - pos.y * this.gridSize - this.gridSize / 2;
         return new Vector2(x, y);
+    }
+    
+    getWorldBounds(): Rect {
+        const topLeftIndex = this.getIndexAtGridCoordinate(0, 0);
+        const botRightIndex = this.getIndexAtGridCoordinate(this.columns - 1, this.rows - 1);
+    
+        const topLeft = this.getWorldCoordinate(topLeftIndex);
+        const botRight = this.getWorldCoordinate(botRightIndex);
+
+        return new Rect(topLeft, botRight);
     }
 
     getHeight() {

@@ -9,8 +9,8 @@ export class PathFinder implements IPathFinder {
         const startGrid = areaMap.getGridCoordinate(areaMap.getIndexAtWorldCoordinate(from));
         const endGrid = areaMap.getGridCoordinate(areaMap.getIndexAtWorldCoordinate(to));
 
-        const start = graph.grid[startGrid[1]][startGrid[0]];
-        const end = graph.grid[endGrid[1]][endGrid[0]];
+        const start = graph.grid[startGrid.x][startGrid.y];
+        const end = graph.grid[endGrid.y][endGrid.y];
         const result = astar.search(graph, start, end);
 
         return result.map(res => new Vector2(res.x, res.y));

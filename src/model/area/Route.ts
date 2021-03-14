@@ -1,4 +1,4 @@
-import { Axis, MeshBuilder, Space, Vector2 } from "babylonjs";
+import { Vector2 } from "babylonjs";
 import { GameObject } from "../game_object/GameObject";
 import { World } from "../World";
 
@@ -8,7 +8,7 @@ export class Route {
     private toPoint: Vector2;
     private prevPos: Vector2;
     private currPos: Vector2;
-    private isFinished = false;
+    isFinished = false;
 
     private gameObject: GameObject;
     private world: World;
@@ -25,6 +25,11 @@ export class Route {
         this.checkDestReached();
         
         if (!this.isFinished) { this.moveGameObject(); }
+    }
+
+    createRandomDest() {
+        this.isFinished = false;
+        this.initPath();
     }
 
     private moveGameObject() {
@@ -62,9 +67,22 @@ export class Route {
     }
 
     private initPath() {
+        const areaMap = this.world.ai.areaMap;
         const pos = this.gameObject.get2dPos();
+        const maxIndex = areaMap.len();
+
+        let randomIndex = Math.floor(Math.random() * maxIndex);
+
+        while (areaMap.getNum(randomIndex) === 1) {
+            randomIndex++;
+            if (randomIndex >= maxIndex) {
+                randomIndex = 0;
+            }
+        }
+
+        const gridPos = areaMap.getGridCoordinate(randomIndex);
         
-        this.path = this.world.ai.pathFinder.findPath(pos, new Vector2(pos.x + 40, pos.y - 5), this.world.ai.areaMap);
+        this.path = this.world.ai.pathFinder.findPath(pos, gridPos, this.world.ai.areaMap);
         this.fromPoint = pos;
         this.toPoint = this.path[1];
     }

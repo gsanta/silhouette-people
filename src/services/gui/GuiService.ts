@@ -45,12 +45,7 @@ export class GuiService {
         checkbox.isChecked = false;
         checkbox.color = "green";
         checkbox.onIsCheckedChangedObservable.add((value) => {
-            if (value) {
-                this.world.debug.areaMapDebugger.visualize({ height: 0 });
-                this.world.debug.setEnemyPathVisibility(true);
-            } else {
-
-            }
+            this.world.debug.setRouteDebuggerVisibility(value);
         });
         panel.addControl(checkbox);
         
