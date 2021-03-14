@@ -20,7 +20,7 @@ export class SearchingEnemyState extends AbstractCharacterState {
 
     updatePhysics() {
         if (this.route.isFinished) {
-            this.route.createRandomDest();
+            this.route = new Route(this.gameObject, this.world);
         } else {
             this.route.update();
         }

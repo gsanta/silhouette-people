@@ -1,4 +1,4 @@
-import { Axis, Matrix, Mesh, MeshBuilder, Space } from "babylonjs";
+import { Axis, Mesh, MeshBuilder, Space, Vector3, InstancedMesh, Color4 } from "babylonjs";
 import { World } from "../../model/World";
 
 export interface AreaVisualizerConfig {
@@ -9,7 +9,7 @@ export class AreaMapDebugger {
     private world: World;
     private baseInstance: Mesh;
     private config: AreaVisualizerConfig;
-    private instanceMap: Map<number, number> = new Map();
+    private instanceMap: Map<number, InstancedMesh> = new Map();
     private borderMeshes: Mesh[] = [];
 
     constructor(world: World) {
@@ -25,7 +25,7 @@ export class AreaMapDebugger {
         for (let i = 0; i < areaMap.rows; i++) {
             for (let j = 0; j < areaMap.columns; j++) {
                 const index = i * areaMap.columns + j;
-                this.createMeshOrUpdateColor(index);
+                this.createMeshOrUpdateMeshAtIndex(index);
             }
         }
     }
@@ -68,38 +68,52 @@ export class AreaMapDebugger {
 
         const cubeSize = areaMap.gridSize - 0.1;
         this.baseInstance = MeshBuilder.CreateGround(`grid-base-instance`, { width: cubeSize, height: cubeSize });
-        this.baseInstance.thinInstanceRegisterAttribute("color", 4);
+        this.baseInstance.registerInstancedBuffer("color", 4);
+
+        this.baseInstance.isVisible = false;
     }
 
-    private createMeshOrUpdateColor(index: number) {
+    private createMeshOrUpdateMeshAtIndex(index: number) {
         const areaMap = this.world.ai.areaMap;
 
-        if (!areaMap.getNum(index)) { return; }
-        if (!this.instanceMap.get(index)) { this.createMesh(index); }
-        
-        this.updateColor(index);
+        if (!areaMap.getNum(index)) {
+            this.removeMesh(index);
+        } else if (!this.instanceMap.get(index)) {
+            this.createMesh(index);
+        } else {
+            this.updateColor(index);
+        }
+    }
+
+    private removeMesh(index: number) {
+        if (this.instanceMap.has(index)) {
+            this.instanceMap.get(index).dispose();
+            this.instanceMap.delete(index);
+        }
     }
 
     private createMesh(index: number) {
         const areaMap = this.world.ai.areaMap;
 
         const worldPos = areaMap.getWorldCoordinate(index);
-        var matrix = Matrix.Translation(worldPos.x, this.config.height, worldPos.y);
+        const instance = this.baseInstance.createInstance(index + '');
+        instance.translate(new Vector3(worldPos.x, this.config.height, worldPos.y), 1, Space.WORLD);
 
-        var idx = this.baseInstance.thinInstanceAdd(matrix);
-        this.instanceMap.set(index, idx);
+        this.instanceMap.set(index, instance);
+        this.updateColor(index);
+
     }
 
     private updateColor(index: number) {
         const areaMap = this.world.ai.areaMap;
 
-        const idx = this.instanceMap.get(index);
+        const instance = this.instanceMap.get(index);
         if (areaMap.getNum(index) === 1) {
-            this.baseInstance.thinInstanceSetAttributeAt("color", idx, [1, 0, 0, 1]);
+            instance.instancedBuffers.color = new Color4(1, 0, 0, 1);
         } else if (areaMap.getNum(index) === 2) {
-            this.baseInstance.thinInstanceSetAttributeAt("color", idx, [0, 0, 1, 1]);
+            instance.instancedBuffers.color = new Color4(0, 0, 1, 1);
         } else {
-            this.baseInstance.thinInstanceSetAttributeAt("color", idx, [0.5, 0.5, 0.5, 1]);
+            instance.instancedBuffers.color = new Color4(0.5, 0.5, 0.5, 1);
         }
     }
 }
