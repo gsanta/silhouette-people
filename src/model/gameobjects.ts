@@ -55,7 +55,7 @@ export const gameobjects: GameObjectJson[] = [
     {
         id: 'tree_temp3',
         role: GameObjectRole.Static,
-        modelPath: 'tree1.glb',
+        modelPath: 'tree4.glb',
         position: new Vector3(6, 0, -4),
         input: false,
         physics: false,
@@ -110,7 +110,7 @@ export const gameobjects: GameObjectJson[] = [
     {
         id: 'tree4',
         role: GameObjectRole.Static,
-        modelPath: 'tree1.glb',
+        modelPath: 'tree4.glb',
         position: new Vector3(25, 0, -4),
         input: false,
         physics: false,
@@ -143,7 +143,7 @@ export const gameobjects: GameObjectJson[] = [
     {
         id: 'tree7',
         role: GameObjectRole.Static,
-        modelPath: 'tree1.glb',
+        modelPath: 'tree4.glb',
         position: new Vector3(25.5, 0, -10),
         input: false,
         physics: false,
@@ -198,7 +198,7 @@ export const gameobjects: GameObjectJson[] = [
     {
         id: 'tree12',
         role: GameObjectRole.Static,
-        modelPath: 'tree1.glb',
+        modelPath: 'tree3.glb',
         position: new Vector3(33, 0, -4.5),
         input: false,
         physics: false,
@@ -209,7 +209,7 @@ export const gameobjects: GameObjectJson[] = [
     {
         id: 'tree13',
         role: GameObjectRole.Static,
-        modelPath: 'tree4.glb',
+        modelPath: 'tree2.glb',
         position: new Vector3(32, 0, -4),
         input: false,
         physics: false,
@@ -222,6 +222,65 @@ export const gameobjects: GameObjectJson[] = [
         role: GameObjectRole.Static,
         modelPath: 'tree1.glb',
         position: new Vector3(30, 0, -2.5),
+        input: false,
+        physics: false,
+        collider: {
+            dimensions: new Vector3(0.3, 5, 0.3)
+        }
+    },
+
+    {
+        id: 'tree15',
+        role: GameObjectRole.Static,
+        modelPath: 'tree5.glb',
+        position: new Vector3(40, 0, -42),
+        input: false,
+        physics: false,
+        collider: {
+            dimensions: new Vector3(0.3, 5, 0.3)
+        }
+    },
+    {
+        id: 'tree15',
+        role: GameObjectRole.Static,
+        modelPath: 'tree6.glb',
+        position: new Vector3(37, 0, -41),
+        input: false,
+        physics: false,
+        collider: {
+            dimensions: new Vector3(0.3, 5, 0.3)
+        }
+    },
+    {
+        id: 'tree15',
+        role: GameObjectRole.Static,
+        modelPath: 'tree5.glb',
+        position: new Vector3(32, 0, -38),
+        input: false,
+        physics: false,
+        collider: {
+            dimensions: new Vector3(0.3, 5, 0.3)
+        }
+    },
+    {
+        id: 'tree15',
+        role: GameObjectRole.Static,
+        modelPath: 'tree5.glb',
+        position: new Vector3(38, 0, -44),
+        input: false,
+        physics: false,
+        collider: {
+            dimensions: new Vector3(0.3, 5, 0.3)
+        }
+    },
+
+    {
+        id: 'house1',
+        role: GameObjectRole.Static,
+        modelPath: 'house1.glb',
+        rotation: Math.PI / 2,
+        texturePath: 'texture694.jpg',
+        position: new Vector3(-35, 0, -35),
         input: false,
         physics: false,
         collider: {

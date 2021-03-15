@@ -8,6 +8,7 @@
         "module": "commonjs",
         "outDir": "build",
         "jsx": "react",
+        "resolveJsonModule": true,
         "lib": [
             "es6",
             "dom",

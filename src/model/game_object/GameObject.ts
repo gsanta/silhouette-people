@@ -1,7 +1,7 @@
 import { AnimationGroup, Mesh, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { AbstractCharacterState } from "./states/AbstractCharacterState";
 import { IComponent } from "./components/IComponent";
-import { GameObjectFactory } from "../GameObjectFactory";
+import { GameFactoryService } from "../../services/GameFactoryService";
 import { World } from "../World";
 
 export enum GameObjectRole {
@@ -14,7 +14,9 @@ export interface GameObjectJson {
     id: string;
     role: GameObjectRole;
     modelPath: string;
+    texturePath?: string;
     position: Vector3;
+    rotation?: number;
 
     physics: boolean;
     input: boolean;    
@@ -123,6 +125,6 @@ export class GameObject {
     }
 
     static create(json: GameObjectJson, world: World) {
-        return GameObjectFactory.create(json, world);
+        return GameFactoryService.create(json, world);
     }
 }

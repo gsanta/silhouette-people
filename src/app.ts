@@ -5,6 +5,7 @@ import * as ReactDOM from 'react-dom';
 import { AreaMap } from "./model/area/AreaMap";
 import { World } from "./model/World";
 import { MainUI } from './ui/MainUI';
+import level1 from '../assets/levels/level1.json';
 
 export function createGame() {
     const root = <HTMLCanvasElement> document.getElementById("root");
@@ -38,21 +39,16 @@ function initGame(world: World) {
     // var groundWithheightMap = Mesh.CreateGroundFromHeightMap("groundWithheightMap", "assets/textures/heightMap.png", 100, 100, 100, 0, 10, scene, false);
 	// groundWithheightMap.position.y = -0.2;
 	// groundWithheightMap.material = terrainMaterial;
-
-    const ground = MeshBuilder.CreateBox('ground', {width: 100, height: 0.2, depth: 100});
-    const groundMin = ground.getBoundingInfo().boundingBox.minimumWorld;
-    const groundMax = ground.getBoundingInfo().boundingBox.maximumWorld;
-    const extend = ground.getBoundingInfo().boundingBox.extendSizeWorld;
-    world.ai.areaMap = new AreaMap(new Vector2(groundMin.x + extend.x, groundMin.z + extend.z), new Vector2(groundMax.x, groundMin.z), 0.5);
+    world.ai.areaMap = new AreaMap(new Vector2(0, 0), new Vector2(50, -50), 0.5);
     // world.ai.areaMap = new AreaMap(new Vector2(0, 0), new Vector2(10, -10), 0.5);
 
-    ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
-    const groundMaterial = new StandardMaterial('ground-material', scene);
-    // groundMaterial.alpha = 0;
-    // groundMaterial.diffuseColor = Color3.FromHexString('#85BB65');
-    ground.material = groundMaterial;
+    // ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
+    // const groundMaterial = new StandardMaterial('ground-material', scene);
+    // // groundMaterial.alpha = 0;
+    // // groundMaterial.diffuseColor = Color3.FromHexString('#85BB65');
+    // ground.material = groundMaterial;
 
-    const camera = new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2, 15, new Vector3(0, 0, 0), scene);
+    const camera = new ArcRotateCamera("camera", Math.PI + Math.PI / 3, Math.PI / 3, 120, new Vector3(0, 0, 0), scene);
     camera.attachControl(canvas, true);
 
     // var camera = new FollowCamera("FollowCam", new Vector3(0, 20, 0), scene);
@@ -66,6 +62,8 @@ function initGame(world: World) {
     // camera.cameraAcceleration = 0.05;
     // // The speed at which acceleration is halted
     // camera.maxCameraSpeed = 10;
+
+    world.import.import(level1);
 
     const light = new HemisphericLight("light", new Vector3(1, 1, 0), scene);
 

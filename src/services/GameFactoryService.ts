@@ -1,12 +1,42 @@
-import { Axis, ISceneLoaderAsyncResult, Mesh, MeshBuilder, PhysicsImpostor, SceneLoader, Space, StandardMaterial } from "babylonjs";
-import { SearchingEnemyState } from "./game_object/states/SearchingEnemyState";
-import { AbstractCharacterState } from "./game_object/states/AbstractCharacterState";
-import { IdleCharacterState } from "./game_object/states/IdleCharacterState";
-import { GameObject, GameObjectJson, GameObjectRole } from "./game_object/GameObject";
-import { World } from "./World";
+import { Axis, Color3, ISceneLoaderAsyncResult, Mesh, MeshBuilder, PhysicsImpostor, SceneLoader, Space, StandardMaterial, Texture, Vector3 } from "babylonjs";
+import { SearchingEnemyState } from "../model/game_object/states/SearchingEnemyState";
+import { AbstractCharacterState } from "../model/game_object/states/AbstractCharacterState";
+import { IdleCharacterState } from "../model/game_object/states/IdleCharacterState";
+import { GameObject, GameObjectJson, GameObjectRole } from "../model/game_object/GameObject";
+import { World } from "../model/World";
+import { GroundJson } from "./ImportService";
 
+export class GameFactoryService {
+    private world: World;
 
-export class GameObjectFactory {
+    constructor(world: World) {
+        this.world = world;
+    }
+
+    createGround(groundJson: GroundJson, size: number, index: number) {
+        const ground = MeshBuilder.CreateGround('ground', { width: 50, height: 50 });
+        
+        const material = new StandardMaterial(`ground-${index}-material`, this.world.scene);
+        material.diffuseColor = Color3.FromHexString(groundJson.color);
+        ground.material = material;
+        
+        const halfSize = size / 2;
+
+        switch(index) {
+            case 0:
+                ground.translate(new Vector3(halfSize, 0, halfSize), 1, Space.WORLD);
+            break;
+            case 1:
+                ground.translate(new Vector3(halfSize, 0, -halfSize), 1, Space.WORLD);
+            break;
+            case 2:
+                ground.translate(new Vector3(-halfSize, 0, -halfSize), 1, Space.WORLD);
+            break;
+            case 3:
+                ground.translate(new Vector3(-halfSize, 0, halfSize), 1, Space.WORLD);
+            break;
+        }
+    }
 
     static async create(json: GameObjectJson, world: World): Promise<GameObject> {
         const result = await SceneLoader.ImportMeshAsync('', "./models/", json.modelPath, world.scene);
@@ -89,6 +119,17 @@ export class GameObjectFactory {
         gameObject.role = json.role;
         gameObject.skeleton = importedMeshes.skeletons.length > 0 ? importedMeshes.skeletons[0] : undefined;
         gameObject.animationGroups = importedMeshes.animationGroups;
+
+        if (json.rotation) {
+            mainMesh.rotate(Axis.Y, json.rotation, Space.WORLD);
+        }
+
+        if (json.texturePath) {
+            const texture = new Texture(`assets/textures/${json.texturePath}`, world.scene);
+            const material = new StandardMaterial(json.id, world.scene);
+            material.diffuseTexture = texture;
+            importedMeshes.meshes[1].material = material;
+        }
 
         if (json.collider) {
             this.applyCollider(gameObject, json, world);
