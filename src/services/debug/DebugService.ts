@@ -23,7 +23,7 @@ export class DebugService {
 
     setRouteDebuggerVisibility(isVisible: boolean) {
         if (isVisible) {
-            this.world.debug.areaMapDebugger.update({ height: 0 });
+            this.world.debug.areaMapDebugger.update();
             this.enemyPathDebugger.show();
         } else {
             this.world.debug.areaMapDebugger.clear();

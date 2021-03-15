@@ -48,7 +48,7 @@ function initGame(world: World) {
 
     ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
     const groundMaterial = new StandardMaterial('ground-material', scene);
-    groundMaterial.alpha = 0;
+    // groundMaterial.alpha = 0;
     // groundMaterial.diffuseColor = Color3.FromHexString('#85BB65');
     ground.material = groundMaterial;
 

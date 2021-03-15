@@ -79,7 +79,7 @@ export class GameObjectFactory {
     private static createStatic(importedMeshes: ISceneLoaderAsyncResult, json: GameObjectJson, world: World): GameObject {
         importedMeshes.animationGroups.forEach(animationGroup => animationGroup.stop());
 
-        const mainMesh = <Mesh> importedMeshes.meshes[1];
+        const mainMesh = <Mesh> importedMeshes.meshes[0];
         mainMesh.name = json.id;
         
         let state: AbstractCharacterState;
@@ -109,7 +109,7 @@ export class GameObjectFactory {
         const collider = MeshBuilder.CreateBox(`${json.id}-collider`, { width, depth, height}, world.scene);
         collider.checkCollisions = true;
         gameObject.mesh.parent = collider;
-        gameObject.mesh.translate(Axis.Y, -dimensions.y / 2, Space.LOCAL);
+        collider.translate(Axis.Y, -dimensions.y / 2, Space.WORLD);
         collider.setAbsolutePosition(json.position);
         const colliderMaterial = new StandardMaterial(`${json.id}-collider-material`, world.scene);
         colliderMaterial.alpha = 0;
