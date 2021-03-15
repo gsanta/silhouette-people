@@ -12,12 +12,28 @@ export class AreaMapDebugger {
     private borderMeshes: Mesh[] = [];
     private height: number = 0.5;
 
+    private visible = false;
+
     constructor(world: World) {
         this.world = world;
     }
 
     setHeight(height: number) {
         this.height = height;
+    }
+
+    isVisible() {
+        return this.visible;
+    }
+
+    show() {
+        this.visible = true;
+        this.update();
+    }
+
+    hide() {
+        this.visible = false;
+        this.clear();
     }
 
     update() {
@@ -33,11 +49,12 @@ export class AreaMapDebugger {
         }
     }
 
-    clear() {
+    private clear() {
         if (!this.baseInstance) { return; }
 
-        this.baseInstance.dispose();
+        Array.from(this.instanceMap.values()).forEach(val => val.dispose());
         this.instanceMap = new Map();
+        this.baseInstance.dispose();
         this.baseInstance = undefined;
         this.borderMeshes.forEach(mesh => mesh.dispose());
         this.borderMeshes = [];

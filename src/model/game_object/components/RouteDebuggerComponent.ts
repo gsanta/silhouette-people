@@ -26,6 +26,9 @@ export class RouteDebuggerComponent implements IComponent {
 
         this.currRoute = state.route;
         world.ai.areaMap.fillPath(state.route.path, 2);
-        world.debug.areaMapDebugger.update();
+
+        if (world.debug.areaMapDebugger.isVisible()) {
+            world.debug.areaMapDebugger.update();
+        }
     }
 }

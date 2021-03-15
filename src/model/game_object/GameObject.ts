@@ -1,25 +1,35 @@
 import { AnimationGroup, Mesh, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { AbstractCharacterState } from "./states/AbstractCharacterState";
 import { IComponent } from "./components/IComponent";
-import { GameFactoryService } from "../../services/GameFactoryService";
+import { FactoryService } from "../../services/FactoryService";
 import { World } from "../World";
+
+export enum GameObjectType {
+    Player = 'Player',
+    Enemy = 'Enemy',
+    Static = 'Static',
+    Tree1 = 'tree1',
+    Tree2 = 'tree2',
+    Tree3 = 'tree3',
+    Tree4 = 'tree4',
+}
 
 export enum GameObjectRole {
     Player = 'Player',
     Enemy = 'Enemy',
-    Static = 'Static'
+    Static = 'Static',
 }
 
 export interface GameObjectJson {
-    id: string;
-    role: GameObjectRole;
+    id?: string;
+    type: GameObjectType;
+    position: Vector3;
     modelPath: string;
     texturePath?: string;
-    position: Vector3;
     rotation?: number;
 
-    physics: boolean;
-    input: boolean;    
+    physics?: boolean;
+    input?: boolean;    
     collider?: {
         dimensions: Vector3;
     };
@@ -30,10 +40,11 @@ export interface GameObjectJson {
 
 
 export class GameObject {
-    role: GameObjectRole;
+    readonly id: string;
+    readonly role: GameObjectRole;
+    readonly mesh: Mesh;
     velocity: Vector3;
     rotation: Vector3 = new Vector3(0, 0, 0);
-    mesh: Mesh;
     colliderMesh: Mesh;
     cameraTargetMesh: Mesh;
     skeleton: Skeleton;
@@ -41,12 +52,15 @@ export class GameObject {
 
     state: AbstractCharacterState;
 
-    miscComponents: IComponent[] = [];
+    additionalComponents: IComponent[] = [];
 
     private currentAnimation: AnimationGroup;
 
-    constructor(mesh: Mesh) {
+    constructor(id: string, role: GameObjectRole, mesh: Mesh) {
         this.mesh = mesh;
+        mesh.name = id;
+        this.id = id;
+        this.role = role;
     }
 
     debug(isDebug: boolean) {
@@ -82,7 +96,7 @@ export class GameObject {
             }
         }
 
-        this.miscComponents.forEach(comp => comp.update(this, world));
+        this.additionalComponents.forEach(comp => comp.update(this, world));
     }
 
     get2dPos(): Vector2 {
@@ -125,6 +139,6 @@ export class GameObject {
     }
 
     static create(json: GameObjectJson, world: World) {
-        return GameFactoryService.create(json, world);
+        return FactoryService.create(json, world);
     }
 }

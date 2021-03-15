@@ -1,4 +1,4 @@
-import { GameObjectRole } from "../../model/game_object/GameObject";
+import { GameObjectType } from "../../model/game_object/GameObject";
 import { World } from "../../model/World";
 import { RouteDebuggerComponent } from "../../model/game_object/components/RouteDebuggerComponent";
 
@@ -11,8 +11,8 @@ export class RouteDebugger {
     }
 
     show() {
-        const enemies = this.world.store.getByRole(GameObjectRole.Enemy);
-        enemies.forEach(enemy => enemy.miscComponents.push(new RouteDebuggerComponent()));
+        const enemies = this.world.store.getByRole(GameObjectType.Enemy);
+        enemies.forEach(enemy => enemy.additionalComponents.push(new RouteDebuggerComponent()));
     }
 
     hide() {

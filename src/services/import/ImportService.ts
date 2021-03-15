@@ -1,4 +1,4 @@
-import { World } from "../model/World";
+import { World } from "../../model/World";
 
 export interface GroundJson {
     color: string;

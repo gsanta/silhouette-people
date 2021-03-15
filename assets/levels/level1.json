@@ -12,5 +12,10 @@
         {
             "color": "#FFFFFF"
         }
+    ],
+    "maps": [
+        {
+            "mapUrl": "level-1-map-1.txt"
+        }
     ]
 }

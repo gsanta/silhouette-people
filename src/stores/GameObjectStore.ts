@@ -1,4 +1,4 @@
-import { GameObject, GameObjectRole } from "../model/game_object/GameObject";
+import { GameObject, GameObjectType } from "../model/game_object/GameObject";
 
 
 export class GameObjectStore {
@@ -8,7 +8,7 @@ export class GameObjectStore {
         this.gameObjects.push(gameObject);
     }
 
-    getByRole(role: GameObjectRole): GameObject[] {
+    getByRole(role: GameObjectType): GameObject[] {
         return this.gameObjects.filter(gameObject => gameObject.role === role);
     }
 
