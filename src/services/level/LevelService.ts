@@ -1,6 +1,5 @@
-import { gameobjects } from "../../model/gameobjects";
-import { GameObject } from "../../model/game_object/GameObject";
 import { World } from "../../model/World";
+import { LevelJson } from "../import/ImportService";
 
 
 export class LevelService {
@@ -12,8 +11,8 @@ export class LevelService {
         this.world = world;
     }
 
-    async loadLevel() {
-        await this.createGameObjects();
+    async loadLevel(json: LevelJson) {
+        await this.world.import.import(json);
         this.fillAreaMap();
 
         this.isLoaded = true;
@@ -26,11 +25,6 @@ export class LevelService {
         } else {
             this.onLevelLoadedFuncs.push(onLevelLoadedFunc);
         }
-    }
-
-    private async createGameObjects() {
-        const promises = gameobjects.map(gameObject => GameObject.create(gameObject, this.world));
-        await Promise.all(promises); 
     }
 
     private fillAreaMap() {

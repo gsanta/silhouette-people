@@ -13,9 +13,16 @@
             "color": "#FFFFFF"
         }
     ],
-    "maps": [
-        {
-            "mapUrl": "level-1-map-1.txt"
-        }
-    ]
+    "charToType": {
+        "1": "tree1",
+        "2": "tree2",
+        "3": "tree3",
+        "4": "tree4",
+        "5": "tree5",
+        "6": "tree6",
+        "P": "player",
+        "E": "enemy",
+        "H": "house1"
+    },
+    "mapUrl": "level-1-map-1.txt"
 }

@@ -5,13 +5,15 @@ import { FactoryService } from "../../services/FactoryService";
 import { World } from "../World";
 
 export enum GameObjectType {
-    Player = 'Player',
-    Enemy = 'Enemy',
-    Static = 'Static',
+    Player = 'player',
+    Enemy = 'enemy',
     Tree1 = 'tree1',
     Tree2 = 'tree2',
     Tree3 = 'tree3',
     Tree4 = 'tree4',
+    Tree5 = 'tree5',
+    Tree6 = 'tree6',
+    House1 = 'house1',
 }
 
 export enum GameObjectRole {
@@ -24,7 +26,7 @@ export interface GameObjectJson {
     id?: string;
     type: GameObjectType;
     position: Vector3;
-    modelPath: string;
+    modelPath?: string;
     texturePath?: string;
     rotation?: number;
 
@@ -136,9 +138,5 @@ export class GameObject {
 
     private getMesh() {
         return this.colliderMesh ? this.colliderMesh : this.mesh;
-    }
-
-    static create(json: GameObjectJson, world: World) {
-        return FactoryService.create(json, world);
     }
 }

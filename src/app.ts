@@ -63,8 +63,6 @@ function initGame(world: World) {
     // // The speed at which acceleration is halted
     // camera.maxCameraSpeed = 10;
 
-    world.import.import(level1);
-
     const light = new HemisphericLight("light", new Vector3(1, 1, 0), scene);
 
     engine.runRenderLoop(function () {
@@ -78,7 +76,7 @@ function initGame(world: World) {
             engine.resize();
     });
 
-    world.level.loadLevel();
+    world.level.loadLevel(level1);
     world.level.onLevelLoaded(() => {
         const player = world.store.getAll().find(gameObject => gameObject.cameraTargetMesh);
         if (player) {                
