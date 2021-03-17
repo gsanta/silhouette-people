@@ -50,7 +50,7 @@ export class FactoryService {
     }
 
     async createTree(json: GameObjectJson) {
-        const result = await this.load(json.type);
+        const result = await this.load(json.modelPath);
         const id = this.generateId(json.type);
         
         const gameObject = new GameObject(id, GameObjectRole.Static, <Mesh> result.meshes[0]);
@@ -64,7 +64,7 @@ export class FactoryService {
     }
 
     async createPlayer(json: GameObjectJson): Promise<GameObject> {
-        const result = await this.load(json.type);
+        const result = await this.load(json.modelPath);
         const id = this.generateId(json.type);
 
         result.animationGroups.forEach(animationGroup => animationGroup.stop());
@@ -83,7 +83,7 @@ export class FactoryService {
     }
 
     async createEnemy(json: GameObjectJson): Promise<GameObject> {
-        const result = await this.load(json.type);
+        const result = await this.load(json.modelPath);
         const id = this.generateId(json.type);
         
         result.animationGroups.forEach(animationGroup => animationGroup.stop());
@@ -127,7 +127,7 @@ export class FactoryService {
     }
 
     private async load(path: string) {
-        return await SceneLoader.ImportMeshAsync('', "./models/", path, this.world.scene);
+        return await SceneLoader.ImportMeshAsync('', "assets/models/", path, this.world.scene);
     }
 
     private generateId(type: GameObjectType) {
@@ -250,7 +250,7 @@ export class FactoryService {
     }
 
     private createCollider(gameObject: GameObject, json: GameObjectJson) {
-        const dimensions = json.collider.dimensions;
+        const dimensions = json.colliderSize;
         const [width, depth, height] = [dimensions.x, dimensions.z, dimensions.y];
         const collider = MeshBuilder.CreateBox(`${json.id}-collider`, { width, depth, height}, this.world.scene);
         collider.checkCollisions = true;

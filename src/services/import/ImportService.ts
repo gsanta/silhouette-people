@@ -7,7 +7,9 @@ export interface GroundJson {
 
 export interface LevelJson {
     grounds: GroundJson[];
-    charToType: {[key: string]: string},
+    charToType: { [key: string]: string },
+    typeToModel: { [key: string]: string },
+    colliderSizes: { [key: string]: string },
     mapUrl: string;
 }
 

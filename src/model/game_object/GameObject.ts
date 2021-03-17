@@ -28,13 +28,12 @@ export interface GameObjectJson {
     position: Vector3;
     modelPath?: string;
     texturePath?: string;
+
+    colliderSize?: Vector3;
     rotation?: number;
 
     physics?: boolean;
     input?: boolean;    
-    collider?: {
-        dimensions: Vector3;
-    };
     cameraTarget?: {
         relativPos: Vector3;
     };
