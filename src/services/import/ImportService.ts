@@ -8,9 +8,11 @@ export interface GroundJson {
 export interface LevelJson {
     grounds: GroundJson[];
     charToType: { [key: string]: string },
-    typeToModel: { [key: string]: string },
+    models: { [key: string]: string },
+    textures: { [key: string]: string },
     colliderSizes: { [key: string]: string },
     mapUrl: string;
+    rotationMapUrl: string;
 }
 
 const LEVEL_SIZE = 100;

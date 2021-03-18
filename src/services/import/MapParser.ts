@@ -10,6 +10,8 @@ export class MapParser {
     private mapRows: number;
     private mapCols: number;
     private levelJson: LevelJson;
+    private mapLines: string[];
+    private rotMapLines: string[];
 
     constructor(world: World) {
         this.world = world;
@@ -18,17 +20,17 @@ export class MapParser {
     async loadAndParse(levelJson: LevelJson): Promise<void> {
         this.levelJson = levelJson;
 
-        let map = await this.fetchMap();
-        const lines = this.getMapLines(map);
+        let map = await this.fetchMap(levelJson.mapUrl);
+        this.mapLines = this.getMapLines(map);
+        let rotMap = await this.fetchMap(levelJson.rotationMapUrl);
+        this.rotMapLines = this.getMapLines(rotMap);
+
+        this.mapRows = this.mapLines.length;
+        this.mapCols = this.mapLines[0].length;
         
-        this.mapRows = lines.length;
-        this.mapCols = lines[0].length;
-        
-        for (let i = 0; i < lines.length; i++) {
-            for (let j = 0; j < lines.length; j++) {
-                if (lines[i][j] !== '.') {
-                    await this.createGameObject(lines[i][j], j, i);
-                }
+        for (let i = 0; i < this.mapRows; i++) {
+            for (let j = 0; j < this.mapCols; j++) {
+                await this.createGameObject(j, i);
             }
         }
     }
@@ -40,7 +42,17 @@ export class MapParser {
         return lines;
     }
 
-    private async createGameObject(char: string, x: number, y: number) {        
+    private async createGameObject(x: number, y: number) {
+        if (this.mapLines[y][x] === '.') { return undefined }
+
+        const char = this.mapLines[y][x];
+        const rotationChar = this.rotMapLines[y][x];
+
+        let rotation = 0;
+        if (rotationChar !== '.') {
+            rotation = parseInt(rotationChar, 10) * Math.PI / 4;
+        }
+
         const type = this.levelJson.charToType[char];
         const halfCols = this.mapCols / 2 * MapParser.CONVERSION_RATIO;
         const halfRows = this.mapRows / 2 * MapParser.CONVERSION_RATIO;
@@ -51,13 +63,15 @@ export class MapParser {
         return await this.world.factory.create({
             position: new Vector3(posX, 0, posY),
             type: <GameObjectType> type,
-            modelPath: this.levelJson.typeToModel[type],
+            modelPath: this.levelJson.models[type],
+            texturePath: this.levelJson.textures[type],
             colliderSize: parseStrVector(this.levelJson.colliderSizes[type]),
+            rotation: rotation
         });
     }
 
-    private async fetchMap(): Promise<string> {
-        const response = await fetch(`assets/levels/${this.levelJson.mapUrl}`);
+    private async fetchMap(name: string): Promise<string> {
+        const response = await fetch(`assets/levels/${name}`);
         return await response.text();
     }
 }

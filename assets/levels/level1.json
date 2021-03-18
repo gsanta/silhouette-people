@@ -1,5 +1,6 @@
 {
     "mapUrl": "level-1-map-1.txt",
+    "rotationMapUrl": "level-1-rotations-1.txt",
     "grounds": [
         {
             "color": "#FFFFFF"
@@ -25,7 +26,7 @@
         "E": "enemy",
         "H": "house1"
     },
-    "typeToModel": {
+    "models": {
         "tree1": "tree1.glb",
         "tree2": "tree2.glb",
         "tree3": "tree3.glb",
@@ -35,6 +36,9 @@
         "player": "character.glb",
         "enemy": "character.glb",
         "house1": "house1.glb"
+    },
+    "textures": {
+        "house1": "house.jpg"
     },
     "colliderSizes": {
         "tree1": "0.5:5:0.5",
