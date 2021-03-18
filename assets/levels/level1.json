@@ -9,7 +9,7 @@
             "color": "#32CD32"
         },
         {
-            "color": "#FFFFFF"
+            "color": "#9e9e9e"
         },
         {
             "color": "#FFFFFF"
@@ -24,7 +24,9 @@
         "6": "tree6",
         "P": "player",
         "E": "enemy",
-        "H": "house1"
+        "H": "house1",
+        "I": "house2",
+        "J": "house3"
     },
     "models": {
         "tree1": "tree1.glb",
@@ -35,10 +37,14 @@
         "tree6": "tree6.glb",
         "player": "character.glb",
         "enemy": "character.glb",
-        "house1": "house1.glb"
+        "house1": "house1.glb",
+        "house2": "house2.glb",
+        "house3": "house3.glb"
     },
     "textures": {
-        "house1": "house.jpg"
+        "house1": "house.jpg",
+        "house2": "house.jpg",
+        "house3": "house.jpg"
     },
     "colliderSizes": {
         "tree1": "0.5:5:0.5",
@@ -49,6 +55,8 @@
         "tree6": "0.3:5:0.3",
         "player": "1:3.5:1",
         "enemy": "1:3.5:1",
-        "house1": "1:1:1"
+        "house1": "1:1:1",
+        "house2": "1:1:1",
+        "house3": "1:1:1"
     }
 }

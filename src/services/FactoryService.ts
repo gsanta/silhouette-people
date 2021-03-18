@@ -47,6 +47,8 @@ export class FactoryService {
                 gameObject = await this.createEnemy(gameObjectJson);
             break;
             case GameObjectType.House1:
+            case GameObjectType.House2:
+            case GameObjectType.House3:
                 gameObject = await this.createHouse(gameObjectJson);
             break;
         }
@@ -95,8 +97,10 @@ export class FactoryService {
 
         if (json.rotation) { gameObject.mesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
         this.createCollider(gameObject, json);
+        gameObject.colliderMesh.translate(Axis.Y, 0.5, Space.WORLD);
         this.createPhysics(gameObject);
         this.applyCameraTarget(gameObject, json);
+
 
         return gameObject;
     }
@@ -119,9 +123,19 @@ export class FactoryService {
         return gameObject;
     }
 
+    createGround(size: number) {
+        const ground = MeshBuilder.CreateBox('ground', { width: size, depth: size, height: 0.2 });
+        ground.translate(Axis.Y, -0.21, Space.WORLD);
+        const material = new StandardMaterial(`ground--material`, this.world.scene);
+        material.diffuseColor = Color3.FromHexString('#FFFFFF');
+        ground.material = material;
 
-    createGround(groundJson: GroundJson, size: number, index: number) {
-        const ground = MeshBuilder.CreateGround('ground', { width: 50, height: 50 });
+        ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, this.world.scene);
+    }
+
+
+    createGroundTile(groundJson: GroundJson, size: number, index: number) {
+        const ground = MeshBuilder.CreateGround('ground', { width: size, height: size });
         
         const material = new StandardMaterial(`ground-${index}-material`, this.world.scene);
         material.diffuseColor = Color3.FromHexString(groundJson.color);
@@ -282,8 +296,9 @@ export class FactoryService {
         const collider = MeshBuilder.CreateBox(`${json.id}-collider`, { width, depth, height}, this.world.scene);
         collider.checkCollisions = true;
         gameObject.mesh.parent = collider;
-        collider.translate(Axis.Y, -dimensions.y / 2, Space.WORLD);
         collider.setAbsolutePosition(json.position);
+        collider.translate(Axis.Y, dimensions.y / 2, Space.WORLD);
+        gameObject.mesh.translate(Axis.Y, -dimensions.y / 2, Space.LOCAL);
         const colliderMaterial = new StandardMaterial(`${json.id}-collider-material`, this.world.scene);
         colliderMaterial.alpha = 0;
         collider.material = colliderMaterial;

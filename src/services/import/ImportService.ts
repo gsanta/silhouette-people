@@ -27,7 +27,8 @@ export class ImportService {
     }
     
     async import(json: LevelJson) {
-        json.grounds.forEach((ground, index) => this.world.factory.createGround(ground, LEVEL_SIZE / 2, index));
+        this.world.factory.createGround(LEVEL_SIZE);
+        json.grounds.forEach((ground, index) => this.world.factory.createGroundTile(ground, LEVEL_SIZE / 2, index));
         await this.mapParser.loadAndParse(json);
     }
 }

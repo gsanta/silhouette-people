@@ -1,7 +1,6 @@
 import { AnimationGroup, Mesh, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { AbstractCharacterState } from "./states/AbstractCharacterState";
 import { IComponent } from "./components/IComponent";
-import { FactoryService } from "../../services/FactoryService";
 import { World } from "../World";
 
 export enum GameObjectType {
@@ -14,6 +13,8 @@ export enum GameObjectType {
     Tree5 = 'tree5',
     Tree6 = 'tree6',
     House1 = 'house1',
+    House2 = 'house2',
+    House3 = 'house3',
 }
 
 export enum GameObjectRole {
