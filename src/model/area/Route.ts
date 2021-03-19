@@ -1,4 +1,4 @@
-import { Vector2 } from "babylonjs";
+import { Axis, Quaternion, Space, Vector2 } from "babylonjs";
 import { GameObject } from "../game_object/GameObject";
 import { World } from "../World";
 
@@ -37,8 +37,16 @@ export class Route {
 
         const dirVector = this.toPoint.subtract(this.fromPoint);
         const dirAngle = Math.atan2(dirVector.y, dirVector.x);
+
+        mesh.rotationQuaternion = Quaternion.RotationAxis(Axis.Y, Math.PI / 2 - dirAngle);
+        // mesh.rotation.y = Math.PI / 2 - dirAngle;
         
-        mesh.rotation.y = Math.PI / 2 - dirAngle;
+        // mesh.rotation.y = dirAngle//  Math.PI / 2 - dirAngle;
+        // console.log()
+        // const rotation = dirAngle - this.gameObject.colliderMesh.rotation.y;
+        // this.gameObject.colliderMesh.rotate(Axis.Y, rotation, Space.WORLD);
+        // // this.gameObject.mesh.rotation.y = -Math.PI / 2;
+        // this.gameObject.colliderMesh.rotation.y = Math.PI
         this.gameObject.move(0.04);
 
         const meshPos = mesh.getAbsolutePosition();
@@ -58,6 +66,8 @@ export class Route {
     }
 
     private isDestReached(gameObject: GameObject) {
+        if (!this.toPoint) { return true; }
+
         const curr = gameObject.colliderMesh.getAbsolutePosition();
 
         const isWithinDestRadius = this.toPoint.subtract(new Vector2(curr.x, curr.z)).length() < 0.2;
@@ -80,9 +90,10 @@ export class Route {
             }
         }
 
-        const gridPos = areaMap.getGridCoordinate(randomIndex);
+        // const gridPos = areaMap.getGridCoordinate(randomIndex);
+        const worldPos = areaMap.getWorldCoordinate(randomIndex);
         
-        this.path = this.world.ai.pathFinder.findPath(pos, gridPos, this.world.ai.areaMap);
+        this.path = this.world.ai.pathFinder.findPath(pos, worldPos, this.world.ai.areaMap);
         this.fromPoint = pos;
         this.toPoint = this.path[1];
     }

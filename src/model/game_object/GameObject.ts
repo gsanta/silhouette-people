@@ -15,6 +15,8 @@ export enum GameObjectType {
     House1 = 'house1',
     House2 = 'house2',
     House3 = 'house3',
+    Bicycle1 = 'bicycle1',
+    Road1 = 'road1'
 }
 
 export enum GameObjectRole {
@@ -51,6 +53,7 @@ export class GameObject {
     cameraTargetMesh: Mesh;
     skeleton: Skeleton;
     animationGroups: AnimationGroup[];
+    allMeshes: Mesh[] = [];
 
     state: AbstractCharacterState;
 

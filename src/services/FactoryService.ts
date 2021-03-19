@@ -51,9 +51,30 @@ export class FactoryService {
             case GameObjectType.House3:
                 gameObject = await this.createHouse(gameObjectJson);
             break;
+            case GameObjectType.Bicycle1:
+                gameObject = await this.createDefault(gameObjectJson);
+            break;
+            case GameObjectType.Road1:
+                gameObject = await this.createDefault(gameObjectJson);
+            break;
+
         }
 
         this.world.store.add(gameObject);
+    }
+
+    async createDefault(json: GameObjectJson) {
+        const result = await this.load(json.modelPath);
+        const id = this.generateId(json.type);
+        
+        const gameObject = new GameObject(id, GameObjectRole.Static, <Mesh> result.meshes[1]);
+        gameObject.allMeshes = <Mesh[]> result.meshes;
+
+        if (json.rotation) { gameObject.mesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
+        this.createTexture(gameObject, json);
+        if (json.colliderSize) { this.createCollider(gameObject, json); }
+
+        return gameObject;
     }
 
     async createTree(json: GameObjectJson) {
@@ -116,7 +137,7 @@ export class FactoryService {
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         gameObject.animationGroups = result.animationGroups;
 
-        if (json.rotation) { gameObject.mesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
+        // if (json.rotation) { gameObject.mesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
         this.createCollider(gameObject, json);
         this.createPhysics(gameObject);
 
@@ -281,6 +302,8 @@ export class FactoryService {
         const texture = new Texture(`assets/textures/${json.texturePath}`, this.world.scene);
         const material = new StandardMaterial(gameObject.id, this.world.scene);
         material.diffuseTexture = texture;
+        material.specularTexture = texture;
+        material.emissiveTexture = texture;
         gameObject.mesh.material = material;
     }
 

@@ -77,6 +77,8 @@ export class MapParser {
 }
 
 function parseStrVector(vec: string): Vector3 {
+    if (!vec) { return undefined; }
+    
     const [x, y, z] = vec.split(':').map(str => parseFloat(str));
     return new Vector3(x, y, z);
 }
