@@ -3,7 +3,7 @@
     "rotationMapUrl": "level-1-rotations-1.txt",
     "grounds": [
         {
-            "color": "#FFFFFF"
+            "color": "#F8DE7E"
         },
         {
             "color": "#32CD32"
@@ -50,7 +50,10 @@
         "house2": "palette.jpg",
         "house3": "palette.jpg",
         "bicycle1": "palette.jpg",
-        "road1": "palette2.png"
+        "road1": "palette.jpg"
+    },
+    "textureMeshIndex": {
+        "road1": 1
     },
     "colliderSizes": {
         "tree1": "0.5:5:0.5",

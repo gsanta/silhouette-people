@@ -72,7 +72,11 @@ export class FactoryService {
 
         if (json.rotation) { gameObject.mesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
         this.createTexture(gameObject, json);
-        if (json.colliderSize) { this.createCollider(gameObject, json); }
+        if (json.colliderSize) { 
+            this.createCollider(gameObject, json); 
+        } else {
+            this.setMeshPosition(gameObject, json);
+        }
 
         return gameObject;
     }
@@ -82,6 +86,7 @@ export class FactoryService {
         const id = this.generateId(json.type);
         
         const gameObject = new GameObject(id, GameObjectRole.Static, <Mesh> result.meshes[0]);
+        gameObject.allMeshes = <Mesh[]> result.meshes;
 
         if (json.rotation) { gameObject.mesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
         this.createTexture(gameObject, json);
@@ -96,6 +101,7 @@ export class FactoryService {
         const id = this.generateId(json.type);
         
         const gameObject = new GameObject(id, GameObjectRole.Static, <Mesh> result.meshes[1]);
+        gameObject.allMeshes = <Mesh[]> result.meshes;
 
         this.createTexture(gameObject, json);
         this.createCollider(gameObject, json);
@@ -111,6 +117,7 @@ export class FactoryService {
 
         result.animationGroups.forEach(animationGroup => animationGroup.stop());
         const gameObject = new GameObject(id, GameObjectRole.Player, <Mesh> result.meshes[0]);
+        gameObject.allMeshes = <Mesh[]> result.meshes;
 
         gameObject.state = new IdleCharacterState(gameObject, this.world);
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
@@ -132,6 +139,7 @@ export class FactoryService {
         
         result.animationGroups.forEach(animationGroup => animationGroup.stop());
         const gameObject = new GameObject(id, GameObjectRole.Enemy, <Mesh> result.meshes[0]);
+        gameObject.allMeshes = <Mesh[]> result.meshes;
         
         gameObject.state = new SearchingEnemyState(gameObject, this.world);
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
@@ -304,7 +312,7 @@ export class FactoryService {
         material.diffuseTexture = texture;
         material.specularTexture = texture;
         material.emissiveTexture = texture;
-        gameObject.mesh.material = material;
+        gameObject.allMeshes[json.textureMeshIndex].material = material;
     }
 
     private setRotation(gameObject: GameObject, json: GameObjectJson) {
@@ -326,6 +334,10 @@ export class FactoryService {
         colliderMaterial.alpha = 0;
         collider.material = colliderMaterial;
         gameObject.colliderMesh = collider;
+    }
+
+    private setMeshPosition(gameObject: GameObject, json: GameObjectJson) {
+        gameObject.mesh.setAbsolutePosition(json.position);
     }
 
     private createPhysics(gameObject: GameObject) {

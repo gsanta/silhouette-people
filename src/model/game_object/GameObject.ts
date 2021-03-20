@@ -31,6 +31,7 @@ export interface GameObjectJson {
     position: Vector3;
     modelPath?: string;
     texturePath?: string;
+    textureMeshIndex?: number;
 
     colliderSize?: Vector3;
     rotation?: number;

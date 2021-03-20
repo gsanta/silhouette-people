@@ -65,6 +65,7 @@ export class MapParser {
             type: <GameObjectType> type,
             modelPath: this.levelJson.models[type],
             texturePath: this.levelJson.textures[type],
+            textureMeshIndex: this.levelJson.textureMeshIndex[type] || 0,
             colliderSize: parseStrVector(this.levelJson.colliderSizes[type]),
             rotation: rotation
         });

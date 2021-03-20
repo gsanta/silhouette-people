@@ -10,6 +10,7 @@ export interface LevelJson {
     charToType: { [key: string]: string },
     models: { [key: string]: string },
     textures: { [key: string]: string },
+    textureMeshIndex: { [key: string]: number },
     colliderSizes: { [key: string]: string },
     mapUrl: string;
     rotationMapUrl: string;
