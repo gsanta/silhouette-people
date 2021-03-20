@@ -12,7 +12,7 @@ export class LevelService {
     }
 
     async loadLevel(json: LevelJson) {
-        await this.world.import.import(json);
+        await this.world.import.importDistrict(json);
         this.fillAreaMap();
 
         this.isLoaded = true;
@@ -28,9 +28,9 @@ export class LevelService {
     }
 
     private fillAreaMap() {
-        const colliderMeshes = this.world.store2.getAll()
-            .filter(go => go.colliderMesh)
-            .map(go => go.colliderMesh);
+        const colliderMeshes = this.world.store.getActiveDistrict().getAllGameObjects()
+            .filter(obj => obj.colliderMesh)
+            .map(obj => obj.colliderMesh);
 
         this.world.ai.areaMap.fillMeshes(colliderMeshes);
     }

@@ -93,6 +93,14 @@ export class GameObject {
         this.getMesh().rotationQuaternion = Quaternion.RotationAxis(Axis.Y, rotation);
     }
 
+    setColliderVisibility(isVisible: boolean) {
+        if (this.colliderMesh) { this.colliderMesh.showBoundingBox = isVisible; }
+    }
+
+    setBoundingBoxVisibility(isVisible: boolean) {
+        if (this.mesh) { this.mesh.showBoundingBox = isVisible; }
+    }
+
     update(world: World) {
         let newState: AbstractCharacterState = undefined;
 

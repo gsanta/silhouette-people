@@ -1,23 +1,17 @@
 import { Vector3 } from "babylonjs";
-import { GameObjectType } from "../../model/game_object/GameObject";
+import { GameObjectJson, GameObjectType } from "../../model/game_object/GameObject";
 import { World } from "../../model/World";
 import { LevelJson } from "./ImportService";
 
 export class MapParser {
     private static CONVERSION_RATIO = 2;
-    private world: World;
-
     private mapRows: number;
     private mapCols: number;
     private levelJson: LevelJson;
     private mapLines: string[];
     private rotMapLines: string[];
 
-    constructor(world: World) {
-        this.world = world;
-    }
-
-    async loadAndParse(levelJson: LevelJson): Promise<void> {
+    async loadAndParse(levelJson: LevelJson): Promise<GameObjectJson[]> {
         this.levelJson = levelJson;
 
         let map = await this.fetchMap(levelJson.mapUrl);
@@ -27,13 +21,19 @@ export class MapParser {
 
         this.mapRows = this.mapLines.length;
         this.mapCols = this.mapLines[0].length;
+
+        const jsons: GameObjectJson[] = [];
         
         for (let i = 0; i < this.mapRows; i++) {
             for (let j = 0; j < this.mapCols; j++) {
-                const gameObject = await this.createGameObject(j, i);
-                this.world.store2.add(gameObject);
+                const json = this.createGameObject(j, i);
+                if (json) {
+                    jsons.push(json);
+                }
             }
         }
+
+        return jsons;
     }
 
     private getMapLines(map: string) {
@@ -43,7 +43,7 @@ export class MapParser {
         return lines;
     }
 
-    private async createGameObject(x: number, y: number) {
+    private createGameObject(x: number, y: number): GameObjectJson {
         if (this.mapLines[y][x] === '.') { return undefined }
 
         const char = this.mapLines[y][x];
@@ -61,7 +61,7 @@ export class MapParser {
         const posX = x * MapParser.CONVERSION_RATIO - halfCols;
         const posY = -(y * MapParser.CONVERSION_RATIO - halfRows);
 
-        return await this.world.factory.create({
+        return {
             position: new Vector3(posX, 0, posY),
             type: <GameObjectType> type,
             modelPath: this.levelJson.models[type],
@@ -69,7 +69,7 @@ export class MapParser {
             textureMeshIndex: this.levelJson.textureMeshIndex[type] || 0,
             colliderSize: parseStrVector(this.levelJson.colliderSizes[type]),
             rotation: rotation
-        });
+        };
     }
 
     private async fetchMap(name: string): Promise<string> {

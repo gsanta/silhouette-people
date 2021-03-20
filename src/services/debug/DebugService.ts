@@ -3,7 +3,6 @@ import { AreaMapDebugger } from "./AreaMapDebugger";
 import { RouteDebugger } from "./RouteDebugger";
 import { WorldAxisHelper } from "./WorldAxisHelper";
 
-
 export class DebugService {
     private world: World;
     private worldAxisHelper: WorldAxisHelper;
@@ -31,18 +30,10 @@ export class DebugService {
     }
 
     setColliderMeshVisibility(isVisible: boolean) {
-        if (isVisible) {
-            this.world.store2.getAll().forEach(gameObject => gameObject.colliderMesh && (gameObject.colliderMesh.showBoundingBox = true));
-        } else {
-            this.world.store2.getAll().forEach(gameObject => gameObject.colliderMesh && (gameObject.colliderMesh.showBoundingBox = false));
-        }
+        this.world.store.getActiveDistrict().getAllGameObjects().forEach(go => go.setColliderVisibility(isVisible));
     }
 
     setMeshBoundingBoxVisibility(isVisible: boolean) {
-        if (isVisible) {
-            this.world.store2.getAll().forEach(gameObject => gameObject.mesh && (gameObject.mesh.showBoundingBox = true));
-        } else {
-            this.world.store2.getAll().forEach(gameObject => gameObject.mesh && (gameObject.mesh.showBoundingBox = false));
-        }
+        this.world.store.getActiveDistrict().getAllGameObjects().forEach(go => go.setBoundingBoxVisibility(isVisible));
     }
 }

@@ -1,6 +1,6 @@
 import { QuarterMap } from "../model/area/QuarterMap";
 
-export class QuarterStore {
+export class Quarter {
     private map: QuarterMap;
 
     getMap() {

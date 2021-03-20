@@ -67,9 +67,7 @@ function initGame(world: World) {
 
     engine.runRenderLoop(function () {
             scene.render();
-            setTimeout(() => {
-                world.store2.getAll().forEach(gameObject => gameObject.update(world));
-            }, 3000)
+            world.store.getActiveDistrict().getAllGameObjects().forEach(gameObject => gameObject.update(world));
     });
     
     window.addEventListener("resize", function () {
@@ -78,7 +76,7 @@ function initGame(world: World) {
 
     world.level.loadLevel(level1);
     world.level.onLevelLoaded(() => {
-        const player = world.store2.getAll().find(gameObject => gameObject.cameraTargetMesh);
+        const player = world.store.getActiveDistrict().getAllGameObjects().find(gameObject => gameObject.cameraTargetMesh);
         if (player) {                
             // camera.lockedTarget = player.cameraTargetMesh;
         }

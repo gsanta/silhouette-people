@@ -1,8 +1,7 @@
 import { Scene } from "babylonjs";
 import { AreaService } from "../services/area/AreaService";
 import { DebugService } from "../services/debug/DebugService";
-import { GameObjectStore } from "../stores/GameObjectStore";
-import { KeyboardHandler } from "../controller/KeyboardHandler";
+import { KeyboardHandler } from "../controllers/KeyboardHandler";
 import { GuiService } from "../services/gui/GuiService";
 import { LevelService } from "../services/level/LevelService";
 import { FactoryService } from "../services/FactoryService";
@@ -21,7 +20,6 @@ export class World {
     factory: FactoryService;
     import: ImportService;
 
-    store2: GameObjectStore;
     store: WorldStore;
 
     private isReady: boolean = false;
@@ -31,7 +29,6 @@ export class World {
         this.keyboard = new KeyboardHandler();
         this.ai = new AreaService();
         this.debug = new DebugService(this);
-        this.store2 = new GameObjectStore();
         this.gui = new GuiService(this);
         this.level = new LevelService(this);
         this.factory = new FactoryService(this);

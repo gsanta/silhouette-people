@@ -1,5 +1,5 @@
+import { DistrictImporter, DistrictJson } from "../../core/io/DistrictImporter";
 import { World } from "../../model/World";
-import { MapParser } from "./MapParser";
 
 export interface GroundJson {
     color: string;
@@ -18,20 +18,18 @@ export interface LevelJson {
     rotationMapUrl: string;
 }
 
-const LEVEL_SIZE = 100;
-
 export class ImportService {
     private world: World;
-    private mapParser: MapParser;
+    private districtImporter: DistrictImporter;
 
     constructor(world: World) {
         this.world = world;
-        this.mapParser = new MapParser(this.world);
+        this.districtImporter = new DistrictImporter(world);
     }
     
-    async import(json: LevelJson) {
-        this.world.factory.createGround(LEVEL_SIZE);
-        json.grounds.forEach((ground, index) => this.world.factory.createGroundTile(ground, LEVEL_SIZE / 2, index));
-        await this.mapParser.loadAndParse(json);
+    async importDistrict(json: DistrictJson) {
+        const district = await this.districtImporter.importDistrict(json);
+        this.world.store.addDistrict(district);
+        this.world.store.setActiveDistrict(district);
     }
 }
