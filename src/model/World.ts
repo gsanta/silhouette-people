@@ -1,19 +1,17 @@
 import { Scene } from "babylonjs";
-import { AreaService } from "../services/area/AreaService";
-import { DebugService } from "../services/debug/DebugService";
+import { DebugService } from "../services/DebugService";
 import { KeyboardHandler } from "../controllers/KeyboardHandler";
-import { GuiService } from "../services/gui/GuiService";
-import { LevelService } from "../services/level/LevelService";
-import { FactoryService } from "../services/FactoryService";
-import { ImportService } from "../services/import/ImportService";
+import { GuiService } from "../services/GuiService";
+import { LevelService } from "../services/LevelService";
+import { ImportService } from "../services/ImportService";
 import { WorldStore } from "../stores/WorldStore";
+import { FactoryService } from "../services/FactoryService";
 
 export class World {
     keyboard: KeyboardHandler;
 
     scene: Scene;
 
-    ai: AreaService;
     debug: DebugService;
     gui: GuiService;
     level: LevelService;
@@ -27,7 +25,6 @@ export class World {
 
     constructor() {
         this.keyboard = new KeyboardHandler();
-        this.ai = new AreaService();
         this.debug = new DebugService(this);
         this.gui = new GuiService(this);
         this.level = new LevelService(this);

@@ -1,23 +1,23 @@
-import { District } from "./District";
+import { DistrictObj } from "../model/objs/DistrictObj";
 
 export class WorldStore {
-    private districts: Map<string, District> = new Map();
-    private activeDistrict: District;
+    private districts: Map<string, DistrictObj> = new Map();
+    private activeDistrict: DistrictObj;
 
 
-    addDistrict(district: District) {
+    addDistrict(district: DistrictObj) {
         this.districts.set(district.id, district);
     }
 
-    getDistrict(id: string): District {
+    getDistrict(id: string): DistrictObj {
         return this.districts.get(id);
     }
 
-    setActiveDistrict(district: District) {
+    setActiveDistrict(district: DistrictObj) {
         this.activeDistrict = district;
     }
 
-    getActiveDistrict(): District {
+    getActiveDistrict(): DistrictObj {
         return this.activeDistrict;
     }
 }

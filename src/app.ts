@@ -2,7 +2,7 @@ import { ArcRotateCamera, CannonJSPlugin, Color4, Engine, HemisphericLight, Mesh
 import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
-import { QuarterMap } from "./model/area/QuarterMap";
+import { QuarterMap } from "./model/district/QuarterMap";
 import { World } from "./model/World";
 import { MainUI } from './ui/MainUI';
 import level1 from '../assets/levels/level1.json';
@@ -39,7 +39,7 @@ function initGame(world: World) {
     // var groundWithheightMap = Mesh.CreateGroundFromHeightMap("groundWithheightMap", "assets/textures/heightMap.png", 100, 100, 100, 0, 10, scene, false);
 	// groundWithheightMap.position.y = -0.2;
 	// groundWithheightMap.material = terrainMaterial;
-    world.ai.areaMap = new QuarterMap(new Vector2(0, 0), new Vector2(50, -50), 0.5);
+    // world.ai.areaMap = new QuarterMap(new Vector2(0, 0), new Vector2(50, -50), 0.5);
     // world.ai.areaMap = new AreaMap(new Vector2(0, 0), new Vector2(10, -10), 0.5);
 
     // ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
@@ -67,7 +67,10 @@ function initGame(world: World) {
 
     engine.runRenderLoop(function () {
             scene.render();
-            world.store.getActiveDistrict().getAllGameObjects().forEach(gameObject => gameObject.update(world));
+
+            if (world.store.getActiveDistrict()) {
+                world.store.getActiveDistrict().getAllGameObjects().forEach(gameObject => gameObject.update(world));
+            }
     });
     
     window.addEventListener("resize", function () {
