@@ -67,7 +67,7 @@ export class FactoryService {
         const result = await this.load(json.modelPath);
         const id = this.generateId(json.type);
         
-        const gameObject = new GameObject(id, GameObjectRole.Static, <Mesh> result.meshes[1]);
+        const gameObject = new GameObject(id, GameObjectRole.Static, <Mesh> result.meshes[0]);
         gameObject.allMeshes = <Mesh[]> result.meshes;
 
         if (json.rotation) { gameObject.mesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
