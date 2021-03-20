@@ -28,7 +28,7 @@ export class LevelService {
     }
 
     private fillAreaMap() {
-        const colliderMeshes = this.world.store.getAll()
+        const colliderMeshes = this.world.store2.getAll()
             .filter(go => go.colliderMesh)
             .map(go => go.colliderMesh);
 

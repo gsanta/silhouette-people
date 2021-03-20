@@ -6,6 +6,8 @@ export interface GroundJson {
 }
 
 export interface LevelJson {
+    id: string;
+    size: string;
     grounds: GroundJson[];
     charToType: { [key: string]: string },
     models: { [key: string]: string },

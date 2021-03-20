@@ -28,7 +28,7 @@ export class FactoryService {
         }
     }
 
-    async create(gameObjectJson: GameObjectJson) {
+    async create(gameObjectJson: GameObjectJson): Promise<GameObject> {
         let gameObject: GameObject;
 
         switch(gameObjectJson.type) {
@@ -60,7 +60,7 @@ export class FactoryService {
 
         }
 
-        this.world.store.add(gameObject);
+        return gameObject;
     }
 
     async createDefault(json: GameObjectJson) {
@@ -197,112 +197,6 @@ export class FactoryService {
         this.indexesByType.set(type, currIndex + 1);
         return `${type}-${currIndex + 1}`;
     }
-
-    // static async create(json: GameObjectJson, world: World): Promise<GameObject> {
-    //     const result = await SceneLoader.ImportMeshAsync('', "./models/", json.modelPath, world.scene);
-
-    //     switch(json.type) {
-    //         case GameObjectType.Player:
-    //             return await this.createPlayer(result, json, world);
-    //         case GameObjectType.Enemy:
-    //             return await this.createEnemy(result, json, world);
-    //         case GameObjectType.Static:
-    //             return await this.createStatic(result, json, world);
-    //     }
-    // }
-
-    // private static createPlayer(importedMeshes: ISceneLoaderAsyncResult, json: GameObjectJson, world: World): GameObject {
-    //     importedMeshes.animationGroups.forEach(animationGroup => animationGroup.stop());
-
-    //     const mainMesh = <Mesh> importedMeshes.meshes[0];
-    //     mainMesh.name = json.id;
-        
-        
-    //     const gameObject = new GameObject(mainMesh);
-    //     gameObject.state = new IdleCharacterState(gameObject, world);
-    //     gameObject.role = json.type;
-    //     gameObject.skeleton = importedMeshes.skeletons.length > 0 ? importedMeshes.skeletons[0] : undefined;
-    //     gameObject.animationGroups = importedMeshes.animationGroups;
-
-    //     if (json.collider) {
-    //         this.applyCollider(gameObject, json, world);
-    //     }
-
-    //     if (json.cameraTarget) {
-    //         this.applyCameraTarget(gameObject, json, world);
-    //     }
-
-    //     if (json.physics) {
-    //         this.createPhysics(gameObject, json, world);
-    //     }
-
-    //     world.store.add(gameObject);
-
-    //     return gameObject;
-    // }
-
-    // private static createEnemy(importedMeshes: ISceneLoaderAsyncResult, json: GameObjectJson, world: World): GameObject {
-    //     importedMeshes.animationGroups.forEach(animationGroup => animationGroup.stop());
-
-    //     const mainMesh = <Mesh> importedMeshes.meshes[0];
-    //     mainMesh.name = json.id;
-        
-    //     const gameObject = new GameObject(mainMesh);
-    //     gameObject.state = new SearchingEnemyState(gameObject, world);
-    //     gameObject.role = json.type;
-    //     gameObject.skeleton = importedMeshes.skeletons.length > 0 ? importedMeshes.skeletons[0] : undefined;
-    //     gameObject.animationGroups = importedMeshes.animationGroups;
-
-    //     if (json.collider) {
-    //         this.applyCollider(gameObject, json, world);
-    //     }
-        
-    //     if (json.physics) {
-    //         this.createPhysics(gameObject, json, world);
-    //     }
-
-    //     world.store.add(gameObject);
-
-    //     return gameObject;
-    // }
-
-    // private static createStatic(importedMeshes: ISceneLoaderAsyncResult, json: GameObjectJson, world: World): GameObject {
-    //     importedMeshes.animationGroups.forEach(animationGroup => animationGroup.stop());
-
-    //     const mainMesh = <Mesh> importedMeshes.meshes[0];
-    //     mainMesh.name = json.id;
-        
-    //     let state: AbstractCharacterState;
-
-    //     const gameObject = new GameObject(mainMesh);
-    //     gameObject.state = state;
-    //     gameObject.role = json.type;
-    //     gameObject.skeleton = importedMeshes.skeletons.length > 0 ? importedMeshes.skeletons[0] : undefined;
-    //     gameObject.animationGroups = importedMeshes.animationGroups;
-
-    //     if (json.rotation) {
-    //         mainMesh.rotate(Axis.Y, json.rotation, Space.WORLD);
-    //     }
-
-    //     if (json.texturePath) {
-    //         const texture = new Texture(`assets/textures/${json.texturePath}`, world.scene);
-    //         const material = new StandardMaterial(json.id, world.scene);
-    //         material.diffuseTexture = texture;
-    //         importedMeshes.meshes[1].material = material;
-    //     }
-
-    //     if (json.collider) {
-    //         this.applyCollider(gameObject, json, world);
-    //     }
-
-    //     if (json.physics) {
-    //         this.createPhysics(gameObject, json, world);
-    //     }
-
-    //     world.store.add(gameObject);
-
-    //     return gameObject;
-    // }
 
     private createTexture(gameObject: GameObject, json: GameObjectJson) {
         if (!json.texturePath) { return; }

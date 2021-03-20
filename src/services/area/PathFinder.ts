@@ -1,10 +1,10 @@
 import { Vector2 } from "babylonjs";
 import { astar, Graph } from 'javascript-astar';
-import { AreaMap } from "../../model/area/AreaMap";
+import { QuarterMap } from "../../model/area/QuarterMap";
 import { IPathFinder } from "./IPathFinder";
 
 export class PathFinder implements IPathFinder {
-    findPath(from: Vector2, to: Vector2, areaMap: AreaMap): Vector2[] {
+    findPath(from: Vector2, to: Vector2, areaMap: QuarterMap): Vector2[] {
         const graph = new Graph(this.convertGraph(areaMap), { diagonal: true });
         const startGrid = areaMap.getGridCoordinate(areaMap.getIndexAtWorldCoordinate(from));
         const endGrid = areaMap.getGridCoordinate(areaMap.getIndexAtWorldCoordinate(to));
@@ -16,7 +16,7 @@ export class PathFinder implements IPathFinder {
         return result.map(res => new Vector2(res.x, res.y));
     }
 
-    private convertGraph(areaMap: AreaMap): number[][] {
+    private convertGraph(areaMap: QuarterMap): number[][] {
         const arr: number[][] = [];
 
         for (let i = 0; i < areaMap.columns; i++) {

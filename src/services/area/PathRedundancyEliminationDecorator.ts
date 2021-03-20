@@ -1,5 +1,5 @@
 import { Vector2 } from "babylonjs";
-import { AreaMap } from "../../model/area/AreaMap";
+import { QuarterMap } from "../../model/area/QuarterMap";
 import { IPathFinder } from "./IPathFinder";
 
 export class PathRedundancyEliminationDecorator implements IPathFinder {
@@ -9,7 +9,7 @@ export class PathRedundancyEliminationDecorator implements IPathFinder {
         this.pathFinder = pathFinder;
     }
 
-    findPath(from: Vector2, to: Vector2, areaMap: AreaMap): Vector2[] {
+    findPath(from: Vector2, to: Vector2, areaMap: QuarterMap): Vector2[] {
         let path = this.pathFinder.findPath(from, to, areaMap);
         this.eliminateRedundancy(path);
         return path;

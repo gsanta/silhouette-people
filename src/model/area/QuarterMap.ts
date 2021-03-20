@@ -1,7 +1,7 @@
 import { Mesh, Vector2, Vector3 } from "babylonjs";
 import { Rect } from "../Rect";
 
-export class AreaMap {
+export class QuarterMap {
     readonly topLeft: Vector2;
     readonly botRight: Vector2;
 

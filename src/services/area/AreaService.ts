@@ -1,10 +1,10 @@
-import { AreaMap } from "../../model/area/AreaMap";
+import { QuarterMap } from "../../model/area/QuarterMap";
 import { IPathFinder } from "./IPathFinder";
 import { MasterPathFinder } from "./MasterPathFinder";
 
 export class AreaService {
     pathFinder: IPathFinder;
-    areaMap: AreaMap;
+    areaMap: QuarterMap;
 
     constructor() {
         this.pathFinder = new MasterPathFinder();

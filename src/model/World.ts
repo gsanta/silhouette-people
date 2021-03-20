@@ -7,6 +7,7 @@ import { GuiService } from "../services/gui/GuiService";
 import { LevelService } from "../services/level/LevelService";
 import { FactoryService } from "../services/FactoryService";
 import { ImportService } from "../services/import/ImportService";
+import { WorldStore } from "../stores/WorldStore";
 
 export class World {
     keyboard: KeyboardHandler;
@@ -20,7 +21,8 @@ export class World {
     factory: FactoryService;
     import: ImportService;
 
-    store: GameObjectStore;
+    store2: GameObjectStore;
+    store: WorldStore;
 
     private isReady: boolean = false;
     private onReadyFuncs: (() => void)[] = [];
@@ -29,11 +31,13 @@ export class World {
         this.keyboard = new KeyboardHandler();
         this.ai = new AreaService();
         this.debug = new DebugService(this);
-        this.store = new GameObjectStore();
+        this.store2 = new GameObjectStore();
         this.gui = new GuiService(this);
         this.level = new LevelService(this);
         this.factory = new FactoryService(this);
         this.import = new ImportService(this);
+
+        this.store = new WorldStore();
     }
 
     setScene(scene: Scene) {

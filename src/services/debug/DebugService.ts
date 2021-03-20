@@ -32,17 +32,17 @@ export class DebugService {
 
     setColliderMeshVisibility(isVisible: boolean) {
         if (isVisible) {
-            this.world.store.getAll().forEach(gameObject => gameObject.colliderMesh && (gameObject.colliderMesh.showBoundingBox = true));
+            this.world.store2.getAll().forEach(gameObject => gameObject.colliderMesh && (gameObject.colliderMesh.showBoundingBox = true));
         } else {
-            this.world.store.getAll().forEach(gameObject => gameObject.colliderMesh && (gameObject.colliderMesh.showBoundingBox = false));
+            this.world.store2.getAll().forEach(gameObject => gameObject.colliderMesh && (gameObject.colliderMesh.showBoundingBox = false));
         }
     }
 
     setMeshBoundingBoxVisibility(isVisible: boolean) {
         if (isVisible) {
-            this.world.store.getAll().forEach(gameObject => gameObject.mesh && (gameObject.mesh.showBoundingBox = true));
+            this.world.store2.getAll().forEach(gameObject => gameObject.mesh && (gameObject.mesh.showBoundingBox = true));
         } else {
-            this.world.store.getAll().forEach(gameObject => gameObject.mesh && (gameObject.mesh.showBoundingBox = false));
+            this.world.store2.getAll().forEach(gameObject => gameObject.mesh && (gameObject.mesh.showBoundingBox = false));
         }
     }
 }

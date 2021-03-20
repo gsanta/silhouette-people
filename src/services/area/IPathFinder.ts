@@ -1,6 +1,6 @@
 import { Vector2 } from "babylonjs";
-import { AreaMap } from "../../model/area/AreaMap";
+import { QuarterMap } from "../../model/area/QuarterMap";
 
 export interface IPathFinder {
-    findPath(from: Vector2, to: Vector2, areaMap: AreaMap): Vector2[];
+    findPath(from: Vector2, to: Vector2, areaMap: QuarterMap): Vector2[];
 }

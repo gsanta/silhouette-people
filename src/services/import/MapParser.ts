@@ -30,7 +30,8 @@ export class MapParser {
         
         for (let i = 0; i < this.mapRows; i++) {
             for (let j = 0; j < this.mapCols; j++) {
-                await this.createGameObject(j, i);
+                const gameObject = await this.createGameObject(j, i);
+                this.world.store2.add(gameObject);
             }
         }
     }

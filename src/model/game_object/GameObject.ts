@@ -1,4 +1,4 @@
-import { AnimationGroup, Mesh, Skeleton, Vector2, Vector3 } from "babylonjs";
+import { AnimationGroup, Axis, Mesh, Quaternion, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { AbstractCharacterState } from "./states/AbstractCharacterState";
 import { IComponent } from "./components/IComponent";
 import { World } from "../World";
@@ -89,6 +89,10 @@ export class GameObject {
         this.getMesh().moveWithCollisions(direction);
     }
 
+    setRotation(rotation: number) {
+        this.getMesh().rotationQuaternion = Quaternion.RotationAxis(Axis.Y, rotation);
+    }
+
     update(world: World) {
         let newState: AbstractCharacterState = undefined;
 
@@ -105,10 +109,12 @@ export class GameObject {
         this.additionalComponents.forEach(comp => comp.update(this, world));
     }
 
-    get2dPos(): Vector2 {
+    getPosition2D(): Vector2 {
         const pos = this.colliderMesh.getAbsolutePosition();
         return new Vector2(pos.x, pos.z);
     }
+
+
 
     isAnimationRunning(name: string) {
         return this.currentAnimation && this.currentAnimation.name === name;
