@@ -1,8 +1,10 @@
-import { AnimationGroup, Axis, Mesh, Quaternion, Skeleton, Vector2, Vector3 } from "babylonjs";
+import { AnimationGroup, Axis, Mesh, Quaternion, Skeleton, Space, Vector2, Vector3 } from "babylonjs";
 import { AbstractCharacterState } from "../states/AbstractCharacterState";
 import { IComponent } from "../IComponent";
 import { World } from "../World";
 import { LocationContext } from "./contexts/LocationContext";
+import { DistrictObj } from "./DistrictObj";
+import { QuarterObj } from "./QuarterObj";
 
 export enum GameObjectType {
     Player = 'player',
@@ -49,7 +51,7 @@ export class GameObj {
     readonly id: string;
     readonly role: GameObjectRole;
     readonly mesh: Mesh;
-    readonly location: LocationContext;
+    // readonly location: LocationContext;
     velocity: Vector3;
     rotation: Vector3 = new Vector3(0, 0, 0);
     colliderMesh: Mesh;
@@ -64,12 +66,15 @@ export class GameObj {
 
     private currentAnimation: AnimationGroup;
 
+    district: DistrictObj;
+    quarterIndex: number;
+
     constructor(id: string, role: GameObjectRole, mesh: Mesh) {
         this.mesh = mesh;
         mesh.name = id;
         this.id = id;
         this.role = role;
-        this.location = new LocationContext();
+        // this.location = new LocationContext();
     }
 
     debug(isDebug: boolean) {
@@ -90,6 +95,10 @@ export class GameObj {
         direction.normalize().multiplyInPlace(new Vector3(speed, speed, speed));
         
         this.getMesh().moveWithCollisions(direction);
+    }
+
+    translate(axis: Vector3, amount: number) {
+        this.getMesh().translate(axis, amount, Space.LOCAL);
     }
 
     setRotation(rotation: number) {
@@ -125,7 +134,9 @@ export class GameObj {
         return new Vector2(pos.x, pos.z);
     }
 
-
+    getQuarter(): QuarterObj {
+        return this.district.activeComp.getQuarter(this.quarterIndex);
+    }
 
     isAnimationRunning(name: string) {
         return this.currentAnimation && this.currentAnimation.name === name;
@@ -157,7 +168,7 @@ export class GameObj {
         }
     }
 
-    private getMesh() {
+    getMesh() {
         return this.colliderMesh ? this.colliderMesh : this.mesh;
     }
 }

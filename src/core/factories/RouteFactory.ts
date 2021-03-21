@@ -12,7 +12,7 @@ export class RouteFactory {
     }
     
     createRandomRoute(gameObject: GameObj): Route {
-        const quarterMap = gameObject.location.getQuarter().getMap();
+        const quarterMap = gameObject.getQuarter().getMap();
         const pos = gameObject.getPosition2D();
         const maxIndex = quarterMap.len();
 
@@ -27,6 +27,8 @@ export class RouteFactory {
 
         const worldPos = quarterMap.getWorldCoordinate(randomIndex);
         const path = this.pathFinder.findPath(pos, worldPos, quarterMap);
+
+        if (path.length < 2) { return undefined; }
         
         return new Route(gameObject, path);
     }

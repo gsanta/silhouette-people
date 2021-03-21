@@ -9,6 +9,7 @@ export interface QuarterJson {
 export interface DistrictJson {
     id: string;
     size: string;
+    relativePos: string;
     grounds: QuarterJson[];
     charToType: { [key: string]: string },
     models: { [key: string]: string },

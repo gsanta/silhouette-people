@@ -1,5 +1,4 @@
-import { Vector2 } from "babylonjs";
-import { DistrictJson } from "../../core/io/DistrictJson";
+import { Axis, Space } from "babylonjs";
 import { QuarterMapParser } from "../../core/io/QuarterMapParser";
 import { World } from "../World";
 import { ActiveDistrictComponent } from "./ActiveDistrictComponent";
@@ -21,14 +20,19 @@ export class DistrictActivatorComponent {
         const districtSize = this.district.size.x;
         const json = this.district.json;
 
-        this.world.factory.gameObject.createGround(districtSize);
-        json.grounds.forEach((ground, index) => this.world.factory.gameObject.createGroundTile(ground, districtSize / 2, index));
+        const ground = this.district.factory.createGround(districtSize);
+        ground.translate(Axis.X, this.district.translate.x, Space.WORLD);
+        ground.translate(Axis.Z, this.district.translate.y, Space.WORLD);
+        this.district.basicComp.platform = ground;
+
+        json.grounds.forEach((ground, index) => this.district.factory.createGroundTile(ground, districtSize / 2, index));
+
+
     }
 
     async activate() {        
         const gameObjectJsons = this.mapParser.parse(this.district.json);
-        const gameObjects = await Promise.all(gameObjectJsons.map(json => this.world.factory.gameObject.create(json)));
-        debugger;
+        const gameObjects = await Promise.all(gameObjectJsons.map(json => this.district.factory.create(json)));
         const colliderMeshes = gameObjects
             .filter(obj => obj.colliderMesh && obj.role === GameObjectRole.Static)
             .map(obj => obj.colliderMesh)

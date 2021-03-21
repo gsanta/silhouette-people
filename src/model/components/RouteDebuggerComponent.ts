@@ -9,7 +9,7 @@ export class RouteDebuggerComponent implements IComponent {
     private currRoute: Route;
     
     update(gameObject: GameObj, world: World) {
-        const quarterMap = gameObject.location.getQuarter().getMap();
+        const quarterMap = gameObject.getQuarter().getMap();
 
         if (gameObject.state.type !== GameObjectStateType.EnemySearching) {
             if (this.currRoute) {

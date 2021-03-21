@@ -1,9 +1,9 @@
 {
-    "id": "level-1",
+    "id": "level-2",
     "map": null,
     "rotationMap": null,
     "size": "100:100",
-    "relativePos": "-1:0",
+    "relativePos": "-1:1",
     "grounds": [
         {
             "color": "#F8DE7E"

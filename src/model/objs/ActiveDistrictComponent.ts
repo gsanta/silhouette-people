@@ -1,4 +1,4 @@
-import { Vector2 } from "babylonjs";
+import { Axis, Vector2 } from "babylonjs";
 import { QuarterMap } from "../district/QuarterMap";
 import { DistrictObj } from "./DistrictObj";
 import { GameObj, GameObjectRole } from "./GameObj";
@@ -34,8 +34,9 @@ export class ActiveDistrictComponent {
         this.gameObjects.push(gameObject);
 
         const quarterIndex = this.calcQuarterIndex(gameObject);
-        gameObject.location.setDistrict(this.district);
-        gameObject.location.setQuarter(this.getQuarter(quarterIndex));
+        gameObject.district = this.district;
+        gameObject.quarterIndex = quarterIndex;
+        gameObject.translate(Axis.Y, 3);
     }
 
     getGameObjectByRole(role: GameObjectRole): GameObj[] {

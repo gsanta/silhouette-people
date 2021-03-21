@@ -1,4 +1,5 @@
 import { Axis, Color3, Mesh, MeshBuilder, PhysicsImpostor, SceneLoader, Space, StandardMaterial, Texture, Vector3 } from "babylonjs";
+import { DistrictObj } from "../../model/objs/DistrictObj";
 import { GameObj, GameObjectJson, GameObjectRole, GameObjectType } from "../../model/objs/GameObj";
 import { IdleCharacterState } from "../../model/states/IdleCharacterState";
 import { SearchingEnemyState } from "../../model/states/SearchingEnemyState";
@@ -14,10 +15,12 @@ function getIfStringEnumVal(value: string) {
 }
 
 export class GameObjectFactory {
+    private districtObj: DistrictObj;
     private world: World;
     private indexesByType: Map<string, number> = new Map();
 
-    constructor(world: World) {
+    constructor(districtObj: DistrictObj, world: World) {
+        this.districtObj = districtObj;
         this.world = world;
 
         for (const value in GameObjectType) {
@@ -78,6 +81,8 @@ export class GameObjectFactory {
             this.setMeshPosition(gameObject, json);
         }
 
+        gameObject.getMesh().parent = this.districtObj.basicComp.platform;
+
         return gameObject;
     }
 
@@ -92,6 +97,7 @@ export class GameObjectFactory {
         this.createTexture(gameObject, json);
         this.createCollider(gameObject, json);
         // if (json.physics) { this.createPhysics(gameObject); }
+        gameObject.colliderMesh.parent = this.districtObj.basicComp.platform;
 
         return gameObject;
     }
@@ -102,11 +108,12 @@ export class GameObjectFactory {
         
         const gameObject = new GameObj(id, GameObjectRole.Static, <Mesh> result.meshes[1]);
         gameObject.allMeshes = <Mesh[]> result.meshes;
-
+        
         this.createTexture(gameObject, json);
         this.createCollider(gameObject, json);
         this.setRotation(gameObject, json);
         // if (json.physics) { this.createPhysics(gameObject); }
+        gameObject.colliderMesh.parent = this.districtObj.basicComp.platform;
 
         return gameObject;
     }
@@ -152,7 +159,7 @@ export class GameObjectFactory {
         return gameObject;
     }
 
-    createGround(size: number) {
+    createGround(size: number): Mesh {
         const ground = MeshBuilder.CreateBox('ground', { width: size, depth: size, height: 0.2 });
         ground.translate(Axis.Y, -0.21, Space.WORLD);
         const material = new StandardMaterial(`ground--material`, this.world.scene);
@@ -160,6 +167,8 @@ export class GameObjectFactory {
         ground.material = material;
 
         ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, this.world.scene);
+
+        return ground;
     }
 
 
@@ -186,6 +195,9 @@ export class GameObjectFactory {
                 ground.translate(new Vector3(-halfSize, 0, halfSize), 1, Space.WORLD);
             break;
         }
+
+        ground.parent = this.districtObj.basicComp.platform;
+        // this.districtObj.basicComp.platform.isVisible = false;
     }
 
     private async load(path: string) {
