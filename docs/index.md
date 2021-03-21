@@ -10,4 +10,23 @@ To seal a Hole, the Player has to enter the Hole and go to Otherworld to fight t
 
 ## Otherworld
 
-In **Otherworld** each Player has a special ability that can be used during the fight. 
+In **Otherworld** each Player has a special ability that can be used during the fight.
+
+# Moving around
+
+There are multiple forms of moving around in the game. The simplest and slowest is **Walking**. A faster way of moving is using a **Bicycle**. Walking and cycling is mainly useful within a **District**, however they can be used to travel to another district, but it takes quite a long time.
+
+The best way to travel between two districts is to catch a **Bus**.
+
+## Bicycle
+
+**Bicycles** can be used to move faster within **Districts**.
+
+Bicycle features:
+* Number of gears - the more gears the bike has, it can go faster
+* Weight - the lighter the bike, the faster, but it is also less stable
+* Maintenance
+
+The **Number of gears** feature determines the top speed of the bike and what is the steepest hill it is able to climb. It can be upgraded in the **Bike shop** where each time the number of gears is increased by 1 until the maximum number of gears (11) is reached. Upgrading the bike costs **Pocket money**.
+
+**Maintenance** has to be done periodically, preferably before the maintenance number reaches 0. When it reaches 0, the bike is not operational anymore until it is taken to the **Bike shop** and repared. Maintenance costs **Pocket money**.
