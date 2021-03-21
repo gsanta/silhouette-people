@@ -5,7 +5,6 @@ import { World } from "../World";
 import { SearchingEnemyState } from "../states/SearchingEnemyState";
 import { Route } from "../district/Route";
 
-
 export class RouteDebuggerComponent implements IComponent {
     private currRoute: Route;
     

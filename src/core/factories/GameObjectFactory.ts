@@ -3,7 +3,7 @@ import { GameObj, GameObjectJson, GameObjectRole, GameObjectType } from "../../m
 import { IdleCharacterState } from "../../model/states/IdleCharacterState";
 import { SearchingEnemyState } from "../../model/states/SearchingEnemyState";
 import { World } from "../../model/World";
-import { GroundJson } from "../../services/ImportService";
+import { GroundJson } from "../io/DistrictJson";
 
 function getIfStringEnumVal(value: string) {
     if (!isNaN(Number(value))) {

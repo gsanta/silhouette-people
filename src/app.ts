@@ -2,10 +2,9 @@ import { ArcRotateCamera, CannonJSPlugin, Color4, Engine, HemisphericLight, Mesh
 import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
-import { QuarterMap } from "./model/district/QuarterMap";
 import { World } from "./model/World";
+import { GameEventType } from "./services/EventService";
 import { MainUI } from './ui/MainUI';
-import level1 from '../assets/levels/level1.json';
 
 export function createGame() {
     const root = <HTMLCanvasElement> document.getElementById("root");
@@ -69,7 +68,7 @@ function initGame(world: World) {
             scene.render();
 
             if (world.store.getActiveDistrict()) {
-                world.store.getActiveDistrict().getAllGameObjects().forEach(gameObject => gameObject.update(world));
+                world.store.getAllGameObjects().forEach(gameObject => gameObject.update(world));
             }
     });
     
@@ -77,11 +76,18 @@ function initGame(world: World) {
             engine.resize();
     });
 
-    world.level.loadLevel(level1);
-    world.level.onLevelLoaded(() => {
-        const player = world.store.getActiveDistrict().getAllGameObjects().find(gameObject => gameObject.cameraTargetMesh);
-        if (player) {                
-            // camera.lockedTarget = player.cameraTargetMesh;
-        }
-    })
+    world.loader.loadGame();
+    // world.events.on((type: GameEventType) => {
+    //     if (type === GameEventType.DISTRICTS_LOADED) {
+    //         world.loader.loadGame();
+    //     }
+    // });
+
+    // world.level.loadLevel(level1);
+    // world.level.onLevelLoaded(() => {
+    //     const player = world.store.getAllGameObjects().find(gameObject => gameObject.cameraTargetMesh);
+    //     if (player) {                
+    //         // camera.lockedTarget = player.cameraTargetMesh;
+    //     }
+    // })
 }

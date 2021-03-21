@@ -11,7 +11,7 @@ export class RouteDebugger {
     }
 
     show() {
-        const enemies = this.world.store.getActiveDistrict().getGameObjectByRole(GameObjectRole.Enemy);
+        const enemies = this.world.store.getGameObjectByRole(GameObjectRole.Enemy);
         enemies.forEach(enemy => enemy.additionalComponents.push(new RouteDebuggerComponent()));
     }
 

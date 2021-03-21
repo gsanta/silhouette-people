@@ -1,22 +1,20 @@
 import { Vector3 } from "babylonjs";
 import { GameObjectJson, GameObjectType } from "../../model/objs/GameObj";
-import { LevelJson } from "../../services/ImportService";
+import { DistrictJson } from "./DistrictJson";
 
 export class QuarterMapParser {
     private static CONVERSION_RATIO = 2;
     private mapRows: number;
     private mapCols: number;
-    private levelJson: LevelJson;
+    private districtJson: DistrictJson;
     private mapLines: string[];
     private rotMapLines: string[];
 
-    async loadAndParse(levelJson: LevelJson): Promise<GameObjectJson[]> {
-        this.levelJson = levelJson;
+    parse(json: DistrictJson): GameObjectJson[] {
+        this.districtJson = json;
 
-        let map = await this.fetchMap(levelJson.mapUrl);
-        this.mapLines = this.getMapLines(map);
-        let rotMap = await this.fetchMap(levelJson.rotationMapUrl);
-        this.rotMapLines = this.getMapLines(rotMap);
+        this.mapLines = this.getMapLines(json.map);
+        this.rotMapLines = this.getMapLines(json.rotationMap);
 
         this.mapRows = this.mapLines.length;
         this.mapCols = this.mapLines[0].length;
@@ -53,7 +51,7 @@ export class QuarterMapParser {
             rotation = parseInt(rotationChar, 10) * Math.PI / 4;
         }
 
-        const type = this.levelJson.charToType[char];
+        const type = this.districtJson.charToType[char];
         const halfCols = this.mapCols / 2 * QuarterMapParser.CONVERSION_RATIO;
         const halfRows = this.mapRows / 2 * QuarterMapParser.CONVERSION_RATIO;
 
@@ -63,17 +61,12 @@ export class QuarterMapParser {
         return {
             position: new Vector3(posX, 0, posY),
             type: <GameObjectType> type,
-            modelPath: this.levelJson.models[type],
-            texturePath: this.levelJson.textures[type],
-            textureMeshIndex: this.levelJson.textureMeshIndex[type] || 0,
-            colliderSize: parseStrVector(this.levelJson.colliderSizes[type]),
+            modelPath: this.districtJson.models[type],
+            texturePath: this.districtJson.textures[type],
+            textureMeshIndex: this.districtJson.textureMeshIndex[type] || 0,
+            colliderSize: parseStrVector(this.districtJson.colliderSizes[type]),
             rotation: rotation
         };
-    }
-
-    private async fetchMap(name: string): Promise<string> {
-        const response = await fetch(`assets/levels/${name}`);
-        return await response.text();
     }
 }
 
