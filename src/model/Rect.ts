@@ -2,19 +2,19 @@ import { Vector2 } from "babylonjs/Maths/math.vector";
 
 
 export class Rect {
-    topLeft: Vector2;
-    botRight: Vector2;
+    tl: Vector2;
+    br: Vector2;
 
     constructor(topLeft: Vector2, botRight: Vector2) {
-        this.topLeft = topLeft;
-        this.botRight = botRight;
+        this.tl = topLeft;
+        this.br = botRight;
     }
 
     getWidth() {
-        return this.botRight.x - this.topLeft.x;
+        return this.br.x - this.tl.x;
     }
 
     getHeight() {
-        return Math.abs(this.botRight.y - this.topLeft.y);
+        return Math.abs(this.br.y - this.tl.y);
     }
 }

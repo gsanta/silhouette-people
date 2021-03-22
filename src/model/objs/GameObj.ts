@@ -1,8 +1,7 @@
 import { AnimationGroup, Axis, Mesh, Quaternion, Skeleton, Space, Vector2, Vector3 } from "babylonjs";
-import { AbstractCharacterState } from "../states/AbstractCharacterState";
 import { IComponent } from "../IComponent";
+import { AbstractCharacterState } from "../states/AbstractCharacterState";
 import { World } from "../World";
-import { LocationContext } from "./contexts/LocationContext";
 import { DistrictObj } from "./DistrictObj";
 import { QuarterObj } from "./QuarterObj";
 
@@ -69,6 +68,9 @@ export class GameObj {
     district: DistrictObj;
     quarterIndex: number;
 
+    private frontDirection: Vector3 = new Vector3(0, 0, 1);
+    private frontDirection2D: Vector2 = new Vector2(0, 1);
+
     constructor(id: string, role: GameObjectRole, mesh: Mesh) {
         this.mesh = mesh;
         mesh.name = id;
@@ -90,11 +92,15 @@ export class GameObj {
     }
 
     move(speed: number) {
-        var forward = new Vector3(0, 0, 1);
+        var forward = this.frontDirection;
         var direction = this.mesh.getDirection(forward);
         direction.normalize().multiplyInPlace(new Vector3(speed, speed, speed));
         
         this.getMesh().moveWithCollisions(direction);
+    }
+
+    getFrontDirection2D(): Vector2 {
+        return this.frontDirection2D;
     }
 
     translate(axis: Vector3, amount: number) {

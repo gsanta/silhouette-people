@@ -1,6 +1,7 @@
 import { Axis, Color3, Mesh, MeshBuilder, PhysicsImpostor, SceneLoader, Space, StandardMaterial, Texture, Vector3 } from "babylonjs";
 import { DistrictObj } from "../../model/objs/DistrictObj";
 import { GameObj, GameObjectJson, GameObjectRole, GameObjectType } from "../../model/objs/GameObj";
+import { QuarterObj } from "../../model/objs/QuarterObj";
 import { IdleCharacterState } from "../../model/states/IdleCharacterState";
 import { SearchingEnemyState } from "../../model/states/SearchingEnemyState";
 import { World } from "../../model/World";
@@ -82,6 +83,7 @@ export class GameObjectFactory {
         }
 
         gameObject.getMesh().parent = this.districtObj.basicComp.platform;
+        gameObject.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
 
         return gameObject;
     }
@@ -98,6 +100,7 @@ export class GameObjectFactory {
         this.createCollider(gameObject, json);
         // if (json.physics) { this.createPhysics(gameObject); }
         gameObject.colliderMesh.parent = this.districtObj.basicComp.platform;
+        gameObject.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
 
         return gameObject;
     }
@@ -114,6 +117,7 @@ export class GameObjectFactory {
         this.setRotation(gameObject, json);
         // if (json.physics) { this.createPhysics(gameObject); }
         gameObject.colliderMesh.parent = this.districtObj.basicComp.platform;
+        gameObject.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
 
         return gameObject;
     }
@@ -136,6 +140,8 @@ export class GameObjectFactory {
         this.createPhysics(gameObject);
         this.applyCameraTarget(gameObject, json);
 
+        gameObject.colliderMesh.parent = this.districtObj.basicComp.platform;
+        gameObject.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
 
         return gameObject;
     }
@@ -156,6 +162,9 @@ export class GameObjectFactory {
         this.createCollider(gameObject, json);
         this.createPhysics(gameObject);
 
+        gameObject.colliderMesh.parent = this.districtObj.basicComp.platform;
+        gameObject.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
+
         return gameObject;
     }
 
@@ -172,8 +181,8 @@ export class GameObjectFactory {
     }
 
 
-    createGroundTile(groundJson: GroundJson, size: number, index: number) {
-        const ground = MeshBuilder.CreateGround('ground', { width: size, height: size });
+    createGroundTile(groundJson: GroundJson, size: number, index: number): QuarterObj {
+        const ground = MeshBuilder.CreateGround(`ground-${index}`, { width: size, height: size });
         
         const material = new StandardMaterial(`ground-${index}-material`, this.world.scene);
         material.diffuseColor = Color3.FromHexString(groundJson.color);
@@ -195,8 +204,10 @@ export class GameObjectFactory {
                 ground.translate(new Vector3(-halfSize, 0, halfSize), 1, Space.WORLD);
             break;
         }
-
         ground.parent = this.districtObj.basicComp.platform;
+        ground.translate(Axis.Y, 0.2, Space.WORLD);
+
+        return new QuarterObj(this.districtObj, ground);
         // this.districtObj.basicComp.platform.isVisible = false;
     }
 

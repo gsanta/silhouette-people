@@ -30,3 +30,7 @@ Bicycle features:
 The **Number of gears** feature determines the top speed of the bike and what is the steepest hill it is able to climb. It can be upgraded in the **Bike shop** where each time the number of gears is increased by 1 until the maximum number of gears (11) is reached. Upgrading the bike costs **Pocket money**.
 
 **Maintenance** has to be done periodically, preferably before the maintenance number reaches 0. When it reaches 0, the bike is not operational anymore until it is taken to the **Bike shop** and repared. Maintenance costs **Pocket money**.
+
+## Bus
+
+**Buses** are traveling between **Districts**. 

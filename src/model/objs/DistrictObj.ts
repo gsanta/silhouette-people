@@ -5,8 +5,6 @@ import { World } from "../World";
 import { ActiveDistrictComponent } from "./ActiveDistrictComponent";
 import { BasicDistrictComponent } from "./BasicDistrictComponent";
 import { DistrictActivatorComponent } from "./DistrictActivatorComponent";
-import { GameObj } from "./GameObj";
-import { QuarterObj } from "./QuarterObj";
 
 export class DistrictObj {
     id: string;

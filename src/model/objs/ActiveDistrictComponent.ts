@@ -10,20 +10,13 @@ export class ActiveDistrictComponent {
     private quarters: QuarterObj[] = [];
     private district: DistrictObj;
 
-    constructor(district: DistrictObj, gameObjects: GameObj[]) {
+    constructor(district: DistrictObj) {
         this.district = district;
-        this.gameObjects = gameObjects;
-        
-        this.quarters.push(
-            new QuarterObj(district),
-            new QuarterObj(district),
-            new QuarterObj(district),
-            new QuarterObj(district),
-        );
-        
-        this.gameObjects.forEach(obj => this.addGameObject(obj));
+        this.district.activeComp = this;
+    }
 
-        this.quarters[1].setMap(new QuarterMap(new Vector2(0, 0), new Vector2(50, -50), 0.5));
+    addQuarter(quarterObj: QuarterObj) {
+        this.quarters.push(quarterObj);
     }
 
     getQuarter(index: number): QuarterObj {
@@ -36,7 +29,6 @@ export class ActiveDistrictComponent {
         const quarterIndex = this.calcQuarterIndex(gameObject);
         gameObject.district = this.district;
         gameObject.quarterIndex = quarterIndex;
-        gameObject.translate(Axis.Y, 3);
     }
 
     getGameObjectByRole(role: GameObjectRole): GameObj[] {
@@ -48,20 +40,22 @@ export class ActiveDistrictComponent {
     }
 
     private calcQuarterIndex(gameObject: GameObj): number {
-        const pos = gameObject.getPosition2D()
+        const pos = gameObject.getPosition2D();
 
-        if (pos.x < 0) {
-            if (pos.y < 0) {
-                return 2;
-            } else {
-                return 3;
-            }
-        } else {
-            if (pos.y < 0) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
+        const quarterIndex = this.quarters.findIndex(quarter => quarter.containsPoint2D(pos));
+        return quarterIndex;
+        // if (pos.x < 0) {
+        //     if (pos.y < 0) {
+        //         return 2;
+        //     } else {
+        //         return 3;
+        //     }
+        // } else {
+        //     if (pos.y < 0) {
+        //         return 1;
+        //     } else {
+        //         return 0;
+        //     }
+        // }
     }
 }
