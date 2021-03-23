@@ -1,41 +1,48 @@
 {
-    "name": "silhouette-people",
-    "version": "0.0.1",
-    "description": "The game called Silhouette People.",
-    "main": "dist/src/index.js",
-    "types": "dist/src/index.d.ts",
-    "scripts": {
-        "build": "./node_modules/.bin/webpack",
-        "start": "./node_modules/.bin/webpack-dev-server --host 0.0.0.0"
-    },
-    "publishConfig": {
-        "access": "public"
-    },
-    "author": "Gergely Santa",
-    "license": "MIT",
-    "devDependencies": {
-        "webpack": "^4.43.0",
-        "webpack-bundle-analyzer": "^3.6.0",
-        "webpack-cli": "^3.3.10",
-        "webpack-dev-server": "^3.9.0"
-    },
-    "dependencies": {
-        "@types/jest": "^26.0.20",
-        "@types/react": "^17.0.2",
-        "@types/react-dom": "^17.0.1",
-        "babylonjs": "^5.0.0-alpha.12",
-        "babylonjs-gui": "^4.2.0",
-        "babylonjs-loaders": "^4.2.0",
-        "babylonjs-materials": "^4.2.0",
-        "css-loader": "^5.1.1",
-        "file-loader": "^6.2.0",
-        "javascript-astar": "^0.4.1",
-        "mini-css-extract-plugin": "^1.3.9",
-        "raw-loader": "^4.0.2",
-        "react": "^17.0.1",
-        "react-dom": "^17.0.1",
-        "sass-loader": "^11.0.1",
-        "ts-loader": "^8.0.17",
-        "typescript": "^4.2.2"
-    }
+  "name": "silhouette-people",
+  "version": "0.0.1",
+  "description": "The game called Silhouette People.",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "scripts": {
+    "build": "./node_modules/.bin/webpack",
+    "start": "./node_modules/.bin/webpack-dev-server --host 0.0.0.0",
+    "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Gergely Santa",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^26.0.21",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.4",
+    "webpack": "^4.43.0",
+    "webpack-bundle-analyzer": "^3.6.0",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "dependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.1",
+    "babel-jest": "^26.6.3",
+    "babylonjs": "^5.0.0-alpha.12",
+    "babylonjs-gui": "^4.2.0",
+    "babylonjs-loaders": "^4.2.0",
+    "babylonjs-materials": "^4.2.0",
+    "css-loader": "^5.1.1",
+    "file-loader": "^6.2.0",
+    "javascript-astar": "^0.4.1",
+    "mini-css-extract-plugin": "^1.3.9",
+    "raw-loader": "^4.0.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "sass-loader": "^11.0.1",
+    "ts-loader": "^8.0.17",
+    "typescript": "^4.2.2"
+  }
 }
