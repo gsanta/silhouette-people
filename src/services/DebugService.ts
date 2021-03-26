@@ -1,4 +1,4 @@
-import { World } from "../model/World";
+import { World } from "./World";
 import { QuarterMapDebugger } from "../core/debug/QuarterMapDebugger";
 import { RouteDebugger } from "../core/debug/RouteDebugger";
 import { WorldAxisHelper } from "../core/debug/WorldAxisHelper";

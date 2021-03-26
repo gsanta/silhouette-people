@@ -1,4 +1,4 @@
-import { World } from "../model/World";
+import { World } from "./World";
 import { GameObjectFactory } from "../core/factories/GameObjectFactory";
 import { RouteFactory } from "../core/factories/RouteFactory";
 

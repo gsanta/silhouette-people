@@ -2,7 +2,7 @@ import { ArcRotateCamera, CannonJSPlugin, Color4, Engine, HemisphericLight, Mesh
 import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
-import { World } from "./model/World";
+import { World } from "./services/World";
 import { GameEventType } from "./services/EventService";
 import { MainUI } from './ui/MainUI';
 

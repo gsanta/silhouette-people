@@ -1,9 +1,10 @@
 import { AnimationGroup, Axis, Mesh, Quaternion, Skeleton, Space, Vector2, Vector3 } from "babylonjs";
 import { IComponent } from "../IComponent";
 import { AbstractCharacterState } from "../states/AbstractCharacterState";
-import { World } from "../World";
+import { World } from "../../services/World";
 import { DistrictObj } from "./DistrictObj";
 import { QuarterObj } from "./QuarterObj";
+import { StateManager } from "../../core/state/StateManager";
 
 export enum GameObjectType {
     Player = 'player',
@@ -59,7 +60,7 @@ export class GameObj {
     animationGroups: AnimationGroup[];
     allMeshes: Mesh[] = [];
 
-    state: AbstractCharacterState;
+    stateManager: StateManager;
 
     additionalComponents: IComponent[] = [];
 
@@ -120,16 +121,8 @@ export class GameObj {
     }
 
     update(world: World) {
-        let newState: AbstractCharacterState = undefined;
-
-        if (this.state) {
-            newState = this.state.updateInput();
-            this.handleStateChangeIfNeeded(newState, world);
-            if (!newState) {
-                this.state.updateAnimation();
-                newState = this.state.updatePhysics();
-                this.handleStateChangeIfNeeded(newState, world);
-            }
+        if (this.stateManager) {
+            this.stateManager.update();
         }
 
         this.additionalComponents.forEach(comp => comp.update(this, world));
@@ -162,17 +155,6 @@ export class GameObj {
             this.currentAnimation = undefined;
         }
     } 
-
-    private handleStateChangeIfNeeded(newState: AbstractCharacterState, world: World) {
-        if (newState) {
-            if (this.state) {
-                this.state.exit();
-            }
-            this.state = newState;
-
-            this.state.enter();
-        }
-    }
 
     getMesh() {
         return this.colliderMesh ? this.colliderMesh : this.mesh;

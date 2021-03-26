@@ -3,7 +3,7 @@
     "map": null,
     "rotationMap": null,
     "size": "100:100",
-    "relativePos": "-1:0",
+    "relativePos": "0:0",
     "grounds": [
         {
             "color": "#F8DE7E"

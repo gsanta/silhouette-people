@@ -1,12 +1,12 @@
 import { Scene } from "babylonjs";
-import { DebugService } from "../services/DebugService";
-import { KeyboardHandler } from "../controllers/KeyboardHandler";
-import { GuiService } from "../services/GuiService";
+import { DebugService } from "./DebugService";
+import { KeyboardHandler } from "./handlers/KeyboardHandler";
+import { GuiService } from "./GuiService";
 import { WorldStore } from "../stores/WorldStore";
-import { FactoryService } from "../services/FactoryService";
+import { FactoryService } from "./FactoryService";
 import { JsonStore } from "../stores/JsonStore";
-import { LoaderService } from "../services/LoaderService";
-import { EventService } from "../services/EventService";
+import { LoaderService } from "./LoaderService";
+import { EventService } from "./EventService";
 
 export class World {
     keyboard: KeyboardHandler;
@@ -26,7 +26,7 @@ export class World {
     private onReadyFuncs: (() => void)[] = [];
 
     constructor() {
-        this.keyboard = new KeyboardHandler();
+        this.keyboard = new KeyboardHandler(this);
         this.debug = new DebugService(this);
         this.gui = new GuiService(this);
         this.factory = new FactoryService(this);

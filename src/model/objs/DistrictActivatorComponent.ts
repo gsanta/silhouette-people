@@ -1,6 +1,6 @@
 import { Axis, Space } from "babylonjs";
 import { QuarterMapParser } from "../../core/io/QuarterMapParser";
-import { World } from "../World";
+import { World } from "../../services/World";
 import { ActiveDistrictComponent } from "./ActiveDistrictComponent";
 import { DistrictObj } from "./DistrictObj";
 import { GameObjectRole } from "./GameObj";

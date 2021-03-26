@@ -1,4 +1,4 @@
-import { World } from "../model/World";
+import { World } from "./World";
 import { AdvancedDynamicTexture, StackPanel, Control, Checkbox, TextBlock } from 'babylonjs-gui';
 
 export class GuiService {

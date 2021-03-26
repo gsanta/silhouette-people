@@ -1,3 +1,4 @@
+import { World } from "../World";
 import { KeyChecker } from "./KeyChecker";
 
 
@@ -5,7 +6,10 @@ export class KeyboardHandler {
     activeKeys: Set<string> = new Set();
     checker: KeyChecker;
 
-    constructor() {
+    private readonly world: World;
+
+    constructor(world: World) {
+        this.world = world;
         this.checker = new KeyChecker(this);
     }
 

@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import {World} from '../model/World';
+import {World} from '../services/World';
 
 export interface MainUIProps {
     world: World;

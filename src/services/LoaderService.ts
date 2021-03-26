@@ -1,5 +1,5 @@
 import { DistrictObj } from "../model/objs/DistrictObj";
-import { World } from "../model/World";
+import { World } from "./World";
 
 export class LoaderService {
     private world: World;

@@ -1,6 +1,6 @@
 import { Axis, Quaternion, Vector2 } from "babylonjs";
 import { GameObj } from "../objs/GameObj";
-import { World } from "../World";
+import { World } from "../../services/World";
 
 export class Route {
     path: Vector2[];

@@ -1,5 +1,5 @@
 import { StandardMaterial, Axis, Mesh, MeshBuilder, Space, Vector3, InstancedMesh, Color4, Color3 } from "babylonjs";
-import { World } from "../../model/World";
+import { World } from "../../services/World";
 
 export interface AreaVisualizerConfig {
     height: number;

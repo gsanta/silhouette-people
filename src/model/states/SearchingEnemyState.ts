@@ -1,5 +1,5 @@
 import { Route } from "../district/Route";
-import { World } from "../World";
+import { World } from "../../services/World";
 import { GameObj } from "../objs/GameObj";
 import { AbstractCharacterState, GameObjectStateType } from "./AbstractCharacterState";
 

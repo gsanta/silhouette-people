@@ -4,8 +4,9 @@ import { GameObj, GameObjectJson, GameObjectRole, GameObjectType } from "../../m
 import { QuarterObj } from "../../model/objs/QuarterObj";
 import { IdleCharacterState } from "../../model/states/IdleCharacterState";
 import { SearchingEnemyState } from "../../model/states/SearchingEnemyState";
-import { World } from "../../model/World";
+import { World } from "../../services/World";
 import { GroundJson } from "../io/DistrictJson";
+import { StateManager } from "../state/StateManager";
 
 function getIfStringEnumVal(value: string) {
     if (!isNaN(Number(value))) {
@@ -130,7 +131,7 @@ export class GameObjectFactory {
         const gameObject = new GameObj(id, GameObjectRole.Player, <Mesh> result.meshes[0]);
         gameObject.allMeshes = <Mesh[]> result.meshes;
 
-        gameObject.state = new IdleCharacterState(gameObject, this.world);
+        gameObject.stateManager = new StateManager(new IdleCharacterState(gameObject, this.world), this.world);
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         gameObject.animationGroups = result.animationGroups;
 
@@ -154,7 +155,7 @@ export class GameObjectFactory {
         const gameObject = new GameObj(id, GameObjectRole.Enemy, <Mesh> result.meshes[0]);
         gameObject.allMeshes = <Mesh[]> result.meshes;
         
-        gameObject.state = new SearchingEnemyState(gameObject, this.world);
+        gameObject.stateManager = new StateManager(new SearchingEnemyState(gameObject, this.world), this.world);
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         gameObject.animationGroups = result.animationGroups;
 

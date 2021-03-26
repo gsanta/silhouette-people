@@ -1,5 +1,5 @@
 import { Color3, Mesh, Vector3 } from "babylonjs";
-import { World } from "../../model/World";
+import { World } from "../../services/World";
 
 export class WorldAxisHelper {
     private world: World;

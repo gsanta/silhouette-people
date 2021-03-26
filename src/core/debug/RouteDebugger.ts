@@ -1,5 +1,5 @@
 import { GameObjectRole, GameObjectType } from "../../model/objs/GameObj";
-import { World } from "../../model/World";
+import { World } from "../../services/World";
 import { RouteDebuggerComponent } from "../../model/components/RouteDebuggerComponent";
 
 

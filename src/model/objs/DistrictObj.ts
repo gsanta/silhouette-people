@@ -1,7 +1,7 @@
 import { Vector2 } from "babylonjs";
 import { GameObjectFactory } from "../../core/factories/GameObjectFactory";
 import { DistrictJson } from "../../core/io/DistrictJson";
-import { World } from "../World";
+import { World } from "../../services/World";
 import { ActiveDistrictComponent } from "./ActiveDistrictComponent";
 import { BasicDistrictComponent } from "./BasicDistrictComponent";
 import { DistrictActivatorComponent } from "./DistrictActivatorComponent";

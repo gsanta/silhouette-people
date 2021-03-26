@@ -1,7 +1,7 @@
 import { GameObjectStateType } from "../states/AbstractCharacterState";
 import { IComponent } from "../IComponent";
 import { GameObj } from "../objs/GameObj";
-import { World } from "../World";
+import { World } from "../../services/World";
 import { SearchingEnemyState } from "../states/SearchingEnemyState";
 import { Route } from "../district/Route";
 
@@ -11,7 +11,7 @@ export class RouteDebuggerComponent implements IComponent {
     update(gameObject: GameObj, world: World) {
         const quarterMap = gameObject.getQuarter().getMap();
 
-        if (gameObject.state.type !== GameObjectStateType.EnemySearching) {
+        if (gameObject.stateManager.currState.type !== GameObjectStateType.EnemySearching) {
             if (this.currRoute) {
                 quarterMap.fillPath(this.currRoute.path, 0);
                 this.currRoute = undefined;
@@ -20,7 +20,7 @@ export class RouteDebuggerComponent implements IComponent {
             return;
         }
         
-        const state = <SearchingEnemyState> gameObject.state;
+        const state = <SearchingEnemyState> gameObject.stateManager.currState;
         if (this.currRoute && state.route !== this.currRoute) {
             quarterMap.fillPath(this.currRoute.path, 0);
         }
