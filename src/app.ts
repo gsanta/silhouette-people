@@ -1,9 +1,8 @@
-import { ArcRotateCamera, CannonJSPlugin, Color4, Engine, HemisphericLight, MeshBuilder, PhysicsImpostor, Scene, StandardMaterial, Vector2, Vector3 } from "babylonjs";
+import { ArcRotateCamera, CannonJSPlugin, Color4, Engine, HemisphericLight, Scene, Vector3 } from "babylonjs";
 import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
 import { World } from "./services/World";
-import { GameEventType } from "./services/EventService";
 import { MainUI } from './ui/MainUI';
 
 export function createGame() {
@@ -27,7 +26,8 @@ function initGame(world: World) {
     scene.enablePhysics(null, new CannonJSPlugin());
     scene.clearColor = new Color4(0.52, 0.73, 0.4, 1);
     world.setScene(scene);
-	// var terrainMaterial = new TerrainMaterial("terrainMaterial", scene);
+    world.engine = engine;
+    // var terrainMaterial = new TerrainMaterial("terrainMaterial", scene);
     // terrainMaterial.specularColor = new BABYLON.Color3(0.5, 0.5, 0.5);
     // terrainMaterial.specularPower = 64;
 	// terrainMaterial.mixTexture = new Texture("textures/mixMap.png", scene);

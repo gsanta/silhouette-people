@@ -1,4 +1,4 @@
-import { Scene } from "babylonjs";
+import { Engine, Scene } from "babylonjs";
 import { DebugService } from "./DebugService";
 import { KeyboardService } from "./KeyboardService";
 import { GuiService } from "./GuiService";
@@ -8,12 +8,12 @@ import { JsonStore } from "../stores/JsonStore";
 import { LoaderService } from "./LoaderService";
 import { EventService } from "./EventService";
 import { ControllerService } from "./ControllerService";
-import { Control } from "babylonjs-gui";
 
 export class World {
     keyboard: KeyboardService;
 
     scene: Scene;
+    engine: Engine;
 
     debug: DebugService;
     gui: GuiService;

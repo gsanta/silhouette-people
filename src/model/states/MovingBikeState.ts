@@ -5,16 +5,21 @@ import { World } from "../../services/World";
 import { AbstractGameObjState, GameObjectStateType } from "./AbstractGameObjState";
 import { IdlePlayerState } from "./IdlePlayerState";
 import { IdleBikeState } from "./IdleBikeState";
+import { BikeSpeedPhysics } from "./BikeSpeedPhysics";
 
 
 export class MovingBikeState extends AbstractGameObjState {
     private readonly world: World;
     private readonly speed = 0.04;
     private readonly rotationSpeed = Math.PI / 30;
+    private speedPhysics: BikeSpeedPhysics;
+    private vel = 0;
 
     constructor(gameObject: GameObj, world: World) {
         super(undefined, gameObject);
         this.world = world;
+
+        this.speedPhysics = new BikeSpeedPhysics({ maxAcceleration: 8 / 5, gearSpeedRanges: [[-11, 9], [-1, 19], [9, 29]]})
     }
 
     updateInput(): AbstractGameObjState {
@@ -23,8 +28,12 @@ export class MovingBikeState extends AbstractGameObjState {
         const velocity = new Vector3(0, 0, 0);
         const rotation = new Vector3(0, 0, 0);
 
+        
+        console.log(this.vel)
+        
         if (this.world.keyboard.activeKeys.has('w')) {
-            velocity.z = this.speed; 
+            this.vel = this.speedPhysics.getSpeed(this.vel, this.world.engine.getDeltaTime());
+            velocity.z = this.vel; 
         } else if (this.world.keyboard.activeKeys.has('s')) {
             velocity.z = -this.speed;
         } else {
