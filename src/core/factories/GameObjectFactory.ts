@@ -6,7 +6,7 @@ import { IdleCharacterState } from "../../model/states/IdleCharacterState";
 import { SearchingEnemyState } from "../../model/states/SearchingEnemyState";
 import { World } from "../../services/World";
 import { GroundJson } from "../io/DistrictJson";
-import { StateManager } from "../handlers/StateManager";
+import { StateHandler } from "../handlers/StateHandler";
 
 function getIfStringEnumVal(value: string) {
     if (!isNaN(Number(value))) {
@@ -62,7 +62,13 @@ export class GameObjectFactory {
             case GameObjectType.Road1:
                 gameObject = await this.createDefault(gameObjectJson);
             break;
+        }
 
+        gameObject.type = gameObjectJson.type;
+
+        const tagStr = this.districtObj.json.tags[gameObject.type];
+        if (tagStr) {
+            gameObject.tags.add(...(tagStr.split(' ') as GameObjTag[]));
         }
 
         return gameObject;
@@ -75,7 +81,7 @@ export class GameObjectFactory {
         const gameObject = new GameObj(id, <Mesh> result.meshes[0]);
         gameObject.allMeshes = <Mesh[]> result.meshes;
 
-        if (json.rotation) { gameObject.mesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
+        if (json.rotation) { gameObject.mainMesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
         this.createTexture(gameObject, json);
         if (json.colliderSize) { 
             this.createCollider(gameObject, json); 
@@ -96,7 +102,7 @@ export class GameObjectFactory {
         const gameObject = new GameObj(id, <Mesh> result.meshes[0]);
         gameObject.allMeshes = <Mesh[]> result.meshes;
 
-        if (json.rotation) { gameObject.mesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
+        if (json.rotation) { gameObject.mainMesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
         this.createTexture(gameObject, json);
         this.createCollider(gameObject, json);
         // if (json.physics) { this.createPhysics(gameObject); }
@@ -129,14 +135,13 @@ export class GameObjectFactory {
 
         result.animationGroups.forEach(animationGroup => animationGroup.stop());
         const gameObject = new GameObj(id, <Mesh> result.meshes[0]);
-        gameObject.tags.add(GameObjTag.Player);
         gameObject.allMeshes = <Mesh[]> result.meshes;
 
-        gameObject.states = new StateManager(new IdleCharacterState(gameObject, this.world), this.world);
+        gameObject.states = new StateHandler(new IdleCharacterState(gameObject, this.world), this.world);
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         gameObject.animationGroups = result.animationGroups;
 
-        if (json.rotation) { gameObject.mesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
+        if (json.rotation) { gameObject.mainMesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
         this.createCollider(gameObject, json);
         gameObject.colliderMesh.translate(Axis.Y, 0.5, Space.WORLD);
         this.createPhysics(gameObject);
@@ -154,10 +159,9 @@ export class GameObjectFactory {
         
         result.animationGroups.forEach(animationGroup => animationGroup.stop());
         const gameObject = new GameObj(id, <Mesh> result.meshes[0]);
-        gameObject.tags.add(GameObjTag.Enemy);
         gameObject.allMeshes = <Mesh[]> result.meshes;
         
-        gameObject.states = new StateManager(new SearchingEnemyState(gameObject, this.world), this.world);
+        gameObject.states = new StateHandler(new SearchingEnemyState(gameObject, this.world), this.world);
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         gameObject.animationGroups = result.animationGroups;
 
@@ -246,10 +250,10 @@ export class GameObjectFactory {
         const [width, depth, height] = [dimensions.x, dimensions.z, dimensions.y];
         const collider = MeshBuilder.CreateBox(`${json.id}-collider`, { width, depth, height}, this.world.scene);
         collider.checkCollisions = true;
-        gameObject.mesh.parent = collider;
+        gameObject.mainMesh.parent = collider;
         collider.setAbsolutePosition(json.position);
         collider.translate(Axis.Y, dimensions.y / 2, Space.WORLD);
-        gameObject.mesh.translate(Axis.Y, -dimensions.y / 2, Space.LOCAL);
+        gameObject.mainMesh.translate(Axis.Y, -dimensions.y / 2, Space.LOCAL);
         const colliderMaterial = new StandardMaterial(`${json.id}-collider-material`, this.world.scene);
         colliderMaterial.alpha = 0;
         collider.material = colliderMaterial;
@@ -257,7 +261,7 @@ export class GameObjectFactory {
     }
 
     private setMeshPosition(gameObject: GameObj, json: GameObjectJson) {
-        gameObject.mesh.setAbsolutePosition(json.position);
+        gameObject.mainMesh.setAbsolutePosition(json.position);
     }
 
     private createPhysics(gameObject: GameObj) {

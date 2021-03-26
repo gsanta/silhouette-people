@@ -1,7 +1,7 @@
 import { AbstractCharacterState } from "../../model/states/AbstractCharacterState";
 import { World } from "../../services/World";
 
-export class StateManager {
+export class StateHandler {
     private readonly world: World;
     startState: AbstractCharacterState;
     currState: AbstractCharacterState;

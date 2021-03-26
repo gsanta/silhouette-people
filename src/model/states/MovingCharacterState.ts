@@ -57,9 +57,9 @@ export class MovingCharacterState extends AbstractCharacterState {
     }
 
     updatePhysics(): AbstractCharacterState {
-        const mesh = this.gameObject.colliderMesh ? this.gameObject.colliderMesh : this.gameObject.mesh;
+        const mesh = this.gameObject.colliderMesh ? this.gameObject.colliderMesh : this.gameObject.mainMesh;
         var forward = this.gameObject.velocity;	
-        var direction = this.gameObject.mesh.getDirection(forward);
+        var direction = this.gameObject.mainMesh.getDirection(forward);
         direction.normalize().multiplyInPlace(new Vector3(0.04, 0.04, 0.04));
         mesh.moveWithCollisions(direction);
         mesh.rotate(Axis.Y, this.gameObject.rotation.y, Space.LOCAL);

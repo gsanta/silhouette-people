@@ -1,8 +1,7 @@
-import { World } from "../World";
+import { World } from "./World";
 import { KeyChecker } from "./KeyChecker";
 
-
-export class KeyboardHandler {
+export class KeyboardService {
     activeKeys: Set<string> = new Set();
     checker: KeyChecker;
 
@@ -15,6 +14,8 @@ export class KeyboardHandler {
 
     keyDown(e: KeyboardEvent) {
         this.activeKeys.add(e.key);
+
+        this.world.controller.all.forEach(controller => controller.keyboard(e));
     }
 
     keyUp(e: KeyboardEvent) {

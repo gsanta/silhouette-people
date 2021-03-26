@@ -16,6 +16,7 @@ export interface DistrictJson {
     textures: { [key: string]: string },
     textureMeshIndex: { [key: string]: number },
     colliderSizes: { [key: string]: string },
+    tags: { [key: string]: string },
     map: string;
     rotationMap: string;
 }

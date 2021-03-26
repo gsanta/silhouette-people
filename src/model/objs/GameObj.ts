@@ -3,8 +3,9 @@ import { IComponent } from "../IComponent";
 import { World } from "../../services/World";
 import { DistrictObj } from "./DistrictObj";
 import { QuarterObj } from "./QuarterObj";
-import { StateManager } from "../../core/handlers/StateManager";
+import { StateHandler } from "../../core/handlers/StateHandler";
 import { TagHandler } from "../../core/handlers/TagHandler";
+import { MeshHandler } from "../../core/handlers/MeshHandler";
 
 export enum GameObjectType {
     Player = 'player',
@@ -49,7 +50,8 @@ export interface GameObjectJson {
 
 export class GameObj {
     readonly id: string;
-    readonly mesh: Mesh;
+    readonly mainMesh: Mesh;
+    type: GameObjectType;
     // readonly location: LocationContext;
     velocity: Vector3;
     rotation: Vector3 = new Vector3(0, 0, 0);
@@ -59,8 +61,9 @@ export class GameObj {
     animationGroups: AnimationGroup[];
     allMeshes: Mesh[] = [];
 
-    states: StateManager;
+    states: StateHandler;
     readonly tags: TagHandler;
+    readonly mesh: MeshHandler;
 
     additionalComponents: IComponent[] = [];
 
@@ -73,21 +76,22 @@ export class GameObj {
     private frontDirection2D: Vector2 = new Vector2(0, 1);
 
     constructor(id: string, mesh: Mesh) {
-        this.mesh = mesh;
+        this.mainMesh = mesh;
         mesh.name = id;
         this.id = id;
 
         this.tags = new TagHandler();
+        this.mesh = new MeshHandler(this);
         // this.location = new LocationContext();
     }
 
     debug(isDebug: boolean) {
         if (isDebug) {
-            this.mesh && (this.mesh.showBoundingBox = true);
+            this.mainMesh && (this.mainMesh.showBoundingBox = true);
             this.colliderMesh && (this.colliderMesh.showBoundingBox = true);
             this.cameraTargetMesh && (this.cameraTargetMesh.showBoundingBox = true);
         } else {
-            this.mesh && (this.mesh.showBoundingBox = false);
+            this.mainMesh && (this.mainMesh.showBoundingBox = false);
             this.colliderMesh && (this.colliderMesh.showBoundingBox = false);
             this.cameraTargetMesh && (this.cameraTargetMesh.showBoundingBox = false);
         }
@@ -95,7 +99,7 @@ export class GameObj {
 
     move(speed: number) {
         var forward = this.frontDirection;
-        var direction = this.mesh.getDirection(forward);
+        var direction = this.mainMesh.getDirection(forward);
         direction.normalize().multiplyInPlace(new Vector3(speed, speed, speed));
         
         this.getMesh().moveWithCollisions(direction);
@@ -118,7 +122,7 @@ export class GameObj {
     }
 
     setBoundingBoxVisibility(isVisible: boolean) {
-        if (this.mesh) { this.mesh.showBoundingBox = isVisible; }
+        if (this.mainMesh) { this.mainMesh.showBoundingBox = isVisible; }
     }
 
     update(world: World) {
@@ -158,6 +162,6 @@ export class GameObj {
     } 
 
     getMesh() {
-        return this.colliderMesh ? this.colliderMesh : this.mesh;
+        return this.colliderMesh ? this.colliderMesh : this.mainMesh;
     }
 }

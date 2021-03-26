@@ -4,8 +4,8 @@ import { GameObjTag } from "../../model/objs/GameObj";
 export class TagHandler {
     private tags: Set<GameObjTag> = new Set();
 
-    add(tag: GameObjTag) {
-        this.tags.add(tag);
+    add(...tag: GameObjTag[]) {
+        tag.forEach(t => this.tags.add(t));
     }
 
     has(...tag: GameObjTag[]) {

@@ -55,6 +55,11 @@
         "bicycle1": "palette.jpg",
         "road1": "palette.jpg"
     },
+    "tags": {
+        "player": "Player",
+        "enemy": "Enemy",
+        "bicycle1": "Bicycle"
+    },
     "textureMeshIndex": {
         "road1": 1
     },

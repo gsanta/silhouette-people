@@ -1,4 +1,4 @@
-import { KeyboardHandler } from "./KeyboardHandler";
+import { KeyboardService } from "./KeyboardService";
 
 
 export enum KeyCommand {
@@ -9,9 +9,9 @@ export enum KeyCommand {
 }
 
 export class KeyChecker {
-    private keyboard: KeyboardHandler;
+    private keyboard: KeyboardService;
 
-    constructor(keyboard: KeyboardHandler) {
+    constructor(keyboard: KeyboardService) {
         this.keyboard = keyboard;
     }
 
