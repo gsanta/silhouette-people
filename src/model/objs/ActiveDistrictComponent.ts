@@ -1,7 +1,5 @@
-import { Axis, Vector2 } from "babylonjs";
-import { QuarterMap } from "../district/QuarterMap";
 import { DistrictObj } from "./DistrictObj";
-import { GameObj, GameObjectRole } from "./GameObj";
+import { GameObj, GameObjTag } from "./GameObj";
 import { QuarterObj } from "./QuarterObj";
 
 
@@ -31,8 +29,8 @@ export class ActiveDistrictComponent {
         gameObject.quarterIndex = quarterIndex;
     }
 
-    getGameObjectByRole(role: GameObjectRole): GameObj[] {
-        return this.gameObjects.filter(gameObject => gameObject.role === role);
+    getGameObjsByTag(tag: GameObjTag) {
+        return this.gameObjects.filter(gameObj => gameObj.tags.has(tag));
     }
 
     getAllGameObjects(): GameObj[] {

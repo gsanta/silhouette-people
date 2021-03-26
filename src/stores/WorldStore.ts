@@ -1,5 +1,5 @@
 import { DistrictObj } from "../model/objs/DistrictObj";
-import { GameObj, GameObjectRole } from "../model/objs/GameObj";
+import { GameObj, GameObjTag } from "../model/objs/GameObj";
 import { QuarterObj } from "../model/objs/QuarterObj";
 
 export class WorldStore {
@@ -27,7 +27,7 @@ export class WorldStore {
         return this.getActiveDistrict().activeComp.getAllGameObjects();
     }
 
-    getGameObjectByRole(role: GameObjectRole): GameObj[] {
-        return this.getActiveDistrict().activeComp.getGameObjectByRole(role);
-    } 
+    getGameObjsByTag(tag: GameObjTag) {
+        return this.getActiveDistrict().activeComp.getGameObjsByTag(tag);
+    }
 }

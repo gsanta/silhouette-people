@@ -3,7 +3,7 @@ import { QuarterMapParser } from "../../core/io/QuarterMapParser";
 import { World } from "../../services/World";
 import { ActiveDistrictComponent } from "./ActiveDistrictComponent";
 import { DistrictObj } from "./DistrictObj";
-import { GameObjectRole } from "./GameObj";
+import { GameObjTag } from "./GameObj";
 
 export class DistrictActivatorComponent {
     private district: DistrictObj;
@@ -39,7 +39,7 @@ export class DistrictActivatorComponent {
         const gameObjectJsons = this.mapParser.parse(this.district.json);
         const gameObjects = await Promise.all(gameObjectJsons.map(json => this.district.factory.create(json)));
         const colliderMeshes = gameObjects
-            .filter(obj => obj.colliderMesh && obj.role === GameObjectRole.Static)
+            .filter(obj => obj.colliderMesh && obj.tags.doesNotHave(GameObjTag.Player, GameObjTag.Enemy, GameObjTag.Bicycle))
             .map(obj => obj.colliderMesh)
 
         gameObjects.forEach(obj => activeComp.addGameObject(obj));

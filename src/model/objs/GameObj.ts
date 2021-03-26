@@ -1,10 +1,10 @@
 import { AnimationGroup, Axis, Mesh, Quaternion, Skeleton, Space, Vector2, Vector3 } from "babylonjs";
 import { IComponent } from "../IComponent";
-import { AbstractCharacterState } from "../states/AbstractCharacterState";
 import { World } from "../../services/World";
 import { DistrictObj } from "./DistrictObj";
 import { QuarterObj } from "./QuarterObj";
-import { StateManager } from "../../core/state/StateManager";
+import { StateManager } from "../../core/handlers/StateManager";
+import { TagHandler } from "../../core/handlers/TagHandler";
 
 export enum GameObjectType {
     Player = 'player',
@@ -22,10 +22,10 @@ export enum GameObjectType {
     Road1 = 'road1'
 }
 
-export enum GameObjectRole {
+export enum GameObjTag {
     Player = 'Player',
     Enemy = 'Enemy',
-    Static = 'Static',
+    Bicycle = 'Bicycle'
 }
 
 export interface GameObjectJson {
@@ -49,7 +49,6 @@ export interface GameObjectJson {
 
 export class GameObj {
     readonly id: string;
-    readonly role: GameObjectRole;
     readonly mesh: Mesh;
     // readonly location: LocationContext;
     velocity: Vector3;
@@ -60,7 +59,8 @@ export class GameObj {
     animationGroups: AnimationGroup[];
     allMeshes: Mesh[] = [];
 
-    stateManager: StateManager;
+    states: StateManager;
+    readonly tags: TagHandler;
 
     additionalComponents: IComponent[] = [];
 
@@ -72,11 +72,12 @@ export class GameObj {
     private frontDirection: Vector3 = new Vector3(0, 0, 1);
     private frontDirection2D: Vector2 = new Vector2(0, 1);
 
-    constructor(id: string, role: GameObjectRole, mesh: Mesh) {
+    constructor(id: string, mesh: Mesh) {
         this.mesh = mesh;
         mesh.name = id;
         this.id = id;
-        this.role = role;
+
+        this.tags = new TagHandler();
         // this.location = new LocationContext();
     }
 
@@ -121,8 +122,8 @@ export class GameObj {
     }
 
     update(world: World) {
-        if (this.stateManager) {
-            this.stateManager.update();
+        if (this.states) {
+            this.states.update();
         }
 
         this.additionalComponents.forEach(comp => comp.update(this, world));

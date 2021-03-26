@@ -1,6 +1,6 @@
-import { GameObjectRole, GameObjectType } from "../../model/objs/GameObj";
-import { World } from "../../services/World";
 import { RouteDebuggerComponent } from "../../model/components/RouteDebuggerComponent";
+import { GameObjTag } from "../../model/objs/GameObj";
+import { World } from "../../services/World";
 
 
 export class RouteDebugger {
@@ -11,7 +11,7 @@ export class RouteDebugger {
     }
 
     show() {
-        const enemies = this.world.store.getGameObjectByRole(GameObjectRole.Enemy);
+        const enemies = this.world.store.getGameObjsByTag(GameObjTag.Enemy);
         enemies.forEach(enemy => enemy.additionalComponents.push(new RouteDebuggerComponent()));
     }
 
