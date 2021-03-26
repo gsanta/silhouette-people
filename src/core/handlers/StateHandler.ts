@@ -1,12 +1,12 @@
-import { AbstractCharacterState } from "../../model/states/AbstractCharacterState";
+import { AbstractGameObjState } from "../../model/states/AbstractGameObjState";
 import { World } from "../../services/World";
 
 export class StateHandler {
     private readonly world: World;
-    startState: AbstractCharacterState;
-    currState: AbstractCharacterState;
+    startState: AbstractGameObjState;
+    currState: AbstractGameObjState;
 
-    constructor(startState: AbstractCharacterState, world: World) {
+    constructor(startState: AbstractGameObjState, world: World) {
         this.world = world;
         this.startState = startState;
         this.currState = startState;
@@ -18,7 +18,7 @@ export class StateHandler {
 
     update() {
         const state = this.currState;
-        let newState: AbstractCharacterState = undefined;
+        let newState: AbstractGameObjState = undefined;
 
         if (state) {
             newState = state.updateInput();
@@ -31,7 +31,7 @@ export class StateHandler {
         }
     }
 
-    private transitionState(newState: AbstractCharacterState) {
+    private transitionState(newState: AbstractGameObjState) {
         if (!newState || this.currState == newState) { return; }
 
         if (this.currState) {

@@ -75,13 +75,14 @@ export class GameObj {
     private frontDirection: Vector3 = new Vector3(0, 0, 1);
     private frontDirection2D: Vector2 = new Vector2(0, 1);
 
-    constructor(id: string, mesh: Mesh) {
+    constructor(id: string, mesh: Mesh, world: World) {
         this.mainMesh = mesh;
         mesh.name = id;
         this.id = id;
 
         this.tags = new TagHandler();
         this.mesh = new MeshHandler(this);
+        this.states = new StateHandler(undefined, world)
         // this.location = new LocationContext();
     }
 

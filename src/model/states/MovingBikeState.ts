@@ -1,17 +1,19 @@
+
 import { Axis, Space, Vector3 } from "babylonjs";
 import { GameObj } from "../objs/GameObj";
 import { World } from "../../services/World";
 import { AbstractGameObjState, GameObjectStateType } from "./AbstractGameObjState";
 import { IdlePlayerState } from "./IdlePlayerState";
+import { IdleBikeState } from "./IdleBikeState";
 
 
-export class MovingCharacterState extends AbstractGameObjState {
+export class MovingBikeState extends AbstractGameObjState {
     private readonly world: World;
     private readonly speed = 0.04;
     private readonly rotationSpeed = Math.PI / 30;
 
     constructor(gameObject: GameObj, world: World) {
-        super(GameObjectStateType.Walking, gameObject);
+        super(undefined, gameObject);
         this.world = world;
     }
 
@@ -44,16 +46,10 @@ export class MovingCharacterState extends AbstractGameObjState {
             !keyboard.checker.isTurnLeft() &&
             !keyboard.checker.isTurnRight()
         ) {
-            return new IdlePlayerState(this.gameObject, this.world);
+            return new IdleBikeState(this.gameObject, this.world);
         }
 
         return undefined;
-    }
-
-    updateAnimation(): void {
-        if (!this.gameObject.isAnimationRunning('Walk')) {
-            this.gameObject.runAnimation('Walk');
-        }
     }
 
     updatePhysics(): AbstractGameObjState {
@@ -65,9 +61,5 @@ export class MovingCharacterState extends AbstractGameObjState {
         mesh.rotate(Axis.Y, this.gameObject.rotation.y, Space.LOCAL);
 
         return undefined;
-    }
-
-    exit() {
-        this.gameObject.stopCurrentAnimation();
     }
 }

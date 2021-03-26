@@ -1,9 +1,9 @@
 import { Route } from "../district/Route";
 import { World } from "../../services/World";
 import { GameObj } from "../objs/GameObj";
-import { AbstractCharacterState, GameObjectStateType } from "./AbstractCharacterState";
+import { AbstractGameObjState, GameObjectStateType } from "./AbstractGameObjState";
 
-export class SearchingEnemyState extends AbstractCharacterState {
+export class SearchingEnemyState extends AbstractGameObjState {
     private world: World;
     route: Route;
 

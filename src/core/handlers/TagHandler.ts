@@ -23,4 +23,18 @@ export class TagHandler {
     clear() {
         this.tags = new Set();
     }
+
+    // most common tag shortcuts
+
+    isPlayer() {
+        return this.has(GameObjTag.Player);
+    }
+
+    removePlayer() {
+        this.remove(GameObjTag.Player);
+    }
+
+    addPlayer() {
+        this.add(GameObjTag.Player);
+    }
 }

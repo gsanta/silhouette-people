@@ -1,4 +1,4 @@
-import { GameObjectStateType } from "../states/AbstractCharacterState";
+import { GameObjectStateType } from "../states/AbstractGameObjState";
 import { IComponent } from "../IComponent";
 import { GameObj } from "../objs/GameObj";
 import { World } from "../../services/World";

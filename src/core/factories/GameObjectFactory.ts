@@ -2,7 +2,7 @@ import { Axis, Color3, Mesh, MeshBuilder, PhysicsImpostor, SceneLoader, Space, S
 import { DistrictObj } from "../../model/objs/DistrictObj";
 import { GameObj, GameObjectJson, GameObjectType, GameObjTag } from "../../model/objs/GameObj";
 import { QuarterObj } from "../../model/objs/QuarterObj";
-import { IdleCharacterState } from "../../model/states/IdleCharacterState";
+import { IdlePlayerState } from "../../model/states/IdlePlayerState";
 import { SearchingEnemyState } from "../../model/states/SearchingEnemyState";
 import { World } from "../../services/World";
 import { GroundJson } from "../io/DistrictJson";
@@ -78,7 +78,7 @@ export class GameObjectFactory {
         const result = await this.load(json.modelPath);
         const id = this.generateId(json.type);
         
-        const gameObject = new GameObj(id, <Mesh> result.meshes[0]);
+        const gameObject = new GameObj(id, <Mesh> result.meshes[0], this.world);
         gameObject.allMeshes = <Mesh[]> result.meshes;
 
         if (json.rotation) { gameObject.mainMesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
@@ -99,7 +99,7 @@ export class GameObjectFactory {
         const result = await this.load(json.modelPath);
         const id = this.generateId(json.type);
         
-        const gameObject = new GameObj(id, <Mesh> result.meshes[0]);
+        const gameObject = new GameObj(id, <Mesh> result.meshes[0], this.world);
         gameObject.allMeshes = <Mesh[]> result.meshes;
 
         if (json.rotation) { gameObject.mainMesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
@@ -116,7 +116,7 @@ export class GameObjectFactory {
         const result = await this.load(json.modelPath);
         const id = this.generateId(json.type);
         
-        const gameObject = new GameObj(id, <Mesh> result.meshes[1]);
+        const gameObject = new GameObj(id, <Mesh> result.meshes[1], this.world);
         gameObject.allMeshes = <Mesh[]> result.meshes;
         
         this.createTexture(gameObject, json);
@@ -134,10 +134,10 @@ export class GameObjectFactory {
         const id = this.generateId(json.type);
 
         result.animationGroups.forEach(animationGroup => animationGroup.stop());
-        const gameObject = new GameObj(id, <Mesh> result.meshes[0]);
+        const gameObject = new GameObj(id, <Mesh> result.meshes[0], this.world);
         gameObject.allMeshes = <Mesh[]> result.meshes;
 
-        gameObject.states = new StateHandler(new IdleCharacterState(gameObject, this.world), this.world);
+        gameObject.states = new StateHandler(new IdlePlayerState(gameObject, this.world), this.world);
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         gameObject.animationGroups = result.animationGroups;
 
@@ -158,7 +158,7 @@ export class GameObjectFactory {
         const id = this.generateId(json.type);
         
         result.animationGroups.forEach(animationGroup => animationGroup.stop());
-        const gameObject = new GameObj(id, <Mesh> result.meshes[0]);
+        const gameObject = new GameObj(id, <Mesh> result.meshes[0], this.world);
         gameObject.allMeshes = <Mesh[]> result.meshes;
         
         gameObject.states = new StateHandler(new SearchingEnemyState(gameObject, this.world), this.world);

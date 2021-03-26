@@ -1,7 +1,7 @@
-import { AbstractCharacterState, GameObjectStateType } from "./AbstractCharacterState";
+import { AbstractGameObjState, GameObjectStateType } from "./AbstractGameObjState";
 import { GameObj } from "../objs/GameObj";
 
-export class IdleEnemyState extends AbstractCharacterState {
+export class IdleEnemyState extends AbstractGameObjState {
 
     constructor(gameObject: GameObj) {
         super(GameObjectStateType.EnemyIdle, gameObject);

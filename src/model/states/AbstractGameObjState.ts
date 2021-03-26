@@ -7,7 +7,7 @@ export enum GameObjectStateType {
     EnemyIdle = 'EnemyIdle'
 }
 
-export abstract class AbstractCharacterState {
+export abstract class AbstractGameObjState {
     readonly type: GameObjectStateType;
     protected readonly gameObject: GameObj;
 
@@ -16,8 +16,8 @@ export abstract class AbstractCharacterState {
         this.gameObject = gameObject;
     }
 
-    updateInput(): AbstractCharacterState { return undefined; }
-    updatePhysics(): AbstractCharacterState { return undefined; }
+    updateInput(): AbstractGameObjState { return undefined; }
+    updatePhysics(): AbstractGameObjState { return undefined; }
     updateAnimation(): void {};
 
     enter() {}

@@ -1,19 +1,20 @@
-import { GameObj } from "../objs/GameObj";
 import { World } from "../../services/World";
-import { AbstractCharacterState, GameObjectStateType } from "./AbstractCharacterState";
-import { MovingCharacterState } from "./MovingCharacterState";
+import { GameObj, GameObjTag } from "../objs/GameObj";
+import { AbstractGameObjState } from "./AbstractGameObjState";
+import { MovingBikeState } from "./MovingBikeState";
 
-export class IdleCharacterState extends AbstractCharacterState {
+export class IdleBikeState extends AbstractGameObjState {
     private world: World;
 
     constructor(gameObject: GameObj, world: World) {
-        super(GameObjectStateType.Idle, gameObject);
+        super(undefined, gameObject);
         this.world = world;
     }
 
     updateInput() {
+        if (!this.gameObject.tags.isPlayer()) { return undefined; }
+
         const keyboard = this.world.keyboard;
-        const activeCommands = keyboard.checker.getActiveCommands();
 
         if (
             keyboard.checker.isMoveForward() ||
@@ -21,12 +22,11 @@ export class IdleCharacterState extends AbstractCharacterState {
             keyboard.checker.isTurnLeft() ||
             keyboard.checker.isTurnRight()
         ) {
-            return new MovingCharacterState(this.gameObject, this.world);
+            return new MovingBikeState(this.gameObject, this.world);
         }
     }
 
     updateAnimation() {
-        this.gameObject.runAnimation('Idle');
     }
 
     updatePhysics() {
@@ -34,6 +34,5 @@ export class IdleCharacterState extends AbstractCharacterState {
     }
 
     exit() {
-        this.gameObject.stopCurrentAnimation();
     }
 }
