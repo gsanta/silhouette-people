@@ -14,12 +14,13 @@ export class MovingBikeState extends AbstractGameObjState {
     private readonly rotationSpeed = Math.PI / 30;
     private speedPhysics: BikeSpeedPhysics;
     private vel = 0;
+    private startTime = 0;
 
     constructor(gameObject: GameObj, world: World) {
         super(undefined, gameObject);
         this.world = world;
 
-        this.speedPhysics = new BikeSpeedPhysics({ maxAcceleration: 8 / 5, gearSpeedRanges: [[-11, 9], [-1, 19], [9, 29]]})
+        this.speedPhysics = new BikeSpeedPhysics({ maxAcceleration: 8 / 5, gearSpeedRanges: [[-3.1, 2.5], [-0.3, 19], [2.5, 29]]})
     }
 
     updateInput(): AbstractGameObjState {
@@ -28,9 +29,10 @@ export class MovingBikeState extends AbstractGameObjState {
         const velocity = new Vector3(0, 0, 0);
         const rotation = new Vector3(0, 0, 0);
 
-        
-        console.log(this.vel)
-        
+        this.startTime += this.world.engine.getDeltaTime();
+
+        console.log('time passed: ' + this.startTime / 1000 + 's')
+
         if (this.world.keyboard.activeKeys.has('w')) {
             this.vel = this.speedPhysics.getSpeed(this.vel, this.world.engine.getDeltaTime());
             velocity.z = this.vel; 
@@ -65,7 +67,7 @@ export class MovingBikeState extends AbstractGameObjState {
         const mesh = this.gameObject.colliderMesh ? this.gameObject.colliderMesh : this.gameObject.mainMesh;
         var forward = this.gameObject.velocity;	
         var direction = this.gameObject.mainMesh.getDirection(forward);
-        direction.normalize().multiplyInPlace(new Vector3(0.04, 0.04, 0.04));
+        direction.normalize().multiplyInPlace(new Vector3(this.gameObject.velocity.z, this.gameObject.velocity.z, this.gameObject.velocity.z));
         mesh.moveWithCollisions(direction);
         mesh.rotate(Axis.Y, this.gameObject.rotation.y, Space.LOCAL);
 

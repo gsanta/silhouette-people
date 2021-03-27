@@ -18,9 +18,21 @@ export class BikeSpeedPhysics {
     }
 
     getSpeed(currentSpeed: number, deltaTime: number) {
-        const [p, acc] = this.equations[0].predict(currentSpeed);
+        const deltaTimeInSec = deltaTime / 1000;
+        const speedRange = this.speedRanges[0];
+        
+        let acc: number;
 
-        return currentSpeed + acc * deltaTime / 2;
+        if (currentSpeed < speedRange[0] || currentSpeed > speedRange[1]) {
+            acc = 0;
+        } else {
+            acc =  -this.equations[0].predict(currentSpeed)[1];
+            // acc = Math.sqrt(Math.sqrt(acc));
+        }
+
+        console.log('acc: ' + acc + ' speed: ' + currentSpeed);
+
+        return currentSpeed + acc * deltaTimeInSec / 2;
     }
 
     private setup() {
