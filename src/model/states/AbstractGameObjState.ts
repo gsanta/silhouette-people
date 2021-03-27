@@ -20,6 +20,8 @@ export abstract class AbstractGameObjState {
     updatePhysics(): AbstractGameObjState { return undefined; }
     updateAnimation(): void {};
 
+    keyboard(e: KeyboardEvent, isKeydown: boolean): AbstractGameObjState { return undefined; }
+
     enter() {}
     exit() {}
 }

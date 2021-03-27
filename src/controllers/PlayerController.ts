@@ -1,5 +1,6 @@
 import { GameObjTag } from "../model/objs/GameObj";
 import { IdleBikeState } from "../model/states/IdleBikeState";
+import { MovingBikeState } from "../model/states/MovingBikeState";
 import { World } from "../services/World";
 import { AbstractController } from "./IController";
 
@@ -30,7 +31,7 @@ export class PlayerController extends AbstractController {
                     player.tags.removePlayer();
                     player.states.setDefaultState();
                     bike.tags.addPlayer();
-                    bike.states.currState = new IdleBikeState(bike, this.world);
+                    bike.states.currState = new MovingBikeState(bike, this.world);
                 }
             break;
         }

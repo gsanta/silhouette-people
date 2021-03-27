@@ -11,6 +11,16 @@ export class StateHandler {
         this.startState = startState;
         this.currState = startState;
     }
+
+    keyboard(e: KeyboardEvent, isKeydown: boolean) {
+        if (!this.currState) { return; }
+
+        let state = this.currState;
+        while (state) {
+            state = state.keyboard(e, isKeydown);
+            this.transitionState(state);
+        }
+    }
     
     setDefaultState() {
         this.transitionState(this.startState);

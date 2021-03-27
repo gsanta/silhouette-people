@@ -11,11 +11,11 @@ export class IdleBikeState extends AbstractGameObjState {
         this.world = world;
     }
 
-    updateInput() {
+    keyboard(e: KeyboardEvent, isKeyDown: boolean) {
         if (!this.gameObject.tags.isPlayer()) { return undefined; }
-
+    
         const keyboard = this.world.keyboard;
-
+    
         if (
             keyboard.checker.isMoveForward() ||
             keyboard.checker.isMoveBackward() ||
@@ -24,15 +24,7 @@ export class IdleBikeState extends AbstractGameObjState {
         ) {
             return new MovingBikeState(this.gameObject, this.world);
         }
-    }
-
-    updateAnimation() {
-    }
-
-    updatePhysics() {
+    
         return undefined;
-    }
-
-    exit() {
     }
 }

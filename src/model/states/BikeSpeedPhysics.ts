@@ -6,13 +6,23 @@ export interface BikeSpeedPhysicsConf {
     gearSpeedRanges: [Vector2, Vector2][];
 }
 
+type BikePhysicsState = 'accelerating' | 'breaking' | 'rolling' | 'reverse' | 'idle';
+
+export enum BikeSpeedState {
+    Accelerating = 'Accelerating',
+    Braking = 'Braking',
+    Rolling = 'Rolling',
+    Reverse = 'Reverse',
+    Idle = 'Idle'
+}
+
 export class BikeSpeedPhysics {
     private maxAcc: number;
     private speedRanges: [Vector2, Vector2][];
     private equations: regression.Result[] = [];
     private speedLimits: [number, number][] = [];
-    private gear = 0;
-    private accelerating = false;
+    private gear = 1;
+    private bikeState: BikeSpeedState = BikeSpeedState.Idle;
     private startTime = 0;
     private currTime = 0;
     private maxTime = 0;
@@ -23,18 +33,12 @@ export class BikeSpeedPhysics {
         this.setup();
     }
 
-    reset() {
-        this.startTime = 0;
-        this.currTime = 0;
-        this.maxTime = 0;
-        this.accelerating = false;
+    setGear(gear: number) {
+        this.gear = gear;
     }
 
-    getSpeed(currentSpeed: number, deltaTime: number) {
-        const deltaTimeInSec = deltaTime / 1000;
-        const speedRange = this.speedRanges[0];
-
-        if (!this.accelerating) {
+    accelerate(currentSpeed: number, deltaTime: number) {
+        if (this.bikeState !== BikeSpeedState.Accelerating) {
             this.startAccelerating(currentSpeed);
         }
 
@@ -45,31 +49,34 @@ export class BikeSpeedPhysics {
         } else {
             return this.equations[this.gear].predict(this.currTime)[1];
         }
+    }
 
-        // if (currentSpeed < this.speedLimits[this.gear][0]) {
-        //     return 0;
-        // } else if (currentSpeed > this.speedLimits[this.gear][1]) {
-        //     return this.speedLimits[this.gear][1];
-        // } else {
+    brake() {
+        this.resetTimers();
+        this.bikeState = BikeSpeedState.Idle;
 
-        // }
+        return 0;
+    }
 
-        // let acc: number;
+    roll() {
 
-        // if (currentSpeed < speedRange[0] || currentSpeed > speedRange[1]) {
-        //     acc = 0;
-        // } else {
-        //     acc =  -this.equations[0].predict(currentSpeed)[1];
-        //     // acc = Math.sqrt(Math.sqrt(acc));
-        // }
+    }
 
-        // console.log('acc: ' + acc + ' speed: ' + currentSpeed);
+    reverse() {
+        this.bikeState = BikeSpeedState.Reverse;
+        return -0.04;
+    }
 
-        // return currentSpeed + acc * deltaTimeInSec / 2;
+    private resetTimers() {
+        this.startTime = 0;
+        this.currTime = 0;
+        this.maxTime = 0;
     }
 
     private startAccelerating(currentSpeed: number) {
-        this.accelerating = true;
+        this.resetTimers();
+
+        this.bikeState = BikeSpeedState.Accelerating;
         if (currentSpeed < this.speedLimits[this.gear][0]) {
             return 0;
         } else if (currentSpeed > this.speedLimits[this.gear][1]) {
