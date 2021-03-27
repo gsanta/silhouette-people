@@ -1,11 +1,10 @@
 
-import { Axis, Space, Vector3 } from "babylonjs";
-import { GameObj } from "../objs/GameObj";
+import { Axis, Space, Vector2, Vector3 } from "babylonjs";
 import { World } from "../../services/World";
-import { AbstractGameObjState, GameObjectStateType } from "./AbstractGameObjState";
-import { IdlePlayerState } from "./IdlePlayerState";
-import { IdleBikeState } from "./IdleBikeState";
+import { GameObj } from "../objs/GameObj";
+import { AbstractGameObjState } from "./AbstractGameObjState";
 import { BikeSpeedPhysics } from "./BikeSpeedPhysics";
+import { IdleBikeState } from "./IdleBikeState";
 
 
 export class MovingBikeState extends AbstractGameObjState {
@@ -20,7 +19,13 @@ export class MovingBikeState extends AbstractGameObjState {
         super(undefined, gameObject);
         this.world = world;
 
-        this.speedPhysics = new BikeSpeedPhysics({ maxAcceleration: 8 / 5, gearSpeedRanges: [[-3.1, 2.5], [-0.3, 19], [2.5, 29]]})
+        const speedRanges: [Vector2, Vector2][] = [
+            [ new Vector2(-1.6, -10 / 3.6), new Vector2(1.4, 10 / 3.6) ],
+            [ new Vector2(-0.1, 0), new Vector2(2.9, 20) ],
+            [ new Vector2(1.4, 10), new Vector2(4.4, 30) ]
+        ];
+
+        this.speedPhysics = new BikeSpeedPhysics({ maxAcceleration: 8 / 5, gearSpeedRanges: speedRanges })
     }
 
     updateInput(): AbstractGameObjState {
@@ -31,14 +36,15 @@ export class MovingBikeState extends AbstractGameObjState {
 
         this.startTime += this.world.engine.getDeltaTime();
 
-        console.log('time passed: ' + this.startTime / 1000 + 's')
-
         if (this.world.keyboard.activeKeys.has('w')) {
             this.vel = this.speedPhysics.getSpeed(this.vel, this.world.engine.getDeltaTime());
-            velocity.z = this.vel; 
+            console.log(this.vel);
+            velocity.z = this.vel * this.world.engine.getDeltaTime() / 1000;
         } else if (this.world.keyboard.activeKeys.has('s')) {
+            this.speedPhysics.reset();
             velocity.z = -this.speed;
         } else {
+            this.speedPhysics.reset();
             velocity.z = 0;
         }
 
