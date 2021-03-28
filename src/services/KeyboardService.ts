@@ -16,11 +16,11 @@ export class KeyboardService {
         this.activeKeys.add(e.key);
 
         this.world.controller.all.forEach(controller => controller.keyboard(e));
-        this.world.store.getAllGameObjects().forEach(obj => obj.states.keyboard(e, true));
+        this.world.store.getAllGameObjects().forEach(obj => obj.state.keyboard(e, true));
     }
 
     keyUp(e: KeyboardEvent) {
         this.activeKeys.delete(e.key);
-        this.world.store.getAllGameObjects().forEach(obj => obj.states.currState && obj.states.currState.keyboard(e, false)); 
+        this.world.store.getAllGameObjects().forEach(obj => obj.state.currState && obj.state.currState.keyboard(e, false)); 
     }
 }

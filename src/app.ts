@@ -63,6 +63,7 @@ function initGame(world: World) {
     // camera.maxCameraSpeed = 10;
 
     const light = new HemisphericLight("light", new Vector3(1, 1, 0), scene);
+    light.intensity = 0.5;
 
     engine.runRenderLoop(function () {
             scene.render();

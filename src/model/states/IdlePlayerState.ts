@@ -12,7 +12,7 @@ export class IdlePlayerState extends AbstractGameObjState {
     }
 
     updateInput() {
-        if (!this.gameObject.tags.isPlayer()) { return undefined; }
+        if (!this.gameObject.tag.isPlayer()) { return undefined; }
 
         const keyboard = this.world.keyboard;
 

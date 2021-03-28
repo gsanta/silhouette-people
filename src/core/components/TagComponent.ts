@@ -1,7 +1,7 @@
 import { GameObjTag } from "../../model/objs/GameObj";
 
 
-export class TagHandler {
+export class TagComponent {
     private tags: Set<GameObjTag> = new Set();
 
     add(...tag: GameObjTag[]) {

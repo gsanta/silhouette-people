@@ -1,7 +1,7 @@
 import { AbstractGameObjState } from "../../model/states/AbstractGameObjState";
 import { World } from "../../services/World";
 
-export class StateHandler {
+export class StateComponent {
     private readonly world: World;
     startState: AbstractGameObjState;
     currState: AbstractGameObjState;

@@ -1,7 +1,6 @@
 import { DistrictObj } from "./DistrictObj";
-import { GameObj, GameObjTag } from "./GameObj";
+import { GameObj, GameObjectType, GameObjTag } from "./GameObj";
 import { QuarterObj } from "./QuarterObj";
-
 
 export class ActiveDistrictComponent {
     private gameObjects: GameObj[] = [];
@@ -30,7 +29,11 @@ export class ActiveDistrictComponent {
     }
 
     getGameObjsByTag(tag: GameObjTag): GameObj[] {
-        return this.gameObjects.filter(gameObj => gameObj.tags.has(tag));
+        return this.gameObjects.filter(gameObj => gameObj.tag.has(tag));
+    }
+
+    getGameObjsByType(...type: GameObjectType[]): GameObj[] {
+        return this.gameObjects.filter(obj => type.includes(obj.type)); 
     }
 
     getAllGameObjects(): GameObj[] {

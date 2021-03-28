@@ -11,7 +11,7 @@ export class RouteDebuggerComponent implements IComponent {
     update(gameObject: GameObj, world: World) {
         const quarterMap = gameObject.getQuarter().getMap();
 
-        if (gameObject.states.currState.type !== GameObjectStateType.EnemySearching) {
+        if (gameObject.state.currState.type !== GameObjectStateType.EnemySearching) {
             if (this.currRoute) {
                 quarterMap.fillPath(this.currRoute.path, 0);
                 this.currRoute = undefined;
@@ -20,7 +20,7 @@ export class RouteDebuggerComponent implements IComponent {
             return;
         }
         
-        const state = <SearchingEnemyState> gameObject.states.currState;
+        const state = <SearchingEnemyState> gameObject.state.currState;
         if (this.currRoute && state.route !== this.currRoute) {
             quarterMap.fillPath(this.currRoute.path, 0);
         }

@@ -12,7 +12,7 @@ export class IdleBikeState extends AbstractGameObjState {
     }
 
     keyboard(e: KeyboardEvent, isKeyDown: boolean) {
-        if (!this.gameObject.tags.isPlayer()) { return undefined; }
+        if (!this.gameObject.tag.isPlayer()) { return undefined; }
     
         const keyboard = this.world.keyboard;
     

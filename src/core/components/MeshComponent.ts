@@ -2,7 +2,7 @@ import { Vector2 } from "babylonjs";
 import { GameObj, GameObjTag } from "../../model/objs/GameObj";
 
 
-export class MeshHandler {
+export class MeshComponent {
     private gameObj: GameObj;
 
     constructor(gameObj: GameObj) {

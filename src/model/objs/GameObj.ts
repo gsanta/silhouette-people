@@ -3,9 +3,10 @@ import { IComponent } from "../IComponent";
 import { World } from "../../services/World";
 import { DistrictObj } from "./DistrictObj";
 import { QuarterObj } from "./QuarterObj";
-import { StateHandler } from "../../core/handlers/StateHandler";
-import { TagHandler } from "../../core/handlers/TagHandler";
-import { MeshHandler } from "../../core/handlers/MeshHandler";
+import { StateComponent } from "../../core/components/StateComponent";
+import { TagComponent } from "../../core/components/TagComponent";
+import { MeshComponent } from "../../core/components/MeshComponent";
+import { AddonComponent } from "../../core/components/AddonComponent";
 
 export enum GameObjectType {
     Player = 'player',
@@ -61,10 +62,11 @@ export class GameObj {
     animationGroups: AnimationGroup[];
     allMeshes: Mesh[] = [];
 
-    states: StateHandler;
-    readonly tags: TagHandler;
-    readonly mesh: MeshHandler;
-
+    state: StateComponent;
+    readonly tag: TagComponent;
+    readonly mesh: MeshComponent;
+    readonly addon: AddonComponent;
+    
     additionalComponents: IComponent[] = [];
 
     private currentAnimation: AnimationGroup;
@@ -80,9 +82,10 @@ export class GameObj {
         mesh.name = id;
         this.id = id;
 
-        this.tags = new TagHandler();
-        this.mesh = new MeshHandler(this);
-        this.states = new StateHandler(undefined, world)
+        this.tag = new TagComponent();
+        this.mesh = new MeshComponent(this);
+        this.state = new StateComponent(undefined, world);
+        this.addon = new AddonComponent();
         // this.location = new LocationContext();
     }
 
@@ -127,9 +130,13 @@ export class GameObj {
     }
 
     update(world: World) {
-        if (this.states) {
-            this.states.update();
+        if (!this.getMesh()) { return; }
+
+        if (this.state) {
+            this.state.update();
         }
+
+        this.addon.getAll().forEach(addon => addon.update(this));
 
         this.additionalComponents.forEach(comp => comp.update(this, world));
     }
@@ -137,6 +144,10 @@ export class GameObj {
     getPosition2D(): Vector2 {
         const pos = this.getMesh().getAbsolutePosition();
         return new Vector2(pos.x, pos.z);
+    }
+
+    getPosition(): Vector3 {
+        return this.getMesh().getAbsolutePosition();
     }
 
     getQuarter(): QuarterObj {

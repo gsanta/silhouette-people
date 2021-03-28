@@ -6,7 +6,8 @@ import { IdlePlayerState } from "../../model/states/IdlePlayerState";
 import { SearchingEnemyState } from "../../model/states/SearchingEnemyState";
 import { World } from "../../services/World";
 import { GroundJson } from "../io/DistrictJson";
-import { StateHandler } from "../handlers/StateHandler";
+import { StateComponent } from "../components/StateComponent";
+import { HighlightAddon } from "../components/HighlightAddon";
 
 function getIfStringEnumVal(value: string) {
     if (!isNaN(Number(value))) {
@@ -68,7 +69,7 @@ export class GameObjectFactory {
 
         const tagStr = this.districtObj.json.tags[gameObject.type];
         if (tagStr) {
-            gameObject.tags.add(...(tagStr.split(' ') as GameObjTag[]));
+            gameObject.tag.add(...(tagStr.split(' ') as GameObjTag[]));
         }
 
         return gameObject;
@@ -137,9 +138,10 @@ export class GameObjectFactory {
         const gameObject = new GameObj(id, <Mesh> result.meshes[0], this.world);
         gameObject.allMeshes = <Mesh[]> result.meshes;
 
-        gameObject.states = new StateHandler(new IdlePlayerState(gameObject, this.world), this.world);
+        gameObject.state = new StateComponent(new IdlePlayerState(gameObject, this.world), this.world);
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         gameObject.animationGroups = result.animationGroups;
+        gameObject.addon.add(new HighlightAddon(this.world));
 
         if (json.rotation) { gameObject.mainMesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
         this.createCollider(gameObject, json);
@@ -149,6 +151,8 @@ export class GameObjectFactory {
 
         gameObject.colliderMesh.parent = this.districtObj.basicComp.platform;
         gameObject.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
+
+        this.world.controller.player.setPlayer(gameObject);
 
         return gameObject;
     }
@@ -161,7 +165,7 @@ export class GameObjectFactory {
         const gameObject = new GameObj(id, <Mesh> result.meshes[0], this.world);
         gameObject.allMeshes = <Mesh[]> result.meshes;
         
-        gameObject.states = new StateHandler(new SearchingEnemyState(gameObject, this.world), this.world);
+        gameObject.state = new StateComponent(new SearchingEnemyState(gameObject, this.world), this.world);
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         gameObject.animationGroups = result.animationGroups;
 
@@ -180,6 +184,7 @@ export class GameObjectFactory {
         ground.translate(Axis.Y, -0.21, Space.WORLD);
         const material = new StandardMaterial(`ground--material`, this.world.scene);
         material.diffuseColor = Color3.FromHexString('#FFFFFF');
+        material.specularColor = new Color3(0, 0, 0);
         ground.material = material;
 
         ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, this.world.scene);
@@ -193,6 +198,7 @@ export class GameObjectFactory {
         
         const material = new StandardMaterial(`ground-${index}-material`, this.world.scene);
         material.diffuseColor = Color3.FromHexString(groundJson.color);
+        material.specularColor = new Color3(0, 0, 0);
         ground.material = material;
         
         const halfSize = size / 2;
@@ -234,8 +240,10 @@ export class GameObjectFactory {
         const texture = new Texture(`assets/textures/${json.texturePath}`, this.world.scene);
         const material = new StandardMaterial(gameObject.id, this.world.scene);
         material.diffuseTexture = texture;
-        material.specularTexture = texture;
-        material.emissiveTexture = texture;
+        material.specularColor = new BABYLON.Color3(0, 0, 0);
+
+        // material.specularTexture = texture;
+        // material.emissiveTexture = texture;
         gameObject.allMeshes[json.textureMeshIndex].material = material;
     }
 
