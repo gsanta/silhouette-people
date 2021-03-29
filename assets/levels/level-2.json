@@ -58,7 +58,7 @@
     "textureMeshIndex": {
         "road1": 1
     },
-    "colliderSizes": {
+    "collider": {
         "tree1": "0.5:5:0.5",
         "tree2": "0.5:5:0.5",
         "tree3": "0.5:5:0.5",

@@ -21,7 +21,8 @@ export enum GameObjectType {
     House2 = 'house2',
     House3 = 'house3',
     Bicycle1 = 'bicycle1',
-    Road1 = 'road1'
+    Road1 = 'road1',
+    BusStop = 'BusStop'
 }
 
 export enum GameObjTag {
@@ -38,7 +39,7 @@ export interface GameObjectJson {
     texturePath?: string;
     textureMeshIndex?: number;
 
-    colliderSize?: Vector3;
+    collider?: boolean | Vector3;
     rotation?: number;
 
     physics?: boolean;

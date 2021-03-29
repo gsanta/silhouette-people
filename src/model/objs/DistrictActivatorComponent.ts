@@ -1,5 +1,5 @@
 import { Axis, Space } from "babylonjs";
-import { QuarterMapParser } from "../../core/io/QuarterMapParser";
+import { DistrictParser } from "../../core/io/DistrictParser";
 import { World } from "../../services/World";
 import { ActiveDistrictComponent } from "./ActiveDistrictComponent";
 import { DistrictObj } from "./DistrictObj";
@@ -8,12 +8,12 @@ import { GameObjTag } from "./GameObj";
 export class DistrictActivatorComponent {
     private district: DistrictObj;
     private world: World;
-    private mapParser: QuarterMapParser;
+    private mapParser: DistrictParser;
 
     constructor(district: DistrictObj, world: World) {
         this.district = district;
         this.world = world;
-        this.mapParser = new QuarterMapParser();
+        this.mapParser = new DistrictParser();
     }
 
     async initialize() {

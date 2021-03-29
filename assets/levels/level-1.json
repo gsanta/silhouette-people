@@ -31,7 +31,8 @@
         "I": "house2",
         "J": "house3",
         "B": "bicycle1",
-        "R": "road1"
+        "R": "road1",
+        "S": "busStop"
     },
     "models": {
         "tree1": "tree1.glb",
@@ -46,7 +47,8 @@
         "house2": "house2.glb",
         "house3": "house3.glb",
         "bicycle1": "bicycle1.glb",
-        "road1": "road1.glb"
+        "road1": "road1.glb",
+        "busStop": "bus_stop.glb"
     },
     "textures": {
         "house1": "palette.jpg",
@@ -63,7 +65,7 @@
     "textureMeshIndex": {
         "road1": 1
     },
-    "colliderSizes": {
+    "collider": {
         "tree1": "0.5:5:0.5",
         "tree2": "0.5:5:0.5",
         "tree3": "0.5:5:0.5",
@@ -75,6 +77,7 @@
         "house1": "1:1:1",
         "house2": "1:1:1",
         "house3": "1:1:1",
-        "bicycle1": "1:1:1"
+        "bicycle1": "1:1:1",
+        "busStop": true
     }
 }

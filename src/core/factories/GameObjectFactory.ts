@@ -8,6 +8,8 @@ import { World } from "../../services/World";
 import { GroundJson } from "../io/DistrictJson";
 import { StateComponent } from "../components/StateComponent";
 import { HighlightAddon } from "../components/HighlightAddon";
+import { IFactoryFeature } from "./IFactoryFeacture";
+import { CollisionFactoryFeature } from "./CollisionFactoryFeature";
 
 function getIfStringEnumVal(value: string) {
     if (!isNaN(Number(value))) {
@@ -22,9 +24,13 @@ export class GameObjectFactory {
     private world: World;
     private indexesByType: Map<string, number> = new Map();
 
+    features: IFactoryFeature[] = [];
+
     constructor(districtObj: DistrictObj, world: World) {
         this.districtObj = districtObj;
         this.world = world;
+
+        this.features.push(new CollisionFactoryFeature(world));
 
         for (const value in GameObjectType) {
             const str = getIfStringEnumVal(value);
@@ -63,6 +69,9 @@ export class GameObjectFactory {
             case GameObjectType.Road1:
                 gameObject = await this.createDefault(gameObjectJson);
             break;
+            default:
+                gameObject = await this.createDefault(gameObjectJson);
+            break;
         }
 
         gameObject.type = gameObjectJson.type;
@@ -84,8 +93,9 @@ export class GameObjectFactory {
 
         if (json.rotation) { gameObject.mainMesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
         this.createTexture(gameObject, json);
-        if (json.colliderSize) { 
-            this.createCollider(gameObject, json); 
+        if (json.collider) { 
+            this.features.forEach(feature => feature.process(gameObject, json));
+            // this.createCollider(gameObject, json); 
         } else {
             this.setMeshPosition(gameObject, json);
         }
@@ -105,7 +115,8 @@ export class GameObjectFactory {
 
         if (json.rotation) { gameObject.mainMesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
         this.createTexture(gameObject, json);
-        this.createCollider(gameObject, json);
+        this.features.forEach(feature => feature.process(gameObject, json));
+        // this.createCollider(gameObject, json);
         // if (json.physics) { this.createPhysics(gameObject); }
         gameObject.colliderMesh.parent = this.districtObj.basicComp.platform;
         gameObject.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
@@ -121,7 +132,8 @@ export class GameObjectFactory {
         gameObject.allMeshes = <Mesh[]> result.meshes;
         
         this.createTexture(gameObject, json);
-        this.createCollider(gameObject, json);
+        this.features.forEach(feature => feature.process(gameObject, json));
+        // this.createCollider(gameObject, json);
         this.setRotation(gameObject, json);
         // if (json.physics) { this.createPhysics(gameObject); }
         gameObject.colliderMesh.parent = this.districtObj.basicComp.platform;
@@ -144,7 +156,9 @@ export class GameObjectFactory {
         gameObject.addon.add(new HighlightAddon(this.world));
 
         if (json.rotation) { gameObject.mainMesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
-        this.createCollider(gameObject, json);
+        
+        this.features.forEach(feature => feature.process(gameObject, json));
+        // this.createCollider(gameObject, json);
         gameObject.colliderMesh.translate(Axis.Y, 0.5, Space.WORLD);
         this.createPhysics(gameObject);
         this.applyCameraTarget(gameObject, json);
@@ -170,7 +184,8 @@ export class GameObjectFactory {
         gameObject.animationGroups = result.animationGroups;
 
         // if (json.rotation) { gameObject.mesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
-        this.createCollider(gameObject, json);
+        this.features.forEach(feature => feature.process(gameObject, json));
+        // this.createCollider(gameObject, json);
         this.createPhysics(gameObject);
 
         gameObject.colliderMesh.parent = this.districtObj.basicComp.platform;
@@ -251,21 +266,6 @@ export class GameObjectFactory {
         if (!json.rotation) { return; }
 
         gameObject.colliderMesh.rotate(Axis.Y, json.rotation, Space.LOCAL);
-    }
-
-    private createCollider(gameObject: GameObj, json: GameObjectJson) {
-        const dimensions = json.colliderSize;
-        const [width, depth, height] = [dimensions.x, dimensions.z, dimensions.y];
-        const collider = MeshBuilder.CreateBox(`${json.id}-collider`, { width, depth, height}, this.world.scene);
-        collider.checkCollisions = true;
-        gameObject.mainMesh.parent = collider;
-        collider.setAbsolutePosition(json.position);
-        collider.translate(Axis.Y, dimensions.y / 2, Space.WORLD);
-        gameObject.mainMesh.translate(Axis.Y, -dimensions.y / 2, Space.LOCAL);
-        const colliderMaterial = new StandardMaterial(`${json.id}-collider-material`, this.world.scene);
-        colliderMaterial.alpha = 0;
-        collider.material = colliderMaterial;
-        gameObject.colliderMesh = collider;
     }
 
     private setMeshPosition(gameObject: GameObj, json: GameObjectJson) {

@@ -2,7 +2,7 @@ import { Vector3 } from "babylonjs";
 import { GameObjectJson, GameObjectType } from "../../model/objs/GameObj";
 import { DistrictJson } from "./DistrictJson";
 
-export class QuarterMapParser {
+export class DistrictParser {
     private static CONVERSION_RATIO = 2;
     private mapRows: number;
     private mapCols: number;
@@ -52,11 +52,11 @@ export class QuarterMapParser {
         }
 
         const type = this.districtJson.charToType[char];
-        const halfCols = this.mapCols / 2 * QuarterMapParser.CONVERSION_RATIO;
-        const halfRows = this.mapRows / 2 * QuarterMapParser.CONVERSION_RATIO;
+        const halfCols = this.mapCols / 2 * DistrictParser.CONVERSION_RATIO;
+        const halfRows = this.mapRows / 2 * DistrictParser.CONVERSION_RATIO;
 
-        const posX = x * QuarterMapParser.CONVERSION_RATIO - halfCols;
-        const posY = -(y * QuarterMapParser.CONVERSION_RATIO - halfRows);
+        const posX = x * DistrictParser.CONVERSION_RATIO - halfCols;
+        const posY = -(y * DistrictParser.CONVERSION_RATIO - halfRows);
 
         return {
             position: new Vector3(posX, 0, posY),
@@ -64,7 +64,7 @@ export class QuarterMapParser {
             modelPath: this.districtJson.models[type],
             texturePath: this.districtJson.textures[type],
             textureMeshIndex: this.districtJson.textureMeshIndex[type] || 0,
-            colliderSize: parseStrVector(this.districtJson.colliderSizes[type]),
+            collider:  typeof this.districtJson.collider[type] === 'string' ? parseStrVector(<string> this.districtJson.collider[type]) : <boolean> this.districtJson.collider[type],
             rotation: rotation
         };
     }
