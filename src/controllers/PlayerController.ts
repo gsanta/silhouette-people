@@ -68,7 +68,7 @@ export class PlayerController extends AbstractController {
                 if (bikeAndDist[0].dist < 1.5) {
                     const bike = bikeAndDist[0].bike;
                     player.tag.removePlayer();
-                    const highlightAddon = player.addon.getByName(AddonName.PlayerHighlight);
+                    const highlightAddon = player.addon.getByName(AddonName.Highlight);
                     player.addon.remove(highlightAddon);
                     player.state.setDefaultState();
                     bike.tag.addPlayer();

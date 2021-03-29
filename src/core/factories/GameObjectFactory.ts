@@ -10,6 +10,8 @@ import { StateComponent } from "../components/StateComponent";
 import { HighlightAddon } from "../components/HighlightAddon";
 import { IFactoryFeature } from "./IFactoryFeacture";
 import { CollisionFactoryFeature } from "./CollisionFactoryFeature";
+import { TransportAddon } from "../components/TransportAddon";
+import { AddonFactoryFeature } from "./AddonFactoryFeature";
 
 function getIfStringEnumVal(value: string) {
     if (!isNaN(Number(value))) {
@@ -30,7 +32,7 @@ export class GameObjectFactory {
         this.districtObj = districtObj;
         this.world = world;
 
-        this.features.push(new CollisionFactoryFeature(world));
+        this.features.push(new CollisionFactoryFeature(world), new AddonFactoryFeature(world));
 
         for (const value in GameObjectType) {
             const str = getIfStringEnumVal(value);
@@ -75,6 +77,7 @@ export class GameObjectFactory {
         }
 
         gameObject.type = gameObjectJson.type;
+        gameObject.ch = gameObjectJson.ch;
 
         const tagStr = this.districtObj.json.tags[gameObject.type];
         if (tagStr) {
@@ -88,18 +91,18 @@ export class GameObjectFactory {
         const result = await this.load(json.modelPath);
         const id = this.generateId(json.type);
         
-        const gameObject = new GameObj(id, <Mesh> result.meshes[0], this.world);
+        const gameObject = new GameObj(id, this.findMainMesh(result.meshes as Mesh[]), this.world);
         gameObject.allMeshes = <Mesh[]> result.meshes;
+
+        // if (json.type === GameObjectType.BusStop) {
+            // gameObject.addon.add(new TransportAddon(this.world));
+        // }
 
         if (json.rotation) { gameObject.mainMesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
         this.createTexture(gameObject, json);
-        if (json.collider) { 
-            this.features.forEach(feature => feature.process(gameObject, json));
-            // this.createCollider(gameObject, json); 
-        } else {
+        if (!json.collider) { 
             this.setMeshPosition(gameObject, json);
         }
-
         gameObject.getMesh().parent = this.districtObj.basicComp.platform;
         gameObject.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
 
@@ -132,7 +135,6 @@ export class GameObjectFactory {
         gameObject.allMeshes = <Mesh[]> result.meshes;
         
         this.createTexture(gameObject, json);
-        this.features.forEach(feature => feature.process(gameObject, json));
         // this.createCollider(gameObject, json);
         this.setRotation(gameObject, json);
         // if (json.physics) { this.createPhysics(gameObject); }
@@ -157,11 +159,9 @@ export class GameObjectFactory {
 
         if (json.rotation) { gameObject.mainMesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
         
-        this.features.forEach(feature => feature.process(gameObject, json));
         // this.createCollider(gameObject, json);
         gameObject.colliderMesh.translate(Axis.Y, 0.5, Space.WORLD);
         this.createPhysics(gameObject);
-        this.applyCameraTarget(gameObject, json);
 
         gameObject.colliderMesh.parent = this.districtObj.basicComp.platform;
         gameObject.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
@@ -184,7 +184,6 @@ export class GameObjectFactory {
         gameObject.animationGroups = result.animationGroups;
 
         // if (json.rotation) { gameObject.mesh.rotate(Axis.Y, json.rotation, Space.WORLD); }
-        this.features.forEach(feature => feature.process(gameObject, json));
         // this.createCollider(gameObject, json);
         this.createPhysics(gameObject);
 
@@ -276,10 +275,7 @@ export class GameObjectFactory {
         gameObject.colliderMesh.physicsImpostor = new PhysicsImpostor(gameObject.colliderMesh, PhysicsImpostor.BoxImpostor, { mass: 1,  }, this.world.scene);
     }
 
-    private applyCameraTarget(gameObject: GameObj, json: GameObjectJson) {
-        const cameraTarget = MeshBuilder.CreateBox(`${json.id}-camera-target`, { width: 0.5, depth: 0.5, height: 0.5}, this.world.scene);
-        gameObject.cameraTargetMesh = cameraTarget;
-        cameraTarget.parent = gameObject.colliderMesh;
-        cameraTarget.isVisible = false;
+    private findMainMesh(meshes: Mesh[]) {
+        return meshes.find(mesh => mesh.getBoundingInfo().boundingBox.extendSize.x > 0) || meshes[0];
     }
 }

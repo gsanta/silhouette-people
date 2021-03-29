@@ -28,6 +28,10 @@ export class ActiveDistrictComponent {
         gameObject.quarterIndex = quarterIndex;
     }
 
+    getPlayer(): GameObj {
+        return this.getGameObjsByTag(GameObjTag.Player)[0];
+    }
+
     getGameObjsByTag(tag: GameObjTag): GameObj[] {
         return this.gameObjects.filter(gameObj => gameObj.tag.has(tag));
     }

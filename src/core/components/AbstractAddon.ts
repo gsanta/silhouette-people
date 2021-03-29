@@ -2,7 +2,8 @@ import { GameObj } from "../../model/objs/GameObj";
 
 
 export enum AddonName {
-    PlayerHighlight = 'PlayerHighlight'
+    Highlight = 'Highlight',
+    Transport = 'Transport'
 }
 
 export abstract class AbstractAddon {

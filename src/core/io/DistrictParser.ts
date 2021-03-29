@@ -65,7 +65,9 @@ export class DistrictParser {
             texturePath: this.districtJson.textures[type],
             textureMeshIndex: this.districtJson.textureMeshIndex[type] || 0,
             collider:  typeof this.districtJson.collider[type] === 'string' ? parseStrVector(<string> this.districtJson.collider[type]) : <boolean> this.districtJson.collider[type],
-            rotation: rotation
+            rotation: rotation,
+            ch: char,
+            addons: this.districtJson.addons[char]
         };
     }
 }

@@ -4,7 +4,7 @@ import { World } from "../../services/World";
 import { AbstractAddon, AddonName } from "./AbstractAddon";
 
 export class HighlightAddon extends AbstractAddon {
-    name: AddonName = AddonName.PlayerHighlight;
+    name: AddonName = AddonName.Highlight;
     private world: World;
 
     private selectionLight: SpotLight;

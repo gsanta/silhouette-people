@@ -22,7 +22,7 @@ export enum GameObjectType {
     House3 = 'house3',
     Bicycle1 = 'bicycle1',
     Road1 = 'road1',
-    BusStop = 'BusStop'
+    BusStop = 'busStop'
 }
 
 export enum GameObjTag {
@@ -33,6 +33,7 @@ export enum GameObjTag {
 
 export interface GameObjectJson {
     id?: string;
+    ch: string;
     type: GameObjectType;
     position: Vector3;
     modelPath?: string;
@@ -47,12 +48,15 @@ export interface GameObjectJson {
     cameraTarget?: {
         relativPos: Vector3;
     };
+
+    addons?: string[];
 }
 
 
 export class GameObj {
     readonly id: string;
     readonly mainMesh: Mesh;
+    ch: string;
     type: GameObjectType;
     // readonly location: LocationContext;
     velocity: Vector3;
