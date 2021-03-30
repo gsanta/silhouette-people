@@ -1,4 +1,4 @@
-import { Vector2 } from "babylonjs";
+import { Mesh, Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
 import { GameObj, GameObjTag } from "../../model/objs/GameObj";
 
@@ -17,5 +17,10 @@ export class MeshComponent {
     getDimensions(): Vector3 {
         const mesh = this.gameObj.getMesh();
         return mesh.getBoundingInfo().boundingBox.extendSizeWorld;
+    }
+
+    addMeshes(meshes: Mesh[]) {
+        this.gameObj.mainMesh = meshes[0];
+        this.gameObj.allMeshes = meshes;
     }
 }

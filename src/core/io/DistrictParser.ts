@@ -1,5 +1,6 @@
 import { Vector3 } from "babylonjs";
 import { GameObjectJson, GameObjectType } from "../../model/objs/GameObj";
+import { toStrVector } from "../factories/AbstractFactoryFeacture";
 import { DistrictJson } from "./DistrictJson";
 
 export class DistrictParser {
@@ -57,6 +58,12 @@ export class DistrictParser {
 
         const posX = x * DistrictParser.CONVERSION_RATIO - halfCols;
         const posY = -(y * DistrictParser.CONVERSION_RATIO - halfRows);
+        const pos = new Vector3(posX, 0, posY);
+
+        const typeFeatures = this.districtJson.features[type] || [];
+        const charFeatures = this.districtJson.features[char] || [];
+        const features = [...typeFeatures, ...charFeatures];
+        features.splice(1, 0, `Position ${toStrVector(pos)}`);
 
         return {
             position: new Vector3(posX, 0, posY),
@@ -67,7 +74,8 @@ export class DistrictParser {
             collider:  typeof this.districtJson.collider[type] === 'string' ? parseStrVector(<string> this.districtJson.collider[type]) : <boolean> this.districtJson.collider[type],
             rotation: rotation,
             ch: char,
-            addons: this.districtJson.addons[char]
+            features: features
+            // addons: this.districtJson.addons[char]
         };
     }
 }

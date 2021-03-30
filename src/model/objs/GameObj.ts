@@ -50,12 +50,13 @@ export interface GameObjectJson {
     };
 
     addons?: string[];
+    features?: string[];
 }
 
 
 export class GameObj {
     readonly id: string;
-    readonly mainMesh: Mesh;
+    mainMesh: Mesh;
     ch: string;
     type: GameObjectType;
     // readonly location: LocationContext;
@@ -82,9 +83,7 @@ export class GameObj {
     private frontDirection: Vector3 = new Vector3(0, 0, 1);
     private frontDirection2D: Vector2 = new Vector2(0, 1);
 
-    constructor(id: string, mesh: Mesh, world: World) {
-        this.mainMesh = mesh;
-        mesh.name = id;
+    constructor(id: string, world: World) {
         this.id = id;
 
         this.tag = new TagComponent();

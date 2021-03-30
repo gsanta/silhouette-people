@@ -14,9 +14,5 @@ export class TransportAddon extends AbstractAddon {
 
     update(gameObj: GameObj) {
         const player = this.world.store.getActiveDistrict().activeComp.getPlayer();
-
-        if (gameObj.getMesh().intersectsMesh(player.getMesh())) {
-            alert('intersection!')
-        }
     }
 }

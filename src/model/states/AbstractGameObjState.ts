@@ -1,17 +1,19 @@
 import { GameObj } from "../objs/GameObj";
 
-export enum GameObjectStateType {
-    Idle = 'Idle',
-    Walking = 'Walking',
-    EnemySearching = 'EnemySearching',
-    EnemyIdle = 'EnemyIdle'
+export enum GameObjStateName {
+    PlayerIdleState = 'PlayerIdleState',
+    PlayerMovingState = 'PlayerMovingState',
+    EnemyMovingState = 'EnemyMovingState',
+    EnemyIdleState = 'EnemyIdleState',
+    BikeIdleState = 'BikeIdleState',
+    BikeMovingState = 'BikeMovingState'
 }
 
 export abstract class AbstractGameObjState {
-    readonly type: GameObjectStateType;
+    readonly type: GameObjStateName;
     protected readonly gameObject: GameObj;
 
-    constructor(type: GameObjectStateType, gameObject: GameObj) {
+    constructor(type: GameObjStateName, gameObject: GameObj) {
         this.type = type;
         this.gameObject = gameObject;
     }

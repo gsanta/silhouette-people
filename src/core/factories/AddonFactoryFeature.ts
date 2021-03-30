@@ -3,18 +3,27 @@ import { World } from "../../services/World";
 import { AddonName } from "../components/AbstractAddon";
 import { HighlightAddon } from "../components/HighlightAddon";
 import { TransportAddon } from "../components/TransportAddon";
-import { IFactoryFeature } from "./IFactoryFeacture";
+import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
 
 
-export class AddonFactoryFeature implements IFactoryFeature {
+export class AddonFactoryFeature extends AbstractFactoryFeature {
     private world: World;
 
     constructor(world: World) {
+        super();
         this.world = world;
     }
 
-    process(gameObject: GameObj, json: GameObjectJson): void {
-        (json.addons || []).forEach(addon => gameObject.addon.add(this.createAddon(<AddonName> addon)));
+    feature = 'Addon';
+
+    isAsync() {
+        return false;
+    }
+
+    processFeature(gameObject: GameObj, feature: string): void {
+        const [_feature, ...addons] = feature.split(' ');
+
+        addons.forEach(addon => gameObject.addon.add(this.createAddon(<AddonName> addon.trim())));
     }
 
     private createAddon(addonName: AddonName) {

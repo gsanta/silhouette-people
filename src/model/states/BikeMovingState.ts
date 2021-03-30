@@ -2,11 +2,11 @@
 import { Axis, Space, Vector2, Vector3 } from "babylonjs";
 import { World } from "../../services/World";
 import { GameObj } from "../objs/GameObj";
-import { AbstractGameObjState } from "./AbstractGameObjState";
+import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
 import { BikeSpeedPhysics, BikeSpeedState } from "./BikeSpeedPhysics";
-import { IdleBikeState } from "./IdleBikeState";
+import { BikeIdleState } from "./BikeIdleState";
 
-export class MovingBikeState extends AbstractGameObjState {
+export class BikeMovingState extends AbstractGameObjState {
     private readonly world: World;
     private readonly rotationSpeed = Math.PI / 30;
     private speedPhysics: BikeSpeedPhysics;
@@ -16,7 +16,7 @@ export class MovingBikeState extends AbstractGameObjState {
     private speedStates: Set<BikeSpeedState> = new Set();
 
     constructor(gameObject: GameObj, world: World) {
-        super(undefined, gameObject);
+        super(GameObjStateName.BikeMovingState, gameObject);
         this.world = world;
 
         const speedRanges: [Vector2, Vector2][] = [
@@ -97,7 +97,7 @@ export class MovingBikeState extends AbstractGameObjState {
             !keyboard.checker.isTurnLeft() &&
             !keyboard.checker.isTurnRight()
         ) {
-            return new IdleBikeState(this.gameObject, this.world);
+            return new BikeIdleState(this.gameObject, this.world);
         }
 
         return undefined;

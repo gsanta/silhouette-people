@@ -82,72 +82,70 @@
     },
     "features": {
         "tree1": [
-            "Collider 0.5:5:0.5",
-            "Model tree1.glb"
+            "Model tree1.glb",
+            "Collider 0.5:5:0.5"
         ],
         "tree2": [
-            "Collider 0.5:5:0.5",
-            "Model tree2.glb"
+            "Model tree2.glb",
+            "Collider 0.5:5:0.5"
         ],
         "tree3": [
-            "Collider 0.5:5:0.5",
-            "Model tree3.glb"
+            "Model tree3.glb",
+            "Collider 0.5:5:0.5"
         ],
         "tree4": [
-            "Collider 0.3:5:0.3",
-            "Model tree4.glb"
+            "Model tree4.glb",
+            "Collider 0.3:5:0.3"
         ],
         "tree5": [
-            "Collider 0.3:5:0.3",
-            "Model tree5.glb"
+            "Model tree5.glb",
+            "Collider 0.3:5:0.3"
         ],
         "tree6": [
-            "Collider 0.3:5:0.3",
-            "Model tree6.glb"
+            "Model tree6.glb",
+            "Collider 0.3:5:0.3"
         ],
         "player": [
-            "Collider 1:3.5:1",
             "Model character.glb",
+            "Collider 1:3.5:1",
+            "Physics 1",
             "Tag Player"
         ],
         "enemy": [
-            "Collider 1:3.5:1",
             "Model character.glb",
+            "Collider 1:3.5:1",
+            "Physics 1",
             "Tag Enemy"
         ],
         "house1": [
-            "Collider 1:1:1",
+            "Model house1.glb",
             "Texture palette.jpg",
-            "Model house1.glb"
+            "Collider 1:1:1"
         ],
         "house2": [
-            "Collider 1:1:1",
+            "Model house2.glb",
             "Texture palette.jpg",
-            "Model house2.glb"
+            "Collider 1:1:1"
         ],
         "house3": [
-            "Collider 1:1:1",
+            "Model house3.glb",
             "Texture palette.jpg",
-            "Model house3.glb"
+            "Collider 1:1:1"
         ],
         "bicycle1": [
-            "Collider 1:1:1",
-            "Texture palette.jpg",
             "Model bicycle1.glb",
+            "Texture palette.jpg",
+            "Collider 1:1:1",
             "Tag Bicycle"
         ],
         "busStop": [
+            "Model bus_stop.glb",
             "Collider",
-            "Model bus_stop.glb"
+            "Addon Transport"
         ],
         "road1": [
-            "Texture palette.jpg 1",
-            "Model road1.glb"
-        ]
-    },
-    "addons": {
-        "S": [
-            "Transport"
+            "Model road1.glb",
+            "Texture palette.jpg 1"
         ]
     }
 }

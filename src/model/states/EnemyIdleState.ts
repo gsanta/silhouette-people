@@ -1,10 +1,10 @@
-import { AbstractGameObjState, GameObjectStateType } from "./AbstractGameObjState";
+import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
 import { GameObj } from "../objs/GameObj";
 
-export class IdleEnemyState extends AbstractGameObjState {
+export class EnemyIdleState extends AbstractGameObjState {
 
     constructor(gameObject: GameObj) {
-        super(GameObjectStateType.EnemyIdle, gameObject);
+        super(GameObjStateName.EnemyIdleState, gameObject);
     }
 
     updateAnimation() {

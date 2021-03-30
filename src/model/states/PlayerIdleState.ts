@@ -1,13 +1,13 @@
 import { GameObj } from "../objs/GameObj";
 import { World } from "../../services/World";
-import { AbstractGameObjState, GameObjectStateType } from "./AbstractGameObjState";
-import { MovingCharacterState } from "./MovingCharacterState";
+import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
+import { PlayerMovingState } from "./PlayerMovingState";
 
-export class IdlePlayerState extends AbstractGameObjState {
+export class PlayerIdleState extends AbstractGameObjState {
     private world: World;
 
     constructor(gameObject: GameObj, world: World) {
-        super(GameObjectStateType.Idle, gameObject);
+        super(GameObjStateName.PlayerIdleState, gameObject);
         this.world = world;
     }
 
@@ -22,7 +22,7 @@ export class IdlePlayerState extends AbstractGameObjState {
             keyboard.checker.isTurnLeft() ||
             keyboard.checker.isTurnRight()
         ) {
-            return new MovingCharacterState(this.gameObject, this.world);
+            return new PlayerMovingState(this.gameObject, this.world);
         }
     }
 

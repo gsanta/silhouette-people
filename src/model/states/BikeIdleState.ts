@@ -1,13 +1,13 @@
 import { World } from "../../services/World";
-import { GameObj, GameObjTag } from "../objs/GameObj";
-import { AbstractGameObjState } from "./AbstractGameObjState";
-import { MovingBikeState } from "./MovingBikeState";
+import { GameObj } from "../objs/GameObj";
+import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
+import { BikeMovingState } from "./BikeMovingState";
 
-export class IdleBikeState extends AbstractGameObjState {
+export class BikeIdleState extends AbstractGameObjState {
     private world: World;
 
     constructor(gameObject: GameObj, world: World) {
-        super(undefined, gameObject);
+        super(GameObjStateName.BikeIdleState, gameObject);
         this.world = world;
     }
 
@@ -22,7 +22,7 @@ export class IdleBikeState extends AbstractGameObjState {
             keyboard.checker.isTurnLeft() ||
             keyboard.checker.isTurnRight()
         ) {
-            return new MovingBikeState(this.gameObject, this.world);
+            return new BikeMovingState(this.gameObject, this.world);
         }
     
         return undefined;
