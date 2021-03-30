@@ -64,7 +64,8 @@
             "Collider 1:3.5:1",
             "Physics 1",
             "Tag Player",
-            "State PlayerIdleState"
+            "State PlayerIdleState",
+            "Addon Highlight"
         ],
         "enemy": [
             "Model character.glb 0",

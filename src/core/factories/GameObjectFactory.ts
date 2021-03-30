@@ -45,7 +45,7 @@ export class GameObjectFactory {
         gameObject.ch = gameObjectJson.ch;
 
         if (gameObjectJson.features) {
-            this.processFeatureList(gameObject, gameObjectJson);
+            await this.processFeatureList(gameObject, gameObjectJson);
         }
 
         return gameObject;
@@ -64,7 +64,7 @@ export class GameObjectFactory {
     }
 
     private async processFeature(factory: AbstractFactoryFeature, gameObj: GameObj, feature: string): Promise<void> {
-        const [_featureName, ...attrs] = feature;
+        const [_featureName, ...attrs] = feature.split(' ').map(str => str.trim());
         if (factory.isAsync()) {
             await factory.processFeatureAsync(gameObj, attrs);
         } else {
