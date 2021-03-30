@@ -8,8 +8,8 @@ export class PositionFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObj: GameObj, feature: string) {
-        const [_feature, posStr] = feature.split(' ');
+    processFeature(gameObj: GameObj, attrs: string[]) {
+        const [posStr] = attrs;
         const pos = parseStrVector(posStr.trim());
 
         gameObj.mainMesh.setAbsolutePosition(pos);

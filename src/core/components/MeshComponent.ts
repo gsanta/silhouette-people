@@ -19,8 +19,8 @@ export class MeshComponent {
         return mesh.getBoundingInfo().boundingBox.extendSizeWorld;
     }
 
-    addMeshes(meshes: Mesh[]) {
-        this.gameObj.mainMesh = meshes[0];
+    addMeshes(meshes: Mesh[], mainMesh: Mesh) {
+        this.gameObj.mainMesh = mainMesh;
         this.gameObj.allMeshes = meshes;
     }
 }

@@ -20,9 +20,8 @@ export class AddonFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObject: GameObj, feature: string): void {
-        const [_feature, ...addons] = feature.split(' ');
-
+    processFeature(gameObject: GameObj, attrs: string[]): void {
+        const addons = attrs;
         addons.forEach(addon => gameObject.addon.add(this.createAddon(<AddonName> addon.trim())));
     }
 

@@ -5,8 +5,8 @@ export abstract class AbstractFactoryFeature {
     abstract feature: string;
 
     abstract isAsync(): boolean;
-    processFeature(gameObject: GameObj, feature: string) { throw new Error('Not implemented.'); }
-    processFeatureAsync(gameObject: GameObj, feature: string): Promise<void> { throw new Error('Not implemented.'); }
+    processFeature(gameObject: GameObj, attrs: string[]) { throw new Error('Not implemented.'); }
+    processFeatureAsync(gameObject: GameObj, attrs: string[]): Promise<void> { throw new Error('Not implemented.'); }
 
     // process(gameObject: GameObj, json: GameObjectJson): void;
 }

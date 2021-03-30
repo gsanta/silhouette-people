@@ -26,8 +26,8 @@ export class StateFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObj: GameObj, feature: string) {
-        const [_feature, state] = feature.split(' ');
+    processFeature(gameObj: GameObj, attrs: string[]) {
+        const [state] = attrs;
 
         const initState = this.createState(gameObj, state as GameObjStateName);
         gameObj.state = new StateComponent(initState, this.world);

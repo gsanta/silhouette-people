@@ -68,10 +68,10 @@ export class DistrictParser {
         return {
             position: new Vector3(posX, 0, posY),
             type: <GameObjectType> type,
-            modelPath: this.districtJson.models[type],
-            texturePath: this.districtJson.textures[type],
-            textureMeshIndex: this.districtJson.textureMeshIndex[type] || 0,
-            collider:  typeof this.districtJson.collider[type] === 'string' ? parseStrVector(<string> this.districtJson.collider[type]) : <boolean> this.districtJson.collider[type],
+            // modelPath: this.districtJson.models[type],
+            // texturePath: this.districtJson.textures[type],
+            // textureMeshIndex: this.districtJson.textureMeshIndex[type] || 0,
+            // collider:  typeof this.districtJson.collider[type] === 'string' ? parseStrVector(<string> this.districtJson.collider[type]) : <boolean> this.districtJson.collider[type],
             rotation: rotation,
             ch: char,
             features: features

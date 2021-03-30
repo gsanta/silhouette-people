@@ -9,9 +9,7 @@ export class TagFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObject: GameObj, feature: string) {
-        const [_feature, ...rest] = feature.split(' ');
-    
-        gameObject.tag.add(...(rest as GameObjTag[]));
+    processFeature(gameObject: GameObj, attrs: string[]) {
+        gameObject.tag.add(...(attrs as GameObjTag[]));
     }
 }

@@ -18,10 +18,9 @@ export class TextureFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObject: GameObj, feature: string) {
-        const parts = feature.split(' ');
-        const texturePath = feature.split(' ')[1].trim();
-        const index = parts.length > 2 ? parseInt(parts[2], 10) : 0;
+    processFeature(gameObject: GameObj, attrs: string[]) {
+        const texturePath = attrs[1]
+        const index = attrs.length > 2 ? parseInt(attrs[2], 10) : 0;
 
         const texture = new Texture(`assets/textures/${texturePath}`, this.world.scene);
         const material = new StandardMaterial(gameObject.id, this.world.scene);

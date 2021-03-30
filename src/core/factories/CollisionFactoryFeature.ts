@@ -1,5 +1,4 @@
-import { Axis, MeshBuilder, Space, StandardMaterial } from "babylonjs";
-import { Vector3 } from "babylonjs/Maths/math.vector";
+import { Axis, MeshBuilder, Space, StandardMaterial, Vector3 } from "babylonjs";
 import { GameObj, GameObjectJson } from "../../model/objs/GameObj";
 import { World } from "../../services/World";
 import { AbstractFactoryFeature, parseStrVector } from "./AbstractFactoryFeacture";
@@ -19,24 +18,29 @@ export class CollisionFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObj: GameObj, feature: string) {
-        const [_feature, dimStr] = feature.split(' ');
+    processFeature(gameObj: GameObj, attrs: string[]) {
+        const dimStr = attrs[0];
     
         const dimensions = dimStr ? parseStrVector(dimStr) : gameObj.mesh.getDimensions();
-        const position = gameObj.getPosition();
+        const position = gameObj.getPosition().clone();
 
         const [width, depth, height] = [dimensions.x, dimensions.z, dimensions.y];
         const collider = MeshBuilder.CreateBox(`${gameObj.id}-collider`, { width, depth, height}, this.world.scene);
         collider.checkCollisions = true;
-        gameObj.mainMesh.parent = collider;
+        gameObj.getMesh().setAbsolutePosition(new Vector3(0, 0, 0));
+        
         collider.setAbsolutePosition(position);
-        collider.translate(Axis.Y, dimensions.y / 2, Space.WORLD);
-        gameObj.mainMesh.translate(Axis.Y, -dimensions.y / 2, Space.LOCAL);
+        gameObj.getMesh().parent = collider;
+        // collider.setAbsolutePosition(position);
+        // collider.translate(Axis.Y, dimensions.y / 2, Space.WORLD);
+        // gameObj.mainMesh.translate(Axis.Y, -dimensions.y / 2, Space.LOCAL);
         
         const colliderMaterial = new StandardMaterial(`${gameObj.id}-collider-material`, this.world.scene);
         colliderMaterial.alpha = 0;
         collider.material = colliderMaterial;
         gameObj.colliderMesh = collider;
+        
+        gameObj.getMesh().parent = this.world.store.getActiveDistrict().basicComp.platform;
     }
 
     // process(gameObject: GameObj, json: GameObjectJson): void {
