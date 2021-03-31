@@ -9,13 +9,11 @@ export class DistrictParser {
     private mapCols: number;
     private districtJson: DistrictJson;
     private mapLines: string[];
-    private rotMapLines: string[];
 
     parse(json: DistrictJson): GameObjectJson[] {
         this.districtJson = json;
 
         this.mapLines = this.getMapLines(json.map);
-        this.rotMapLines = this.getMapLines(json.rotationMap);
 
         this.mapRows = this.mapLines.length;
         this.mapCols = this.mapLines[0].length;
@@ -42,14 +40,13 @@ export class DistrictParser {
     }
 
     private createGameObject(x: number, y: number): GameObjectJson {
-        if (this.mapLines[y][x] === '.') { return undefined }
+        let char = this.mapLines[y][x];
+        if (char === '.' || isNumeric(char)) { return undefined }
 
-        const char = this.mapLines[y][x];
-        const rotationChar = this.rotMapLines[y][x];
-
-        let rotation = 0;
-        if (rotationChar !== '.') {
-            rotation = parseInt(rotationChar, 10) * Math.PI / 4;
+        x += 1;
+        while(this.mapLines[y].length > x && isNumeric(this.mapLines[y][x])) {
+            char = char + this.mapLines[y][x];
+            x += 1;
         }
 
         const type = this.districtJson.charToType[char];
@@ -68,21 +65,12 @@ export class DistrictParser {
         return {
             position: new Vector3(posX, 0, posY),
             type: <GameObjectType> type,
-            // modelPath: this.districtJson.models[type],
-            // texturePath: this.districtJson.textures[type],
-            // textureMeshIndex: this.districtJson.textureMeshIndex[type] || 0,
-            // collider:  typeof this.districtJson.collider[type] === 'string' ? parseStrVector(<string> this.districtJson.collider[type]) : <boolean> this.districtJson.collider[type],
-            rotation: rotation,
             ch: char,
             features: features
-            // addons: this.districtJson.addons[char]
         };
     }
 }
 
-function parseStrVector(vec: string): Vector3 {
-    if (!vec) { return undefined; }
-    
-    const [x, y, z] = vec.split(':').map(str => parseFloat(str));
-    return new Vector3(x, y, z);
+function isNumeric(num: any){
+    return !isNaN(num);
 }

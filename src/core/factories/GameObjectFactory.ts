@@ -10,6 +10,7 @@ import { CollisionFactoryFeature } from "./CollisionFactoryFeature";
 import { ModelFactoryFeature } from "./ModelFactoryFeature";
 import { PhysicsFactoryFeature } from "./PhysicsFactoryFeature";
 import { PositionFactoryFeature } from "./PositionFactoryFeature";
+import { RotateFactoryFeature } from "./RotateFactoryFeature";
 import { StateFactoryFeature } from "./StateFactoryFeature";
 import { TagFactoryFeature } from "./TagFactoryFeature";
 import { TextureFactoryFeature } from "./TextureFactoryFeature";
@@ -34,6 +35,7 @@ export class GameObjectFactory {
             new StateFactoryFeature(world),
             new TagFactoryFeature(),
             new AddonFactoryFeature(world),
+            new RotateFactoryFeature()
         ];
     }
 

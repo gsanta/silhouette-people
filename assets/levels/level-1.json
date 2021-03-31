@@ -19,17 +19,20 @@
         }
     ],
     "charToType": {
-        "1": "tree1",
-        "2": "tree2",
-        "3": "tree3",
-        "4": "tree4",
-        "5": "tree5",
-        "6": "tree6",
+        "T": "tree1",
+        "T2": "tree2",
+        "T3": "tree3",
+        "T4": "tree4",
+        "T5": "tree5",
+        "T6": "tree6",
         "P": "player",
         "E": "enemy",
         "H": "house1",
-        "I": "house2",
-        "J": "house3",
+        "H1": "house1",
+        "H2": "house2",
+        "H4": "house2",
+        "H3": "house3",
+        "H5": "house3",
         "B": "bicycle1",
         "R": "road1",
         "S": "busStop"
@@ -103,6 +106,24 @@
         "road1": [
             "Model road1.glb",
             "Texture palette.jpg 1"
+        ],
+        "H1": [
+            "Rotate 180"
+        ],
+        "H": [
+            "Rotate 90"
+        ],
+        "H2": [
+            "Rotate 90"
+        ],
+        "H3": [
+            "Rotate 90"
+        ],
+        "H5": [
+            "Rotate 180"
+        ],
+        "H4": [
+            "Rotate -90"
         ]
     }
 }
