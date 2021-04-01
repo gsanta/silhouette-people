@@ -19,4 +19,8 @@ export class LoaderService {
         districts.forEach(district => district.activatorComp.initialize());
         await districts[0].activatorComp.activate();
     }
+
+    async loadDistrict(id: string) {
+        await this.world.store.getDistrict(id).activatorComp.activate();
+    }
 }

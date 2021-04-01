@@ -1,4 +1,4 @@
-import { Axis, MeshBuilder, Space, StandardMaterial, Vector3 } from "babylonjs";
+import { Axis, Mesh, MeshBuilder, Space, StandardMaterial, Vector3 } from "babylonjs";
 import { GameObj, GameObjectJson } from "../../model/objs/GameObj";
 import { World } from "../../services/World";
 import { AbstractFactoryFeature, parseStrVector } from "./AbstractFactoryFeacture";
@@ -27,10 +27,16 @@ export class CollisionFactoryFeature extends AbstractFactoryFeature {
         const [width, depth, height] = [dimensions.x, dimensions.z, dimensions.y];
         const collider = MeshBuilder.CreateBox(`${gameObj.id}-collider`, { width, depth, height}, this.world.scene);
         collider.checkCollisions = true;
-        gameObj.getMesh().setAbsolutePosition(new Vector3(0, 0, 0));
+
+        gameObj.getMesh().setAbsolutePosition(new Vector3(0, position.y, 0));
+        gameObj.getMesh().parent = null;
         
-        collider.setAbsolutePosition(position);
+        // collider.setAbsolutePosition(position);
+        collider.translate(Axis.X, position.x, Space.WORLD);
+        collider.translate(Axis.Z, position.z, Space.WORLD);
+
         gameObj.getMesh().parent = collider;
+
         // collider.setAbsolutePosition(position);
         // collider.translate(Axis.Y, dimensions.y / 2, Space.WORLD);
         // gameObj.mainMesh.translate(Axis.Y, -dimensions.y / 2, Space.LOCAL);

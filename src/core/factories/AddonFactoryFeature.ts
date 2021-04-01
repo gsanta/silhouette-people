@@ -21,16 +21,20 @@ export class AddonFactoryFeature extends AbstractFactoryFeature {
     }
 
     processFeature(gameObject: GameObj, attrs: string[]): void {
-        const addons = attrs;
-        addons.forEach(addon => gameObject.addon.add(this.createAddon(<AddonName> addon.trim())));
+        const [addonName, ...addonAttrs] = attrs;
+        
+        const addon = this.createAddon(gameObject, <AddonName> addonName.trim(), addonAttrs);
+        gameObject.addon.add(addon);
+        // addons.forEach(addon => gameObject.addon.add(this.createAddon(gameObject, <AddonName> addon.trim())));
     }
 
-    private createAddon(addonName: AddonName) {
+    private createAddon(gameObj: GameObj, addonName: AddonName, addonAttrs: any[]) {
         switch(addonName) {
             case AddonName.Highlight:
                 return new HighlightAddon(this.world);
             case AddonName.Transport:
-                return new TransportAddon(this.world);
+                const [targetDistrict, targetLocation]: [string, number] = [addonAttrs[0], parseInt(addonAttrs[1], 10)];
+                return new TransportAddon(gameObj, targetDistrict, targetLocation, this.world);
         }
     } 
 }

@@ -34,4 +34,8 @@ export class WorldStore {
     getGameObjsByType(...type: GameObjectType[]): GameObj[] {
         return this.getActiveDistrict().activeComp.getGameObjsByType(...type);
     }
+
+    getPlayer() {
+        return this.getActiveDistrict().activeComp.getPlayer();
+    }
 }

@@ -26,6 +26,8 @@ export class DistrictActivatorComponent {
     }
 
     async activate() {
+        this.world.controller.camera.setCameraLocation(this.district, 3);
+
         const districtSize = this.district.size.x;
         const json = this.district.json;
 
@@ -45,5 +47,9 @@ export class DistrictActivatorComponent {
         gameObjects.forEach(obj => activeComp.addGameObject(obj));
             
         activeComp.getQuarter(1).getMap().fillMeshes(colliderMeshes);
+    }
+
+    deactivate() {
+        this.district.activeComp.remove();
     }
 }

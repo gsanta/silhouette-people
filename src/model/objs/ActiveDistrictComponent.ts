@@ -44,6 +44,11 @@ export class ActiveDistrictComponent {
         return this.gameObjects;
     }
 
+    remove() {
+        this.gameObjects.forEach(obj => obj.dispose());
+        this.district.activeComp = undefined;
+    }
+
     private calcQuarterIndex(gameObject: GameObj): number {
         const pos = gameObject.getPosition2D();
 

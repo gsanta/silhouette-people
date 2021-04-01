@@ -49,6 +49,7 @@ function initGame(world: World) {
 
     const camera = new ArcRotateCamera("camera", Math.PI + Math.PI / 3, Math.PI / 3, 120, new Vector3(0, 0, 0), scene);
     camera.attachControl(canvas, true);
+    world.camera = camera;
 
     // var camera = new FollowCamera("FollowCam", new Vector3(0, 20, 0), scene);
     // // The goal distance of camera from target

@@ -175,7 +175,14 @@ export class GameObj {
             this.currentAnimation.stop();
             this.currentAnimation = undefined;
         }
-    } 
+    }
+
+    dispose() {
+        this.allMeshes.forEach(mesh => mesh.dispose());
+        if (this.colliderMesh) {
+            this.colliderMesh.dispose();
+        }
+    }
 
     getMesh() {
         return this.colliderMesh ? this.colliderMesh : this.mainMesh;
