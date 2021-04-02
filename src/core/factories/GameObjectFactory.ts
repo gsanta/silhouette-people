@@ -74,8 +74,8 @@ export class GameObjectFactory {
         }
     }
 
-    createGround(size: number): Mesh {
-        const ground = MeshBuilder.CreateBox('ground', { width: size, depth: size, height: 0.2 });
+    createGround(id: string, size: number): Mesh {
+        const ground = MeshBuilder.CreateBox(id, { width: size, depth: size, height: 0.2 });
         ground.translate(Axis.Y, -0.21, Space.WORLD);
         const material = new StandardMaterial(`ground--material`, this.world.scene);
         material.diffuseColor = Color3.FromHexString('#FFFFFF');

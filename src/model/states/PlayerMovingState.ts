@@ -61,7 +61,7 @@ export class PlayerMovingState extends AbstractGameObjState {
         var direction = this.gameObject.mainMesh.getDirection(forward);
         direction.normalize().multiplyInPlace(new Vector3(0.04, 0.04, 0.04));
         mesh.moveWithCollisions(direction);
-        mesh.rotate(Axis.Y, this.gameObject.rotation.y, Space.LOCAL);
+        mesh.rotate(Axis.Y, this.gameObject.rotation.y, Space.WORLD);
 
         return undefined;
     }

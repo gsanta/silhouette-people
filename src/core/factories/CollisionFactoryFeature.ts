@@ -28,14 +28,19 @@ export class CollisionFactoryFeature extends AbstractFactoryFeature {
         const collider = MeshBuilder.CreateBox(`${gameObj.id}-collider`, { width, depth, height}, this.world.scene);
         collider.checkCollisions = true;
 
-        gameObj.getMesh().setAbsolutePosition(new Vector3(0, position.y, 0));
-        gameObj.getMesh().parent = null;
+        const mainMesh = gameObj.getMesh(); 
+        mainMesh.setAbsolutePosition(new Vector3(0, position.y, 0));
+        mainMesh.parent = null;
         
+        gameObj.colliderMesh = collider;
+        gameObj.colliderMesh.parent = this.world.store.getActiveDistrict().basicComp.platform;
+
         // collider.setAbsolutePosition(position);
         collider.translate(Axis.X, position.x, Space.WORLD);
         collider.translate(Axis.Z, position.z, Space.WORLD);
+        collider.translate(Axis.Y, 3, Space.WORLD);
 
-        gameObj.getMesh().parent = collider;
+        mainMesh.parent = collider;
 
         // collider.setAbsolutePosition(position);
         // collider.translate(Axis.Y, dimensions.y / 2, Space.WORLD);
@@ -44,9 +49,7 @@ export class CollisionFactoryFeature extends AbstractFactoryFeature {
         const colliderMaterial = new StandardMaterial(`${gameObj.id}-collider-material`, this.world.scene);
         colliderMaterial.alpha = 0;
         collider.material = colliderMaterial;
-        gameObj.colliderMesh = collider;
         
-        gameObj.getMesh().parent = this.world.store.getActiveDistrict().basicComp.platform;
     }
 
     // process(gameObject: GameObj, json: GameObjectJson): void {

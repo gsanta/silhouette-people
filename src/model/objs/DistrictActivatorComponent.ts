@@ -19,7 +19,7 @@ export class DistrictActivatorComponent {
     async initialize() {
         const districtSize = this.district.size.x;
 
-        const ground = this.district.factory.createGround(districtSize);
+        const ground = this.district.factory.createGround(this.district.id, districtSize);
         ground.translate(Axis.X, this.district.translate.x, Space.WORLD);
         ground.translate(Axis.Z, this.district.translate.y, Space.WORLD);
         this.district.basicComp.platform = ground;
