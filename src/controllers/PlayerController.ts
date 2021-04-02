@@ -26,7 +26,7 @@ export class PlayerController extends AbstractController {
     setPlayer(obj: GameObj) {
         const scene = this.world.scene;
 
-        const targetObj = this.world.store.getGameObjsByTag(GameObjTag.Player)[0];
+        const targetObj = this.world.districtStore.getGameObjsByTag(GameObjTag.Player)[0];
 
         // this.selectionLight.parent = obj.getMesh();
 
@@ -54,8 +54,8 @@ export class PlayerController extends AbstractController {
     keyboard(e: KeyboardEvent) {
         switch(e.key) {
             case 'b':
-                const bicycles = this.world.store.getGameObjsByTag(GameObjTag.Bicycle);
-                const player = this.world.store.getGameObjsByTag(GameObjTag.Player)[0];
+                const bicycles = this.world.districtStore.getGameObjsByTag(GameObjTag.Bicycle);
+                const player = this.world.districtStore.getGameObjsByTag(GameObjTag.Player)[0];
 
                 const bikeAndDist = bicycles.map(bicycle => {
                     return {

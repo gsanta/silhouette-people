@@ -2,19 +2,19 @@ import { Engine, Scene } from "babylonjs";
 import { DebugService } from "./DebugService";
 import { KeyboardService } from "./KeyboardService";
 import { GuiService } from "./GuiService";
-import { WorldStore } from "../stores/WorldStore";
+import { DistrictStore } from "../stores/DistrictStore";
 import { FactoryService } from "./FactoryService";
 import { JsonStore } from "../stores/JsonStore";
 import { LoaderService } from "./LoaderService";
 import { ControllerService } from "./ControllerService";
 import { ArcRotateCamera } from "babylonjs/Cameras/arcRotateCamera";
+import { GlobalStore } from "../stores/GlobalStore";
 
 export class World {
     keyboard: KeyboardService;
 
     scene: Scene;
     engine: Engine;
-    camera: ArcRotateCamera;
 
     debug: DebugService;
     gui: GuiService;
@@ -22,7 +22,8 @@ export class World {
     loader: LoaderService;
     controller: ControllerService;
 
-    store: WorldStore;
+    districtStore: DistrictStore;
+    globalStore: GlobalStore;
     jsonStore: JsonStore;
     
     private isReady: boolean = false;
@@ -35,7 +36,8 @@ export class World {
         this.factory = new FactoryService(this);
         this.loader = new LoaderService(this);
         this.controller = new ControllerService(this);
-        this.store = new WorldStore();
+        this.districtStore = new DistrictStore();
+        this.globalStore = new GlobalStore();
         this.jsonStore = new JsonStore();
     }
 

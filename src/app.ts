@@ -2,6 +2,7 @@ import { ArcRotateCamera, CannonJSPlugin, Color4, Engine, HemisphericLight, Scen
 import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
+import { CameraObj } from "./model/objs/CameraObj";
 import { World } from "./services/World";
 import { MainUI } from './ui/MainUI';
 
@@ -49,7 +50,8 @@ function initGame(world: World) {
 
     const camera = new ArcRotateCamera("camera", Math.PI + Math.PI / 3, Math.PI / 3, 120, new Vector3(0, 0, 0), scene);
     camera.attachControl(canvas, true);
-    world.camera = camera;
+
+    world.globalStore.setCamera(new CameraObj(camera));
 
     // var camera = new FollowCamera("FollowCam", new Vector3(0, 20, 0), scene);
     // // The goal distance of camera from target
@@ -69,8 +71,10 @@ function initGame(world: World) {
     engine.runRenderLoop(function () {
             scene.render();
 
-            if (world.store.getActiveDistrict()) {
-                world.store.getAllGameObjects().forEach(gameObject => gameObject.update(world));
+            world.controller.update();
+
+            if (world.districtStore.getActiveDistrict()) {
+                world.districtStore.getAllGameObjects().forEach(gameObject => gameObject.update(world));
             }
     });
     
@@ -79,17 +83,4 @@ function initGame(world: World) {
     });
 
     world.loader.loadGame();
-    // world.events.on((type: GameEventType) => {
-    //     if (type === GameEventType.DISTRICTS_LOADED) {
-    //         world.loader.loadGame();
-    //     }
-    // });
-
-    // world.level.loadLevel(level1);
-    // world.level.onLevelLoaded(() => {
-    //     const player = world.store.getAllGameObjects().find(gameObject => gameObject.cameraTargetMesh);
-    //     if (player) {                
-    //         // camera.lockedTarget = player.cameraTargetMesh;
-    //     }
-    // })
 }

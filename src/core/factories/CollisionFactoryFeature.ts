@@ -36,7 +36,7 @@ export class CollisionFactoryFeature extends AbstractFactoryFeature {
         mainMesh.parent = null;
         
         gameObj.colliderMesh = collider;
-        gameObj.colliderMesh.parent = this.world.store.getActiveDistrict().basicComp.platform;
+        gameObj.colliderMesh.parent = this.world.districtStore.getActiveDistrict().basicComp.platform;
 
         mainMesh.parent = collider;
         collider.translate(Axis.X, position.x, Space.WORLD);

@@ -11,7 +11,7 @@ export class RouteDebugger {
     }
 
     show() {
-        const enemies = this.world.store.getGameObjsByTag(GameObjTag.Enemy);
+        const enemies = this.world.districtStore.getGameObjsByTag(GameObjTag.Enemy);
         enemies.forEach(enemy => enemy.additionalComponents.push(new RouteDebuggerComponent()));
     }
 

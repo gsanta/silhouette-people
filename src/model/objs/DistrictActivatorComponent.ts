@@ -26,11 +26,11 @@ export class DistrictActivatorComponent {
     }
 
     async activate() {
-        this.world.controller.camera.setCameraLocation(this.district, this.district.cameraLocation);
-
+        // this.world.controller.camera.setCameraLocation(this.district, this.district.cameraLocation);
+        
         const districtSize = this.district.size.x;
         const json = this.district.json;
-
+        
         const activeComp = new ActiveDistrictComponent(this.district);
         
         json.grounds.forEach((ground, index) => {
@@ -41,12 +41,13 @@ export class DistrictActivatorComponent {
         const gameObjectJsons = this.mapParser.parse(this.district.json);
         const gameObjects = await Promise.all(gameObjectJsons.map(json => this.district.factory.create(json)));
         const colliderMeshes = gameObjects
-            .filter(obj => obj.colliderMesh && obj.tag.doesNotHave(GameObjTag.Player, GameObjTag.Enemy, GameObjTag.Bicycle))
-            .map(obj => obj.colliderMesh)
-
+        .filter(obj => obj.colliderMesh && obj.tag.doesNotHave(GameObjTag.Player, GameObjTag.Enemy, GameObjTag.Bicycle))
+        .map(obj => obj.colliderMesh)
+        
         gameObjects.forEach(obj => activeComp.addGameObject(obj));
-            
         activeComp.getQuarter(1).getMap().fillMeshes(colliderMeshes);
+        
+        this.world.globalStore.getCamera().setDistrict(this.district);
     }
 
     deactivate() {

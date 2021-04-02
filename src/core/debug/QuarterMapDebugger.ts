@@ -37,7 +37,7 @@ export class QuarterMapDebugger {
     }
 
     update() {
-        const quarterMap = this.world.store.getQuarter(1).getMap();
+        const quarterMap = this.world.districtStore.getQuarter(1).getMap();
         this.createBaseInstanceIfNeeded();
         this.createBorderIfNeeded();
 
@@ -62,7 +62,7 @@ export class QuarterMapDebugger {
 
     private createBorderIfNeeded() {
         if (this.borderMeshes.length > 0) { return; }
-        const quarterMap = this.world.store.getQuarter(1).getMap();
+        const quarterMap = this.world.districtStore.getQuarter(1).getMap();
 
         const material = new StandardMaterial('border-material', this.world.scene);
         material.diffuseColor = Color3.Yellow();
@@ -95,7 +95,7 @@ export class QuarterMapDebugger {
 
     private createBaseInstanceIfNeeded() {
         if (this.baseInstance) { return; }
-        const quarterMap = this.world.store.getQuarter(1).getMap();
+        const quarterMap = this.world.districtStore.getQuarter(1).getMap();
 
         const cubeSize = quarterMap.gridSize - 0.1;
         this.baseInstance = MeshBuilder.CreateGround(`grid-base-instance`, { width: cubeSize, height: cubeSize });
@@ -105,7 +105,7 @@ export class QuarterMapDebugger {
     }
 
     private createMeshOrUpdateMeshAtIndex(index: number) {
-        const quarterMap = this.world.store.getQuarter(1).getMap();
+        const quarterMap = this.world.districtStore.getQuarter(1).getMap();
 
         if (!quarterMap.getNum(index)) {
             this.removeMesh(index);
@@ -124,7 +124,7 @@ export class QuarterMapDebugger {
     }
 
     private createMesh(index: number) {
-        const quarterMap = this.world.store.getQuarter(1).getMap();
+        const quarterMap = this.world.districtStore.getQuarter(1).getMap();
 
         const worldPos = quarterMap.getWorldCoordinate(index);
         const instance = this.baseInstance.createInstance(index + '');
@@ -136,7 +136,7 @@ export class QuarterMapDebugger {
     }
 
     private updateColor(index: number) {
-        const quarterMap = this.world.store.getQuarter(1).getMap();
+        const quarterMap = this.world.districtStore.getQuarter(1).getMap();
 
         const instance = this.instanceMap.get(index);
         if (quarterMap.getNum(index) === 1) {

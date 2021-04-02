@@ -19,11 +19,11 @@ export class TransportAddon extends AbstractAddon {
     }
 
     update(gameObj: GameObj) {
-        const player = this.world.store.getPlayer();
+        const player = this.world.districtStore.getPlayer();
 
         if (this.gameObj.district.activeComp && gameObj.getMesh().intersectsMesh(player.getMesh())) {
             this.gameObj.district.activatorComp.deactivate();
-            this.world.store.getDistrict(this.targetDistrict).cameraLocation = this.targetLocation;
+            this.world.districtStore.getDistrict(this.targetDistrict).cameraLocation = this.targetLocation;
             this.world.loader.loadDistrict(this.targetDistrict);
         }
     }

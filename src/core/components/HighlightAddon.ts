@@ -20,7 +20,7 @@ export class HighlightAddon extends AbstractAddon {
     }
 
     private lazyInitIfNeeded(gameObj: GameObj) {
-        const { scene, store } = this.world;
+        const { scene, districtStore: store } = this.world;
 
         const lightReceivers = store.getGameObjsByType(GameObjectType.Road1, GameObjectType.House1, GameObjectType.House2, GameObjectType.House3);
         // const roads = store.getAllGameObjects().filter(obj => obj.type === GameObjectType.Road1).map(r => r.allMeshes[0]);

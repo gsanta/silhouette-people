@@ -20,6 +20,10 @@ export class ActiveDistrictComponent {
         return this.quarters[index];
     }
 
+    getAllQuarters(): QuarterObj[] {
+        return this.quarters;
+    }
+
     addGameObject(gameObject: GameObj) {
         this.gameObjects.push(gameObject);
 
@@ -53,18 +57,5 @@ export class ActiveDistrictComponent {
 
         const quarterIndex = this.quarters.findIndex(quarter => quarter.containsPoint2D(pos));
         return quarterIndex;
-        // if (pos.x < 0) {
-        //     if (pos.y < 0) {
-        //         return 2;
-        //     } else {
-        //         return 3;
-        //     }
-        // } else {
-        //     if (pos.y < 0) {
-        //         return 1;
-        //     } else {
-        //         return 0;
-        //     }
-        // }
     }
 }

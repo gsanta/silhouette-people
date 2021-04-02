@@ -14,13 +14,13 @@ export class LoaderService {
         const districtIds = this.world.jsonStore.getDistrictIds();
     
         const districts = districtIds.map(id => new DistrictObj(this.world.jsonStore.getJson(id), this.world));
-        this.world.store.setDistricts(districts);
+        this.world.districtStore.setDistricts(districts);
 
         districts.forEach(district => district.activatorComp.initialize());
         await districts[0].activatorComp.activate();
     }
 
     async loadDistrict(id: string) {
-        await this.world.store.getDistrict(id).activatorComp.activate();
+        await this.world.districtStore.getDistrict(id).activatorComp.activate();
     }
 }
