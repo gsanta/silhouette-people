@@ -10,6 +10,7 @@ export interface DistrictJson {
     id: string;
     size: string;
     relativePos: string;
+    cameraLocation: number;
     grounds: QuarterJson[];
     charToType: { [key: string]: string },
     models: { [key: string]: string },

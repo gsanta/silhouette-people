@@ -45,6 +45,7 @@ export class GameObjectFactory {
 
         gameObject.type = gameObjectJson.type;
         gameObject.ch = gameObjectJson.ch;
+        gameObject.district = this.districtObj;
 
         if (gameObjectJson.features) {
             await this.processFeatureList(gameObject, gameObjectJson);

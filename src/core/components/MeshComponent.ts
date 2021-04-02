@@ -19,6 +19,13 @@ export class MeshComponent {
         return mesh.getBoundingInfo().boundingBox.extendSizeWorld;
     }
 
+    getPositionRelativeToDistrict() {
+        const districtPos = this.gameObj.district.basicComp.platform.getAbsolutePosition();
+        const gameObjPos = this.gameObj.getPosition();
+
+        return gameObjPos.subtract(districtPos);
+    }
+
     addMeshes(meshes: Mesh[], mainMesh: Mesh) {
         this.gameObj.mainMesh = mainMesh;
         this.gameObj.allMeshes = meshes;

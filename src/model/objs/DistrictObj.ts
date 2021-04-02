@@ -10,9 +10,10 @@ export class DistrictObj {
     id: string;
     readonly json: DistrictJson;
 
+    cameraLocation: number;
+
     readonly size: Vector2;
     readonly translate: Vector2;
-
     readonly factory: GameObjectFactory;
 
     basicComp: BasicDistrictComponent;
@@ -27,6 +28,7 @@ export class DistrictObj {
 
         this.json = json;
         this.id = json.id;
+        this.cameraLocation = json.cameraLocation;
         
         this.factory = new GameObjectFactory(this, world); 
         this.basicComp = new BasicDistrictComponent();

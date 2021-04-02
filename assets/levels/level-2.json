@@ -101,7 +101,7 @@
         "busStop": [
             "Model bus_stop.glb",
             "Collider",
-            "Addon Transport level-2 1"
+            "Addon Transport level-1 3"
         ],
         "road1": [
             "Model road1.glb",

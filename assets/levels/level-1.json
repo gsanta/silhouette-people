@@ -4,6 +4,7 @@
     "rotationMap": null,
     "size": "100:100",
     "relativePos": "0:0",
+    "cameraLocation": 2,
     "grounds": [
         {
             "color": "#F8DE7E"

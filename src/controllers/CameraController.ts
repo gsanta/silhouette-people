@@ -21,16 +21,16 @@ export class CameraController extends AbstractController {
         const offset = 15;
 
         switch(corner) {
-            case 1:
+            case 0:
                 pos = center.add(new Vector3(halfX + offset, height, halfY + offset));
             break;
-            case 2:
+            case 1:
                 pos = center.add(new Vector3(halfX + offset, height, -halfY - offset));
             break;
-            case 3:
+            case 2:
                 pos = center.add(new Vector3(-halfX - offset, height, -halfY - offset));
             break;
-            case 4:
+            case 3:
                 pos = center.add(new Vector3(-halfX - offset, height, halfY + offset));
             break;
         }

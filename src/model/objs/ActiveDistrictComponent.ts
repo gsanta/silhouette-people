@@ -24,7 +24,6 @@ export class ActiveDistrictComponent {
         this.gameObjects.push(gameObject);
 
         const quarterIndex = this.calcQuarterIndex(gameObject);
-        gameObject.district = this.district;
         gameObject.quarterIndex = quarterIndex;
     }
 

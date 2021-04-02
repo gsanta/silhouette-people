@@ -26,7 +26,7 @@ export class DistrictActivatorComponent {
     }
 
     async activate() {
-        this.world.controller.camera.setCameraLocation(this.district, 3);
+        this.world.controller.camera.setCameraLocation(this.district, this.district.cameraLocation);
 
         const districtSize = this.district.size.x;
         const json = this.district.json;
