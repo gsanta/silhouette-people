@@ -9,6 +9,8 @@ import { LoaderService } from "./LoaderService";
 import { ControllerService } from "./ControllerService";
 import { ArcRotateCamera } from "babylonjs/Cameras/arcRotateCamera";
 import { GlobalStore } from "../stores/GlobalStore";
+import { DistrictService } from "./district/DistrictService";
+import { UpdateService } from "./update/UpdateService";
 
 export class World {
     keyboard: KeyboardService;
@@ -21,6 +23,8 @@ export class World {
     factory: FactoryService;
     loader: LoaderService;
     controller: ControllerService;
+    district: DistrictService;
+    update: UpdateService;
 
     districtStore: DistrictStore;
     globalStore: GlobalStore;
@@ -39,6 +43,8 @@ export class World {
         this.districtStore = new DistrictStore();
         this.globalStore = new GlobalStore();
         this.jsonStore = new JsonStore();
+        this.district = new DistrictService(this);
+        this.update = new UpdateService(this);
     }
 
     setScene(scene: Scene) {

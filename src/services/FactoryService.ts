@@ -1,6 +1,6 @@
 import { World } from "./World";
-import { GameObjectFactory } from "../core/factories/GameObjectFactory";
-import { RouteFactory } from "../core/factories/RouteFactory";
+import { GameObjectFactory } from "./factory/GameObjectFactory";
+import { RouteFactory } from "./factory/RouteFactory";
 
 export class FactoryService {
 

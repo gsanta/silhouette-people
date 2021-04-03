@@ -1,5 +1,5 @@
 import { NodeMaterial, SpotLight, Tools, Vector3 } from "babylonjs";
-import { AddonName } from "../core/components/AbstractAddon";
+import { AddonName } from "../model/addons/AbstractAddon";
 import { GameObj, GameObjTag } from "../model/objs/GameObj";
 import { BikeMovingState } from "../model/states/BikeMovingState";
 import { World } from "../services/World";

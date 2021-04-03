@@ -1,4 +1,4 @@
-import { DistrictJson } from "../core/io/DistrictJson";
+import { DistrictJson } from "../services/district/DistrictJson";
 import districtIds from '../../assets/data/districts.json';
 
 export class JsonStore {

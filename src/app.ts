@@ -72,7 +72,7 @@ function initGame(world: World) {
             scene.render();
 
             if (world.loader.isLoaded()) {
-                world.controller.update();
+                world.update.update();
     
                 if (world.districtStore.getActiveDistrict()) {
                     world.districtStore.getAllGameObjects().forEach(gameObject => gameObject.update(world));

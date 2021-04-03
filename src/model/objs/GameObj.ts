@@ -3,10 +3,10 @@ import { IComponent } from "../IComponent";
 import { World } from "../../services/World";
 import { DistrictObj } from "./DistrictObj";
 import { QuarterObj } from "./QuarterObj";
-import { StateComponent } from "../../core/components/StateComponent";
-import { TagComponent } from "../../core/components/TagComponent";
-import { MeshComponent } from "../../core/components/MeshComponent";
-import { AddonComponent } from "../../core/components/AddonComponent";
+import { StateComponent } from "../components/StateComponent";
+import { TagComponent } from "../components/TagComponent";
+import { MeshComponent } from "../components/MeshComponent";
+import { AddonComponent } from "../components/AddonComponent";
 
 export enum GameObjectType {
     Player = 'player',

@@ -1,7 +1,7 @@
 import { World } from "./World";
-import { QuarterMapDebugger } from "../core/debug/QuarterMapDebugger";
-import { RouteDebugger } from "../core/debug/RouteDebugger";
-import { WorldAxisHelper } from "../core/debug/WorldAxisHelper";
+import { QuarterMapDebugger } from "../debug/QuarterMapDebugger";
+import { RouteDebugger } from "../debug/RouteDebugger";
+import { WorldAxisHelper } from "../debug/WorldAxisHelper";
 
 export class DebugService {
     private world: World;
