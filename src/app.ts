@@ -71,10 +71,12 @@ function initGame(world: World) {
     engine.runRenderLoop(function () {
             scene.render();
 
-            world.controller.update();
-
-            if (world.districtStore.getActiveDistrict()) {
-                world.districtStore.getAllGameObjects().forEach(gameObject => gameObject.update(world));
+            if (world.loader.isLoaded()) {
+                world.controller.update();
+    
+                if (world.districtStore.getActiveDistrict()) {
+                    world.districtStore.getAllGameObjects().forEach(gameObject => gameObject.update(world));
+                }
             }
     });
     

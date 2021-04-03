@@ -20,7 +20,6 @@ export class DistrictController extends AbstractController {
                 this.updateActiveQuarter(district, player);
             }
         }
-
     }
 
     private isQuarterChanged(district: DistrictObj, player: GameObj) {
