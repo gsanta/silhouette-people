@@ -22,7 +22,9 @@ export enum GameObjectType {
     House3 = 'house3',
     Bicycle1 = 'bicycle1',
     Road1 = 'road1',
-    BusStop = 'busStop'
+    BusStop = 'busStop',
+    DistrictBorder = 'DistrictBorder',
+    QuarterGround = 'QuarterGround'
 }
 
 export enum GameObjTag {

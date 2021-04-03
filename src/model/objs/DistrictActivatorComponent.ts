@@ -1,9 +1,10 @@
-import { Axis, Space } from "babylonjs";
+import { Axis, Color3, Mesh, MeshBuilder, Space, StandardMaterial, Vector3 } from "babylonjs";
 import { DistrictParser } from "../../core/io/DistrictParser";
 import { World } from "../../services/World";
 import { ActiveDistrictComponent } from "./ActiveDistrictComponent";
 import { DistrictObj } from "./DistrictObj";
 import { GameObjTag } from "./GameObj";
+import { QuarterObj } from "./QuarterObj";
 
 export class DistrictActivatorComponent {
     private district: DistrictObj;
@@ -20,8 +21,8 @@ export class DistrictActivatorComponent {
         const districtSize = this.district.size.x;
 
         const ground = this.district.factory.createGround(this.district.id, districtSize);
-        ground.translate(Axis.X, this.district.translate.x, Space.WORLD);
-        ground.translate(Axis.Z, this.district.translate.y, Space.WORLD);
+        ground.translate(Axis.X, this.district.centerPoint.x, Space.WORLD);
+        ground.translate(Axis.Z, this.district.centerPoint.y, Space.WORLD);
         this.district.basicComp.platform = ground;
     }
 
@@ -34,8 +35,9 @@ export class DistrictActivatorComponent {
         const activeComp = new ActiveDistrictComponent(this.district);
         
         json.grounds.forEach((ground, index) => {
-            const quarterObj = this.district.factory.createGroundTile(ground, districtSize / 2, index);
-            this.district.activeComp.addQuarter(quarterObj);
+            const quarterGround = this.district.factory.createQuarterGround(ground, districtSize / 2, index);
+            this.district.activeComp.addQuarter(new QuarterObj(this.district, quarterGround));
+            this.district.activeComp.addGameObject(quarterGround);
         });
         
         const gameObjectJsons = this.mapParser.parse(this.district.json);
@@ -46,7 +48,10 @@ export class DistrictActivatorComponent {
         
         gameObjects.forEach(obj => activeComp.addGameObject(obj));
         activeComp.getQuarter(1).getMap().fillMeshes(colliderMeshes);
-        
+
+        const districtBorder = this.district.factory.createDistrictBorder();
+        this.district.activeComp.addGameObject(districtBorder);
+
         this.world.globalStore.getCamera().setDistrict(this.district);
     }
 

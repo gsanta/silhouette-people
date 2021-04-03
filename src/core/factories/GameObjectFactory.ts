@@ -54,6 +54,36 @@ export class GameObjectFactory {
         return gameObject;
     }
 
+    createDistrictBorder(): GameObj {
+        const id = this.generateId(GameObjectType.DistrictBorder);
+        const gameObject = new GameObj(id, this.world);
+
+        gameObject.type = GameObjectType.DistrictBorder;
+
+        const myShape = [
+            new Vector3(2, 0, 0),
+            new Vector3(2.025, 0, 0),
+            new Vector3(2.025, 0.2, 0),
+            new Vector3(2, 0.2, 0)
+        ];
+
+        const mat = new StandardMaterial("mat", this.world.scene);
+        mat.diffuseColor = Color3.Red();
+        mat.alpha = 0.2;
+        const lathe = MeshBuilder.CreateLathe("lathe", {shape: myShape, radius: this.districtObj.size.x / 3 + 2, tessellation:4, sideOrientation: Mesh.DOUBLESIDE});
+        lathe.rotate(Axis.Y, Math.PI / 4, Space.WORLD);
+        lathe.convertToFlatShadedMesh();
+
+        lathe.translate(Axis.X, this.districtObj.centerPoint.x, Space.WORLD); 
+        lathe.translate(Axis.Z, this.districtObj.centerPoint.y, Space.WORLD); 
+
+        lathe.material = mat;
+
+        gameObject.mesh.addMeshes([lathe], lathe);
+
+        return gameObject;
+    }
+
     private async processFeatureList(gameObj: GameObj, gameObjectJson: GameObjectJson) {
         for (const feature of gameObjectJson.features) {
             const featureName = feature.split(' ')[0].trim();
@@ -89,7 +119,8 @@ export class GameObjectFactory {
     }
 
 
-    createGroundTile(groundJson: GroundJson, size: number, index: number): QuarterObj {
+    createQuarterGround(groundJson: GroundJson, size: number, index: number): GameObj {
+        const id = this.generateId(GameObjectType.QuarterGround);
         const ground = MeshBuilder.CreateGround(`ground-${index}`, { width: size, height: size });
         
         const material = new StandardMaterial(`ground-${index}-material`, this.world.scene);
@@ -116,7 +147,10 @@ export class GameObjectFactory {
         ground.parent = this.districtObj.basicComp.platform;
         ground.translate(Axis.Y, 0.2, Space.WORLD);
 
-        return new QuarterObj(this.districtObj, ground);
+        const gameObject = new GameObj(id, this.world);
+        gameObject.mesh.addMeshes([ground], ground);
+        
+        return gameObject;
     }
 
     private generateId(type: GameObjectType) {
