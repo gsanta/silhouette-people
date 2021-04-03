@@ -1,0 +1,129 @@
+{
+    "id": "level-5",
+    "map": null,
+    "rotationMap": null,
+    "size": "100:100",
+    "relativePos": "1:-1",
+    "grounds": [
+        {
+            "color": "#F8DE7E"
+        },
+        {
+            "color": "#FF0000"
+        },
+        {
+            "color": "#9e9e9e"
+        },
+        {
+            "color": "#FFFFFF"
+        }
+    ],
+    "charToType": {
+        "T": "tree1",
+        "T2": "tree2",
+        "T3": "tree3",
+        "T4": "tree4",
+        "T5": "tree5",
+        "T6": "tree6",
+        "P": "player",
+        "E": "enemy",
+        "H": "house1",
+        "H1": "house1",
+        "H2": "house2",
+        "H4": "house2",
+        "H3": "house3",
+        "H5": "house3",
+        "B": "bicycle1",
+        "R": "road1",
+        "S": "busStop"
+    },
+    "features": {
+        "tree1": [
+            "Model tree1.glb 0",
+            "Collider 0.5:5:0.5"
+        ],
+        "tree2": [
+            "Model tree2.glb 0",
+            "Collider 0.5:5:0.5"
+        ],
+        "tree3": [
+            "Model tree3.glb 0",
+            "Collider 0.5:5:0.5"
+        ],
+        "tree4": [
+            "Model tree4.glb 0",
+            "Collider 0.3:5:0.3"
+        ],
+        "tree5": [
+            "Model tree5.glb 0",
+            "Collider 0.3:5:0.3"
+        ],
+        "tree6": [
+            "Model tree6.glb 0",
+            "Collider 0.3:5:0.3"
+        ],
+        "player": [
+            "Model character.glb 0",
+            "Collider 1:3.5:1",
+            "Physics 1",
+            "Tag Player",
+            "State PlayerIdleState",
+            "Addon Highlight"
+        ],
+        "enemy": [
+            "Model character.glb 0",
+            "Collider 1:3.5:1",
+            "Physics 1",
+            "Tag Enemy",
+            "State EnemyMovingState"
+        ],
+        "house1": [
+            "Model house1.glb",
+            "Texture palette.jpg",
+            "Collider 1:1:1"
+        ],
+        "house2": [
+            "Model house2.glb",
+            "Texture palette.jpg",
+            "Collider 1:1:1"
+        ],
+        "house3": [
+            "Model house3.glb",
+            "Texture palette.jpg",
+            "Collider 1:1:1"
+        ],
+        "bicycle1": [
+            "Model bicycle1.glb",
+            "Texture palette.jpg",
+            "Collider 1:1:1",
+            "Tag Bicycle"
+        ],
+        "busStop": [
+            "Model bus_stop.glb",
+            "Collider",
+            "Addon Transport level-1 3"
+        ],
+        "road1": [
+            "Model road1.glb",
+            "Texture palette.jpg 1"
+        ],
+        "H1": [
+            "Rotate 180"
+        ],
+        "H": [
+            "Rotate 90"
+        ],
+        "H2": [
+            "Rotate 90"
+        ],
+        "H3": [
+            "Rotate 90"
+        ],
+        "H5": [
+            "Rotate 180"
+        ],
+        "H4": [
+            "Rotate -90"
+        ]
+    }
+}

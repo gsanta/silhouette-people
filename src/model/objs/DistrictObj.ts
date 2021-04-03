@@ -24,7 +24,7 @@ export class DistrictObj {
         const [width, height] = json.size.split(':').map(numStr => parseInt(numStr));
         this.size = new Vector2(width, height);
         const [relativeX, relativeY] = json.relativePos.split(':').map(numStr => parseInt(numStr));
-        this.translate = new Vector2(relativeX * 120, relativeY * 120);
+        this.translate = new Vector2(relativeX * 100, relativeY * 100);
 
         this.json = json;
         this.id = json.id;

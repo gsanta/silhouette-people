@@ -19,11 +19,9 @@ export class JsonStore {
 
         const jsons = await this.loadDistrictJsons();
         const maps = await this.loadDistrictMaps();
-        const rotationMaps = await this.loadDistrictRotationMaps();
 
         jsons.forEach((json, index) => {
             json.map = maps[index];
-            json.rotationMap = rotationMaps[index];
         });
 
         this.jsons = jsons;
@@ -38,11 +36,6 @@ export class JsonStore {
 
     private async loadDistrictMaps(): Promise<string[]> {
         const districts = districtIds.map(name => fetch(`${this.assetsPath}/${name}-map-1.txt`).then(res => res.text()));
-        return await Promise.all(districts);
-    }
-
-    private async loadDistrictRotationMaps(): Promise<string[]> {
-        const districts = districtIds.map(name => fetch(`${this.assetsPath}/${name}-rotations-1.txt`).then(res => res.text()));
         return await Promise.all(districts);
     }
 }
