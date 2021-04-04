@@ -10,16 +10,15 @@ export class StateComponent {
         this.world = world;
         this.startState = startState;
         this.currState = startState;
+
+        if (this.currState) {
+            this.currState.enter();
+        }
     }
 
     keyboard(e: KeyboardEvent, isKeydown: boolean) {
         if (!this.currState) { return; }
-
-        let state = this.currState;
-        while (state) {
-            state = state.keyboard(e, isKeydown);
-            this.transitionState(state);
-        }
+        this.currState.keyboard(e, isKeydown);
     }
     
     setDefaultState() {
@@ -31,17 +30,8 @@ export class StateComponent {
     }
 
     update() {
-        const state = this.currState;
-        let newState: AbstractGameObjState = undefined;
-
-        if (state) {
-            newState = state.updateInput();
-            this.transitionState(newState);
-            if (!newState) {
-                state.updateAnimation();
-                newState = state.updatePhysics();
-                this.transitionState(newState);
-            }
+        if (this.currState) {
+            this.currState.update();
         }
     }
 

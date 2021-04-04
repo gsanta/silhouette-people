@@ -7,12 +7,8 @@ export class EnemyIdleState extends AbstractGameObjState {
         super(GameObjStateName.EnemyIdleState, gameObject);
     }
 
-    updateAnimation() {
+    enter() {
         this.gameObject.runAnimation('Idle');
-    }
-
-    updatePhysics() {
-        return undefined;
     }
 
     exit() {

@@ -12,9 +12,15 @@ export class PlayerMovingState extends AbstractGameObjState {
     constructor(gameObject: GameObj, world: World) {
         super(GameObjStateName.PlayerMovingState, gameObject);
         this.world = world;
+
+        this.updateKeyboard();
     }
 
-    updateInput(): AbstractGameObjState {
+    keyboard() {
+        this.updateKeyboard();
+    }
+
+    private updateKeyboard() {
         const keyboard = this.world.keyboard;
 
         const velocity = new Vector3(0, 0, 0);
@@ -43,27 +49,21 @@ export class PlayerMovingState extends AbstractGameObjState {
             !keyboard.checker.isTurnLeft() &&
             !keyboard.checker.isTurnRight()
         ) {
-            return new PlayerIdleState(this.gameObject, this.world);
-        }
-
-        return undefined;
-    }
-
-    updateAnimation(): void {
-        if (!this.gameObject.isAnimationRunning('Walk')) {
-            this.gameObject.runAnimation('Walk');
+            this.gameObject.state.setState(new PlayerIdleState(this.gameObject, this.world));
         }
     }
 
-    updatePhysics(): AbstractGameObjState {
+    update(): void {
         const mesh = this.gameObject.colliderMesh ? this.gameObject.colliderMesh : this.gameObject.mainMesh;
         var forward = this.gameObject.velocity;	
         var direction = this.gameObject.mainMesh.getDirection(forward);
         direction.normalize().multiplyInPlace(new Vector3(0.04, 0.04, 0.04));
         mesh.moveWithCollisions(direction);
         mesh.rotate(Axis.Y, this.gameObject.rotation.y, Space.WORLD);
+    }
 
-        return undefined;
+    enter() {
+        this.gameObject.runAnimation('Walk');
     }
 
     exit() {

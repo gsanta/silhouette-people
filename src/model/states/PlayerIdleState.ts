@@ -11,7 +11,7 @@ export class PlayerIdleState extends AbstractGameObjState {
         this.world = world;
     }
 
-    updateInput() {
+    keyboard(e: KeyboardEvent) {
         if (!this.gameObject.tag.isPlayer()) { return undefined; }
 
         const keyboard = this.world.keyboard;
@@ -22,16 +22,12 @@ export class PlayerIdleState extends AbstractGameObjState {
             keyboard.checker.isTurnLeft() ||
             keyboard.checker.isTurnRight()
         ) {
-            return new PlayerMovingState(this.gameObject, this.world);
+            this.gameObject.state.setState(new PlayerMovingState(this.gameObject, this.world));
         }
     }
 
-    updateAnimation() {
+    enter() {
         this.gameObject.runAnimation('Idle');
-    }
-
-    updatePhysics() {
-        return undefined;
     }
 
     exit() {

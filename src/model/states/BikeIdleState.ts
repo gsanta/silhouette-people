@@ -11,7 +11,7 @@ export class BikeIdleState extends AbstractGameObjState {
         this.world = world;
     }
 
-    keyboard(e: KeyboardEvent, isKeyDown: boolean) {
+    keyboard(e: KeyboardEvent) {
         if (!this.gameObject.tag.isPlayer()) { return undefined; }
     
         const keyboard = this.world.keyboard;
@@ -22,9 +22,7 @@ export class BikeIdleState extends AbstractGameObjState {
             keyboard.checker.isTurnLeft() ||
             keyboard.checker.isTurnRight()
         ) {
-            return new BikeMovingState(this.gameObject, this.world);
+            this.gameObject.state.setState(new BikeMovingState(this.gameObject, this.world));
         }
-    
-        return undefined;
     }
 }

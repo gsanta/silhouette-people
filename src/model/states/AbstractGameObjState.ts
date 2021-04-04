@@ -4,6 +4,8 @@ export enum GameObjStateName {
     PlayerIdleState = 'PlayerIdleState',
     PlayerMovingState = 'PlayerMovingState',
     PlayerBikeState = 'PlayerBikeState',
+    PlayerGetOnBikeState = 'PlayerGetOnBikeState',
+    
     EnemyMovingState = 'EnemyMovingState',
     EnemyIdleState = 'EnemyIdleState',
     BikeIdleState = 'BikeIdleState',
@@ -19,11 +21,8 @@ export abstract class AbstractGameObjState {
         this.gameObject = gameObject;
     }
 
-    updateInput(): AbstractGameObjState { return undefined; }
-    updatePhysics(): AbstractGameObjState { return undefined; }
-    updateAnimation(): void {};
-
-    keyboard(e: KeyboardEvent, isKeydown: boolean): AbstractGameObjState { return undefined; }
+    keyboard(e: KeyboardEvent, isKeydown: boolean): void {}
+    update(): void {}
 
     enter() {}
     exit() {}

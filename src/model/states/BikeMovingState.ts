@@ -4,7 +4,6 @@ import { World } from "../../services/World";
 import { GameObj } from "../objs/GameObj";
 import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
 import { BikeSpeedPhysics, BikeSpeedState } from "./BikeSpeedPhysics";
-import { BikeIdleState } from "./BikeIdleState";
 
 export class BikeMovingState extends AbstractGameObjState {
     private readonly world: World;
@@ -57,14 +56,6 @@ export class BikeMovingState extends AbstractGameObjState {
                 break;
             }
         }
-
-        return undefined;
-    }
-
-    updateAnimation(): void {
-        if (!this.gameObject.isAnimationRunning('Go')) {
-            this.gameObject.runAnimation('Go');
-        }
     }
 
     private updateSpeed() {
@@ -106,14 +97,17 @@ export class BikeMovingState extends AbstractGameObjState {
         mesh.rotate(Axis.Y, this.gameObject.rotation.y, Space.LOCAL);
     }
 
-    updateInput(): AbstractGameObjState {
-        return undefined;
-    }
-
-    updatePhysics(): AbstractGameObjState {
+    update(): void {
         this.updateSpeed();
         this.updateRotation();
         this.updateMovement();
-        return undefined;
+    }
+
+    enter() {
+        this.gameObject.runAnimation('Go');
+    }
+
+    exit() {
+        this.gameObject.stopCurrentAnimation();
     }
 }

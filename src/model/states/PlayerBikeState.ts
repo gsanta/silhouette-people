@@ -6,10 +6,8 @@ export class PlayerBikeState extends AbstractGameObjState {
         super(GameObjStateName.PlayerBikeState, gameObject);
     }
 
-    updateAnimation(): void {
-        if (!this.gameObject.isAnimationRunning('Bicycle')) {
-            this.gameObject.runAnimation('Bicycle');
-        }
+    enter() {
+        this.gameObject.runAnimation('Bicycle');
     }
 
     exit() {

@@ -12,18 +12,16 @@ export class EnemyMovingState extends AbstractGameObjState {
         this.world = world;
     }
 
-    updateAnimation() {
-        this.gameObject.runAnimation('Walk');
-    }
-
-    updatePhysics() {
+    update() {
         if (!this.route || this.route.isFinished) {
             this.route = this.world.factory.route.createRandomRoute(this.gameObject);
         } else {
             this.route.update();
         }
+    }
 
-        return undefined;
+    enter() {
+        this.gameObject.runAnimation('Walk');
     }
 
     exit() {
