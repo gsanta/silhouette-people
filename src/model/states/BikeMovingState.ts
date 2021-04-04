@@ -21,8 +21,8 @@ export class BikeMovingState extends AbstractGameObjState {
 
         const speedRanges: [Vector2, Vector2][] = [
             [ new Vector2(-1.6, -10 / 3.6), new Vector2(1.4, 10 / 3.6) ],
-            [ new Vector2(-0.1, 0), new Vector2(2.9, 20) ],
-            [ new Vector2(1.4, 10), new Vector2(4.4, 30) ]
+            [ new Vector2(-0.1, 0), new Vector2(2.9, 20 / 3.6) ],
+            [ new Vector2(1.4, 10 / 3.6), new Vector2(4.4, 30 / 3.6) ]
         ];
 
         this.speedPhysics = new BikeSpeedPhysics({ maxAcceleration: 8 / 5, gearSpeedRanges: speedRanges })
@@ -111,7 +111,6 @@ export class BikeMovingState extends AbstractGameObjState {
     }
 
     updatePhysics(): AbstractGameObjState {
-        console.log('speed: ' + this.speed)
         this.updateSpeed();
         this.updateRotation();
         this.updateMovement();

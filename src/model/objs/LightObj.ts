@@ -21,7 +21,6 @@ export class LightObj {
         light.position.z = pos.z;
         light.position.y = 3;
         light.setDirectionToTarget(pos);
-        console.log(light.position.toString())
     }
 
     static async CreateProjectionTextureLight(config: { snippet: string, pos: Vector3 }, world: World): Promise<LightObj> {

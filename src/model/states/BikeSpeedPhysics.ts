@@ -21,11 +21,12 @@ export class BikeSpeedPhysics {
     private speedRanges: [Vector2, Vector2][];
     private equations: regression.Result[] = [];
     private speedLimits: [number, number][] = [];
-    private gear = 1;
+    private gear = 0;
     private bikeState: BikeSpeedState = BikeSpeedState.Idle;
     private startTime = 0;
     private currTime = 0;
     private maxTime = 0;
+    private currentSpeed: number = 0;
 
     constructor(config: BikeSpeedPhysicsConf) {
         this.maxAcc = config.maxAcceleration;
@@ -34,7 +35,9 @@ export class BikeSpeedPhysics {
     }
 
     setGear(gear: number) {
+        console.log('gear: ' + gear);
         this.gear = gear;
+        this.startAccelerating(this.currentSpeed);
     }
 
     accelerate(currentSpeed: number, deltaTime: number) {
@@ -43,12 +46,17 @@ export class BikeSpeedPhysics {
         }
 
         this.currTime = this.currTime + deltaTime / 1000;
+        
+        let currSpeed: number;
 
         if (this.currTime > this.maxTime) {
-            return currentSpeed;
+            currSpeed = currentSpeed;
         } else {
-            return this.equations[this.gear].predict(this.currTime)[1];
+            currSpeed = this.equations[this.gear].predict(this.currTime)[1];
         }
+
+        this.currentSpeed = currSpeed;
+        return this.currentSpeed;
     }
 
     brake() {

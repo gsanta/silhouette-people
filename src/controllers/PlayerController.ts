@@ -77,6 +77,7 @@ export class PlayerController extends AbstractController {
                     player.getMesh().setAbsolutePosition(new Vector3(0, 0, 0));
                     player.getMesh().parent = bike.getMesh();
                     player.state.setState(new PlayerBikeState(player));
+                    player.getMesh().checkCollisions = false;
                 }
             break;
         }
