@@ -61,6 +61,12 @@ export class BikeMovingState extends AbstractGameObjState {
         return undefined;
     }
 
+    updateAnimation(): void {
+        if (!this.gameObject.isAnimationRunning('Go')) {
+            this.gameObject.runAnimation('Go');
+        }
+    }
+
     private updateSpeed() {
         const deltaTime = this.world.engine.getDeltaTime();
         const deltaTimeSec = deltaTime / 1000;
@@ -88,64 +94,19 @@ export class BikeMovingState extends AbstractGameObjState {
         this.gameObject.rotation = rotation;
     }
 
-    private getStateTransitionIfNeeded(): AbstractGameObjState {
-        const keyboard = this.world.keyboard;
-
-        if (
-            !keyboard.checker.isMoveForward() &&
-            !keyboard.checker.isMoveBackward() &&
-            !keyboard.checker.isTurnLeft() &&
-            !keyboard.checker.isTurnRight()
-        ) {
-            return new BikeIdleState(this.gameObject, this.world);
-        }
-
-        return undefined;
-    }
-
     private updateMovement() {
         const mesh = this.gameObject.colliderMesh ? this.gameObject.colliderMesh : this.gameObject.mainMesh;
 
         const relativeDir = new Vector3(0, 0, 1);
 
-        var direction = this.gameObject.mainMesh.getDirection(relativeDir);
+        var direction = this.gameObject.colliderMesh.getDirection(relativeDir);
         direction.normalize().multiplyInPlace(new Vector3(this.speed, this.speed, this.speed));
         mesh.moveWithCollisions(direction);
+
         mesh.rotate(Axis.Y, this.gameObject.rotation.y, Space.LOCAL);
     }
 
     updateInput(): AbstractGameObjState {
-        // const deltaTime = this.world.engine.getDeltaTime();
-        // const deltaTimeSec = deltaTime / 1000;
-        // const keyboard = this.world.keyboard;
-        // const rotation = new Vector3(0, 0, 0);
-
-        // if (this.world.keyboard.activeKeys.has('w')) {
-        //     this.instantaneousSpeed = this.speedPhysics.accelerate(this.instantaneousSpeed, deltaTime);
-        //     this.speed = this.instantaneousSpeed * deltaTimeSec;
-        // } else if (this.world.keyboard.activeKeys.has('s')) {
-        //     this.speed = this.speedPhysics.reverse();
-        // } else {
-        //     this.speed = this.speedPhysics.brake();
-        // }
-
-        // if (this.world.keyboard.activeKeys.has('a')) {
-        //     rotation.y -= this.rotationSpeed;
-        // } else if (this.world.keyboard.activeKeys.has('d')) {
-        //     rotation.y += this.rotationSpeed;
-        // }
-
-        // this.gameObject.rotation = rotation;
-
-        // if (
-        //     !keyboard.checker.isMoveForward() &&
-        //     !keyboard.checker.isMoveBackward() &&
-        //     !keyboard.checker.isTurnLeft() &&
-        //     !keyboard.checker.isTurnRight()
-        // ) {
-        //     return new IdleBikeState(this.gameObject, this.world);
-        // }
-
         return undefined;
     }
 
@@ -155,16 +116,5 @@ export class BikeMovingState extends AbstractGameObjState {
         this.updateRotation();
         this.updateMovement();
         return undefined;
-        // return this.getStateTransitionIfNeeded();
-        // const mesh = this.gameObject.colliderMesh ? this.gameObject.colliderMesh : this.gameObject.mainMesh;
-
-        // const relativeDir = new Vector3(0, 0, 1);
-
-        // var direction = this.gameObject.mainMesh.getDirection(relativeDir);
-        // direction.normalize().multiplyInPlace(new Vector3(this.speed, this.speed, this.speed));
-        // mesh.moveWithCollisions(direction);
-        // mesh.rotate(Axis.Y, this.gameObject.rotation.y, Space.LOCAL);
-
-        // return undefined;
     }
 }

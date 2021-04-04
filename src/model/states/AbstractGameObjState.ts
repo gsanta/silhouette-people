@@ -3,6 +3,7 @@ import { GameObj } from "../objs/GameObj";
 export enum GameObjStateName {
     PlayerIdleState = 'PlayerIdleState',
     PlayerMovingState = 'PlayerMovingState',
+    PlayerBikeState = 'PlayerBikeState',
     EnemyMovingState = 'EnemyMovingState',
     EnemyIdleState = 'EnemyIdleState',
     BikeIdleState = 'BikeIdleState',

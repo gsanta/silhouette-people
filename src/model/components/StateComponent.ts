@@ -26,6 +26,10 @@ export class StateComponent {
         this.transitionState(this.startState);
     }
 
+    setState(state: AbstractGameObjState) {
+        this.transitionState(state);
+    }
+
     update() {
         const state = this.currState;
         let newState: AbstractGameObjState = undefined;

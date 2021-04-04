@@ -94,7 +94,7 @@
             "Collider 1:1:1"
         ],
         "bicycle1": [
-            "Model bicycle1.glb",
+            "Model bicycle1.glb 0",
             "Texture palette.jpg",
             "Collider 1:1:1",
             "Tag Bicycle"

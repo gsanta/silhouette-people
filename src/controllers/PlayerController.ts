@@ -2,6 +2,7 @@ import { NodeMaterial, SpotLight, Tools, Vector3 } from "babylonjs";
 import { AddonName } from "../model/addons/AbstractAddon";
 import { GameObj, GameObjTag } from "../model/objs/GameObj";
 import { BikeMovingState } from "../model/states/BikeMovingState";
+import { PlayerBikeState } from "../model/states/PlayerBikeState";
 import { World } from "../services/World";
 import { AbstractController } from "./IController";
 
@@ -70,10 +71,12 @@ export class PlayerController extends AbstractController {
                     player.tag.removePlayer();
                     const highlightAddon = player.addon.getByName(AddonName.Highlight);
                     player.addon.remove(highlightAddon);
-                    player.state.setDefaultState();
                     bike.tag.addPlayer();
                     bike.addon.add(highlightAddon);
                     bike.state.currState = new BikeMovingState(bike, this.world);
+                    player.getMesh().setAbsolutePosition(new Vector3(0, 0, 0));
+                    player.getMesh().parent = bike.getMesh();
+                    player.state.setState(new PlayerBikeState(player));
                 }
             break;
         }
