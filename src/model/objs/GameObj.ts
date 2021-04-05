@@ -7,6 +7,7 @@ import { StateComponent } from "../components/StateComponent";
 import { TagComponent } from "../components/TagComponent";
 import { MeshComponent } from "../components/MeshComponent";
 import { AddonComponent } from "../components/AddonComponent";
+import { PlayerComponent } from "../components/PlayerComponent";
 
 export enum GameObjectType {
     Player = 'player',
@@ -30,7 +31,8 @@ export enum GameObjectType {
 export enum GameObjTag {
     Player = 'Player',
     Enemy = 'Enemy',
-    Bicycle = 'Bicycle'
+    Bicycle = 'Bicycle',
+    ActiveVehicle = 'ActiveVehicle'
 }
 
 export interface GameObjectJson {
@@ -74,6 +76,7 @@ export class GameObj {
     readonly tag: TagComponent;
     readonly mesh: MeshComponent;
     readonly addon: AddonComponent;
+    readonly player: PlayerComponent;
     
     additionalComponents: IComponent[] = [];
 
@@ -92,6 +95,7 @@ export class GameObj {
         this.mesh = new MeshComponent(this);
         this.state = new StateComponent(undefined, world);
         this.addon = new AddonComponent();
+        this.player = new PlayerComponent();
         // this.location = new LocationContext();
     }
 

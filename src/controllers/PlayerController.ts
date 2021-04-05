@@ -1,5 +1,6 @@
 import { SpotLight } from "babylonjs";
 import { GameObj, GameObjectType, GameObjTag } from "../model/objs/GameObj";
+import { PlayerGetOffBikeState } from "../model/states/PlayerGetOffBikeState";
 import { PlayerGetOnBikeState } from "../model/states/PlayerGetOnBikeState";
 import { World } from "../services/World";
 import { AbstractController } from "./IController";
@@ -21,9 +22,18 @@ export class PlayerController extends AbstractController {
 
                 if (nearestActionableObj) {
                     this.activateActionable(player, nearestActionableObj);
+                    this.world.gui.renderGui();
                 }
             break;
+            case 'q':
+                this.exitAction();
+            break;
         }
+    }
+
+    private exitAction() {
+        const player = this.world.districtStore.getPlayer();
+        player.state.setState(new PlayerGetOffBikeState(player, this.world));
     }
 
     private activateActionable(player: GameObj, actionableObj: GameObj) {

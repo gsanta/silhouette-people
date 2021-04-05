@@ -4,11 +4,20 @@ import { AdvancedDynamicTexture, StackPanel, Control, Checkbox, TextBlock } from
 export class GuiService {
     private world: World;
     private texture: AdvancedDynamicTexture;
+    private renderer: () => void;
 
     constructor(world: World) {
         this.world = world;
     
         this.world.onReady(() => this.init());
+    }
+
+    setGuiRenderer(renderer: () => void) {
+        this.renderer = renderer;
+    }
+
+    renderGui() {
+        this.renderer && this.renderer();
     }
 
     private init() {

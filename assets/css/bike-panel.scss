@@ -1,0 +1,31 @@
+
+
+.bike-panel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 200px;
+    background-color: indianred;
+
+    box-shadow: 5px 6px 11px -2px rgba(0,0,0,0.95);
+
+    .info-panel-header {
+        padding: 5px;
+        color: white;
+        font-weight: bold;
+        background-color: darkred;
+    }
+
+    .info-panel-body {
+        padding: 10px 5px 10px 5px;
+        color: white;
+    }
+
+    .info-row {
+        display: flex;
+
+        > div:first-child {
+            margin-right: 10px; 
+        }
+    }
+}

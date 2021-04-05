@@ -4,7 +4,7 @@ import React from "react";
 import * as ReactDOM from 'react-dom';
 import { CameraObj } from "./model/objs/CameraObj";
 import { World } from "./services/World";
-import { MainUI } from './ui/MainUI';
+import { AppGui } from './ui/AppGui';
 
 export function createGame() {
     const root = <HTMLCanvasElement> document.getElementById("root");
@@ -13,7 +13,7 @@ export function createGame() {
     (window as any).world = world;
 
     ReactDOM.render(
-        React.createElement(MainUI, { world: world, onReady: () => initGame(world) }),
+        React.createElement(AppGui, { world: world, onReady: () => initGame(world) }),
         root
     );
 }

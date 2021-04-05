@@ -63,8 +63,10 @@ module.exports = env => {
         },
         output: {
             filename: 'app.js',
-            libraryTarget: 'var',
-            library: 'silhouette',
+            library: {
+                name: 'silhouette',
+                type: 'var'
+            },
             publicPath: ''
         },
         externals: {
@@ -73,7 +75,7 @@ module.exports = env => {
         devtool: 'eval',
         context: __dirname,
         devServer: {
-            contentBase: ['.', './test', './assets'],
+            static: ['.', './test', './assets'],
             port: 3001
         }
     }

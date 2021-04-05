@@ -20,22 +20,22 @@ export class DistrictStore {
     }
 
     getQuarter(index: number): QuarterObj {
-        return this.getActiveDistrict().activeComp.getQuarter(index);
+        return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getQuarter(index) : undefined;
     }
 
     getAllGameObjects(): GameObj[] {
-        return this.getActiveDistrict().activeComp.getAllGameObjects();
+        return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getAllGameObjects() : [];
     }
 
-    getGameObjsByTag(tag: GameObjTag) {
-        return this.getActiveDistrict().activeComp.getGameObjsByTag(tag);
+    getGameObjsByTag(tag: GameObjTag): GameObj[] {
+        return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getGameObjsByTag(tag) : [];
     }
 
     getGameObjsByType(...type: GameObjectType[]): GameObj[] {
-        return this.getActiveDistrict().activeComp.getGameObjsByType(...type);
+        return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getGameObjsByType(...type) : [];
     }
 
     getPlayer() {
-        return this.getActiveDistrict().activeComp.getPlayer();
+        return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getPlayer() : undefined;
     }
 }

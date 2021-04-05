@@ -26,6 +26,14 @@ export class MeshComponent {
         return gameObjPos.subtract(districtPos);
     }
 
+    getRotation(): Vector3 {
+        return this.gameObj.getMesh().rotationQuaternion.toEulerAngles();
+    }
+
+    setPosition(pos: Vector3) {
+        this.gameObj.getMesh().setAbsolutePosition(pos);
+    }
+
     addMeshes(meshes: Mesh[], mainMesh: Mesh) {
         this.gameObj.mainMesh = mainMesh;
         this.gameObj.allMeshes = meshes;
