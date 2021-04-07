@@ -2,7 +2,7 @@ import { DistrictObj } from "../model/objs/DistrictObj";
 import { GameObj, GameObjectType, GameObjTag } from "../model/objs/GameObj";
 import { QuarterObj } from "../model/objs/QuarterObj";
 
-export class DistrictStore {
+export class TempStore {
     private districtsMap: Map<string, DistrictObj> = new Map();
     private districts: DistrictObj[] = [];
 

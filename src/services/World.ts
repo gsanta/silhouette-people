@@ -2,15 +2,16 @@ import { Engine, Scene } from "babylonjs";
 import { DebugService } from "./DebugService";
 import { KeyboardService } from "./KeyboardService";
 import { GuiService } from "./GuiService";
-import { DistrictStore } from "../stores/DistrictStore";
+import { TempStore } from "../stores/TempStore";
 import { FactoryService } from "./FactoryService";
 import { JsonStore } from "../stores/JsonStore";
 import { LoaderService } from "./LoaderService";
 import { ControllerService } from "./ControllerService";
-import { ArcRotateCamera } from "babylonjs/Cameras/arcRotateCamera";
 import { GlobalStore } from "../stores/GlobalStore";
 import { DistrictService } from "./district/DistrictService";
 import { UpdateService } from "./update/UpdateService";
+import { ActiveGameObjStoreDecorator } from "../stores/ActiveGameObjStoreDecorator";
+import { ActiveQuarterStoreDecorator } from "../stores/ActiveQuarterStoreDecorator";
 
 export class World {
     keyboard: KeyboardService;
@@ -26,9 +27,11 @@ export class World {
     district: DistrictService;
     update: UpdateService;
 
-    districtStore: DistrictStore;
+    districtStore: TempStore;
     globalStore: GlobalStore;
     jsonStore: JsonStore;
+    activeObj: ActiveGameObjStoreDecorator;
+    activeQuarter: ActiveQuarterStoreDecorator;
     
     private isReady: boolean = false;
     private onReadyFuncs: (() => void)[] = [];
@@ -40,11 +43,14 @@ export class World {
         this.factory = new FactoryService(this);
         this.loader = new LoaderService(this);
         this.controller = new ControllerService(this);
-        this.districtStore = new DistrictStore();
+        this.districtStore = new TempStore();
         this.globalStore = new GlobalStore();
         this.jsonStore = new JsonStore();
         this.district = new DistrictService(this);
         this.update = new UpdateService(this);
+
+        this.activeObj = new ActiveGameObjStoreDecorator(this);
+        this.activeQuarter = new ActiveQuarterStoreDecorator(this);
     }
 
     setScene(scene: Scene) {

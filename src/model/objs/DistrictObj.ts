@@ -4,6 +4,8 @@ import { DistrictJson } from "../../services/district/DistrictJson";
 import { World } from "../../services/World";
 import { ActiveDistrictComponent } from "./ActiveDistrictComponent";
 import { BasicDistrictComponent } from "./BasicDistrictComponent";
+import { GameObjStore } from "../../stores/GameObjStore";
+import { QuarterStore } from "../../stores/QuarterStore";
 
 export class DistrictObj {
     id: string;
@@ -17,6 +19,8 @@ export class DistrictObj {
 
     basicComp: BasicDistrictComponent;
     activeComp: ActiveDistrictComponent;
+    obj: GameObjStore;
+    quarter: QuarterStore;
 
     constructor(json: DistrictJson, world: World) {
         const [width, height] = json.size.split(':').map(numStr => parseInt(numStr));
@@ -30,5 +34,8 @@ export class DistrictObj {
         
         this.factory = new GameObjectFactory(this, world); 
         this.basicComp = new BasicDistrictComponent();
+
+        this.obj = new GameObjStore();
+        this.quarter = new QuarterStore();
     }
 }
