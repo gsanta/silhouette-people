@@ -11,5 +11,5 @@ export interface IGameObjStore {
 
     getAllGameObjects(): GameObj[];
 
-    remove();
+    dispose();
 }

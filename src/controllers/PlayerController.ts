@@ -14,7 +14,7 @@ export class PlayerController extends AbstractController {
     }
 
     keyboard(e: KeyboardEvent) {
-        const player = this.world.districtStore.getPlayer();
+        const player = this.world.activeObj.getPlayer();
 
         switch(e.key) {
             case 'e':
@@ -33,7 +33,7 @@ export class PlayerController extends AbstractController {
     }
 
     private exitAction() {
-        const player = this.world.districtStore.getPlayer();
+        const player = this.world.activeObj.getPlayer();
         player.state.setState(new PlayerGetOffBikeState(player, this.world));
     }
 
@@ -46,7 +46,7 @@ export class PlayerController extends AbstractController {
     }
 
     private getNearestActionableObj(player: GameObj): GameObj  {
-        const bicycles = this.world.districtStore.getGameObjsByTag(GameObjTag.Bicycle);
+        const bicycles = this.world.activeObj.getGameObjsByTag(GameObjTag.Bicycle);
         const bikeAndDist = bicycles.map(bicycle => ({ bike: bicycle, dist: bicycle.mesh.distance(player)}));
         bikeAndDist.sort((d1, d2) => d1.dist - d2.dist);
 

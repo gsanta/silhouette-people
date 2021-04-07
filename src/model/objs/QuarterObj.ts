@@ -19,7 +19,7 @@ export class QuarterObj  {
     }
 
     getAllGameObjects(): GameObj[] {
-        return this.district.activeComp.getAllGameObjects().filter(obj => obj.getQuarter() === this);
+        return this.district.obj.getAllGameObjects().filter(obj => obj.getQuarter() === this);
     }
 
     getMap() {

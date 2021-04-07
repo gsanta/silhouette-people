@@ -9,7 +9,7 @@ export class ActiveDistrictComponent {
 
     constructor(district: DistrictObj) {
         this.district = district;
-        this.district.activeComp = this;
+        // this.district.activeComp = this;
     }
 
     addQuarter(quarterObj: QuarterObj) {
@@ -49,7 +49,7 @@ export class ActiveDistrictComponent {
 
     remove() {
         this.gameObjects.forEach(obj => obj.dispose());
-        this.district.activeComp = undefined;
+        // this.district.activeComp = undefined;
     }
 
     private calcQuarterIndex(gameObject: GameObj): number {

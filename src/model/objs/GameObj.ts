@@ -165,7 +165,7 @@ export class GameObj {
     }
 
     getQuarter(): QuarterObj {
-        return this.district.activeComp.getQuarter(this.quarterIndex);
+        return this.district.quarter.getQuarter(this.quarterIndex);
     }
 
     isAnimationRunning(name: string) {

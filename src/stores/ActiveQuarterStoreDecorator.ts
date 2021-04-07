@@ -22,6 +22,10 @@ export class ActiveQuarterStoreDecorator implements IQuarterStore {
         return this.getActiveQuarterStore().getAllQuarters();
     }
 
+    dispose() {
+        this.getActiveQuarterStore().dispose();
+    }
+
     private getActiveQuarterStore() {
         return this.world.districtStore.getActiveDistrict().quarter;
     }

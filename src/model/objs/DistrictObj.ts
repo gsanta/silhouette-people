@@ -2,7 +2,6 @@ import { Vector2 } from "babylonjs";
 import { GameObjectFactory } from "../../services/factory/GameObjectFactory";
 import { DistrictJson } from "../../services/district/DistrictJson";
 import { World } from "../../services/World";
-import { ActiveDistrictComponent } from "./ActiveDistrictComponent";
 import { BasicDistrictComponent } from "./BasicDistrictComponent";
 import { GameObjStore } from "../../stores/GameObjStore";
 import { QuarterStore } from "../../stores/QuarterStore";
@@ -18,9 +17,11 @@ export class DistrictObj {
     readonly factory: GameObjectFactory;
 
     basicComp: BasicDistrictComponent;
-    activeComp: ActiveDistrictComponent;
+    // activeComp: ActiveDistrictComponent;
     obj: GameObjStore;
     quarter: QuarterStore;
+
+    private _isActiveDistrict: boolean = false;
 
     constructor(json: DistrictJson, world: World) {
         const [width, height] = json.size.split(':').map(numStr => parseInt(numStr));
@@ -37,5 +38,13 @@ export class DistrictObj {
 
         this.obj = new GameObjStore();
         this.quarter = new QuarterStore();
+    }
+
+    isActiveDistrict() {
+        return this._isActiveDistrict;
+    }
+
+    setActiveDistrict(isActive: boolean) {
+        this._isActiveDistrict = isActive;
     }
 }

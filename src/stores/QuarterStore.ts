@@ -15,4 +15,8 @@ export class QuarterStore implements IQuarterStore {
     getAllQuarters(): QuarterObj[] {
         return this.quarters;
     }
+
+    dispose() {
+        this.quarters = [];
+    }
 }

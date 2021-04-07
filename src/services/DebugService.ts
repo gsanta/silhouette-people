@@ -30,10 +30,10 @@ export class DebugService {
     }
 
     setColliderMeshVisibility(isVisible: boolean) {
-        this.world.districtStore.getAllGameObjects().forEach(go => go.setColliderVisibility(isVisible));
+        this.world.activeObj.getAllGameObjects().forEach(go => go.setColliderVisibility(isVisible));
     }
 
     setMeshBoundingBoxVisibility(isVisible: boolean) {
-        this.world.districtStore.getAllGameObjects().forEach(go => go.setBoundingBoxVisibility(isVisible));
+        this.world.activeObj.getAllGameObjects().forEach(go => go.setBoundingBoxVisibility(isVisible));
     }
 }

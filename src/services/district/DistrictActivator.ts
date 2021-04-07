@@ -32,8 +32,8 @@ export class DistrictActivator {
         
         json.grounds.forEach((ground, index) => {
             const quarterGround = district.factory.createQuarterGround(ground, districtSize / 2, index);
-            district.activeComp.addQuarter(new QuarterObj(district, quarterGround));
-            district.activeComp.addGameObject(quarterGround);
+            district.quarter.addQuarter(new QuarterObj(district, quarterGround));
+            district.obj.addGameObject(quarterGround);
         });
         
         const gameObjectJsons = this.districtParser.parse(district.json);
@@ -46,12 +46,15 @@ export class DistrictActivator {
         activeComp.getQuarter(1).getMap().fillMeshes(colliderMeshes);
 
         const districtBorder = district.factory.createDistrictBorder();
-        district.activeComp.addGameObject(districtBorder);
+        district.obj.addGameObject(districtBorder);
 
         this.world.globalStore.getCamera().setDistrict(district);
+        district.setActiveDistrict(true);
     }
 
     deactivate(district: DistrictObj) {
-        district.activeComp.remove();
+        district.obj.dispose();
+        district.quarter.dispose();
+        district.setActiveDistrict(false);
     }
 }

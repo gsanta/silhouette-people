@@ -27,7 +27,7 @@ export class GameObjStore implements IGameObjStore {
         return this.gameObjects;
     }
 
-    remove() {
+    dispose() {
         this.gameObjects.forEach(obj => obj.dispose());
     }
 }

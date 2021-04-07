@@ -75,7 +75,7 @@ function initGame(world: World) {
             world.update.update();
 
             if (world.districtStore.getActiveDistrict()) {
-                world.districtStore.getAllGameObjects().forEach(gameObject => gameObject.update(world));
+                world.activeObj.getAllGameObjects().forEach(gameObject => gameObject.update(world));
             }
         }
 

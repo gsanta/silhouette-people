@@ -6,4 +6,6 @@ export interface IQuarterStore {
     getQuarter(index: number): QuarterObj;
 
     getAllQuarters(): QuarterObj[];
+
+    dispose(): void;
 }

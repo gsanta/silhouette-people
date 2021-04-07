@@ -24,7 +24,7 @@ export class GuiService {
 
     private processDirtyObjs(): boolean {
         let dirtyFound = false;
-        this.world.districtStore.getAllGameObjects().forEach(obj => {
+        this.world.activeObj.getAllGameObjects().forEach(obj => {
             if (obj.data.isDirty()) {
                 obj.data.clearDirty();
                 dirtyFound = true;

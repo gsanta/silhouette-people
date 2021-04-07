@@ -5,7 +5,7 @@ import './../../assets/css/bike-panel.scss'
 export class BikePanelGui extends React.Component<GuiProps> {
     render() {
         const { world } = this.props;
-        const player = world.districtStore.getPlayer(); 
+        const player = world.activeObj.getPlayer(); 
 
         if (!player || !player.player.hasBikeVechicle()) {
             return null;

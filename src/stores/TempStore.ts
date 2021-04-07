@@ -16,26 +16,26 @@ export class TempStore {
     }
 
     getActiveDistrict(): DistrictObj {
-        return this.districts.find(district => district.activeComp !== undefined);
+        return this.districts.find(district => district.isActiveDistrict());
     }
 
-    getQuarter(index: number): QuarterObj {
-        return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getQuarter(index) : undefined;
-    }
+    // getQuarter(index: number): QuarterObj {
+    //     return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getQuarter(index) : undefined;
+    // }
 
-    getAllGameObjects(): GameObj[] {
-        return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getAllGameObjects() : [];
-    }
+    // getAllGameObjects(): GameObj[] {
+    //     return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getAllGameObjects() : [];
+    // }
 
-    getGameObjsByTag(tag: GameObjTag): GameObj[] {
-        return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getGameObjsByTag(tag) : [];
-    }
+    // getGameObjsByTag(tag: GameObjTag): GameObj[] {
+    //     return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getGameObjsByTag(tag) : [];
+    // }
 
-    getGameObjsByType(...type: GameObjectType[]): GameObj[] {
-        return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getGameObjsByType(...type) : [];
-    }
+    // getGameObjsByType(...type: GameObjectType[]): GameObj[] {
+    //     return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getGameObjsByType(...type) : [];
+    // }
 
-    getPlayer() {
-        return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getPlayer() : undefined;
-    }
+    // getPlayer() {
+    //     return this.getActiveDistrict() ? this.getActiveDistrict().activeComp.getPlayer() : undefined;
+    // }
 }

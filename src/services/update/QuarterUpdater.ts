@@ -11,7 +11,7 @@ export class QuarterUpdater {
 
     updateQuarterBasedOnPlayerPosition() {
         const district = this.world.districtStore.getActiveDistrict();
-        const player = district.activeComp.getPlayer();
+        const player = this.world.activeObj.getPlayer();
 
         if (district && player) {
             if (this.isQuarterChanged(district, player)) {
@@ -22,7 +22,7 @@ export class QuarterUpdater {
 
     private isQuarterChanged(district: DistrictObj, player: GameObj) {
         const camera = this.world.globalStore.getCamera();
-        const quarter = district.activeComp.getQuarter(camera.getQuarterIndex());
+        const quarter = district.quarter.getQuarter(camera.getQuarterIndex());
         const pos = player.getPosition2D();
 
         return !quarter.containsPoint2D(pos);
@@ -32,7 +32,7 @@ export class QuarterUpdater {
         const camera = this.world.globalStore.getCamera();
         const pos = player.getPosition2D();
 
-        const quarterIndex = district.activeComp.getAllQuarters().findIndex(quarter => quarter.containsPoint2D(pos));
+        const quarterIndex = district.quarter.getAllQuarters().findIndex(quarter => quarter.containsPoint2D(pos));
         camera.setQuarterIndex(quarterIndex);
     }
 }

@@ -10,31 +10,42 @@ export class ActiveGameObjStoreDecorator implements IGameObjStore {
     }
 
     private getActiveGameObjStore() {
-        return this.world.districtStore.getActiveDistrict().obj;
+        const activeDistrict = this.world.districtStore.getActiveDistrict()
+        return activeDistrict ? activeDistrict.obj : undefined;
     }
 
     // TODO: possibly should be removed from here and from IGameObjStore interface also
     addGameObject(gameObject: GameObj) {
-        this.getActiveGameObjStore().addGameObject(gameObject);
+        const objStore = this.getActiveGameObjStore();
+        if (objStore) {
+            objStore.addGameObject(gameObject);
+        } 
     }
 
     getPlayer(): GameObj {
-        return this.getActiveGameObjStore().getGameObjsByTag(GameObjTag.Player)[0];
+        const objStore = this.getActiveGameObjStore();
+        return objStore ? objStore.getPlayer() : undefined; 
     }
 
     getGameObjsByTag(tag: GameObjTag): GameObj[] {
-        return this.getActiveGameObjStore().getAllGameObjects().filter(obj => obj.tag.has(tag));
+        const objStore = this.getActiveGameObjStore();
+        return objStore ? objStore.getGameObjsByTag(tag) : [];
     }
 
     getGameObjsByType(...type: GameObjectType[]): GameObj[] {
-        return this.getActiveGameObjStore().getAllGameObjects().filter(obj => type.includes(obj.type));
+        const objStore = this.getActiveGameObjStore();
+        return objStore ? objStore.getGameObjsByType(...type) : [];
     }
 
     getAllGameObjects(): GameObj[] {
-        return this.getActiveGameObjStore().getAllGameObjects();
+        const objStore = this.getActiveGameObjStore();
+        return objStore ? objStore.getAllGameObjects() : [];
     }
 
-    remove() {
-        this.getActiveGameObjStore().remove();
+    dispose() {
+        const objStore = this.getActiveGameObjStore();
+        if (objStore) {
+            objStore.dispose();
+        }
     }
 }

@@ -45,7 +45,7 @@ export class CameraObj {
     }
 
     private updateCameraPosition() {
-        const quarter = this.district.activeComp.getQuarter(this.quarterIndex);
+        const quarter = this.district.quarter.getQuarter(this.quarterIndex);
 
         const size = quarter.getSize();
         const height = 25;

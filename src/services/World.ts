@@ -31,7 +31,7 @@ export class World {
     globalStore: GlobalStore;
     jsonStore: JsonStore;
     activeObj: ActiveGameObjStoreDecorator;
-    activeQuarter: ActiveQuarterStoreDecorator;
+    activeQuarters: ActiveQuarterStoreDecorator;
     
     private isReady: boolean = false;
     private onReadyFuncs: (() => void)[] = [];
@@ -50,7 +50,7 @@ export class World {
         this.update = new UpdateService(this);
 
         this.activeObj = new ActiveGameObjStoreDecorator(this);
-        this.activeQuarter = new ActiveQuarterStoreDecorator(this);
+        this.activeQuarters = new ActiveQuarterStoreDecorator(this);
     }
 
     setScene(scene: Scene) {
