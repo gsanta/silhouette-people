@@ -69,19 +69,21 @@ function initGame(world: World) {
     light.intensity = 0.5;
 
     engine.runRenderLoop(function () {
-            scene.render();
+        scene.render();
 
-            if (world.loader.isLoaded()) {
-                world.update.update();
-    
-                if (world.districtStore.getActiveDistrict()) {
-                    world.districtStore.getAllGameObjects().forEach(gameObject => gameObject.update(world));
-                }
+        if (world.loader.isLoaded()) {
+            world.update.update();
+
+            if (world.districtStore.getActiveDistrict()) {
+                world.districtStore.getAllGameObjects().forEach(gameObject => gameObject.update(world));
             }
+        }
+
+        world.gui.renderGui();
     });
     
     window.addEventListener("resize", function () {
-            engine.resize();
+        engine.resize();
     });
 
     world.loader.loadGame();

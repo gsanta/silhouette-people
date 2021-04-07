@@ -22,11 +22,12 @@ export class PlayerController extends AbstractController {
 
                 if (nearestActionableObj) {
                     this.activateActionable(player, nearestActionableObj);
-                    this.world.gui.renderGui();
+                    this.world.gui.renderGui(true);
                 }
             break;
             case 'q':
                 this.exitAction();
+                this.world.gui.renderGui(true);
             break;
         }
     }

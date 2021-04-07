@@ -1,7 +1,6 @@
 import React from "react";
 import { GuiProps } from './GuiProps';
 import './../../assets/css/bike-panel.scss'
-import { GameObjectType } from "../model/objs/GameObj";
 
 export class BikePanelGui extends React.Component<GuiProps> {
     render() {
@@ -12,6 +11,9 @@ export class BikePanelGui extends React.Component<GuiProps> {
             return null;
         }
 
+        const bike = player.player.getVehicle();
+        let speed = bike.data.getSpeed();
+        speed = Math.trunc(speed * 10) / 10;
 
         return (
             <div className="bike-panel">
@@ -19,11 +21,11 @@ export class BikePanelGui extends React.Component<GuiProps> {
                 <div className="info-panel-body">
                     <div className="info-row">
                         <div>Speed</div>
-                        <div>10 km/h</div>
+                        <div>{speed} km/h</div>
                     </div>
                     <div className="info-row">
                         <div>Gear</div>
-                        <div>2</div>
+                        <div>{bike.data.getGear()}</div>
                     </div>
                 </div>
             </div>

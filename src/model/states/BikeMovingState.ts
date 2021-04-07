@@ -3,14 +3,18 @@ import { Axis, Space, Vector2, Vector3 } from "babylonjs";
 import { World } from "../../services/World";
 import { GameObj } from "../objs/GameObj";
 import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
-import { BikeSpeedPhysics, BikeSpeedState } from "./BikeSpeedPhysics";
+import { BikeSlowdownPhysics } from "./BikeSlowdownPhysics";
+import { BikeReversePhysics } from "./BikeReversePhysics";
+import { BikeSpeedupPhysics, BikeSpeedState } from "./BikeSpeedupPhysics";
 
 export class BikeMovingState extends AbstractGameObjState {
     private readonly world: World;
     private readonly rotationSpeed = Math.PI / 30;
-    private speedPhysics: BikeSpeedPhysics;
+    private speedPhysics: BikeSpeedupPhysics;
+    private rollingPhysics: BikeSlowdownPhysics;
+    private brakingPhysics: BikeSlowdownPhysics;
+    private reversePhysics: BikeReversePhysics;
     private speed = 0;
-    private instantaneousSpeed = 0;
 
     private speedStates: Set<BikeSpeedState> = new Set();
 
@@ -19,12 +23,15 @@ export class BikeMovingState extends AbstractGameObjState {
         this.world = world;
 
         const speedRanges: [Vector2, Vector2][] = [
-            [ new Vector2(-1.6, -10 / 3.6), new Vector2(1.4, 10 / 3.6) ],
-            [ new Vector2(-0.1, 0), new Vector2(2.9, 20 / 3.6) ],
-            [ new Vector2(1.4, 10 / 3.6), new Vector2(4.4, 30 / 3.6) ]
+            [ new Vector2(-1.6, -10 / 3.6), new Vector2(1.4, 2.5) ],
+            [ new Vector2(-0.1, 0), new Vector2(2, 5) ],
+            [ new Vector2(1.4, 10 / 3.6), new Vector2(4.4, 7.5) ]
         ];
 
-        this.speedPhysics = new BikeSpeedPhysics({ maxAcceleration: 8 / 5, gearSpeedRanges: speedRanges })
+        this.speedPhysics = new BikeSpeedupPhysics(gameObject, { gearSpeedRanges: speedRanges });
+        this.rollingPhysics = new BikeSlowdownPhysics(gameObject, 2.5);
+        this.brakingPhysics = new BikeSlowdownPhysics(gameObject, 5);
+        this.reversePhysics = new BikeReversePhysics(gameObject);
     }
 
     keyboard(e: KeyboardEvent, isKeyDown: boolean) {
@@ -43,6 +50,9 @@ export class BikeMovingState extends AbstractGameObjState {
                     this.speedStates.add(BikeSpeedState.Accelerating);
                 break;
                 case 's':
+                    this.speedStates.add(BikeSpeedState.Braking);
+                break;
+                case 'r':
                     this.speedStates.add(BikeSpeedState.Reverse);
                 break;
             }
@@ -52,6 +62,9 @@ export class BikeMovingState extends AbstractGameObjState {
                     this.speedStates.delete(BikeSpeedState.Accelerating);
                 break;
                 case 's':
+                    this.speedStates.delete(BikeSpeedState.Braking);
+                break;
+                case 'r':
                     this.speedStates.delete(BikeSpeedState.Reverse);
                 break;
             }
@@ -62,15 +75,24 @@ export class BikeMovingState extends AbstractGameObjState {
         const deltaTime = this.world.engine.getDeltaTime();
         const deltaTimeSec = deltaTime / 1000;
 
-        if (this.speedStates.has(BikeSpeedState.Accelerating)) {
-            this.instantaneousSpeed = this.speedPhysics.accelerate(this.instantaneousSpeed, deltaTime);
-            this.speed = this.instantaneousSpeed * deltaTimeSec;
-        } else if (this.speedStates.has(BikeSpeedState.Reverse)) {
-            this.speed = this.speedPhysics.reverse();
-        } else {
-            this.instantaneousSpeed = 0;
-            this.speed = this.speedPhysics.brake();
+        const dominantState = this.getDominantSpeedState();
+
+        switch(dominantState) {
+            case BikeSpeedState.Accelerating:
+                this.speedPhysics.update(deltaTime);
+            break;
+            case BikeSpeedState.Braking:
+                this.brakingPhysics.update(deltaTime);
+            break;
+            case BikeSpeedState.Reverse:
+                this.reversePhysics.update(deltaTime);
+            break;
+            case BikeSpeedState.Rolling:
+                this.rollingPhysics.update(deltaTime);
+            break;
         }
+
+        this.speed = this.gameObject.data.getSpeed() * deltaTimeSec;
     }
 
     private updateRotation() {
@@ -109,5 +131,18 @@ export class BikeMovingState extends AbstractGameObjState {
 
     exit() {
         this.gameObject.stopCurrentAnimation();
+    }
+
+    private getDominantSpeedState(): BikeSpeedState {
+        const speed = this.gameObject.data.getSpeed();
+        if (this.speedStates.has(BikeSpeedState.Braking)) {
+            return BikeSpeedState.Braking;
+        } else if (this.speedStates.has(BikeSpeedState.Accelerating)) {
+            return BikeSpeedState.Accelerating;
+        } else if (this.speedStates.has(BikeSpeedState.Reverse) && speed <= 0) {
+            return BikeSpeedState.Reverse;
+        } else {
+            return BikeSpeedState.Rolling;
+        }
     }
 }

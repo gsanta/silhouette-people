@@ -16,8 +16,21 @@ export class GuiService {
         this.renderer = renderer;
     }
 
-    renderGui() {
-        this.renderer && this.renderer();
+    renderGui(forced: boolean = false) {
+        if (forced || this.processDirtyObjs()) {
+            this.renderer && this.renderer();
+        }
+    }
+
+    private processDirtyObjs(): boolean {
+        let dirtyFound = false;
+        this.world.districtStore.getAllGameObjects().forEach(obj => {
+            if (obj.data.isDirty()) {
+                obj.data.clearDirty();
+                dirtyFound = true;
+            }
+        });
+        return dirtyFound;
     }
 
     private init() {

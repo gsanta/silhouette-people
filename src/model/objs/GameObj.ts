@@ -8,6 +8,7 @@ import { TagComponent } from "../components/TagComponent";
 import { MeshComponent } from "../components/MeshComponent";
 import { AddonComponent } from "../components/AddonComponent";
 import { PlayerComponent } from "../components/PlayerComponent";
+import { BikeData } from "./BikeData";
 
 export enum GameObjectType {
     Player = 'player',
@@ -77,7 +78,8 @@ export class GameObj {
     readonly mesh: MeshComponent;
     readonly addon: AddonComponent;
     readonly player: PlayerComponent;
-    
+    readonly data: BikeData;
+
     additionalComponents: IComponent[] = [];
 
     private currentAnimation: AnimationGroup;
@@ -96,6 +98,8 @@ export class GameObj {
         this.state = new StateComponent(undefined, world);
         this.addon = new AddonComponent();
         this.player = new PlayerComponent();
+
+        this.data = new BikeData();
         // this.location = new LocationContext();
     }
 
