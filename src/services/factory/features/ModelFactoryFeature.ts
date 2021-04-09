@@ -1,14 +1,17 @@
 import { Axis, Mesh, SceneLoader, Space } from "babylonjs";
 import { GameObj } from "../../../model/objs/GameObj";
+import { WorldObj } from "../../../model/objs/WorldObj";
 import { Lookup } from "../../Lookup";
 import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
 
 export class ModelFactoryFeature extends AbstractFactoryFeature {
-    private world: Lookup;
+    private lookup: Lookup;
+    private worldObj: WorldObj;
 
-    constructor(world: Lookup) {
+    constructor(worldObj: WorldObj, lookup: Lookup) {
         super();
-        this.world = world;
+        this.lookup = lookup;
+        this.worldObj = worldObj;
     }
 
     feature = 'Model';
@@ -30,11 +33,11 @@ export class ModelFactoryFeature extends AbstractFactoryFeature {
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         gameObject.animationGroups = result.animationGroups;
         gameObject.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
-        gameObject.getMesh().parent = this.world.globalStore.getWorld().basicComp.platform;
+        gameObject.getMesh().parent = this.worldObj.basicComp.platform;
     }
 
     private async load(path: string) {
-        return await SceneLoader.ImportMeshAsync('', "assets/models/", path, this.world.scene);
+        return await SceneLoader.ImportMeshAsync('', "assets/models/", path, this.lookup.scene);
     }
 
     private findMainMesh(meshes: Mesh[]) {

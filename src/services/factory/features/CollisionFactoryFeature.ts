@@ -1,15 +1,18 @@
 import { Axis, MeshBuilder, Space, StandardMaterial } from "babylonjs";
 import { GameObj } from "../../../model/objs/GameObj";
+import { WorldObj } from "../../../model/objs/WorldObj";
 import { Lookup } from "../../Lookup";
 import { AbstractFactoryFeature, parseStrVector } from "./AbstractFactoryFeacture";
 
 
 export class CollisionFactoryFeature extends AbstractFactoryFeature {
     private lookup: Lookup;
+    private worldObj: WorldObj;
 
-    constructor(world: Lookup) {
+    constructor(worldObj: WorldObj, lookup: Lookup) {
         super();
-        this.lookup = world;
+        this.worldObj = worldObj;
+        this.lookup = lookup;
     }
 
     feature = 'Collider';
@@ -36,7 +39,7 @@ export class CollisionFactoryFeature extends AbstractFactoryFeature {
         mainMesh.parent = null;
         
         gameObj.colliderMesh = collider;
-        gameObj.colliderMesh.parent = this.lookup.globalStore.getWorld().basicComp.platform;
+        gameObj.colliderMesh.parent = this.worldObj.basicComp.platform;
 
         mainMesh.parent = collider;
         collider.translate(Axis.X, position.x, Space.WORLD);

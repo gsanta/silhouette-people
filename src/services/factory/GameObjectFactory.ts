@@ -28,10 +28,10 @@ export class GameObjectFactory {
         this.lookup = lookup;
 
         this.featureFactories = [
-            new ModelFactoryFeature(lookup),
+            new ModelFactoryFeature(worldObj, lookup),
             new PositionFactoryFeature(),
             new TextureFactoryFeature(lookup),
-            new CollisionFactoryFeature(lookup),
+            new CollisionFactoryFeature(worldObj, lookup),
             new PhysicsFactoryFeature(lookup),
             new StateFactoryFeature(lookup),
             new TagFactoryFeature(),
@@ -132,7 +132,7 @@ export class GameObjectFactory {
         
 
         const translateX = quarterPos.x * size.x + size.x / 2;
-        const translateY = quarterPos.y * size.y  + size.y / 2;
+        const translateY = quarterPos.y * size.y - size.y / 2;
 
         ground.translate(new Vector3(translateX, 0, translateY), 1, Space.WORLD);
         ground.parent = this.worldObj.basicComp.platform;
