@@ -3,7 +3,6 @@ import { DebugService } from "./DebugService";
 import { KeyboardService } from "./KeyboardService";
 import { GuiService } from "./GuiService";
 import { FactoryService } from "./FactoryService";
-import { JsonStore } from "../stores/JsonStore";
 import { LoaderService } from "./LoaderService";
 import { ControllerService } from "./ControllerService";
 import { GlobalStore } from "../stores/GlobalStore";
@@ -11,6 +10,8 @@ import { UpdateService } from "./update/UpdateService";
 import { ActiveGameObjStoreDecorator } from "../stores/ActiveGameObjStoreDecorator";
 import { ActiveQuarterStoreDecorator } from "../stores/ActiveQuarterStoreDecorator";
 import { WorldObjFactory } from "./factory/WorldObjFactory";
+import { QuarterObjFactory } from "./factory/QuarterObjFactory";
+import { ItemObjFactory } from "./factory/ItemObjFactory";
 
 export class Lookup {
     keyboard: KeyboardService;
@@ -21,13 +22,15 @@ export class Lookup {
     debug: DebugService;
     gui: GuiService;
     factory: FactoryService;
-    worldFactory: WorldObjFactory;
     loader: LoaderService;
     controller: ControllerService;
     update: UpdateService;
+    
+    itemFactory: ItemObjFactory;
+    quarterFactory: QuarterObjFactory;
+    worldFactory: WorldObjFactory;
 
     globalStore: GlobalStore;
-    jsonStore: JsonStore;
     activeObj: ActiveGameObjStoreDecorator;
     activeQuarters: ActiveQuarterStoreDecorator;
     
@@ -39,12 +42,14 @@ export class Lookup {
         this.debug = new DebugService(this);
         this.gui = new GuiService(this);
         this.factory = new FactoryService(this);
-        this.worldFactory = new WorldObjFactory(this);
         this.loader = new LoaderService(this);
         this.controller = new ControllerService(this);
         this.globalStore = new GlobalStore();
-        this.jsonStore = new JsonStore();
         this.update = new UpdateService(this);
+        
+        this.itemFactory = new ItemObjFactory(this);
+        this.quarterFactory = new QuarterObjFactory(this);
+        this.worldFactory = new WorldObjFactory(this);
 
         this.activeObj = new ActiveGameObjStoreDecorator(this);
         this.activeQuarters = new ActiveQuarterStoreDecorator(this);

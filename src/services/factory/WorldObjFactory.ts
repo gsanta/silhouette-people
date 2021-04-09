@@ -3,8 +3,8 @@ import { GroundJson, WorldJson } from "../district/WorldJson";
 import { DistrictParser } from "../district/DistrictParser";
 import { Lookup } from "../Lookup";
 import { GameObjectJson, GameObjTag } from "../../model/objs/GameObj";
-import { Vector2 } from "babylonjs";
-
+import { Axis, Color3, MeshBuilder, PhysicsImpostor, Space, StandardMaterial, Vector2 } from "babylonjs";
+import { QuarterObjConfig } from "./QuarterObjFactory";
 
 export class WorldObjFactory {
     private assetsPath = 'assets/levels';
@@ -31,9 +31,17 @@ export class WorldObjFactory {
     }
 
     createGround(worldObj: WorldObj) {
-        const districtSize = worldObj.size.x;
+        const size = worldObj.size.x;
 
-        const ground = worldObj.factory.createGround(districtSize);
+        const ground = MeshBuilder.CreateBox('ground', { width: size, depth: size, height: 0.2 });
+        ground.translate(Axis.Y, -0.21, Space.WORLD);
+        const material = new StandardMaterial(`ground--material`, this.lookup.scene);
+        material.diffuseColor = Color3.FromHexString('#FFFFFF');
+        material.specularColor = new Color3(0, 0, 0);
+        ground.material = material;
+
+        ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, this.lookup.scene);
+
         worldObj.basicComp.platform = ground;
     }
 
@@ -46,15 +54,16 @@ export class WorldObjFactory {
                 const x = j - cols / 2;
                 const y = (rows - i) - rows / 2;
                 
-                worldObj.factory.createQuarterGround(grounds[i][j], new Vector2(x, y));
+                const config: QuarterObjConfig = { color: grounds[i][j].color, position: new Vector2(x, y) };
+                this.lookup.quarterFactory.createQuarter(config, worldObj);
             }
         }
     }
 
     async createGameObjs(gameObjJsons: GameObjectJson[], worldObj: WorldObj) {
-        worldObj.setActiveDistrict(true);
+        const itemFactory = this.lookup.itemFactory;
         
-        const gameObjects = await Promise.all(gameObjJsons.map(json => worldObj.factory.create(json)));
+        const gameObjects = await Promise.all(gameObjJsons.map(json =>  itemFactory.create(json, worldObj)));
         const colliderMeshes = gameObjects
             .filter(obj => obj.colliderMesh && obj.tag.doesNotHave(GameObjTag.Player, GameObjTag.Enemy, GameObjTag.Bicycle))
             .map(obj => obj.colliderMesh);
@@ -62,9 +71,6 @@ export class WorldObjFactory {
 
         gameObjects.forEach(obj => worldObj.obj.addGameObject(obj));
         worldObj.quarter.getQuarter(1).getMap().fillMeshes(colliderMeshes);
-
-        const districtBorder = worldObj.factory.createDistrictBorder();
-        worldObj.obj.addGameObject(districtBorder);
 
         this.lookup.globalStore.getCamera().setDistrict(worldObj);
     }

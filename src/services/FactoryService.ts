@@ -1,5 +1,5 @@
 import { Lookup } from "./Lookup";
-import { GameObjectFactory } from "./factory/GameObjectFactory";
+import { ItemObjFactory } from "./factory/ItemObjFactory";
 import { RouteFactory } from "./factory/RouteFactory";
 
 export class FactoryService {
