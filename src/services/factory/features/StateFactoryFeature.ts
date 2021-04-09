@@ -6,16 +6,16 @@ import { EnemyIdleState } from "../../../model/states/EnemyIdleState";
 import { EnemyMovingState } from "../../../model/states/EnemyMovingState";
 import { PlayerIdleState } from "../../../model/states/PlayerIdleState";
 import { PlayerMovingState } from "../../../model/states/PlayerMovingState";
-import { World } from "../../World";
+import { Lookup } from "../../Lookup";
 import { StateComponent } from "../../../model/components/StateComponent";
 import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
 
 
 export class StateFactoryFeature extends AbstractFactoryFeature {
 
-    private world: World;
+    private world: Lookup;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         super();
         this.world = world;
     }

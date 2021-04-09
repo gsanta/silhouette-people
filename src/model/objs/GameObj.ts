@@ -1,7 +1,7 @@
 import { AnimationGroup, Axis, Mesh, Quaternion, Skeleton, Space, Vector2, Vector3 } from "babylonjs";
 import { IComponent } from "../IComponent";
-import { World } from "../../services/World";
-import { DistrictObj } from "./DistrictObj";
+import { Lookup } from "../../services/Lookup";
+import { WorldObj } from "./WorldObj";
 import { QuarterObj } from "./QuarterObj";
 import { StateComponent } from "../components/StateComponent";
 import { TagComponent } from "../components/TagComponent";
@@ -84,13 +84,13 @@ export class GameObj {
 
     private currentAnimation: AnimationGroup;
 
-    district: DistrictObj;
+    district: WorldObj;
     quarterIndex: number;
 
     private frontDirection: Vector3 = new Vector3(0, 0, 1);
     private frontDirection2D: Vector2 = new Vector2(0, 1);
 
-    constructor(id: string, world: World) {
+    constructor(id: string, world: Lookup) {
         this.id = id;
 
         this.tag = new TagComponent();
@@ -143,7 +143,7 @@ export class GameObj {
         if (this.mainMesh) { this.mainMesh.showBoundingBox = isVisible; }
     }
 
-    update(world: World) {
+    update(world: Lookup) {
         if (!this.getMesh()) { return; }
 
         if (this.state) {

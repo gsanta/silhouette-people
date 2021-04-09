@@ -1,12 +1,12 @@
 import { StandardMaterial, Axis, Mesh, MeshBuilder, Space, Vector3, InstancedMesh, Color4, Color3 } from "babylonjs";
-import { World } from "../services/World";
+import { Lookup } from "../services/Lookup";
 
 export interface AreaVisualizerConfig {
     height: number;
 }
 
 export class QuarterMapDebugger {
-    private world: World;
+    private world: Lookup;
     private baseInstance: Mesh;
     private instanceMap: Map<number, InstancedMesh> = new Map();
     private borderMeshes: Mesh[] = [];
@@ -14,7 +14,7 @@ export class QuarterMapDebugger {
 
     private visible = false;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         this.world = world;
     }
 

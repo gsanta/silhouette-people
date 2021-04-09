@@ -1,14 +1,20 @@
+import { WorldObj } from "../model/objs/WorldObj";
 import { GameObj, GameObjectType, GameObjTag } from "../model/objs/GameObj";
 import { IGameObjStore } from "./IGameObjStore";
 
 export class GameObjStore implements IGameObjStore {
     private gameObjects: GameObj[] = [];
+    private district: WorldObj;
+
+    constructor(district: WorldObj) {
+        this.district = district;
+    }
 
     addGameObject(gameObject: GameObj) {
         this.gameObjects.push(gameObject);
 
-        // const quarterIndex = this.calcQuarterIndex(gameObject);
-        // gameObject.quarterIndex = quarterIndex;
+        const quarterIndex = this.calcQuarterIndex(gameObject);
+        gameObject.quarterIndex = quarterIndex;
     }
 
     getPlayer(): GameObj {
@@ -29,5 +35,12 @@ export class GameObjStore implements IGameObjStore {
 
     dispose() {
         this.gameObjects.forEach(obj => obj.dispose());
+    }
+
+    private calcQuarterIndex(gameObject: GameObj): number {
+        const pos = gameObject.getPosition2D();
+
+        const quarterIndex = this.district.quarter.getAllQuarters().findIndex(quarter => quarter.containsPoint2D(pos));
+        return quarterIndex;
     }
 }

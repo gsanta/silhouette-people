@@ -1,13 +1,13 @@
-import { World } from "./World";
+import { Lookup } from "./Lookup";
 import { KeyChecker } from "./KeyChecker";
 
 export class KeyboardService {
     activeKeys: Set<string> = new Set();
     checker: KeyChecker;
 
-    private readonly world: World;
+    private readonly world: Lookup;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         this.world = world;
         this.checker = new KeyChecker(this);
     }

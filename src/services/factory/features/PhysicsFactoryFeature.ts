@@ -1,13 +1,13 @@
 import { PhysicsImpostor } from "babylonjs";
 import { GameObj } from "../../../model/objs/GameObj";
-import { World } from "../../World";
+import { Lookup } from "../../Lookup";
 import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
 
 
 export class PhysicsFactoryFeature extends AbstractFactoryFeature {
-    private world: World;
+    private world: Lookup;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         super();
         this.world = world;
     }

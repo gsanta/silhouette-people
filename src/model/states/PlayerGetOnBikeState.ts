@@ -1,5 +1,5 @@
 import { GameObj } from "../objs/GameObj";
-import { World } from "../../services/World";
+import { Lookup } from "../../services/Lookup";
 import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
 import { AddonName } from "../addons/AbstractAddon";
 import { Vector3 } from "babylonjs";
@@ -7,10 +7,10 @@ import { PlayerBikeState } from "./PlayerBikeState";
 import { BikeMovingState } from "./BikeMovingState";
 
 export class PlayerGetOnBikeState extends AbstractGameObjState {
-    private world: World;
+    private world: Lookup;
     private bike: GameObj;
 
-    constructor(gameObject: GameObj, bike: GameObj, world: World) {
+    constructor(gameObject: GameObj, bike: GameObj, world: Lookup) {
         super(GameObjStateName.PlayerGetOnBikeState, gameObject);
         this.world = world;
         this.bike = bike;

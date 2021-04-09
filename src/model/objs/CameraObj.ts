@@ -1,9 +1,9 @@
 import { ArcRotateCamera, Vector2, Vector3 } from "babylonjs";
-import { DistrictObj } from "./DistrictObj";
+import { WorldObj } from "./WorldObj";
 
 
 export class CameraObj {
-    private district: DistrictObj;
+    private district: WorldObj;
     private quarterIndex: number = 2;
     private cornerIndex: number = 2;
 
@@ -25,7 +25,7 @@ export class CameraObj {
         this.camera.setTarget(vector);
     }
 
-    setDistrict(district: DistrictObj) {
+    setDistrict(district: WorldObj) {
         this.district = district;
         this.updateCameraPosition();
     }

@@ -1,9 +1,8 @@
 import { Axis, Color3, Mesh, MeshBuilder, PhysicsImpostor, Space, StandardMaterial, Vector3 } from "babylonjs";
-import { DistrictObj } from "../../model/objs/DistrictObj";
+import { WorldObj } from "../../model/objs/WorldObj";
 import { GameObj, GameObjectJson, GameObjectType } from "../../model/objs/GameObj";
-import { QuarterObj } from "../../model/objs/QuarterObj";
-import { World } from "../World";
-import { GroundJson } from "../district/DistrictJson";
+import { Lookup } from "../Lookup";
+import { GroundJson } from "../district/WorldJson";
 import { AbstractFactoryFeature } from "./features/AbstractFactoryFeacture";
 import { AddonFactoryFeature } from "./features/AddonFactoryFeature";
 import { CollisionFactoryFeature } from "./features/CollisionFactoryFeature";
@@ -14,38 +13,40 @@ import { RotateFactoryFeature } from "./features/RotateFactoryFeature";
 import { StateFactoryFeature } from "./features/StateFactoryFeature";
 import { TagFactoryFeature } from "./features/TagFactoryFeature";
 import { TextureFactoryFeature } from "./features/TextureFactoryFeature";
+import { Vector2 } from "babylonjs/Maths/math.vector";
+import { QuarterObj } from "../../model/objs/QuarterObj";
 
 export class GameObjectFactory {
-    private districtObj: DistrictObj;
-    private world: World;
+    private worldObj: WorldObj;
+    private lookup: Lookup;
     private indexesByType: Map<string, number> = new Map();
 
     featureFactories: AbstractFactoryFeature[] = [];
 
-    constructor(districtObj: DistrictObj, world: World) {
-        this.districtObj = districtObj;
-        this.world = world;
+    constructor(worldObj: WorldObj, lookup: Lookup) {
+        this.worldObj = worldObj;
+        this.lookup = lookup;
 
         this.featureFactories = [
-            new ModelFactoryFeature(world),
+            new ModelFactoryFeature(lookup),
             new PositionFactoryFeature(),
-            new TextureFactoryFeature(world),
-            new CollisionFactoryFeature(world),
-            new PhysicsFactoryFeature(world),
-            new StateFactoryFeature(world),
+            new TextureFactoryFeature(lookup),
+            new CollisionFactoryFeature(lookup),
+            new PhysicsFactoryFeature(lookup),
+            new StateFactoryFeature(lookup),
             new TagFactoryFeature(),
-            new AddonFactoryFeature(world),
+            new AddonFactoryFeature(lookup),
             new RotateFactoryFeature()
         ];
     }
 
     async create(gameObjectJson: GameObjectJson): Promise<GameObj> {
         const id = this.generateId(gameObjectJson.type);
-        const gameObject = new GameObj(id, this.world);
+        const gameObject = new GameObj(id, this.lookup);
 
         gameObject.type = gameObjectJson.type;
         gameObject.ch = gameObjectJson.ch;
-        gameObject.district = this.districtObj;
+        gameObject.district = this.worldObj;
 
         if (gameObjectJson.features) {
             await this.processFeatureList(gameObject, gameObjectJson);
@@ -56,7 +57,7 @@ export class GameObjectFactory {
 
     createDistrictBorder(): GameObj {
         const id = this.generateId(GameObjectType.DistrictBorder);
-        const gameObject = new GameObj(id, this.world);
+        const gameObject = new GameObj(id, this.lookup);
 
         gameObject.type = GameObjectType.DistrictBorder;
 
@@ -67,15 +68,15 @@ export class GameObjectFactory {
             new Vector3(2, 0.2, 0)
         ];
 
-        const mat = new StandardMaterial("mat", this.world.scene);
+        const mat = new StandardMaterial("mat", this.lookup.scene);
         mat.diffuseColor = Color3.Red();
         mat.alpha = 0.2;
-        const lathe = MeshBuilder.CreateLathe("lathe", {shape: myShape, radius: this.districtObj.size.x / 3 + 2, tessellation:4, sideOrientation: Mesh.DOUBLESIDE});
+        const lathe = MeshBuilder.CreateLathe("lathe", {shape: myShape, radius: this.worldObj.size.x / 3 + 2, tessellation:4, sideOrientation: Mesh.DOUBLESIDE});
         lathe.rotate(Axis.Y, Math.PI / 4, Space.WORLD);
         lathe.convertToFlatShadedMesh();
 
-        lathe.translate(Axis.X, this.districtObj.centerPoint.x, Space.WORLD); 
-        lathe.translate(Axis.Z, this.districtObj.centerPoint.y, Space.WORLD); 
+        // lathe.translate(Axis.X, this.worldObj.centerPoint.x, Space.WORLD); 
+        // lathe.translate(Axis.Z, this.worldObj.centerPoint.y, Space.WORLD); 
 
         lathe.material = mat;
 
@@ -105,52 +106,40 @@ export class GameObjectFactory {
         }
     }
 
-    createGround(id: string, size: number): Mesh {
-        const ground = MeshBuilder.CreateBox(id, { width: size, depth: size, height: 0.2 });
+    createGround(size: number): Mesh {
+        const ground = MeshBuilder.CreateBox('ground', { width: size, depth: size, height: 0.2 });
         ground.translate(Axis.Y, -0.21, Space.WORLD);
-        const material = new StandardMaterial(`ground--material`, this.world.scene);
+        const material = new StandardMaterial(`ground--material`, this.lookup.scene);
         material.diffuseColor = Color3.FromHexString('#FFFFFF');
         material.specularColor = new Color3(0, 0, 0);
         ground.material = material;
 
-        ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, this.world.scene);
+        ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, this.lookup.scene);
 
         return ground;
     }
 
 
-    createQuarterGround(groundJson: GroundJson, size: number, index: number): GameObj {
-        const id = this.generateId(GameObjectType.QuarterGround);
-        const ground = MeshBuilder.CreateGround(`ground-${index}`, { width: size, height: size });
+    createQuarterGround(groundJson: GroundJson, quarterPos: Vector2): void {
+        const id = `ground-${quarterPos.x}-${quarterPos.y}`;
+        const size = this.worldObj.quarterSize;
+        const ground = MeshBuilder.CreateGround(id, { width: size.x, height: size.y });
         
-        const material = new StandardMaterial(`ground-${index}-material`, this.world.scene);
+        const material = new StandardMaterial(`${id}-material`, this.lookup.scene);
         material.diffuseColor = Color3.FromHexString(groundJson.color);
         material.specularColor = new Color3(0, 0, 0);
         ground.material = material;
         
-        const halfSize = size / 2;
 
-        switch(index) {
-            case 0:
-                ground.translate(new Vector3(halfSize, 0, halfSize), 1, Space.WORLD);
-            break;
-            case 1:
-                ground.translate(new Vector3(halfSize, 0, -halfSize), 1, Space.WORLD);
-            break;
-            case 2:
-                ground.translate(new Vector3(-halfSize, 0, -halfSize), 1, Space.WORLD);
-            break;
-            case 3:
-                ground.translate(new Vector3(-halfSize, 0, halfSize), 1, Space.WORLD);
-            break;
-        }
-        ground.parent = this.districtObj.basicComp.platform;
+        const translateX = quarterPos.x * size.x + size.x / 2;
+        const translateY = quarterPos.y * size.y  + size.y / 2;
+
+        ground.translate(new Vector3(translateX, 0, translateY), 1, Space.WORLD);
+        ground.parent = this.worldObj.basicComp.platform;
         ground.translate(Axis.Y, 0.2, Space.WORLD);
 
-        const gameObject = new GameObj(id, this.world);
-        gameObject.mesh.addMeshes([ground], ground);
-        
-        return gameObject;
+        const quarter = new QuarterObj(this.worldObj, ground);
+        this.worldObj.quarter.addQuarter(quarter);
     }
 
     private generateId(type: GameObjectType) {

@@ -69,9 +69,9 @@ module.exports = env => {
             },
             publicPath: ''
         },
-        externals: {
-            "babylonjs": "BABYLON"
-        },
+        // externals: {
+        //     "babylonjs": "BABYLON"
+        // },
         devtool: 'eval',
         context: __dirname,
         devServer: {

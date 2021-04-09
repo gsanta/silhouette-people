@@ -1,5 +1,5 @@
-import { World } from "../services/World";
+import { Lookup } from "../services/Lookup";
 
 export interface GuiProps {
-    world: World;
+    world: Lookup;
 }

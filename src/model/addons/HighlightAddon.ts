@@ -1,15 +1,15 @@
 import { NodeMaterial, SpotLight, Tools, Vector3 } from "babylonjs";
 import { GameObj, GameObjectType } from "../objs/GameObj";
 import { LightObj } from "../objs/LightObj";
-import { World } from "../../services/World";
+import { Lookup } from "../../services/Lookup";
 import { AbstractAddon, AddonName } from "./AbstractAddon";
 
 export class HighlightAddon extends AbstractAddon {
     name: AddonName = AddonName.Highlight;
-    private world: World;
+    private world: Lookup;
     private isLoading = false;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         super();
         this.world = world;
     }

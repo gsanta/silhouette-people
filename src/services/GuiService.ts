@@ -1,12 +1,12 @@
-import { World } from "./World";
+import { Lookup } from "./Lookup";
 import { AdvancedDynamicTexture, StackPanel, Control, Checkbox, TextBlock } from 'babylonjs-gui';
 
 export class GuiService {
-    private world: World;
+    private world: Lookup;
     private texture: AdvancedDynamicTexture;
     private renderer: () => void;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         this.world = world;
     
         this.world.onReady(() => this.init());

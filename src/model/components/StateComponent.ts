@@ -1,12 +1,12 @@
 import { AbstractGameObjState } from "../states/AbstractGameObjState";
-import { World } from "../../services/World";
+import { Lookup } from "../../services/Lookup";
 
 export class StateComponent {
-    private readonly world: World;
+    private readonly world: Lookup;
     startState: AbstractGameObjState;
     currState: AbstractGameObjState;
 
-    constructor(startState: AbstractGameObjState, world: World) {
+    constructor(startState: AbstractGameObjState, world: Lookup) {
         this.world = world;
         this.startState = startState;
         this.currState = startState;

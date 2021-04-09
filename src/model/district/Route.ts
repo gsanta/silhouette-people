@@ -1,6 +1,6 @@
 import { Axis, Quaternion, Vector2 } from "babylonjs";
 import { GameObj } from "../objs/GameObj";
-import { World } from "../../services/World";
+import { Lookup } from "../../services/Lookup";
 
 export class Route {
     path: Vector2[];
@@ -11,7 +11,7 @@ export class Route {
     isFinished = false;
 
     private gameObject: GameObj;
-    private world: World;
+    private world: Lookup;
 
     constructor(gameObject: GameObj, path: Vector2[]) {
         this.gameObject = gameObject;

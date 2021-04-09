@@ -1,15 +1,14 @@
 import { GameObj, GameObjectJson } from "../../../model/objs/GameObj";
-import { World } from "../../World";
+import { Lookup } from "../../Lookup";
 import { AddonName } from "../../../model/addons/AbstractAddon";
 import { HighlightAddon } from "../../../model/addons/HighlightAddon";
-import { TransportAddon } from "../../../model/addons/TransportAddon";
 import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
 
 
 export class AddonFactoryFeature extends AbstractFactoryFeature {
-    private world: World;
+    private world: Lookup;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         super();
         this.world = world;
     }
@@ -32,9 +31,6 @@ export class AddonFactoryFeature extends AbstractFactoryFeature {
         switch(addonName) {
             case AddonName.Highlight:
                 return new HighlightAddon(this.world);
-            case AddonName.Transport:
-                const [targetDistrict, targetLocation]: [string, number] = [addonAttrs[0], parseInt(addonAttrs[1], 10)];
-                return new TransportAddon(gameObj, targetDistrict, targetLocation, this.world);
         }
     } 
 }

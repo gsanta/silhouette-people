@@ -1,9 +1,9 @@
-import { DistrictJson } from "../services/district/DistrictJson";
+import { WorldJson } from "../services/district/WorldJson";
 import districtIds from '../../assets/data/districts.json';
 
 export class JsonStore {
     private assetsPath = 'assets/levels';
-    private jsons: DistrictJson[] = [];
+    private jsons: WorldJson[] = [];
     private isLoaded = false;
 
     getJson(districtId: string) {
@@ -29,7 +29,7 @@ export class JsonStore {
         this.isLoaded = true;
     }
 
-    private async loadDistrictJsons(): Promise<DistrictJson[]> {
+    private async loadDistrictJsons(): Promise<WorldJson[]> {
         const districts = districtIds.map(name => fetch(`${this.assetsPath}/${name}.json`).then(res => res.json()));
         return await Promise.all(districts);
     }

@@ -1,12 +1,12 @@
 import { QuarterUpdater } from "./QuarterUpdater";
-import { World } from "../World";
+import { Lookup } from "../Lookup";
 
 
 export class UpdateService {
 
     private quarterUpdater: QuarterUpdater;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         this.quarterUpdater = new QuarterUpdater(world);
     }
 

@@ -1,15 +1,15 @@
-import { World } from "./World";
+import { Lookup } from "./Lookup";
 import { QuarterMapDebugger } from "../debug/QuarterMapDebugger";
 import { RouteDebugger } from "../debug/RouteDebugger";
 import { WorldAxisHelper } from "../debug/WorldAxisHelper";
 
 export class DebugService {
-    private world: World;
+    private world: Lookup;
     private worldAxisHelper: WorldAxisHelper;
     private enemyPathDebugger: RouteDebugger;
     areaMapDebugger: QuarterMapDebugger;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         this.world = world;
         this.worldAxisHelper = new WorldAxisHelper(world);
         this.enemyPathDebugger = new RouteDebugger(world);

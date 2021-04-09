@@ -1,7 +1,7 @@
 import { GameObj } from "./objs/GameObj";
-import { World } from "../services/World";
+import { Lookup } from "../services/Lookup";
 
 
 export interface IComponent {
-    update(gameObject: GameObj, world: World);
+    update(gameObject: GameObj, world: Lookup);
 }

@@ -1,5 +1,5 @@
 import { NodeMaterial, SpotLight, Tools, Vector3 } from "babylonjs";
-import { World } from "../../services/World";
+import { Lookup } from "../../services/Lookup";
 
 export class LightObj {
     light: SpotLight;
@@ -23,7 +23,7 @@ export class LightObj {
         light.setDirectionToTarget(pos);
     }
 
-    static async CreateProjectionTextureLight(config: { snippet: string, pos: Vector3 }, world: World): Promise<LightObj> {
+    static async CreateProjectionTextureLight(config: { snippet: string, pos: Vector3 }, world: Lookup): Promise<LightObj> {
         const scene = world.scene;
         const { pos } = config;
         const light = new SpotLight("selection-light", new Vector3(0, 6, 0), new Vector3(0, -1, 0), Tools.ToRadians(45), 1, scene);

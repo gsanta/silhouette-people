@@ -1,12 +1,12 @@
 import { Axis, Mesh, SceneLoader, Space } from "babylonjs";
 import { GameObj } from "../../../model/objs/GameObj";
-import { World } from "../../World";
+import { Lookup } from "../../Lookup";
 import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
 
 export class ModelFactoryFeature extends AbstractFactoryFeature {
-    private world: World;
+    private world: Lookup;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         super();
         this.world = world;
     }
@@ -30,7 +30,7 @@ export class ModelFactoryFeature extends AbstractFactoryFeature {
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         gameObject.animationGroups = result.animationGroups;
         gameObject.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
-        gameObject.getMesh().parent = this.world.districtStore.getActiveDistrict().basicComp.platform;
+        gameObject.getMesh().parent = this.world.globalStore.getWorld().basicComp.platform;
     }
 
     private async load(path: string) {

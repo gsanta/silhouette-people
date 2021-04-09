@@ -1,11 +1,11 @@
 import { Color3, Mesh, Vector3 } from "babylonjs";
-import { World } from "../services/World";
+import { Lookup } from "../services/Lookup";
 
 export class WorldAxisHelper {
-    private world: World;
+    private world: Lookup;
     private meshes: Mesh[];
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         this.world = world;
 
         // this.world.onReady(() => this.init());

@@ -1,14 +1,14 @@
 import { GameObjStateName } from "../states/AbstractGameObjState";
 import { IComponent } from "../IComponent";
 import { GameObj } from "../objs/GameObj";
-import { World } from "../../services/World";
+import { Lookup } from "../../services/Lookup";
 import { EnemyMovingState } from "../states/EnemyMovingState";
 import { Route } from "../district/Route";
 
 export class RouteDebuggerComponent implements IComponent {
     private currRoute: Route;
     
-    update(gameObject: GameObj, world: World) {
+    update(gameObject: GameObj, world: Lookup) {
         const quarterMap = gameObject.getQuarter().getMap();
 
         if (gameObject.state.currState.type !== GameObjStateName.EnemyMovingState) {

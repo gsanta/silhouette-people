@@ -2,13 +2,13 @@ import { SpotLight } from "babylonjs";
 import { GameObj, GameObjectType, GameObjTag } from "../model/objs/GameObj";
 import { PlayerGetOffBikeState } from "../model/states/PlayerGetOffBikeState";
 import { PlayerGetOnBikeState } from "../model/states/PlayerGetOnBikeState";
-import { World } from "../services/World";
+import { Lookup } from "../services/Lookup";
 import { AbstractController } from "./IController";
 
 export class PlayerController extends AbstractController {
-    private world: World;
+    private world: Lookup;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         super();
         this.world = world;
     }

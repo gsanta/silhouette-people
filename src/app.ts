@@ -3,13 +3,13 @@ import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
 import { CameraObj } from "./model/objs/CameraObj";
-import { World } from "./services/World";
+import { Lookup } from "./services/Lookup";
 import { AppGui } from './ui/AppGui';
 
 export function createGame() {
     const root = <HTMLCanvasElement> document.getElementById("root");
     
-    const world = new World();
+    const world = new Lookup();
     (window as any).world = world;
 
     ReactDOM.render(
@@ -18,7 +18,7 @@ export function createGame() {
     );
 }
 
-function initGame(world: World) {
+function initGame(world: Lookup) {
     const canvas = <HTMLCanvasElement> document.getElementById("game-canvas");
 
     const engine = new Engine(canvas, true);
@@ -74,7 +74,7 @@ function initGame(world: World) {
         if (world.loader.isLoaded()) {
             world.update.update();
 
-            if (world.districtStore.getActiveDistrict()) {
+            if (world.globalStore.getWorld()) {
                 world.activeObj.getAllGameObjects().forEach(gameObject => gameObject.update(world));
             }
         }

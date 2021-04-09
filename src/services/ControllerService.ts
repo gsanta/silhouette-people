@@ -1,7 +1,7 @@
 import { CameraController } from "../controllers/CameraController";
 import { AbstractController } from "../controllers/IController";
 import { PlayerController } from "../controllers/PlayerController";
-import { World } from "./World";
+import { Lookup } from "./Lookup";
 
 
 export class ControllerService {
@@ -10,7 +10,7 @@ export class ControllerService {
     readonly player: PlayerController;
     readonly camera: CameraController;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         this.player = new PlayerController(world);
         this.camera = new CameraController(world);
 

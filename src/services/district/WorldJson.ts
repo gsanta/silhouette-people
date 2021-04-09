@@ -6,12 +6,12 @@ export interface QuarterJson {
     color: string;
 }
 
-export interface DistrictJson {
+export interface WorldJson {
     id: string;
     size: string;
     relativePos: string;
     cameraLocation: number;
-    grounds: QuarterJson[];
+    grounds: QuarterJson[][];
     charToType: { [key: string]: string },
     models: { [key: string]: string },
     textures: { [key: string]: string },

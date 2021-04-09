@@ -1,12 +1,11 @@
-import { DistrictObj } from "../model/objs/DistrictObj";
-import { World } from "./World";
+import { Lookup } from "./Lookup";
 
 export class LoaderService {
-    private world: World;
+    private lookup: Lookup;
     private _isLoaded = false;
 
-    constructor(world: World) {
-        this.world = world;
+    constructor(lookup: Lookup) {
+        this.lookup = lookup;
     }
 
     isLoaded() {
@@ -14,20 +13,8 @@ export class LoaderService {
     }
 
     async loadGame() {
-        await this.world.jsonStore.loadDistricts();
-
-        const districtIds = this.world.jsonStore.getDistrictIds();
-    
-        const districts = districtIds.map(id => new DistrictObj(this.world.jsonStore.getJson(id), this.world));
-        this.world.districtStore.setDistricts(districts);
-
-        districts.forEach(district => this.world.district.initialize(district));
-        await this.world.district.activate(districts[0]);
+        const worldObj = await this.lookup.worldFactory.createWorldObj('level-1');
+        this.lookup.globalStore.setWorld(worldObj);
         this._isLoaded = true;
-    }
-
-    async loadDistrict(id: string) {
-        const newDistrict = this.world.districtStore.getDistrict(id);
-        await this.world.district.activate(newDistrict);
     }
 }

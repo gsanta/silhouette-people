@@ -1,12 +1,12 @@
-import { World } from "../../services/World";
+import { Lookup } from "../../services/Lookup";
 import { GameObj } from "../objs/GameObj";
 import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
 import { BikeMovingState } from "./BikeMovingState";
 
 export class BikeIdleState extends AbstractGameObjState {
-    private world: World;
+    private world: Lookup;
 
-    constructor(gameObject: GameObj, world: World) {
+    constructor(gameObject: GameObj, world: Lookup) {
         super(GameObjStateName.BikeIdleState, gameObject);
         this.world = world;
     }

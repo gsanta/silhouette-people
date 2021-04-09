@@ -1,10 +1,10 @@
-import { World } from "../services/World";
+import { Lookup } from "../services/Lookup";
 import { AbstractController } from "./IController";
 
 export class CameraController extends AbstractController {
-    private world: World;
+    private world: Lookup;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         super();
         this.world = world;
     }

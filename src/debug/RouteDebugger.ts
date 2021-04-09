@@ -1,12 +1,12 @@
 import { RouteDebuggerComponent } from "../model/components/RouteDebuggerComponent";
 import { GameObjTag } from "../model/objs/GameObj";
-import { World } from "../services/World";
+import { Lookup } from "../services/Lookup";
 
 
 export class RouteDebugger {
-    private world: World;
+    private world: Lookup;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         this.world = world;
     }
 

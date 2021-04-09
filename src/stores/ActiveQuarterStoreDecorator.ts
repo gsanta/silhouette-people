@@ -1,11 +1,11 @@
 import { QuarterObj } from "../model/objs/QuarterObj";
-import { World } from "../services/World";
+import { Lookup } from "../services/Lookup";
 import { IQuarterStore } from "./IQuarterStore";
 
 export class ActiveQuarterStoreDecorator implements IQuarterStore {
-    private world: World;
+    private world: Lookup;
 
-    constructor(world: World) {
+    constructor(world: Lookup) {
         this.world = world;
     }
 
@@ -27,6 +27,6 @@ export class ActiveQuarterStoreDecorator implements IQuarterStore {
     }
 
     private getActiveQuarterStore() {
-        return this.world.districtStore.getActiveDistrict().quarter;
+        return this.world.globalStore.getWorld().quarter;
     }
 }

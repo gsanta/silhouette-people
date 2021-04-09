@@ -1,15 +1,15 @@
 import { Axis, Space, Vector3 } from "babylonjs";
 import { GameObj } from "../objs/GameObj";
-import { World } from "../../services/World";
+import { Lookup } from "../../services/Lookup";
 import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
 import { PlayerIdleState } from "./PlayerIdleState";
 
 export class PlayerMovingState extends AbstractGameObjState {
-    private readonly world: World;
+    private readonly world: Lookup;
     private readonly speed = 0.04;
     private readonly rotationSpeed = Math.PI / 30;
 
-    constructor(gameObject: GameObj, world: World) {
+    constructor(gameObject: GameObj, world: Lookup) {
         super(GameObjStateName.PlayerMovingState, gameObject);
         this.world = world;
 

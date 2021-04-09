@@ -1,18 +1,18 @@
-import { Vector2 } from "babylonjs";
+import { Mesh, Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
 import { QuarterMap } from "../district/QuarterMap";
 import { Rect } from "../Rect";
-import { DistrictObj } from "./DistrictObj";
+import { WorldObj } from "./WorldObj";
 import { GameObj } from "./GameObj";
 
 export class QuarterObj  {
     private map: QuarterMap;
-    private district: DistrictObj;
-    readonly groundObj: GameObj;
+    private district: WorldObj;
+    readonly mesh: Mesh;
 
-    constructor(district: DistrictObj, groundObj: GameObj) {
+    constructor(district: WorldObj, mesh: Mesh) {
         this.district = district;
-        this.groundObj = groundObj;
+        this.mesh = mesh;
 
         const b = this.getBounds2D();
         this.map = new QuarterMap(b.tl, b.br, 0.5)
@@ -36,7 +36,7 @@ export class QuarterObj  {
     }
 
     getBounds2D(): Rect {
-        const boundingBox = this.groundObj.getMesh().getBoundingInfo().boundingBox;
+        const boundingBox = this.mesh.getBoundingInfo().boundingBox;
         const [minX, minZ] = [boundingBox.minimumWorld.x, boundingBox.minimumWorld.z];
         const [maxX, maxZ] = [boundingBox.maximumWorld.x, boundingBox.maximumWorld.z];
 
@@ -44,11 +44,12 @@ export class QuarterObj  {
     }
 
     getPosition2D(): Vector2 {
-        return this.groundObj.getPosition2D();
+        const pos = this.mesh.getAbsolutePosition();
+        return new Vector2(pos.x, pos.z);
     }
 
     getPosition(): Vector3 {
-        return this.groundObj.getPosition();
+        return this.mesh.getAbsolutePosition();
     }
 
     getSize(): Vector2 {

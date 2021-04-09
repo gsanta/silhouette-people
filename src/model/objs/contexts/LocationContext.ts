@@ -1,11 +1,11 @@
-import { DistrictObj } from "../DistrictObj";
+import { WorldObj } from "../WorldObj";
 import { QuarterObj } from "../QuarterObj";
 
 export class LocationContext {
-    private district: DistrictObj;
+    private district: WorldObj;
     private quarter: QuarterObj;
 
-    setDistrict(district: DistrictObj) {
+    setDistrict(district: WorldObj) {
         this.district = district;
     }
 
@@ -13,7 +13,7 @@ export class LocationContext {
         this.quarter = quarter;
     }
 
-    getDistrict(): DistrictObj {
+    getDistrict(): WorldObj {
         return this.district;
     }
 

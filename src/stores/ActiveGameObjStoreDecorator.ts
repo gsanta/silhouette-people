@@ -1,17 +1,17 @@
 import { GameObj, GameObjectType, GameObjTag } from "../model/objs/GameObj";
-import { World } from "../services/World";
+import { Lookup } from "../services/Lookup";
 import { IGameObjStore } from "./IGameObjStore";
 
 export class ActiveGameObjStoreDecorator implements IGameObjStore {
-    private world: World;
+    private lookup: Lookup;
 
-    constructor(world: World) {
-        this.world = world;
+    constructor(lookup: Lookup) {
+        this.lookup = lookup;
     }
 
     private getActiveGameObjStore() {
-        const activeDistrict = this.world.districtStore.getActiveDistrict()
-        return activeDistrict ? activeDistrict.obj : undefined;
+        const worldObj = this.lookup.globalStore.getWorld();
+        return worldObj ? worldObj.obj : undefined;
     }
 
     // TODO: possibly should be removed from here and from IGameObjStore interface also

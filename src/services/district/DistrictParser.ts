@@ -1,22 +1,45 @@
-import { Vector3 } from "babylonjs";
+import { Vector2, Vector3 } from "babylonjs";
 import { GameObjectJson, GameObjectType } from "../../model/objs/GameObj";
 import { toStrVector } from "../factory/features/AbstractFactoryFeacture";
-import { DistrictJson } from "./DistrictJson";
+import { WorldJson } from "./WorldJson";
 
 export class DistrictParser {
     private static CONVERSION_RATIO = 2;
     private mapRows: number;
     private mapCols: number;
-    private districtJson: DistrictJson;
+    private districtJson: WorldJson;
     private mapLines: string[];
 
-    parse(json: DistrictJson): GameObjectJson[] {
+    private size: Vector2;
+    private jsons: GameObjectJson[];
+    private quartersX: number;
+    private quartersY: number;
+
+    constructor(json: WorldJson) {
+        this.parse(json);
+    }
+
+    getSize(): Vector2 {
+        return this.size;
+    }
+
+    getGameObjJsons(): GameObjectJson[] {
+        return this.jsons;
+    }
+
+    getQuarterNum(): Vector2 {
+        return new Vector2(this.quartersX, this.quartersY);
+    }
+
+    parse(json: WorldJson): void {
         this.districtJson = json;
 
-        this.mapLines = this.getMapLines(json.map);
+        this.setMapLines(json.map);
 
         this.mapRows = this.mapLines.length;
         this.mapCols = this.mapLines[0].length;
+
+        json.size = `${this.mapCols * 2}:${this.mapRows * 2}`;
 
         const jsons: GameObjectJson[] = [];
         
@@ -29,14 +52,24 @@ export class DistrictParser {
             }
         }
 
-        return jsons;
+        this.size = new Vector2(this.mapCols * 2, this.mapRows * 2);
+        this.jsons = jsons;
     }
 
-    private getMapLines(map: string) {
+    private setMapLines(map: string) {
+        map = map.trim();
+
+        const firstLineRegex = /^.*$/m;
+        const firstLineMatch = map.match(firstLineRegex);
+
+        this.quartersX = firstLineMatch[0].split(' ').length;
+        this.quartersY = map.split('\n').filter(line => line.trim() === '').length + 1;
+        
         map = map.split(' ').join('')
+        
         const lines = map.split("\n").map(line => line.trim()).filter(line => line !== '');
 
-        return lines;
+        this.mapLines = lines;
     }
 
     private createGameObject(x: number, y: number): GameObjectJson {
