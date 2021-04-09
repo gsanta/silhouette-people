@@ -4,7 +4,7 @@ import { toStrVector } from "../factory/features/AbstractFactoryFeacture";
 import { WorldJson } from "./WorldJson";
 
 export class DistrictParser {
-    private static CONVERSION_RATIO = 2;
+    static CONVERSION_RATIO = 2;
     private mapRows: number;
     private mapCols: number;
     private districtJson: WorldJson;
@@ -14,10 +14,6 @@ export class DistrictParser {
     private jsons: GameObjectJson[];
     private quartersX: number;
     private quartersY: number;
-
-    constructor(json: WorldJson) {
-        this.parse(json);
-    }
 
     getSize(): Vector2 {
         return this.size;

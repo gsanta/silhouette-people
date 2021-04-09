@@ -9,8 +9,6 @@ export class WorldObj {
 
     readonly size: Vector2;
     readonly quarterNum: Vector2;
-    readonly quarterSize: Vector2 = new Vector2(50, 50);
-    
 
     basicComp: BasicDistrictComponent;
     obj: GameObjStore;

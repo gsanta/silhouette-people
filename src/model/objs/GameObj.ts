@@ -60,7 +60,7 @@ export interface GameObjectJson {
 
 
 export class GameObj {
-    readonly id: string;
+    id: string;
     mainMesh: Mesh;
     ch: string;
     type: GameObjectType;

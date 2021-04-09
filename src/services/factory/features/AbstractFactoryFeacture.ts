@@ -1,10 +1,10 @@
 import { Vector3 } from "babylonjs";
-import { GameObj, GameObjectJson } from "../../../model/objs/GameObj";
+import { GameObj } from "../../../model/objs/GameObj";
 
 export abstract class AbstractFactoryFeature {
     abstract feature: string;
 
-    abstract isAsync(): boolean;
+    isAsync(): boolean { return false; }
     processFeature(gameObject: GameObj, attrs: string[]) { throw new Error('Not implemented.'); }
     processFeatureAsync(gameObject: GameObj, attrs: string[]): Promise<void> { throw new Error('Not implemented.'); }
 

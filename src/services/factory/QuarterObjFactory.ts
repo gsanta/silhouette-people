@@ -6,6 +6,7 @@ import { Lookup } from "../Lookup";
 export interface QuarterObjConfig {
     color: string;
     position: Vector2;
+    size: Vector2;
 }
 
 export class QuarterObjFactory {
@@ -17,10 +18,9 @@ export class QuarterObjFactory {
     }
 
     createQuarter(config: QuarterObjConfig, worldObj: WorldObj): void {
-        const { position, color } = config;
+        const { position, color, size } = config;
 
         const id = `ground-${position.x}-${position.y}`;
-        const size = worldObj.quarterSize;
         const ground = MeshBuilder.CreateGround(id, { width: size.x, height: size.y });
         ground.enableEdgesRendering();
         ground.edgesWidth = 5.0;
@@ -58,8 +58,7 @@ export class QuarterObjFactory {
                 const id = `${quarterObj.id}-${i + tileXNum / 2}-${j + tileYNum / 2}`;
 
                 const ground = MeshBuilder.CreateGround(id, { width: tileSize, height: tileSize });
-                ground.translate(new Vector3(i * tileSize + center.x, 0, j * tileSize + center.y), 1, Space.WORLD);
-                // ground.parent = worldObj.basicComp.platform;
+                ground.translate(new Vector3(i * tileSize + center.x + tileSize / 2, 0, j * tileSize + center.y - tileSize / 2), 1, Space.WORLD);
                 ground.material = this.tileMaterial;
                 ground.translate(Axis.Y, 0.3, Space.WORLD);
                 ground.enableEdgesRendering();

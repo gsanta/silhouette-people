@@ -9,9 +9,12 @@ import { QuarterObjConfig } from "./QuarterObjFactory";
 export class WorldObjFactory {
     private assetsPath = 'assets/levels';
     private lookup: Lookup;
+    private worldMapParser: DistrictParser;
     
     constructor(lookup: Lookup) {
         this.lookup = lookup;
+
+        this.worldMapParser = new DistrictParser();
     }
 
     async createWorldObj(levelName: string): Promise<WorldObj> {
@@ -20,12 +23,13 @@ export class WorldObjFactory {
         const map = await this.loadWorldMap(levelName);
         json.map = map;
 
-        const worldParser = new DistrictParser(json);
-        const worldObj = new WorldObj(worldParser.getSize(), json.cameraLocation, worldParser.getQuarterNum(), this.lookup);
+        this.worldMapParser.parse(json);
+
+        const worldObj = new WorldObj(this.worldMapParser.getSize(), json.cameraLocation, this.worldMapParser.getQuarterNum(), this.lookup);
 
         this.createGround(worldObj);
         this.createQuarters(json.grounds, worldObj);
-        await this.createGameObjs(worldParser.getGameObjJsons(), worldObj);
+        await this.createGameObjs(this.worldMapParser.getGameObjJsons(), worldObj);
 
         return worldObj;
     }
@@ -48,13 +52,15 @@ export class WorldObjFactory {
     private createQuarters(grounds: GroundJson[][], worldObj: WorldObj) {
         const rows = grounds.length;
         const cols = grounds[0].length;
+        const worldSize = this.worldMapParser.getSize();
+        const quarterSize = new Vector2(worldSize.x / cols, worldSize.y / rows);
 
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < cols; j++) {
                 const x = j - cols / 2;
                 const y = (rows - i) - rows / 2;
                 
-                const config: QuarterObjConfig = { color: grounds[i][j].color, position: new Vector2(x, y) };
+                const config: QuarterObjConfig = { color: grounds[i][j].color, position: new Vector2(x, y), size: quarterSize };
                 this.lookup.quarterFactory.createQuarter(config, worldObj);
             }
         }

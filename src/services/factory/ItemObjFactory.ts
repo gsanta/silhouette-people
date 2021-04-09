@@ -4,6 +4,7 @@ import { Lookup } from "../Lookup";
 import { AbstractFactoryFeature } from "./features/AbstractFactoryFeacture";
 import { AddonFactoryFeature } from "./features/AddonFactoryFeature";
 import { CollisionFactoryFeature } from "./features/CollisionFactoryFeature";
+import { IdFactoryFeature } from "./features/IdFactoryFeature";
 import { ModelFactoryFeature } from "./features/ModelFactoryFeature";
 import { PhysicsFactoryFeature } from "./features/PhysicsFactoryFeature";
 import { PositionFactoryFeature } from "./features/PositionFactoryFeature";
@@ -20,7 +21,6 @@ export class ItemObjFactory {
 
     constructor(lookup: Lookup) {
         this.lookup = lookup;
-
     }
 
     async create(gameObjectJson: GameObjectJson, worldObj: WorldObj): Promise<GameObj> {
@@ -70,7 +70,8 @@ export class ItemObjFactory {
             new StateFactoryFeature(this.lookup),
             new TagFactoryFeature(),
             new AddonFactoryFeature(this.lookup),
-            new RotateFactoryFeature()
+            new RotateFactoryFeature(),
+            new IdFactoryFeature()
         ];
     }
 

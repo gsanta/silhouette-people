@@ -86,7 +86,7 @@ function initGame(world: Lookup) {
             if (world.globalStore.getWorld()) {
                 world.activeObj.getAllGameObjects().forEach(gameObject => gameObject.update(world));
 
-                world.globalStore.getWorld().quarter.getAllQuarters()[6].tiles.activate();
+                world.globalStore.getWorld().quarter.getAllQuarters()[5].tiles.activate();
             }
         }
 
@@ -98,4 +98,5 @@ function initGame(world: Lookup) {
     });
 
     world.loader.loadGame();
+    world.debug.renderDebugPanel();
 }

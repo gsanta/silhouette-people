@@ -70,7 +70,8 @@
         "T4": "tree4",
         "T5": "tree5",
         "T6": "tree6",
-        "P": "player",
+        "P1": "player",
+        "P2": "player",
         "E": "enemy",
         "H": "house1",
         "H1": "house1",
@@ -168,6 +169,12 @@
         ],
         "H4": [
             "Rotate -90"
+        ],
+        "P1": [
+            "Id player1"
+        ],
+        "P2": [
+            "Id player2"
         ]
     }
 }
