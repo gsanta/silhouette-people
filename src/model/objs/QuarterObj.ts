@@ -4,18 +4,25 @@ import { QuarterMap } from "../district/QuarterMap";
 import { Rect } from "../Rect";
 import { WorldObj } from "./WorldObj";
 import { GameObj } from "./GameObj";
+import { TilingComponent } from "./TilingComponent";
+import { Lookup } from "../../services/Lookup";
 
 export class QuarterObj  {
+    id: string;
     private map: QuarterMap;
     private district: WorldObj;
     readonly mesh: Mesh;
 
-    constructor(district: WorldObj, mesh: Mesh) {
+    tiles: TilingComponent;
+
+    constructor(id: string, district: WorldObj, mesh: Mesh, lookup: Lookup) {
         this.district = district;
         this.mesh = mesh;
+        this.id = id;
 
         const b = this.getBounds2D();
-        this.map = new QuarterMap(b.tl, b.br, 0.5)
+        this.map = new QuarterMap(b.tl, b.br, 0.5);
+        this.tiles = new TilingComponent(this, lookup);
     }
 
     getAllGameObjects(): GameObj[] {

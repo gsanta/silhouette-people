@@ -40,7 +40,9 @@ export class PlayerController extends AbstractController {
     private activateActionable(player: GameObj, actionableObj: GameObj) {
         switch(actionableObj.type) {
             case GameObjectType.Bicycle1:
-                player.state.setState(new PlayerGetOnBikeState(player, actionableObj, this.world));
+                if (!player.player.hasBikeVechicle()) {
+                    player.state.setState(new PlayerGetOnBikeState(player, actionableObj, this.world));
+                }
             break;
         }
     }

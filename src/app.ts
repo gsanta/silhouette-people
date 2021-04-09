@@ -1,4 +1,4 @@
-import { ArcRotateCamera, CannonJSPlugin, Color4, Engine, HemisphericLight, Scene, Vector3 } from "babylonjs";
+import { ArcRotateCamera, CannonJSPlugin, Color3, Color4, CubeTexture, Engine, HemisphericLight, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from "babylonjs";
 import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
@@ -65,6 +65,15 @@ function initGame(world: Lookup) {
     // // The speed at which acceleration is halted
     // camera.maxCameraSpeed = 10;
 
+    var skybox = MeshBuilder.CreateBox("skyBox", {size:1000.0}, scene);
+    var skyboxMaterial: StandardMaterial = new StandardMaterial("skyBox", scene);
+    skyboxMaterial.backFaceCulling = false;
+    skyboxMaterial.reflectionTexture = new CubeTexture("https://BabylonJS.github.io/Assets/environments/toySky/toySky", scene);
+    skyboxMaterial.reflectionTexture.coordinatesMode = Texture.SKYBOX_MODE;
+    skyboxMaterial.diffuseColor = new Color3(0, 0, 0);
+    skyboxMaterial.specularColor = new Color3(0, 0, 0);
+    skybox.material = skyboxMaterial;
+
     const light = new HemisphericLight("light", new Vector3(1, 1, 0), scene);
     light.intensity = 0.5;
 
@@ -76,6 +85,8 @@ function initGame(world: Lookup) {
 
             if (world.globalStore.getWorld()) {
                 world.activeObj.getAllGameObjects().forEach(gameObject => gameObject.update(world));
+
+                world.globalStore.getWorld().quarter.getAllQuarters()[6].tiles.activate();
             }
         }
 

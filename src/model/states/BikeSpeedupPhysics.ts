@@ -27,17 +27,21 @@ export class BikeSpeedupPhysics {
         this.bike = bike;
         this.speedRanges = config.gearSpeedRanges;
         this.setup();
-        this.changeGear();
+        this.initGear();
     }
 
     setGear(gear: number) {
         const speed = this.bike.data.getSpeed();
         this.bike.data.setGear(gear);
-        this.changeGear();
+        this.initGear();
     }
 
     update(deltaTime: number) {
         const [ gear, speed ] = [this.bike.data.getGear(), this.bike.data.getSpeed()];
+
+        if (speed === 0) {
+            this.initGear();
+        }
 
         this.currTime = this.currTime + deltaTime / 1000;
         
@@ -58,7 +62,7 @@ export class BikeSpeedupPhysics {
         this.maxTime = 0;
     }
 
-    private changeGear() {
+    private initGear() {
         const gear = this.bike.data.getGear();
         const speed = this.bike.data.getSpeed();
         this.resetTimers();
