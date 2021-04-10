@@ -1,18 +1,25 @@
 import { Control, StackPanel } from "babylonjs-gui";
 import { AdvancedDynamicTexture } from "babylonjs-gui/2D/advancedDynamicTexture";
-import { Lookup } from "../Lookup";
+import { ColliderCheckbox } from "./ColliderCheckbox";
 import { IGUIComponent } from "./IGUIComponent";
-
+import { MeshBoundingBoxCheckbox } from "./MeshBoundingBoxCheckbox";
+import { PlayerRadioButtonGroup } from "./PlayerRadioButtonGroup";
+import { RouteDebuggerCheckbox } from "./RouteDebuggerCheckbox";
+import { WorldAxisCheckbox } from "./WorldAxisCheckbox";
 
 export class DebugPanel implements IGUIComponent {
-
     private children: IGUIComponent[] = [];
 
-    addChild(child: IGUIComponent) {
-        this.children.push(child);
+    constructor() {
+        this.children.push(new RouteDebuggerCheckbox());
+        this.children.push(new ColliderCheckbox());
+        this.children.push(new WorldAxisCheckbox());
+        this.children.push(new MeshBoundingBoxCheckbox());
+        this.children.push(new PlayerRadioButtonGroup());
+
     }
 
-    render(parent: AdvancedDynamicTexture, lookup: Lookup) {
+    render(parent: AdvancedDynamicTexture) {
         var panel = new StackPanel();
         panel.width = "300px";
         panel.left = '20px';
@@ -22,6 +29,6 @@ export class DebugPanel implements IGUIComponent {
         panel.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         parent.addControl(panel);
 
-        this.children.forEach(child => child.render(panel, lookup));
+        this.children.forEach(child => child.render(panel));
     }
 }

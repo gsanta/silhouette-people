@@ -1,13 +1,10 @@
 import { AbstractMeshObjState } from "../states/AbstractMeshObjState";
-import { Lookup } from "../../services/Lookup";
 
 export class StateComponent {
-    private readonly world: Lookup;
     startState: AbstractMeshObjState;
     currState: AbstractMeshObjState;
 
-    constructor(startState: AbstractMeshObjState, world: Lookup) {
-        this.world = world;
+    constructor(startState: AbstractMeshObjState) {
         this.startState = startState;
         this.currState = startState;
 

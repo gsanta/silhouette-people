@@ -1,10 +1,18 @@
-import { Control, StackPanel, Container, Checkbox, TextBlock } from "babylonjs-gui";
-import { Lookup } from "../Lookup";
+import { Checkbox, Container, Control, StackPanel, TextBlock } from "babylonjs-gui";
+import { InjectProperty } from "../../di/diDecorators";
+import { DebugService } from "../DebugService";
+import { lookup } from "../Lookup";
 import { IGUIComponent } from "./IGUIComponent";
 
 export class ColliderCheckbox implements IGUIComponent {
-    
-    render(parent: Container, lookup: Lookup) {
+    @InjectProperty("DebugService")
+    private debugService: DebugService;
+
+    constructor() {
+        this.debugService = lookup.debug;
+    }
+
+    render(parent: Container) {
         const panel = new StackPanel();
         panel.width = "300px";
         panel.height = '30px';
@@ -19,7 +27,7 @@ export class ColliderCheckbox implements IGUIComponent {
         checkbox.isChecked = false;
         checkbox.color = "green";
         checkbox.onIsCheckedChangedObservable.add((value) => {
-            lookup.debug.setColliderMeshVisibility(value)
+            this.debugService.setColliderMeshVisibility(value)
         });
         panel.addControl(checkbox);
         

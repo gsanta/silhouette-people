@@ -9,7 +9,7 @@ export interface IMeshObjStore {
 
     getObjsByType(...type: MeshObjType[]): MeshObj[];
 
-    getAllGameObjects(): MeshObj[];
+    getAll(): MeshObj[];
 
     dispose();
 }

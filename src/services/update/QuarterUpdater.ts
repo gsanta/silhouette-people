@@ -10,7 +10,7 @@ export class QuarterUpdater {
     }
 
     updateQuarterBasedOnPlayerPosition() {
-        const world = this.lookup.globalStore.getWorld();
+        const world = this.lookup.worldProvider.world;
         const player = this.lookup.activeObj.getActivePlayer();
 
         if (world && player) {

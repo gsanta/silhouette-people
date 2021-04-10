@@ -26,7 +26,7 @@ export class QuarterObj  {
     }
 
     getAllGameObjects(): MeshObj[] {
-        return this.district.obj.getAllGameObjects().filter(obj => obj.getQuarter() === this);
+        return this.district.obj.getAll().filter(obj => obj.getQuarter() === this);
     }
 
     getMap() {

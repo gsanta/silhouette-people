@@ -1,10 +1,18 @@
 import { Checkbox, Container, Control, StackPanel, TextBlock } from "babylonjs-gui";
-import { Lookup } from "../Lookup";
+import { InjectProperty } from "../../di/diDecorators";
+import { DebugService } from "../DebugService";
+import { lookup } from "../Lookup";
 import { IGUIComponent } from "./IGUIComponent";
 
 export class MeshBoundingBoxCheckbox implements IGUIComponent {
+    @InjectProperty("DebugService")
+    private debugService: DebugService;
 
-    render(parent: Container, lookup: Lookup) {
+    constructor() {
+        this.debugService = lookup.debug;
+    }
+
+    render(parent: Container) {
         const panel = new StackPanel();
         panel.width = "300px";
         panel.height = '30px';
@@ -19,7 +27,7 @@ export class MeshBoundingBoxCheckbox implements IGUIComponent {
         checkbox.isChecked = false;
         checkbox.color = "green";
         checkbox.onIsCheckedChangedObservable.add((value) => {
-            lookup.debug.setMeshBoundingBoxVisibility(value)
+            this.debugService.setMeshBoundingBoxVisibility(value)
         });
         panel.addControl(checkbox);
         

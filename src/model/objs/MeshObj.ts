@@ -95,7 +95,7 @@ export class MeshObj {
         this.worldObj = worldObj;
         this.tag = new TagComponent();
         this.mesh = new MeshComponent(this);
-        this.state = new StateComponent(undefined, lookup);
+        this.state = new StateComponent(undefined);
         this.addon = new AddonComponent();
         this.player = new PlayerComponent(this, worldObj, lookup);
 

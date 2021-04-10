@@ -1,11 +1,20 @@
 import { Container, Control, RadioButton, StackPanel } from "babylonjs-gui";
+import { InjectProperty } from "../../di/diDecorators";
 import { WorldObj } from "../../model/objs/WorldObj";
-import { Lookup } from "../Lookup";
+import { WorldProvider } from "../../stores/WorldProvider";
+import { lookup, Lookup } from "../Lookup";
 import { IGUIComponent } from "./IGUIComponent";
 
 
 export class PlayerRadioButtonGroup implements IGUIComponent {
-    render(parent: Container, lookup: Lookup) {
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
+
+    constructor() {
+        this.worldProvider = lookup.worldProvider;
+    }
+    
+    render(parent: Container) {
         var panel = new StackPanel();
         panel.width = "300px";
         panel.height = '60px';
@@ -15,20 +24,20 @@ export class PlayerRadioButtonGroup implements IGUIComponent {
         
         this.addRadio('player1', panel, (isActive) => {
             if (isActive) {
-                this.activatePlayer('player1', lookup);
+                this.activatePlayer('player1');
             }
         });
         this.addRadio('player2', panel, (isActive) => {
             if (isActive) {
-                this.activatePlayer('player2', lookup);
+                this.activatePlayer('player2');
             }
         });        
 
         parent.addControl(panel);
     }
 
-    private activatePlayer(playerId: string, lookup: Lookup) {
-        const world = lookup.globalStore.getWorld();
+    private activatePlayer(playerId: string) {
+        const world = this.worldProvider.world;
         world.obj.getObjById(playerId).player.setActive(true);
     }
 

@@ -27,6 +27,6 @@ export class ActiveQuarterStoreDecorator implements IQuarterStore {
     }
 
     private getActiveQuarterStore() {
-        return this.world.globalStore.getWorld().quarter;
+        return this.world.worldProvider.world.quarter;
     }
 }

@@ -34,7 +34,7 @@ export class MeshObjStore implements IMeshObjStore {
         return this.objs.find(obj => obj.id === id);
     }
 
-    getAllGameObjects(): MeshObj[] {
+    getAll(): MeshObj[] {
         return this.objs;
     }
 

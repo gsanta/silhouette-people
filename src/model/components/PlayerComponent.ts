@@ -31,7 +31,7 @@ export class PlayerComponent {
             const otherPlayers = players.filter(player => player !== this.player);
             otherPlayers.forEach(player => player.player.setActive(false));
         } else {
-            this.player.state.setState(new PlayerIdleState(this.player, this.lookup));
+            this.player.state.setState(new PlayerIdleState(this.player));
         }
 
         this._isActive = isActive;

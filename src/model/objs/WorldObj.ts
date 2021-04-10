@@ -1,4 +1,4 @@
-import { Vector2 } from "babylonjs";
+import { Scene, Vector2 } from "babylonjs";
 import { Lookup } from "../../services/Lookup";
 import { MeshObjStore } from "../../stores/MeshObjStore";
 import { QuarterStore } from "../../stores/QuarterStore";
@@ -10,6 +10,8 @@ export class WorldObj {
 
     readonly size: Vector2;
     readonly quarterNum: Vector2;
+
+    scene: Scene;
 
     basicComp: BasicDistrictComponent;
     obj: MeshObjStore;

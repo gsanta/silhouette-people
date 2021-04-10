@@ -80,25 +80,27 @@ function initGame(lookup: Lookup) {
     light.intensity = 0.5;
 
     engine.runRenderLoop(function () {
+        if (!scene.activeCamera) { return; }
+        
         scene.render();
-
-        if (lookup.loader.isLoaded()) {
+        
+        if (lookup.loader.isReady()) {
             lookup.update.update();
 
-            if (lookup.globalStore.getWorld()) {
-                lookup.activeObj.getAllGameObjects().forEach(gameObject => gameObject.update(lookup));
+            if (lookup.worldProvider.world) {
+                lookup.activeObj.getAll().forEach(gameObject => gameObject.update(lookup));
 
-                lookup.globalStore.getWorld().quarter.getAllQuarters()[5].tiles.activate();
+                lookup.worldProvider.world.quarter.getAllQuarters()[5].tiles.activate();
             }
         }
 
-        lookup.gui.renderGui();
+        lookup.renderGui.render();
     });
     
     window.addEventListener("resize", function () {
         engine.resize();
     });
 
-    lookup.loader.loadGame();
-    lookup.debug.renderDebugPanel();
+    lookup.loader.setup(scene);
+    lookup.debug.render();
 }

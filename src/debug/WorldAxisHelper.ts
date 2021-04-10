@@ -1,14 +1,16 @@
 import { Color3, Mesh, Vector3 } from "babylonjs";
-import { Lookup } from "../services/Lookup";
+import { InjectProperty } from "../di/diDecorators";
+import { lookup, Lookup } from "../services/Lookup";
+import { WorldProvider } from "../stores/WorldProvider";
 
 export class WorldAxisHelper {
-    private world: Lookup;
     private meshes: Mesh[];
 
-    constructor(world: Lookup) {
-        this.world = world;
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
 
-        // this.world.onReady(() => this.init());
+    constructor() {
+        this.worldProvider = lookup.worldProvider;
     }
 
     show(yPos: number) {
@@ -23,7 +25,7 @@ export class WorldAxisHelper {
     }
 
     private createAxis(yPos: number, size: number) {
-        const scene = this.world.scene;
+        const scene = this.worldProvider.world.scene;
         const origin = new Vector3(0, yPos, 0);
         
         this.meshes = [];

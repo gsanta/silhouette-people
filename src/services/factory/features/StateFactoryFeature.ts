@@ -30,15 +30,15 @@ export class StateFactoryFeature extends AbstractFactoryFeature {
         const [state] = attrs;
 
         const initState = this.createState(gameObj, state as MeshObjStateName);
-        gameObj.state = new StateComponent(initState, this.world);
+        gameObj.state = new StateComponent(initState);
     }
 
     private createState(gameObj: MeshObj, stateName: MeshObjStateName): AbstractMeshObjState {
         switch(stateName) {
             case MeshObjStateName.PlayerIdleState:
-                return new PlayerIdleState(gameObj, this.world);
+                return new PlayerIdleState(gameObj);
             case MeshObjStateName.PlayerMovingState:
-                return new PlayerMovingState(gameObj, this.world);
+                return new PlayerMovingState(gameObj);
             case MeshObjStateName.EnemyIdleState:
                 return new EnemyIdleState(gameObj);
             case MeshObjStateName.EnemyMovingState:

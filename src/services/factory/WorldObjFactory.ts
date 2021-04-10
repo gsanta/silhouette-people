@@ -3,9 +3,11 @@ import { GroundJson, WorldJson } from "../district/WorldJson";
 import { DistrictParser } from "../district/DistrictParser";
 import { Lookup } from "../Lookup";
 import { GameObjectJson, MeshObjTag } from "../../model/objs/MeshObj";
-import { ArcRotateCamera, Axis, Color3, MeshBuilder, PhysicsImpostor, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
+import { ArcRotateCamera, Axis, Color3, MeshBuilder, PhysicsImpostor, Scene, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
 import { QuarterObjConfig } from "./QuarterObjFactory";
 import { CameraObj } from "../../model/objs/CameraObj";
+import { ControllerType } from "../../controllers/IController";
+import { CameraController } from "../../controllers/CameraController";
 
 export class WorldObjFactory {
     private assetsPath = 'assets/levels';
@@ -18,7 +20,7 @@ export class WorldObjFactory {
         this.worldMapParser = new DistrictParser();
     }
 
-    async createWorldObj(levelName: string): Promise<WorldObj> {
+    async createWorldObj(levelName: string, scene: Scene): Promise<WorldObj> {
 
         const json = await this.loadWorldJson(levelName);
         const map = await this.loadWorldMap(levelName);
@@ -32,6 +34,7 @@ export class WorldObjFactory {
         this.createGround(worldObj);
         this.createQuarters(json.grounds, worldObj);
         await this.createGameObjs(this.worldMapParser.getGameObjJsons(), worldObj);
+        worldObj.scene = scene;
 
         return worldObj;
     }
@@ -42,7 +45,7 @@ export class WorldObjFactory {
 
         const cameraOj = new CameraObj(camera, worldObj);
 
-        this.lookup.controller.camera.setCameraObj(cameraOj);
+        (<CameraController> this.lookup.controller.getByType(ControllerType.Camera)).setCameraObj(cameraOj);
 
         return cameraOj;
     }

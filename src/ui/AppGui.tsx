@@ -9,7 +9,7 @@ export interface AppGuiProps extends GuiProps {
 
 export class AppGui extends React.Component<AppGuiProps> {
     componentDidMount() {
-        this.props.world.gui.setGuiRenderer(() => this.forceUpdate());
+        this.props.world.renderGui.setGuiRenderer(() => this.forceUpdate());
         this.props.onReady();
     }
 

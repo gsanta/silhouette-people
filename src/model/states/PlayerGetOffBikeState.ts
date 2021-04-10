@@ -23,7 +23,7 @@ export class PlayerGetOffBikeState extends AbstractMeshObjState {
         player.player.setVehicle(undefined);
 
         vehicle.state.setState(new BikeIdleState(vehicle, this.world));
-        player.state.setState(new PlayerIdleState(player, this.world));
+        player.state.setState(new PlayerIdleState(player));
         player.getMesh().parent = vehicle.getMesh().parent;
         player.mesh.setPosition(vehicle.getPosition());
         player.setRotation(vehicle.mesh.getRotation().y);

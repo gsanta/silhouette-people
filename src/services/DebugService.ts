@@ -1,43 +1,39 @@
-import { Lookup } from "./Lookup";
+import { AdvancedDynamicTexture } from "babylonjs-gui";
 import { QuarterMapDebugger } from "../debug/QuarterMapDebugger";
 import { RouteDebugger } from "../debug/RouteDebugger";
 import { WorldAxisHelper } from "../debug/WorldAxisHelper";
-import { DebugPanel } from "./debug/DebugPanel";
-import { RouteDebuggerCheckbox } from "./debug/RouteDebuggerCheckbox";
-import { ColliderCheckbox } from "./debug/ColliderCheckbox";
-import { WorldAxisCheckbox } from "./debug/WorldAxisCheckbox";
-import { MeshBoundingBoxCheckbox } from "./debug/MeshBoundingBoxCheckbox";
-import { AdvancedDynamicTexture } from "babylonjs-gui";
-import { PlayerRadioButtonGroup } from "./debug/PlayerRadioButtonGroup";
+import { InjectProperty } from "../di/diDecorators";
+import { WorldProvider } from "../stores/WorldProvider";
+import { IGUIComponent } from "./debug/IGUIComponent";
+import { lookup } from "./Lookup";
 
 export class DebugService {
-    private lookup: Lookup;
     private worldAxisHelper: WorldAxisHelper;
     private enemyPathDebugger: RouteDebugger;
     private texture: AdvancedDynamicTexture;
     areaMapDebugger: QuarterMapDebugger;
 
-    private debugPanel: DebugPanel;
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
 
-    constructor(lookup: Lookup) {
-        this.lookup = lookup;
-        this.worldAxisHelper = new WorldAxisHelper(lookup);
-        this.enemyPathDebugger = new RouteDebugger(lookup);
-        this.areaMapDebugger = new QuarterMapDebugger(lookup);
+    private guiComponents: IGUIComponent[] = [];
 
-        this.debugPanel = new DebugPanel();
-        this.debugPanel.addChild(new RouteDebuggerCheckbox());
-        this.debugPanel.addChild(new ColliderCheckbox());
-        this.debugPanel.addChild(new WorldAxisCheckbox());
-        this.debugPanel.addChild(new MeshBoundingBoxCheckbox());
-        this.debugPanel.addChild(new PlayerRadioButtonGroup());
+    constructor() {
+        this.worldProvider = lookup.worldProvider;
+        this.worldAxisHelper = new WorldAxisHelper();
+        this.enemyPathDebugger = new RouteDebugger();
+        this.areaMapDebugger = new QuarterMapDebugger();
     }
 
-    renderDebugPanel() {
+    addGuiComponent(component: IGUIComponent) {
+        this.guiComponents.push(component);
+    }
+
+    render() {
         if (!this.texture) {
             this.texture = AdvancedDynamicTexture.CreateFullscreenUI("UI");
         }
-        this.debugPanel.render(this.texture, this.lookup);
+        this.guiComponents.forEach(comp => comp.render(this.texture));
     }
 
     setWorldAxisVisibility(isVisible: boolean, yPos: number = 1) {
@@ -46,18 +42,18 @@ export class DebugService {
 
     setRouteDebuggerVisibility(isVisible: boolean) {
         if (isVisible) {
-            this.lookup.debug.areaMapDebugger.show();
+            this.areaMapDebugger.show();
             this.enemyPathDebugger.show();
         } else {
-            this.lookup.debug.areaMapDebugger.hide();
+            this.areaMapDebugger.hide();
         }
     }
 
     setColliderMeshVisibility(isVisible: boolean) {
-        this.lookup.activeObj.getAllGameObjects().forEach(go => go.setColliderVisibility(isVisible));
+        this.worldProvider.world.obj.getAll().forEach(go => go.setColliderVisibility(isVisible));
     }
 
     setMeshBoundingBoxVisibility(isVisible: boolean) {
-        this.lookup.activeObj.getAllGameObjects().forEach(go => go.setBoundingBoxVisibility(isVisible));
+        this.worldProvider.world.obj.getAll().forEach(go => go.setBoundingBoxVisibility(isVisible));
     }
 }

@@ -1,13 +1,14 @@
 
 
 export function InjectProperty(dependencyId: string): Function {
-    return (prototype: any, propertyName: string): void => {
-        if (!prototype.__injections__) {
-            prototype.__injections__ = [];
-        }
+    // return (prototype: any, propertyName: string): void => {
+    //     if (!prototype.__injections__) {
+    //         prototype.__injections__ = [];
+    //     }
 
-        prototype.__injections__.push([ propertyName, dependencyId ]);
-    };
+    //     prototype.__injections__.push([ propertyName, dependencyId ]);
+    // };
+    return () => {}
 }
 
 export function InjectableClass(): Function {

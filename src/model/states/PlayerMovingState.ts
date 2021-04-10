@@ -1,18 +1,22 @@
 import { Axis, Space, Vector3 } from "babylonjs";
 import { MeshObj } from "../objs/MeshObj";
-import { Lookup } from "../../services/Lookup";
+import { lookup, Lookup } from "../../services/Lookup";
 import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
 import { PlayerIdleState } from "./PlayerIdleState";
+import { InjectProperty } from "../../di/diDecorators";
+import { KeyboardService } from "../../services/KeyboardService";
 
 export class PlayerMovingState extends AbstractMeshObjState {
-    private readonly world: Lookup;
+
+    @InjectProperty("KeyboardService")
+    private keyboardService: KeyboardService;
+
     private readonly speed = 0.04;
     private readonly rotationSpeed = Math.PI / 30;
 
-    constructor(gameObject: MeshObj, world: Lookup) {
+    constructor(gameObject: MeshObj) {
         super(MeshObjStateName.PlayerMovingState, gameObject);
-        this.world = world;
-
+        this.keyboardService = lookup.keyboard;
         this.updateKeyboard();
     }
 
@@ -21,22 +25,20 @@ export class PlayerMovingState extends AbstractMeshObjState {
     }
 
     private updateKeyboard() {
-        const keyboard = this.world.keyboard;
-
         const velocity = new Vector3(0, 0, 0);
         const rotation = new Vector3(0, 0, 0);
 
-        if (this.world.keyboard.activeKeys.has('w')) {
+        if (this.keyboardService.activeKeys.has('w')) {
             velocity.z = this.speed; 
-        } else if (this.world.keyboard.activeKeys.has('s')) {
+        } else if (this.keyboardService.activeKeys.has('s')) {
             velocity.z = -this.speed;
         } else {
             velocity.z = 0;
         }
 
-        if (this.world.keyboard.activeKeys.has('a')) {
+        if (this.keyboardService.activeKeys.has('a')) {
             rotation.y -= this.rotationSpeed;
-        } else if (this.world.keyboard.activeKeys.has('d')) {
+        } else if (this.keyboardService.activeKeys.has('d')) {
             rotation.y += this.rotationSpeed;
         }
 
@@ -44,12 +46,12 @@ export class PlayerMovingState extends AbstractMeshObjState {
         this.gameObject.rotation = rotation;
 
         if (
-            !keyboard.checker.isMoveForward() &&
-            !keyboard.checker.isMoveBackward() &&
-            !keyboard.checker.isTurnLeft() &&
-            !keyboard.checker.isTurnRight()
+            !this.keyboardService.checker.isMoveForward() &&
+            !this.keyboardService.checker.isMoveBackward() &&
+            !this.keyboardService.checker.isTurnLeft() &&
+            !this.keyboardService.checker.isTurnRight()
         ) {
-            this.gameObject.state.setState(new PlayerIdleState(this.gameObject, this.world));
+            this.gameObject.state.setState(new PlayerIdleState(this.gameObject));
         }
     }
 

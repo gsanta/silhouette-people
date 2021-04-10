@@ -1,12 +1,13 @@
 import { StandardMaterial, Axis, Mesh, MeshBuilder, Space, Vector3, InstancedMesh, Color4, Color3 } from "babylonjs";
-import { Lookup } from "../services/Lookup";
+import { InjectProperty } from "../di/diDecorators";
+import { lookup, Lookup } from "../services/Lookup";
+import { WorldProvider } from "../stores/WorldProvider";
 
 export interface AreaVisualizerConfig {
     height: number;
 }
 
 export class QuarterMapDebugger {
-    private world: Lookup;
     private baseInstance: Mesh;
     private instanceMap: Map<number, InstancedMesh> = new Map();
     private borderMeshes: Mesh[] = [];
@@ -14,9 +15,13 @@ export class QuarterMapDebugger {
 
     private visible = false;
 
-    constructor(world: Lookup) {
-        this.world = world;
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
+
+    constructor() {
+        this.worldProvider = lookup.worldProvider;
     }
+
 
     setHeight(height: number) {
         this.height = height;
@@ -37,7 +42,7 @@ export class QuarterMapDebugger {
     }
 
     update() {
-        const quarterMap = this.world.activeQuarters.getQuarter(1).getMap();
+        const quarterMap = this.worldProvider.world.quarter.getQuarter(1).getMap();
         this.createBaseInstanceIfNeeded();
         this.createBorderIfNeeded();
 
@@ -61,10 +66,12 @@ export class QuarterMapDebugger {
     }
 
     private createBorderIfNeeded() {
-        if (this.borderMeshes.length > 0) { return; }
-        const quarterMap = this.world.activeQuarters.getQuarter(1).getMap();
+        const { world } = this.worldProvider;
 
-        const material = new StandardMaterial('border-material', this.world.scene);
+        if (this.borderMeshes.length > 0) { return; }
+        const quarterMap = world.quarter.getQuarter(1).getMap();
+
+        const material = new StandardMaterial('border-material', world.scene);
         material.diffuseColor = Color3.Yellow();
 
         const bounds = quarterMap.getWorldBounds();
@@ -94,8 +101,10 @@ export class QuarterMapDebugger {
     }
 
     private createBaseInstanceIfNeeded() {
+        const { world } = this.worldProvider;
+
         if (this.baseInstance) { return; }
-        const quarterMap = this.world.activeQuarters.getQuarter(1).getMap();
+        const quarterMap = world.quarter.getQuarter(1).getMap();
 
         const cubeSize = quarterMap.gridSize - 0.1;
         this.baseInstance = MeshBuilder.CreateGround(`grid-base-instance`, { width: cubeSize, height: cubeSize });
@@ -105,7 +114,9 @@ export class QuarterMapDebugger {
     }
 
     private createMeshOrUpdateMeshAtIndex(index: number) {
-        const quarterMap = this.world.activeQuarters.getQuarter(1).getMap();
+        const { world } = this.worldProvider;
+
+        const quarterMap = world.quarter.getQuarter(1).getMap();
 
         if (!quarterMap.getNum(index)) {
             this.removeMesh(index);
@@ -124,7 +135,9 @@ export class QuarterMapDebugger {
     }
 
     private createMesh(index: number) {
-        const quarterMap = this.world.activeQuarters.getQuarter(1).getMap();
+        const { world } = this.worldProvider;
+
+        const quarterMap = world.quarter.getQuarter(1).getMap();
 
         const worldPos = quarterMap.getWorldCoordinate(index);
         const instance = this.baseInstance.createInstance(index + '');
@@ -136,7 +149,9 @@ export class QuarterMapDebugger {
     }
 
     private updateColor(index: number) {
-        const quarterMap = this.world.activeQuarters.getQuarter(1).getMap();
+        const { world } = this.worldProvider;
+
+        const quarterMap = world.quarter.getQuarter(1).getMap();
 
         const instance = this.instanceMap.get(index);
         if (quarterMap.getNum(index) === 1) {

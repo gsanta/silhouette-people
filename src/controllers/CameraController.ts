@@ -1,8 +1,9 @@
 import { CameraObj } from "../model/objs/CameraObj";
-import { AbstractController } from "./IController";
+import { AbstractController, ControllerType } from "./IController";
 
 // TODO merge with CameraObj
 export class CameraController extends AbstractController {
+    type = ControllerType.Camera;
     private cameraObj: CameraObj;
 
     setCameraObj(cameraObj: CameraObj) {

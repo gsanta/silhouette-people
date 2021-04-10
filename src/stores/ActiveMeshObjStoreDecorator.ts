@@ -10,7 +10,7 @@ export class ActiveMeshObjStoreDecorator implements IMeshObjStore {
     }
 
     private getActiveGameObjStore() {
-        const worldObj = this.lookup.globalStore.getWorld();
+        const worldObj = this.lookup.worldProvider.world;
         return worldObj ? worldObj.obj : undefined;
     }
 
@@ -37,9 +37,9 @@ export class ActiveMeshObjStoreDecorator implements IMeshObjStore {
         return objStore ? objStore.getObjsByType(...type) : [];
     }
 
-    getAllGameObjects(): MeshObj[] {
+    getAll(): MeshObj[] {
         const objStore = this.getActiveGameObjStore();
-        return objStore ? objStore.getAllGameObjects() : [];
+        return objStore ? objStore.getAll() : [];
     }
 
     dispose() {

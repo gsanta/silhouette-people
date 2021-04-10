@@ -1,29 +1,30 @@
+import { InjectProperty } from "../../di/diDecorators";
+import { KeyboardService } from "../../services/KeyboardService";
+import { lookup } from "../../services/Lookup";
 import { MeshObj } from "../objs/MeshObj";
-import { Lookup } from "../../services/Lookup";
 import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
 import { PlayerMovingState } from "./PlayerMovingState";
 
 export class PlayerIdleState extends AbstractMeshObjState {
-    private lookup: Lookup;
+    @InjectProperty("KeyboardService")
+    private keyboardService: KeyboardService;
 
-    constructor(gameObject: MeshObj, lookup: Lookup) {
+    constructor(gameObject: MeshObj) {
         super(MeshObjStateName.PlayerIdleState, gameObject);
-        this.lookup = lookup;
+        this.keyboardService = lookup.keyboard;
     }
 
     keyboard(e: KeyboardEvent) {
         if (!this.gameObject.tag.isPlayer()) { return undefined; }
         if (!this.gameObject.player.isActive()) { return undefined; }
 
-        const keyboard = this.lookup.keyboard;
-
         if (
-            keyboard.checker.isMoveForward() ||
-            keyboard.checker.isMoveBackward() ||
-            keyboard.checker.isTurnLeft() ||
-            keyboard.checker.isTurnRight()
+            this.keyboardService.checker.isMoveForward() ||
+            this.keyboardService.checker.isMoveBackward() ||
+            this.keyboardService.checker.isTurnLeft() ||
+            this.keyboardService.checker.isTurnRight()
         ) {
-            this.gameObject.state.setState(new PlayerMovingState(this.gameObject, this.lookup));
+            this.gameObject.state.setState(new PlayerMovingState(this.gameObject));
         }
     }
 

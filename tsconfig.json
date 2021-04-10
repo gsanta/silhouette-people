@@ -9,6 +9,7 @@
         "outDir": "build",
         "jsx": "react",
         "resolveJsonModule": true,
+        "experimentalDecorators": true,
         "lib": [
             "es6",
             "dom",

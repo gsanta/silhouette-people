@@ -1,11 +1,11 @@
 import { Engine, Scene } from "babylonjs";
 import { DebugService } from "./DebugService";
 import { KeyboardService } from "./KeyboardService";
-import { GuiService } from "./GuiService";
+import { RenderGuiService } from "./RenderGuiService";
 import { FactoryService } from "./FactoryService";
-import { LoaderService } from "./LoaderService";
+import { SetupService } from "./SetupService";
 import { ControllerService } from "./ControllerService";
-import { GlobalStore } from "../stores/GlobalStore";
+import { WorldProvider } from "../stores/WorldProvider";
 import { UpdateService } from "./update/UpdateService";
 import { ActiveMeshObjStoreDecorator } from "../stores/ActiveMeshObjStoreDecorator";
 import { ActiveQuarterStoreDecorator } from "../stores/ActiveQuarterStoreDecorator";
@@ -21,9 +21,9 @@ export class Lookup {
     canvas: HTMLCanvasElement;
 
     debug: DebugService;
-    gui: GuiService;
+    renderGui: RenderGuiService;
     factory: FactoryService;
-    loader: LoaderService;
+    loader: SetupService;
     controller: ControllerService;
     update: UpdateService;
     
@@ -31,7 +31,7 @@ export class Lookup {
     quarterFactory: QuarterObjFactory;
     worldFactory: WorldObjFactory;
 
-    globalStore: GlobalStore;
+    worldProvider: WorldProvider;
     activeObj: ActiveMeshObjStoreDecorator;
     activeQuarters: ActiveQuarterStoreDecorator;
     
@@ -39,13 +39,19 @@ export class Lookup {
     private onReadyFuncs: (() => void)[] = [];
 
     constructor() {
-        this.keyboard = new KeyboardService(this);
-        this.debug = new DebugService(this);
-        this.gui = new GuiService(this);
+        this.worldProvider = new WorldProvider();
+        lookup.worldProvider = this.worldProvider;
+        this.renderGui = new RenderGuiService();
+        lookup.renderGui = this.renderGui;
+        this.controller = new ControllerService();
+        lookup.controller = this.controller;
+        this.keyboard = new KeyboardService();
+        lookup.keyboard = this.keyboard;
+        this.debug = new DebugService();
+        lookup.debug = this.debug;
+
         this.factory = new FactoryService(this);
-        this.loader = new LoaderService(this);
-        this.controller = new ControllerService(this);
-        this.globalStore = new GlobalStore();
+        this.loader = new SetupService(this);
         this.update = new UpdateService(this);
         
         this.itemFactory = new ItemObjFactory(this);
@@ -69,3 +75,5 @@ export class Lookup {
         }
     }
 }
+
+export const lookup: Partial<Lookup> = {}
