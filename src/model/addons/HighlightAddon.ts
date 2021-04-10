@@ -1,6 +1,6 @@
 import { Vector3 } from "babylonjs";
 import { Lookup } from "../../services/Lookup";
-import { GameObj } from "../objs/GameObj";
+import { MeshObj } from "../objs/MeshObj";
 import { LightObj } from "../objs/LightObj";
 import { AbstractAddon, AddonName } from "./AbstractAddon";
 
@@ -14,7 +14,7 @@ export class HighlightAddon extends AbstractAddon {
         this.world = world;
     }
 
-    update(gameObj: GameObj) {
+    update(gameObj: MeshObj) {
         const lightObj = this.world.globalStore.getHighlight();
         if (!lightObj && !this.isLoading) {
             this.isLoading = true;
@@ -27,7 +27,7 @@ export class HighlightAddon extends AbstractAddon {
         }
     }
 
-    private async lazyInit(gameObj: GameObj) {
+    private async lazyInit(gameObj: MeshObj) {
         const pos = gameObj.getPosition2D();
 
         const lightObj = await LightObj.CreateProjectionTextureLight({snippet: "RXBW6F", pos: new Vector3(pos.x, 0, pos.y)}, this.world);

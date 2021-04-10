@@ -1,16 +1,16 @@
 import { Mesh, Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
-import { GameObj, GameObjTag } from "../objs/GameObj";
+import { MeshObj, MeshObjTag } from "../objs/MeshObj";
 
 
 export class MeshComponent {
-    private gameObj: GameObj;
+    private gameObj: MeshObj;
 
-    constructor(gameObj: GameObj) {
+    constructor(gameObj: MeshObj) {
         this.gameObj = gameObj;
     }
 
-    distance(gameObj: GameObj): number {
+    distance(gameObj: MeshObj): number {
         return Vector2.Distance(this.gameObj.getPosition2D(), gameObj.getPosition2D());
     }
 

@@ -1,5 +1,5 @@
 import { Axis, Space, Tools } from "babylonjs";
-import { GameObj } from "../../../model/objs/GameObj";
+import { MeshObj } from "../../../model/objs/MeshObj";
 import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
 
 export class RotateFactoryFeature extends AbstractFactoryFeature {
@@ -9,7 +9,7 @@ export class RotateFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObj: GameObj, attrs: string[]) {
+    processFeature(gameObj: MeshObj, attrs: string[]) {
         const [rotation] = attrs;
         const rotationRad = Tools.ToRadians(parseInt(rotation, 10));
         

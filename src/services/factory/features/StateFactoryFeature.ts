@@ -1,5 +1,5 @@
-import { GameObj } from "../../../model/objs/GameObj";
-import { AbstractGameObjState, GameObjStateName } from "../../../model/states/AbstractGameObjState";
+import { MeshObj } from "../../../model/objs/MeshObj";
+import { AbstractMeshObjState, MeshObjStateName } from "../../../model/states/AbstractMeshObjState";
 import { BikeIdleState } from "../../../model/states/BikeIdleState";
 import { BikeMovingState } from "../../../model/states/BikeMovingState";
 import { EnemyIdleState } from "../../../model/states/EnemyIdleState";
@@ -26,26 +26,26 @@ export class StateFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObj: GameObj, attrs: string[]) {
+    processFeature(gameObj: MeshObj, attrs: string[]) {
         const [state] = attrs;
 
-        const initState = this.createState(gameObj, state as GameObjStateName);
+        const initState = this.createState(gameObj, state as MeshObjStateName);
         gameObj.state = new StateComponent(initState, this.world);
     }
 
-    private createState(gameObj: GameObj, stateName: GameObjStateName): AbstractGameObjState {
+    private createState(gameObj: MeshObj, stateName: MeshObjStateName): AbstractMeshObjState {
         switch(stateName) {
-            case GameObjStateName.PlayerIdleState:
+            case MeshObjStateName.PlayerIdleState:
                 return new PlayerIdleState(gameObj, this.world);
-            case GameObjStateName.PlayerMovingState:
+            case MeshObjStateName.PlayerMovingState:
                 return new PlayerMovingState(gameObj, this.world);
-            case GameObjStateName.EnemyIdleState:
+            case MeshObjStateName.EnemyIdleState:
                 return new EnemyIdleState(gameObj);
-            case GameObjStateName.EnemyMovingState:
+            case MeshObjStateName.EnemyMovingState:
                 return new EnemyMovingState(gameObj, this.world);
-            case GameObjStateName.BikeIdleState:
+            case MeshObjStateName.BikeIdleState:
                 return new BikeIdleState(gameObj, this.world);
-            case GameObjStateName.BikeMovingState:
+            case MeshObjStateName.BikeMovingState:
                 return new BikeMovingState(gameObj, this.world);
         }
     }

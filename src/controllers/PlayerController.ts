@@ -1,5 +1,5 @@
 import { SpotLight } from "babylonjs";
-import { GameObj, GameObjectType, GameObjTag } from "../model/objs/GameObj";
+import { MeshObj, MeshObjType, MeshObjTag } from "../model/objs/MeshObj";
 import { PlayerGetOffBikeState } from "../model/states/PlayerGetOffBikeState";
 import { PlayerGetOnBikeState } from "../model/states/PlayerGetOnBikeState";
 import { Lookup } from "../services/Lookup";
@@ -37,9 +37,9 @@ export class PlayerController extends AbstractController {
         player.state.setState(new PlayerGetOffBikeState(player, this.world));
     }
 
-    private activateActionable(player: GameObj, actionableObj: GameObj) {
+    private activateActionable(player: MeshObj, actionableObj: MeshObj) {
         switch(actionableObj.type) {
-            case GameObjectType.Bicycle1:
+            case MeshObjType.Bicycle1:
                 if (!player.player.hasBikeVechicle()) {
                     player.state.setState(new PlayerGetOnBikeState(player, actionableObj, this.world));
                 }
@@ -47,8 +47,8 @@ export class PlayerController extends AbstractController {
         }
     }
 
-    private getNearestActionableObj(player: GameObj): GameObj  {
-        const bicycles = this.world.activeObj.getGameObjsByTag(GameObjTag.Bicycle);
+    private getNearestActionableObj(player: MeshObj): MeshObj  {
+        const bicycles = this.world.activeObj.getObjsByTag(MeshObjTag.Bicycle);
         const bikeAndDist = bicycles.map(bicycle => ({ bike: bicycle, dist: bicycle.mesh.distance(player)}));
         bikeAndDist.sort((d1, d2) => d1.dist - d2.dist);
 

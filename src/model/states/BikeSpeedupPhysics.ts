@@ -1,6 +1,6 @@
 import { Vector2 } from 'babylonjs';
 import regression from 'regression';
-import { GameObj } from '../objs/GameObj';
+import { MeshObj } from '../objs/MeshObj';
 
 export interface BikeSpeedPhysicsConf {
     gearSpeedRanges: [Vector2, Vector2][];
@@ -21,9 +21,9 @@ export class BikeSpeedupPhysics {
     private startTime = 0;
     private currTime = 0;
     private maxTime = 0;
-    private readonly bike: GameObj;
+    private readonly bike: MeshObj;
 
-    constructor(bike: GameObj, config: BikeSpeedPhysicsConf) {
+    constructor(bike: MeshObj, config: BikeSpeedPhysicsConf) {
         this.bike = bike;
         this.speedRanges = config.gearSpeedRanges;
         this.setup();

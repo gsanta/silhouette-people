@@ -1,6 +1,6 @@
-import { GameObj } from "../objs/GameObj";
+import { MeshObj } from "../objs/MeshObj";
 import { Lookup } from "../../services/Lookup";
-import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
+import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
 import { AddonName } from "../addons/AbstractAddon";
 import { Axis, Space, Vector3 } from "babylonjs";
 import { PlayerBikeState } from "./PlayerBikeState";
@@ -8,11 +8,11 @@ import { BikeMovingState } from "./BikeMovingState";
 import { PlayerIdleState } from "./PlayerIdleState";
 import { BikeIdleState } from "./BikeIdleState";
 
-export class PlayerGetOffBikeState extends AbstractGameObjState {
+export class PlayerGetOffBikeState extends AbstractMeshObjState {
     private world: Lookup;
 
-    constructor(gameObject: GameObj, world: Lookup) {
-        super(GameObjStateName.PlayerGetOnBikeState, gameObject);
+    constructor(gameObject: MeshObj, world: Lookup) {
+        super(MeshObjStateName.PlayerGetOnBikeState, gameObject);
         this.world = world;
     }
 

@@ -1,19 +1,20 @@
-import { Lookup } from "../services/Lookup";
+import { CameraObj } from "../model/objs/CameraObj";
 import { AbstractController } from "./IController";
 
+// TODO merge with CameraObj
 export class CameraController extends AbstractController {
-    private world: Lookup;
+    private cameraObj: CameraObj;
 
-    constructor(world: Lookup) {
-        super();
-        this.world = world;
+    setCameraObj(cameraObj: CameraObj) {
+        this.cameraObj = cameraObj;
     }
 
     keyboard(e: KeyboardEvent) {
         switch(e.key) {
             case 'c':
-                const camera = this.world.globalStore.getCamera();
-                camera.increaseCornerIndex();
+                if (this.cameraObj) {
+                    this.cameraObj.increaseCornerIndex();
+                }
             break;
         }
     }

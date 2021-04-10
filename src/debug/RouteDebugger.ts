@@ -1,5 +1,5 @@
 import { RouteDebuggerComponent } from "../model/components/RouteDebuggerComponent";
-import { GameObjTag } from "../model/objs/GameObj";
+import { MeshObjTag } from "../model/objs/MeshObj";
 import { Lookup } from "../services/Lookup";
 
 
@@ -11,7 +11,7 @@ export class RouteDebugger {
     }
 
     show() {
-        const enemies = this.world.activeObj.getGameObjsByTag(GameObjTag.Enemy);
+        const enemies = this.world.activeObj.getObjsByTag(MeshObjTag.Enemy);
         enemies.forEach(enemy => enemy.additionalComponents.push(new RouteDebuggerComponent()));
     }
 

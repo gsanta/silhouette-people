@@ -10,7 +10,7 @@ import { AddonComponent } from "../components/AddonComponent";
 import { PlayerComponent } from "../components/PlayerComponent";
 import { BikeData } from "./BikeData";
 
-export enum GameObjectType {
+export enum MeshObjType {
     Player = 'player',
     Enemy = 'enemy',
     Tree1 = 'tree1',
@@ -29,7 +29,7 @@ export enum GameObjectType {
     QuarterGround = 'QuarterGround'
 }
 
-export enum GameObjTag {
+export enum MeshObjTag {
     Player = 'Player',
     Enemy = 'Enemy',
     Bicycle = 'Bicycle',
@@ -39,7 +39,7 @@ export enum GameObjTag {
 export interface GameObjectJson {
     id?: string;
     ch: string;
-    type: GameObjectType;
+    type: MeshObjType;
     position: Vector3;
     modelPath?: string;
     texturePath?: string;
@@ -59,11 +59,11 @@ export interface GameObjectJson {
 }
 
 
-export class GameObj {
+export class MeshObj {
     id: string;
     mainMesh: Mesh;
     ch: string;
-    type: GameObjectType;
+    type: MeshObjType;
     // readonly location: LocationContext;
     velocity: Vector3;
     rotation: Vector3 = new Vector3(0, 0, 0);

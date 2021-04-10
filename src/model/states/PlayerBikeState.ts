@@ -1,9 +1,9 @@
-import { GameObj } from "../objs/GameObj";
-import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
+import { MeshObj } from "../objs/MeshObj";
+import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
 
-export class PlayerBikeState extends AbstractGameObjState {
-    constructor(gameObject: GameObj) {
-        super(GameObjStateName.PlayerBikeState, gameObject);
+export class PlayerBikeState extends AbstractMeshObjState {
+    constructor(gameObject: MeshObj) {
+        super(MeshObjStateName.PlayerBikeState, gameObject);
     }
 
     enter() {

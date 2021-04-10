@@ -7,7 +7,7 @@ import { LoaderService } from "./LoaderService";
 import { ControllerService } from "./ControllerService";
 import { GlobalStore } from "../stores/GlobalStore";
 import { UpdateService } from "./update/UpdateService";
-import { ActiveGameObjStoreDecorator } from "../stores/ActiveGameObjStoreDecorator";
+import { ActiveMeshObjStoreDecorator } from "../stores/ActiveMeshObjStoreDecorator";
 import { ActiveQuarterStoreDecorator } from "../stores/ActiveQuarterStoreDecorator";
 import { WorldObjFactory } from "./factory/WorldObjFactory";
 import { QuarterObjFactory } from "./factory/QuarterObjFactory";
@@ -18,6 +18,7 @@ export class Lookup {
 
     scene: Scene;
     engine: Engine;
+    canvas: HTMLCanvasElement;
 
     debug: DebugService;
     gui: GuiService;
@@ -31,7 +32,7 @@ export class Lookup {
     worldFactory: WorldObjFactory;
 
     globalStore: GlobalStore;
-    activeObj: ActiveGameObjStoreDecorator;
+    activeObj: ActiveMeshObjStoreDecorator;
     activeQuarters: ActiveQuarterStoreDecorator;
     
     private isReady: boolean = false;
@@ -51,7 +52,7 @@ export class Lookup {
         this.quarterFactory = new QuarterObjFactory(this);
         this.worldFactory = new WorldObjFactory(this);
 
-        this.activeObj = new ActiveGameObjStoreDecorator(this);
+        this.activeObj = new ActiveMeshObjStoreDecorator(this);
         this.activeQuarters = new ActiveQuarterStoreDecorator(this);
     }
 

@@ -18,7 +18,7 @@ export function createGame() {
     );
 }
 
-function initGame(world: Lookup) {
+function initGame(lookup: Lookup) {
     const canvas = <HTMLCanvasElement> document.getElementById("game-canvas");
 
     const engine = new Engine(canvas, true);
@@ -26,8 +26,10 @@ function initGame(world: Lookup) {
     scene.collisionsEnabled = true;
     scene.enablePhysics(null, new CannonJSPlugin());
     scene.clearColor = new Color4(0.52, 0.73, 0.4, 1);
-    world.setScene(scene);
-    world.engine = engine;
+    lookup.setScene(scene);
+    lookup.engine = engine;
+    lookup.canvas = canvas;
+
     // var terrainMaterial = new TerrainMaterial("terrainMaterial", scene);
     // terrainMaterial.specularColor = new BABYLON.Color3(0.5, 0.5, 0.5);
     // terrainMaterial.specularPower = 64;
@@ -48,10 +50,10 @@ function initGame(world: Lookup) {
     // // groundMaterial.diffuseColor = Color3.FromHexString('#85BB65');
     // ground.material = groundMaterial;
 
-    const camera = new ArcRotateCamera("camera", Math.PI + Math.PI / 3, Math.PI / 3, 120, new Vector3(0, 0, 0), scene);
-    camera.attachControl(canvas, true);
+    // const camera = new ArcRotateCamera("camera", Math.PI + Math.PI / 3, Math.PI / 3, 120, new Vector3(0, 0, 0), scene);
+    // camera.attachControl(canvas, true);
 
-    world.globalStore.setCamera(new CameraObj(camera));
+    // lookup.globalStore.setCamera(new CameraObj(camera));
 
     // var camera = new FollowCamera("FollowCam", new Vector3(0, 20, 0), scene);
     // // The goal distance of camera from target
@@ -80,23 +82,23 @@ function initGame(world: Lookup) {
     engine.runRenderLoop(function () {
         scene.render();
 
-        if (world.loader.isLoaded()) {
-            world.update.update();
+        if (lookup.loader.isLoaded()) {
+            lookup.update.update();
 
-            if (world.globalStore.getWorld()) {
-                world.activeObj.getAllGameObjects().forEach(gameObject => gameObject.update(world));
+            if (lookup.globalStore.getWorld()) {
+                lookup.activeObj.getAllGameObjects().forEach(gameObject => gameObject.update(lookup));
 
-                world.globalStore.getWorld().quarter.getAllQuarters()[5].tiles.activate();
+                lookup.globalStore.getWorld().quarter.getAllQuarters()[5].tiles.activate();
             }
         }
 
-        world.gui.renderGui();
+        lookup.gui.renderGui();
     });
     
     window.addEventListener("resize", function () {
         engine.resize();
     });
 
-    world.loader.loadGame();
-    world.debug.renderDebugPanel();
+    lookup.loader.loadGame();
+    lookup.debug.renderDebugPanel();
 }

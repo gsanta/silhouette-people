@@ -1,6 +1,6 @@
-import { GameObj } from "../objs/GameObj";
+import { MeshObj } from "../objs/MeshObj";
 
-export enum GameObjStateName {
+export enum MeshObjStateName {
     PlayerIdleState = 'PlayerIdleState',
     PlayerMovingState = 'PlayerMovingState',
     PlayerBikeState = 'PlayerBikeState',
@@ -12,11 +12,11 @@ export enum GameObjStateName {
     BikeMovingState = 'BikeMovingState'
 }
 
-export abstract class AbstractGameObjState {
-    readonly type: GameObjStateName;
-    protected readonly gameObject: GameObj;
+export abstract class AbstractMeshObjState {
+    readonly type: MeshObjStateName;
+    protected readonly gameObject: MeshObj;
 
-    constructor(type: GameObjStateName, gameObject: GameObj) {
+    constructor(type: MeshObjStateName, gameObject: MeshObj) {
         this.type = type;
         this.gameObject = gameObject;
     }

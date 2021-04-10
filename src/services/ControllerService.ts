@@ -12,7 +12,7 @@ export class ControllerService {
 
     constructor(world: Lookup) {
         this.player = new PlayerController(world);
-        this.camera = new CameraController(world);
+        this.camera = new CameraController();
 
         this.all.push(this.player, this.camera);
     }

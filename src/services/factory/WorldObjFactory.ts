@@ -2,9 +2,10 @@ import { WorldObj } from "../../model/objs/WorldObj";
 import { GroundJson, WorldJson } from "../district/WorldJson";
 import { DistrictParser } from "../district/DistrictParser";
 import { Lookup } from "../Lookup";
-import { GameObjectJson, GameObjTag } from "../../model/objs/GameObj";
-import { Axis, Color3, MeshBuilder, PhysicsImpostor, Space, StandardMaterial, Vector2 } from "babylonjs";
+import { GameObjectJson, MeshObjTag } from "../../model/objs/MeshObj";
+import { ArcRotateCamera, Axis, Color3, MeshBuilder, PhysicsImpostor, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
 import { QuarterObjConfig } from "./QuarterObjFactory";
+import { CameraObj } from "../../model/objs/CameraObj";
 
 export class WorldObjFactory {
     private assetsPath = 'assets/levels';
@@ -27,11 +28,23 @@ export class WorldObjFactory {
 
         const worldObj = new WorldObj(this.worldMapParser.getSize(), json.cameraLocation, this.worldMapParser.getQuarterNum(), this.lookup);
 
+        worldObj.camera = this.createCamera(worldObj);
         this.createGround(worldObj);
         this.createQuarters(json.grounds, worldObj);
         await this.createGameObjs(this.worldMapParser.getGameObjJsons(), worldObj);
 
         return worldObj;
+    }
+
+    createCamera(worldObj: WorldObj) {
+        const camera = new ArcRotateCamera("camera", Math.PI + Math.PI / 3, Math.PI / 3, 120, new Vector3(0, 0, 0), this.lookup.scene);
+        camera.attachControl(this.lookup.canvas, true);
+
+        const cameraOj = new CameraObj(camera, worldObj);
+
+        this.lookup.controller.camera.setCameraObj(cameraOj);
+
+        return cameraOj;
     }
 
     createGround(worldObj: WorldObj) {
@@ -71,14 +84,12 @@ export class WorldObjFactory {
         
         const gameObjects = await Promise.all(gameObjJsons.map(json =>  itemFactory.create(json, worldObj)));
         const colliderMeshes = gameObjects
-            .filter(obj => obj.colliderMesh && obj.tag.doesNotHave(GameObjTag.Player, GameObjTag.Enemy, GameObjTag.Bicycle))
+            .filter(obj => obj.colliderMesh && obj.tag.doesNotHave(MeshObjTag.Player, MeshObjTag.Enemy, MeshObjTag.Bicycle))
             .map(obj => obj.colliderMesh);
         
 
-        gameObjects.forEach(obj => worldObj.obj.addGameObject(obj));
+        gameObjects.forEach(obj => worldObj.obj.addObj(obj));
         worldObj.quarter.getQuarter(1).getMap().fillMeshes(colliderMeshes);
-
-        this.lookup.globalStore.getCamera().setDistrict(worldObj);
     }
 
     private async loadWorldJson(name: string): Promise<WorldJson> {

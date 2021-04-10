@@ -1,13 +1,13 @@
 import { Lookup } from "../../services/Lookup";
-import { GameObj } from "../objs/GameObj";
-import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
+import { MeshObj } from "../objs/MeshObj";
+import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
 import { BikeMovingState } from "./BikeMovingState";
 
-export class BikeIdleState extends AbstractGameObjState {
+export class BikeIdleState extends AbstractMeshObjState {
     private world: Lookup;
 
-    constructor(gameObject: GameObj, world: Lookup) {
-        super(GameObjStateName.BikeIdleState, gameObject);
+    constructor(gameObject: MeshObj, world: Lookup) {
+        super(MeshObjStateName.BikeIdleState, gameObject);
         this.world = world;
     }
 

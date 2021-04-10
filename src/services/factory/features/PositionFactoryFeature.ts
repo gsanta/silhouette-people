@@ -1,5 +1,5 @@
 import { Axis, Space } from "babylonjs";
-import { GameObj } from "../../../model/objs/GameObj";
+import { MeshObj } from "../../../model/objs/MeshObj";
 import { AbstractFactoryFeature, parseStrVector } from "./AbstractFactoryFeacture";
 
 export class PositionFactoryFeature extends AbstractFactoryFeature {
@@ -9,7 +9,7 @@ export class PositionFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObj: GameObj, attrs: string[]) {
+    processFeature(gameObj: MeshObj, attrs: string[]) {
         const [posStr] = attrs;
         const pos = parseStrVector(posStr.trim());
 

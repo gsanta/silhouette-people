@@ -1,10 +1,10 @@
-import { GameObj } from "../objs/GameObj";
+import { MeshObj } from "../objs/MeshObj";
 
 export class BikeSlowdownPhysics {
-    private gameObj: GameObj;
+    private gameObj: MeshObj;
     private readonly slowdown: number;
 
-    constructor(gameObj: GameObj, slowdownFactor: number) {
+    constructor(gameObj: MeshObj, slowdownFactor: number) {
         this.gameObj = gameObj;
 
         this.slowdown = slowdownFactor / 1000;

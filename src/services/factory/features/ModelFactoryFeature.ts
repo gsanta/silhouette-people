@@ -1,5 +1,5 @@
 import { Axis, Mesh, SceneLoader, Space } from "babylonjs";
-import { GameObj } from "../../../model/objs/GameObj";
+import { MeshObj } from "../../../model/objs/MeshObj";
 import { WorldObj } from "../../../model/objs/WorldObj";
 import { Lookup } from "../../Lookup";
 import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
@@ -20,7 +20,7 @@ export class ModelFactoryFeature extends AbstractFactoryFeature {
         return true;
     }
 
-    async processFeatureAsync(gameObject: GameObj, attrs: string[]): Promise<void> {
+    async processFeatureAsync(gameObject: MeshObj, attrs: string[]): Promise<void> {
         const [modelPath, mainMeshIndex] = attrs;
         const result = await this.load(modelPath);
         result.animationGroups.forEach(animationGroup => animationGroup.stop());

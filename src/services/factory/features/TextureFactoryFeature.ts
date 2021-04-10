@@ -1,5 +1,5 @@
 import { StandardMaterial, Texture } from "babylonjs";
-import { GameObj } from "../../../model/objs/GameObj";
+import { MeshObj } from "../../../model/objs/MeshObj";
 import { Lookup } from "../../Lookup";
 import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
 
@@ -18,7 +18,7 @@ export class TextureFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObject: GameObj, attrs: string[]) {
+    processFeature(gameObject: MeshObj, attrs: string[]) {
         const [texturePath, textureIndex] = attrs;
         const index = textureIndex !== undefined ? parseInt(textureIndex, 10) : 0;
 

@@ -3,7 +3,7 @@ import { Vector3 } from "babylonjs/Maths/math.vector";
 import { QuarterMap } from "../district/QuarterMap";
 import { Rect } from "../Rect";
 import { WorldObj } from "./WorldObj";
-import { GameObj } from "./GameObj";
+import { MeshObj } from "./MeshObj";
 import { TilingComponent } from "./TilingComponent";
 import { Lookup } from "../../services/Lookup";
 
@@ -25,7 +25,7 @@ export class QuarterObj  {
         this.tiles = new TilingComponent(this, lookup);
     }
 
-    getAllGameObjects(): GameObj[] {
+    getAllGameObjects(): MeshObj[] {
         return this.district.obj.getAllGameObjects().filter(obj => obj.getQuarter() === this);
     }
 

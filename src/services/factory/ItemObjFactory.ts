@@ -1,4 +1,4 @@
-import { GameObj, GameObjectJson, GameObjectType } from "../../model/objs/GameObj";
+import { MeshObj, GameObjectJson, MeshObjType } from "../../model/objs/MeshObj";
 import { WorldObj } from "../../model/objs/WorldObj";
 import { Lookup } from "../Lookup";
 import { AbstractFactoryFeature } from "./features/AbstractFactoryFeacture";
@@ -24,10 +24,10 @@ export class ItemObjFactory {
         this.lookup = lookup;
     }
 
-    async create(gameObjectJson: GameObjectJson, worldObj: WorldObj): Promise<GameObj> {
+    async create(gameObjectJson: GameObjectJson, worldObj: WorldObj): Promise<MeshObj> {
         this.createFeatureFactories(worldObj);
         const id = this.generateId(gameObjectJson.type);
-        const gameObject = new GameObj(id, worldObj, this.lookup);
+        const gameObject = new MeshObj(id, worldObj, this.lookup);
 
         gameObject.type = gameObjectJson.type;
         gameObject.ch = gameObjectJson.ch;
@@ -39,7 +39,7 @@ export class ItemObjFactory {
         return gameObject;
     }
 
-    private async processFeatureList(gameObj: GameObj, gameObjectJson: GameObjectJson) {
+    private async processFeatureList(gameObj: MeshObj, gameObjectJson: GameObjectJson) {
         for (const feature of gameObjectJson.features) {
             const featureName = feature.split(' ')[0].trim();
 
@@ -51,7 +51,7 @@ export class ItemObjFactory {
         }
     }
 
-    private async processFeature(factory: AbstractFactoryFeature, gameObj: GameObj, feature: string): Promise<void> {
+    private async processFeature(factory: AbstractFactoryFeature, gameObj: MeshObj, feature: string): Promise<void> {
         const [_featureName, ...attrs] = feature.split(' ').map(str => str.trim());
         if (factory.isAsync()) {
             await factory.processFeatureAsync(gameObj, attrs);
@@ -76,7 +76,7 @@ export class ItemObjFactory {
         ];
     }
 
-    private generateId(type: GameObjectType) {
+    private generateId(type: MeshObjType) {
         const currIndex = this.indexesByType.get(type) || 0;
         this.indexesByType.set(type, currIndex + 1);
         return `${type}-${currIndex}`;

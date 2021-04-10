@@ -1,5 +1,5 @@
 import { WorldObj } from "../../model/objs/WorldObj";
-import { GameObj } from "../../model/objs/GameObj";
+import { MeshObj } from "../../model/objs/MeshObj";
 import { Lookup } from "../Lookup";
 
 export class QuarterUpdater {
@@ -20,19 +20,17 @@ export class QuarterUpdater {
         }
     }
 
-    private isQuarterChanged(district: WorldObj, player: GameObj) {
-        const camera = this.lookup.globalStore.getCamera();
-        const quarter = district.quarter.getQuarter(camera.getQuarterIndex());
+    private isQuarterChanged(worldObj: WorldObj, player: MeshObj) {
+        const quarter = worldObj.quarter.getQuarter(worldObj.camera.getQuarterIndex());
         const pos = player.getPosition2D();
 
         return !quarter.containsPoint2D(pos);
     }
 
-    private updateActiveQuarter(district: WorldObj, player: GameObj): void {
-        const camera = this.lookup.globalStore.getCamera();
+    private updateActiveQuarter(worldObj: WorldObj, player: MeshObj): void {
         const pos = player.getPosition2D();
 
-        const quarterIndex = district.quarter.getAllQuarters().findIndex(quarter => quarter.containsPoint2D(pos));
-        camera.setQuarterIndex(quarterIndex);
+        const quarterIndex = worldObj.quarter.getAllQuarters().findIndex(quarter => quarter.containsPoint2D(pos));
+        worldObj.camera.setQuarterIndex(quarterIndex);
     }
 }

@@ -1,5 +1,5 @@
 import { Axis, Quaternion, Vector2 } from "babylonjs";
-import { GameObj } from "../objs/GameObj";
+import { MeshObj } from "../objs/MeshObj";
 import { Lookup } from "../../services/Lookup";
 
 export class Route {
@@ -10,10 +10,10 @@ export class Route {
     private currPos: Vector2;
     isFinished = false;
 
-    private gameObject: GameObj;
+    private gameObject: MeshObj;
     private world: Lookup;
 
-    constructor(gameObject: GameObj, path: Vector2[]) {
+    constructor(gameObject: MeshObj, path: Vector2[]) {
         this.gameObject = gameObject;
         this.path = path;
 
@@ -55,7 +55,7 @@ export class Route {
         }
     }
 
-    private isDestReached(gameObject: GameObj) {
+    private isDestReached(gameObject: MeshObj) {
         if (!this.toPoint) { return true; }
 
         const curr = gameObject.colliderMesh.getAbsolutePosition();

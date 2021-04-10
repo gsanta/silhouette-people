@@ -1,22 +1,22 @@
-import { GameObjTag } from "../objs/GameObj";
+import { MeshObjTag } from "../objs/MeshObj";
 
 
 export class TagComponent {
-    private tags: Set<GameObjTag> = new Set();
+    private tags: Set<MeshObjTag> = new Set();
 
-    add(...tag: GameObjTag[]) {
+    add(...tag: MeshObjTag[]) {
         tag.forEach(t => this.tags.add(t));
     }
 
-    has(...tag: GameObjTag[]) {
+    has(...tag: MeshObjTag[]) {
         return tag.every(t => this.tags.has(t));
     }
 
-    doesNotHave(...tag: GameObjTag[]) {
+    doesNotHave(...tag: MeshObjTag[]) {
         return tag.every(t => !this.tags.has(t));
     }
 
-    remove(tag: GameObjTag) {
+    remove(tag: MeshObjTag) {
         this.tags.delete(tag);
     }
 
@@ -27,14 +27,14 @@ export class TagComponent {
     // most common tag shortcuts
 
     isPlayer() {
-        return this.has(GameObjTag.Player);
+        return this.has(MeshObjTag.Player);
     }
 
     removePlayer() {
-        this.remove(GameObjTag.Player);
+        this.remove(MeshObjTag.Player);
     }
 
     addPlayer() {
-        this.add(GameObjTag.Player);
+        this.add(MeshObjTag.Player);
     }
 }

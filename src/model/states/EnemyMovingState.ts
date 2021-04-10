@@ -1,14 +1,14 @@
 import { Route } from "../district/Route";
 import { Lookup } from "../../services/Lookup";
-import { GameObj } from "../objs/GameObj";
-import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
+import { MeshObj } from "../objs/MeshObj";
+import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
 
-export class EnemyMovingState extends AbstractGameObjState {
+export class EnemyMovingState extends AbstractMeshObjState {
     private world: Lookup;
     route: Route;
 
-    constructor(gameObject: GameObj, world: Lookup) {
-        super(GameObjStateName.EnemyMovingState, gameObject);
+    constructor(gameObject: MeshObj, world: Lookup) {
+        super(MeshObjStateName.EnemyMovingState, gameObject);
         this.world = world;
     }
 

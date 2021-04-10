@@ -1,5 +1,5 @@
 import { Route } from "../../model/district/Route";
-import { GameObj } from "../../model/objs/GameObj";
+import { MeshObj } from "../../model/objs/MeshObj";
 import { QuarterObj } from "../../model/objs/QuarterObj";
 import { IPathFinder } from "../district/path/IPathFinder";
 import { MasterPathFinder } from "../district/path/MasterPathFinder";
@@ -11,7 +11,7 @@ export class RouteFactory {
         this.pathFinder = new MasterPathFinder();
     }
     
-    createRandomRoute(gameObject: GameObj): Route {
+    createRandomRoute(gameObject: MeshObj): Route {
         const quarterMap = gameObject.getQuarter().getMap();
         const pos = gameObject.getPosition2D();
         const maxIndex = quarterMap.len();

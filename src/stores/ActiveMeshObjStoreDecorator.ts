@@ -1,8 +1,8 @@
-import { GameObj, GameObjectType, GameObjTag } from "../model/objs/GameObj";
+import { MeshObj, MeshObjType, MeshObjTag } from "../model/objs/MeshObj";
 import { Lookup } from "../services/Lookup";
-import { IGameObjStore } from "./IGameObjStore";
+import { IMeshObjStore } from "./IMeshObjStore";
 
-export class ActiveGameObjStoreDecorator implements IGameObjStore {
+export class ActiveMeshObjStoreDecorator implements IMeshObjStore {
     private lookup: Lookup;
 
     constructor(lookup: Lookup) {
@@ -15,29 +15,29 @@ export class ActiveGameObjStoreDecorator implements IGameObjStore {
     }
 
     // TODO: possibly should be removed from here and from IGameObjStore interface also
-    addGameObject(gameObject: GameObj) {
+    addObj(gameObject: MeshObj) {
         const objStore = this.getActiveGameObjStore();
         if (objStore) {
-            objStore.addGameObject(gameObject);
+            objStore.addObj(gameObject);
         } 
     }
 
-    getActivePlayer(): GameObj {
+    getActivePlayer(): MeshObj {
         const objStore = this.getActiveGameObjStore();
         return objStore ? objStore.getActivePlayer() : undefined; 
     }
 
-    getGameObjsByTag(tag: GameObjTag): GameObj[] {
+    getObjsByTag(tag: MeshObjTag): MeshObj[] {
         const objStore = this.getActiveGameObjStore();
-        return objStore ? objStore.getGameObjsByTag(tag) : [];
+        return objStore ? objStore.getObjsByTag(tag) : [];
     }
 
-    getGameObjsByType(...type: GameObjectType[]): GameObj[] {
+    getObjsByType(...type: MeshObjType[]): MeshObj[] {
         const objStore = this.getActiveGameObjStore();
-        return objStore ? objStore.getGameObjsByType(...type) : [];
+        return objStore ? objStore.getObjsByType(...type) : [];
     }
 
-    getAllGameObjects(): GameObj[] {
+    getAllGameObjects(): MeshObj[] {
         const objStore = this.getActiveGameObjStore();
         return objStore ? objStore.getAllGameObjects() : [];
     }

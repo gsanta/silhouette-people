@@ -3,14 +3,15 @@ import { WorldObj } from "./WorldObj";
 
 
 export class CameraObj {
-    private district: WorldObj;
+    private worldObj: WorldObj;
     private quarterIndex: number = 2;
     private cornerIndex: number = 2;
 
     private readonly camera: ArcRotateCamera;
 
-    constructor(camera: ArcRotateCamera) {
+    constructor(camera: ArcRotateCamera, worldObj: WorldObj) {
         this.camera = camera;
+        this.worldObj = worldObj;
     }
 
     getCamera() {
@@ -23,11 +24,6 @@ export class CameraObj {
 
     setTarget(vector: Vector3) {
         this.camera.setTarget(vector);
-    }
-
-    setDistrict(district: WorldObj) {
-        this.district = district;
-        this.updateCameraPosition();
     }
 
     setQuarterIndex(index: number) {
@@ -45,7 +41,7 @@ export class CameraObj {
     }
 
     private updateCameraPosition() {
-        const quarter = this.district.quarter.getQuarter(this.quarterIndex);
+        const quarter = this.worldObj.quarter.getQuarter(this.quarterIndex);
 
         const size = quarter.getSize();
         const height = 25;

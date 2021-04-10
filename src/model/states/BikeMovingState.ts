@@ -1,13 +1,13 @@
 
 import { Axis, Space, Vector2, Vector3 } from "babylonjs";
 import { Lookup } from "../../services/Lookup";
-import { GameObj } from "../objs/GameObj";
-import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
+import { MeshObj } from "../objs/MeshObj";
+import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
 import { BikeSlowdownPhysics } from "./BikeSlowdownPhysics";
 import { BikeReversePhysics } from "./BikeReversePhysics";
 import { BikeSpeedupPhysics, BikeSpeedState } from "./BikeSpeedupPhysics";
 
-export class BikeMovingState extends AbstractGameObjState {
+export class BikeMovingState extends AbstractMeshObjState {
     private readonly world: Lookup;
     private readonly rotationSpeed = Math.PI / 30;
     private speedPhysics: BikeSpeedupPhysics;
@@ -18,8 +18,8 @@ export class BikeMovingState extends AbstractGameObjState {
 
     private speedStates: Set<BikeSpeedState> = new Set();
 
-    constructor(gameObject: GameObj, world: Lookup) {
-        super(GameObjStateName.BikeMovingState, gameObject);
+    constructor(gameObject: MeshObj, world: Lookup) {
+        super(MeshObjStateName.BikeMovingState, gameObject);
         this.world = world;
 
         const speedRanges: [Vector2, Vector2][] = [

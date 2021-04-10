@@ -1,25 +1,25 @@
 import { Lookup } from "../../services/Lookup";
 import { AddonName } from "../addons/AbstractAddon";
-import { GameObj, GameObjectType } from "../objs/GameObj";
+import { MeshObj, MeshObjType } from "../objs/MeshObj";
 import { WorldObj } from "../objs/WorldObj";
 import { PlayerIdleState } from "../states/PlayerIdleState";
 
 export class PlayerComponent {
-    private vehicle: GameObj;
+    private vehicle: MeshObj;
     private _isActive = false;
     private worldObj: WorldObj;
-    private player: GameObj;
+    private player: MeshObj;
     private lookup: Lookup;
 
-    constructor(gameObj: GameObj, worldObj: WorldObj, lookup: Lookup) {
-        this.player = gameObj;
+    constructor(meshObj: MeshObj, worldObj: WorldObj, lookup: Lookup) {
+        this.player = meshObj;
         this.worldObj = worldObj;
         this.lookup = lookup;
     }
 
     setActive(isActive: boolean) {
         if (isActive) {
-            const players = this.worldObj.obj.getGameObjsByType(GameObjectType.Player);
+            const players = this.worldObj.obj.getObjsByType(MeshObjType.Player);
             const activePlayer = players.find(player => player.player.isActive());
 
             if (activePlayer && activePlayer !== this.player) {
@@ -41,7 +41,7 @@ export class PlayerComponent {
         return this._isActive;
     }
 
-    setVehicle(vehicle: GameObj) {
+    setVehicle(vehicle: MeshObj) {
         this.vehicle = vehicle;
     }
 
@@ -50,6 +50,6 @@ export class PlayerComponent {
     }
 
     hasBikeVechicle() {
-        return this.vehicle && this.vehicle.type === GameObjectType.Bicycle1;
+        return this.vehicle && this.vehicle.type === MeshObjType.Bicycle1;
     }
 }

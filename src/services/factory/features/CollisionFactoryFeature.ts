@@ -1,5 +1,5 @@
 import { Axis, MeshBuilder, Space, StandardMaterial } from "babylonjs";
-import { GameObj } from "../../../model/objs/GameObj";
+import { MeshObj } from "../../../model/objs/MeshObj";
 import { WorldObj } from "../../../model/objs/WorldObj";
 import { Lookup } from "../../Lookup";
 import { AbstractFactoryFeature, parseStrVector } from "./AbstractFactoryFeacture";
@@ -21,7 +21,7 @@ export class CollisionFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObj: GameObj, attrs: string[]) {
+    processFeature(gameObj: MeshObj, attrs: string[]) {
         const dimStr = attrs[0];
     
         const dimensions = dimStr ? parseStrVector(dimStr) : gameObj.mesh.getDimensions();

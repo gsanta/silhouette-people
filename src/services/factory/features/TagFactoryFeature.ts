@@ -1,4 +1,4 @@
-import { GameObj, GameObjTag } from "../../../model/objs/GameObj";
+import { MeshObj, MeshObjTag } from "../../../model/objs/MeshObj";
 import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
 
 
@@ -9,7 +9,7 @@ export class TagFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObject: GameObj, attrs: string[]) {
-        gameObject.tag.add(...(attrs as GameObjTag[]));
+    processFeature(gameObject: MeshObj, attrs: string[]) {
+        gameObject.tag.add(...(attrs as MeshObjTag[]));
     }
 }

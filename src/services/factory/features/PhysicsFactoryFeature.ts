@@ -1,5 +1,5 @@
 import { PhysicsImpostor } from "babylonjs";
-import { GameObj } from "../../../model/objs/GameObj";
+import { MeshObj } from "../../../model/objs/MeshObj";
 import { Lookup } from "../../Lookup";
 import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
 
@@ -18,7 +18,7 @@ export class PhysicsFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObject: GameObj): void {
+    processFeature(gameObject: MeshObj): void {
         gameObject.colliderMesh.physicsImpostor = new PhysicsImpostor(gameObject.colliderMesh, PhysicsImpostor.BoxImpostor, { mass: 1,  }, this.world.scene);
     }
 }

@@ -1,5 +1,5 @@
 import { Vector2, Vector3 } from "babylonjs";
-import { GameObjectJson, GameObjectType } from "../../model/objs/GameObj";
+import { GameObjectJson, MeshObjType } from "../../model/objs/MeshObj";
 import { toStrVector } from "../factory/features/AbstractFactoryFeacture";
 import { WorldJson } from "./WorldJson";
 
@@ -93,7 +93,7 @@ export class DistrictParser {
 
         return {
             position: new Vector3(posX, 0, posY),
-            type: <GameObjectType> type,
+            type: <MeshObjType> type,
             ch: char,
             features: features
         };

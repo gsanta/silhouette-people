@@ -1,10 +1,10 @@
 
-import { GameObj } from "../objs/GameObj";
+import { MeshObj } from "../objs/MeshObj";
 
 export class BikeReversePhysics {
-    private gameObj: GameObj;
+    private gameObj: MeshObj;
 
-    constructor(gameObj: GameObj) {
+    constructor(gameObj: MeshObj) {
         this.gameObj = gameObj;
     }
 

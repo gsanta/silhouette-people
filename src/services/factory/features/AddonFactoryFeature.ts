@@ -1,4 +1,4 @@
-import { GameObj, GameObjectJson } from "../../../model/objs/GameObj";
+import { MeshObj, GameObjectJson } from "../../../model/objs/MeshObj";
 import { Lookup } from "../../Lookup";
 import { AddonName } from "../../../model/addons/AbstractAddon";
 import { HighlightAddon } from "../../../model/addons/HighlightAddon";
@@ -19,7 +19,7 @@ export class AddonFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObject: GameObj, attrs: string[]): void {
+    processFeature(gameObject: MeshObj, attrs: string[]): void {
         const [addonName, ...addonAttrs] = attrs;
         
         const addon = this.createAddon(gameObject, <AddonName> addonName.trim(), addonAttrs);
@@ -27,7 +27,7 @@ export class AddonFactoryFeature extends AbstractFactoryFeature {
         // addons.forEach(addon => gameObject.addon.add(this.createAddon(gameObject, <AddonName> addon.trim())));
     }
 
-    private createAddon(gameObj: GameObj, addonName: AddonName, addonAttrs: any[]) {
+    private createAddon(gameObj: MeshObj, addonName: AddonName, addonAttrs: any[]) {
         switch(addonName) {
             case AddonName.Highlight:
                 return new HighlightAddon(this.world);

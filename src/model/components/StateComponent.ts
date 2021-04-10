@@ -1,12 +1,12 @@
-import { AbstractGameObjState } from "../states/AbstractGameObjState";
+import { AbstractMeshObjState } from "../states/AbstractMeshObjState";
 import { Lookup } from "../../services/Lookup";
 
 export class StateComponent {
     private readonly world: Lookup;
-    startState: AbstractGameObjState;
-    currState: AbstractGameObjState;
+    startState: AbstractMeshObjState;
+    currState: AbstractMeshObjState;
 
-    constructor(startState: AbstractGameObjState, world: Lookup) {
+    constructor(startState: AbstractMeshObjState, world: Lookup) {
         this.world = world;
         this.startState = startState;
         this.currState = startState;
@@ -25,7 +25,7 @@ export class StateComponent {
         this.transitionState(this.startState);
     }
 
-    setState(state: AbstractGameObjState) {
+    setState(state: AbstractMeshObjState) {
         this.transitionState(state);
     }
 
@@ -35,7 +35,7 @@ export class StateComponent {
         }
     }
 
-    private transitionState(newState: AbstractGameObjState) {
+    private transitionState(newState: AbstractMeshObjState) {
         if (!newState || this.currState == newState) { return; }
 
         if (this.currState) {
