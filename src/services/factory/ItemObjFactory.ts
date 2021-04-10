@@ -2,6 +2,7 @@ import { GameObj, GameObjectJson, GameObjectType } from "../../model/objs/GameOb
 import { WorldObj } from "../../model/objs/WorldObj";
 import { Lookup } from "../Lookup";
 import { AbstractFactoryFeature } from "./features/AbstractFactoryFeacture";
+import { ActivePlayerFactoryFeature } from "./features/ActivePlayerFactoryFeature";
 import { AddonFactoryFeature } from "./features/AddonFactoryFeature";
 import { CollisionFactoryFeature } from "./features/CollisionFactoryFeature";
 import { IdFactoryFeature } from "./features/IdFactoryFeature";
@@ -26,11 +27,10 @@ export class ItemObjFactory {
     async create(gameObjectJson: GameObjectJson, worldObj: WorldObj): Promise<GameObj> {
         this.createFeatureFactories(worldObj);
         const id = this.generateId(gameObjectJson.type);
-        const gameObject = new GameObj(id, this.lookup);
+        const gameObject = new GameObj(id, worldObj, this.lookup);
 
         gameObject.type = gameObjectJson.type;
         gameObject.ch = gameObjectJson.ch;
-        gameObject.district = worldObj;
 
         if (gameObjectJson.features) {
             await this.processFeatureList(gameObject, gameObjectJson);
@@ -71,7 +71,8 @@ export class ItemObjFactory {
             new TagFactoryFeature(),
             new AddonFactoryFeature(this.lookup),
             new RotateFactoryFeature(),
-            new IdFactoryFeature()
+            new IdFactoryFeature(),
+            new ActivePlayerFactoryFeature()
         ];
     }
 

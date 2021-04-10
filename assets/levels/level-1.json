@@ -171,7 +171,8 @@
             "Rotate -90"
         ],
         "P1": [
-            "Id player1"
+            "Id player1",
+            "ActivePlayer"
         ],
         "P2": [
             "Id player2"

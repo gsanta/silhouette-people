@@ -20,7 +20,7 @@ export class MeshComponent {
     }
 
     getPositionRelativeToDistrict() {
-        const districtPos = this.gameObj.district.basicComp.platform.getAbsolutePosition();
+        const districtPos = this.gameObj.worldObj.basicComp.platform.getAbsolutePosition();
         const gameObjPos = this.gameObj.getPosition();
 
         return gameObjPos.subtract(districtPos);

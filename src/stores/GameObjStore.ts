@@ -17,8 +17,9 @@ export class GameObjStore implements IGameObjStore {
         gameObject.quarterIndex = quarterIndex;
     }
 
-    getPlayer(): GameObj {
-        return this.getGameObjsByTag(GameObjTag.Player)[0];
+    getActivePlayer(): GameObj {
+        const players = this.getGameObjsByTag(GameObjTag.Player);
+        return players.find(player => player.player.isActive()) || players[0]; 
     }
 
     getGameObjsByTag(tag: GameObjTag): GameObj[] {
@@ -27,6 +28,10 @@ export class GameObjStore implements IGameObjStore {
 
     getGameObjsByType(...type: GameObjectType[]): GameObj[] {
         return this.gameObjects.filter(obj => type.includes(obj.type)); 
+    }
+
+    getObjById(id: string) {
+        return this.gameObjects.find(obj => obj.id === id);
     }
 
     getAllGameObjects(): GameObj[] {

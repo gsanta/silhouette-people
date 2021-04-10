@@ -84,23 +84,22 @@ export class GameObj {
 
     private currentAnimation: AnimationGroup;
 
-    district: WorldObj;
+    readonly worldObj: WorldObj;
     quarterIndex: number;
 
     private frontDirection: Vector3 = new Vector3(0, 0, 1);
     private frontDirection2D: Vector2 = new Vector2(0, 1);
 
-    constructor(id: string, world: Lookup) {
+    constructor(id: string, worldObj: WorldObj, lookup: Lookup) {
         this.id = id;
-
+        this.worldObj = worldObj;
         this.tag = new TagComponent();
         this.mesh = new MeshComponent(this);
-        this.state = new StateComponent(undefined, world);
+        this.state = new StateComponent(undefined, lookup);
         this.addon = new AddonComponent();
-        this.player = new PlayerComponent();
+        this.player = new PlayerComponent(this, worldObj);
 
         this.data = new BikeData();
-        // this.location = new LocationContext();
     }
 
     debug(isDebug: boolean) {
@@ -165,7 +164,7 @@ export class GameObj {
     }
 
     getQuarter(): QuarterObj {
-        return this.district.quarter.getQuarter(this.quarterIndex);
+        return this.worldObj.quarter.getQuarter(this.quarterIndex);
     }
 
     isAnimationRunning(name: string) {

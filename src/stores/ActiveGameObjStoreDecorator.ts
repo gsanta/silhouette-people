@@ -22,9 +22,9 @@ export class ActiveGameObjStoreDecorator implements IGameObjStore {
         } 
     }
 
-    getPlayer(): GameObj {
+    getActivePlayer(): GameObj {
         const objStore = this.getActiveGameObjStore();
-        return objStore ? objStore.getPlayer() : undefined; 
+        return objStore ? objStore.getActivePlayer() : undefined; 
     }
 
     getGameObjsByTag(tag: GameObjTag): GameObj[] {

@@ -1,5 +1,4 @@
 import { Lookup } from "./Lookup";
-import { AdvancedDynamicTexture, StackPanel, Control, Checkbox, TextBlock } from 'babylonjs-gui';
 
 export class GuiService {
     private lookup: Lookup;

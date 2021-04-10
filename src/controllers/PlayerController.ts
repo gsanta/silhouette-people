@@ -14,7 +14,7 @@ export class PlayerController extends AbstractController {
     }
 
     keyboard(e: KeyboardEvent) {
-        const player = this.world.activeObj.getPlayer();
+        const player = this.world.activeObj.getActivePlayer();
 
         switch(e.key) {
             case 'e':
@@ -33,7 +33,7 @@ export class PlayerController extends AbstractController {
     }
 
     private exitAction() {
-        const player = this.world.activeObj.getPlayer();
+        const player = this.world.activeObj.getActivePlayer();
         player.state.setState(new PlayerGetOffBikeState(player, this.world));
     }
 

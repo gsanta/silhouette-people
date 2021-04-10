@@ -17,7 +17,6 @@ export class DebugService {
     private texture: AdvancedDynamicTexture;
     areaMapDebugger: QuarterMapDebugger;
 
-
     private debugPanel: DebugPanel;
 
     constructor(lookup: Lookup) {
