@@ -1,7 +1,7 @@
-import { NodeMaterial, SpotLight, Tools, Vector3 } from "babylonjs";
-import { GameObj, GameObjectType } from "../objs/GameObj";
-import { LightObj } from "../objs/LightObj";
+import { Vector3 } from "babylonjs";
 import { Lookup } from "../../services/Lookup";
+import { GameObj } from "../objs/GameObj";
+import { LightObj } from "../objs/LightObj";
 import { AbstractAddon, AddonName } from "./AbstractAddon";
 
 export class HighlightAddon extends AbstractAddon {

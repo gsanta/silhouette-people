@@ -4,17 +4,18 @@ import { AbstractGameObjState, GameObjStateName } from "./AbstractGameObjState";
 import { PlayerMovingState } from "./PlayerMovingState";
 
 export class PlayerIdleState extends AbstractGameObjState {
-    private world: Lookup;
+    private lookup: Lookup;
 
-    constructor(gameObject: GameObj, world: Lookup) {
+    constructor(gameObject: GameObj, lookup: Lookup) {
         super(GameObjStateName.PlayerIdleState, gameObject);
-        this.world = world;
+        this.lookup = lookup;
     }
 
     keyboard(e: KeyboardEvent) {
         if (!this.gameObject.tag.isPlayer()) { return undefined; }
+        if (!this.gameObject.player.isActive()) { return undefined; }
 
-        const keyboard = this.world.keyboard;
+        const keyboard = this.lookup.keyboard;
 
         if (
             keyboard.checker.isMoveForward() ||
@@ -22,7 +23,7 @@ export class PlayerIdleState extends AbstractGameObjState {
             keyboard.checker.isTurnLeft() ||
             keyboard.checker.isTurnRight()
         ) {
-            this.gameObject.state.setState(new PlayerMovingState(this.gameObject, this.world));
+            this.gameObject.state.setState(new PlayerMovingState(this.gameObject, this.lookup));
         }
     }
 

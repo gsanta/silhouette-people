@@ -97,7 +97,7 @@ export class GameObj {
         this.mesh = new MeshComponent(this);
         this.state = new StateComponent(undefined, lookup);
         this.addon = new AddonComponent();
-        this.player = new PlayerComponent(this, worldObj);
+        this.player = new PlayerComponent(this, worldObj, lookup);
 
         this.data = new BikeData();
     }
