@@ -84,7 +84,7 @@ function initGame(lookup: Lookup) {
         
         scene.render();
         
-        if (lookup.loader.isReady()) {
+        if (lookup.setup.isReady()) {
             lookup.update.update();
 
             if (lookup.worldProvider.world) {
@@ -101,6 +101,6 @@ function initGame(lookup: Lookup) {
         engine.resize();
     });
 
-    lookup.loader.setup(scene);
+    lookup.setup.setup(scene);
     lookup.debug.render();
 }

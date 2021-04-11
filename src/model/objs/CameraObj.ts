@@ -40,6 +40,23 @@ export class CameraObj {
         this.updateCameraPosition();
     }
 
+    screenToCanvasPoint(screenPoint: Vector2, pos: Vector3 = new Vector3(0, 0, 0)): Vector3 {
+        const scene = this.worldObj.scene;
+
+        const pickResult = scene.pick(screenPoint.x, screenPoint.y);
+        const rayOrigin = pickResult.ray.origin 
+        const rayDirection = pickResult.ray.direction;
+        
+        const planeNormal = rayDirection.negate();
+        const planePoint = pos;
+
+        const planePointMinusRayOrig = planePoint.subtract(rayOrigin);
+        const t = Vector3.Dot(planePointMinusRayOrig, planeNormal) / Vector3.Dot(rayDirection, planeNormal);
+        const p = rayOrigin.add(rayDirection.multiply(new Vector3(t, t, t)));
+
+        return p;
+    }
+
     private updateCameraPosition() {
         const quarter = this.worldObj.quarter.getQuarter(this.quarterIndex);
 

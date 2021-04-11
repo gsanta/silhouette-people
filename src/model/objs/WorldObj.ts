@@ -6,6 +6,8 @@ import { BasicDistrictComponent } from "./BasicDistrictComponent";
 import { CameraObj } from "./CameraObj";
 
 export class WorldObj {
+    readonly QUARTER_SIZE: number;
+
     cameraLocation: number;
 
     readonly size: Vector2;
@@ -18,7 +20,7 @@ export class WorldObj {
     quarter: QuarterStore;
     camera: CameraObj;
 
-    constructor(worldSize: Vector2, cameraLocation: number, quarterNum: Vector2, lookup: Lookup) {
+    constructor(worldSize: Vector2, cameraLocation: number, quarterNum: Vector2) {
         this.size = worldSize;
         this.cameraLocation = cameraLocation;
         this.quarterNum = quarterNum;

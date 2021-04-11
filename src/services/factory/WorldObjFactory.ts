@@ -28,7 +28,7 @@ export class WorldObjFactory {
 
         this.worldMapParser.parse(json);
 
-        const worldObj = new WorldObj(this.worldMapParser.getSize(), json.cameraLocation, this.worldMapParser.getQuarterNum(), this.lookup);
+        const worldObj = new WorldObj(this.worldMapParser.getSize(), json.cameraLocation, this.worldMapParser.getQuarterNum());
 
         worldObj.camera = this.createCamera(worldObj);
         this.createGround(worldObj);

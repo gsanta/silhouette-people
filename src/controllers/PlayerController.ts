@@ -33,6 +33,10 @@ export class PlayerController extends AbstractController {
         }
     }
 
+    pointerDown() {
+        
+    }
+
     private exitAction() {
         const player = this.lookup.activeObj.getActivePlayer();
         player.state.setState(new PlayerGetOffBikeState(player, this.lookup));

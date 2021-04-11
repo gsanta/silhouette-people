@@ -1,20 +1,30 @@
-import { Lookup } from "../../services/Lookup";
+import { constants } from "../../contants";
+import { InjectProperty } from "../../di/diDecorators";
+import { TileFactory } from "../../services/factory/TileFactory";
+import { lookup } from "../../services/Lookup";
 import { QuarterObj } from "./QuarterObj";
 
 export class TilingComponent {
+    readonly TILES_PER_QUARTER_X: number;
+    readonly TILES_PER_QUARTER_Y: number;
     private quarterObj: QuarterObj;
-    private lookup: Lookup;
     private isActive = false;
 
-    constructor(quarterObj: QuarterObj, lookup: Lookup) {
+    @InjectProperty("TileFactory")
+    private tileFactory: TileFactory;
+
+    constructor(quarterObj: QuarterObj) {
+        this.tileFactory = lookup.tileFactory;
         this.quarterObj = quarterObj;
-        this.lookup = lookup;
+        
+        this.TILES_PER_QUARTER_X = Math.floor(quarterObj.getSize().x / constants.TILE_SIZE);
+        this.TILES_PER_QUARTER_Y = Math.floor(quarterObj.getSize().y / constants.TILE_SIZE);
     }
 
     activate() {
         if (!this.isActive) {
             this.isActive = true;
-            this.lookup.quarterFactory.createTiles(this.quarterObj);
+            this.tileFactory.createTilesForQuarter(this.quarterObj);
         }
     }
 

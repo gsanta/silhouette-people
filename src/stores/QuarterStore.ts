@@ -5,6 +5,7 @@ export class QuarterStore implements IQuarterStore {
     private quarters: QuarterObj[] = [];
 
     addQuarter(quarterObj: QuarterObj) {
+        quarterObj.index = this.quarters.length;
         this.quarters.push(quarterObj);
     }
 

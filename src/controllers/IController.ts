@@ -7,4 +7,5 @@ export enum ControllerType {
 export abstract class AbstractController {
     abstract type: ControllerType;
     keyboard(e: KeyboardEvent) {}
+    pointerDown() {}
 }

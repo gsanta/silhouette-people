@@ -12,9 +12,13 @@ import { ActiveQuarterStoreDecorator } from "../stores/ActiveQuarterStoreDecorat
 import { WorldObjFactory } from "./factory/WorldObjFactory";
 import { QuarterObjFactory } from "./factory/QuarterObjFactory";
 import { ItemObjFactory } from "./factory/ItemObjFactory";
+import { PointerService } from "./PointerService";
+import { TileStore } from "../stores/TileStore";
+import { TileFactory } from "./factory/TileFactory";
 
 export class Lookup {
     keyboard: KeyboardService;
+    pointer: PointerService;
 
     scene: Scene;
     engine: Engine;
@@ -23,7 +27,7 @@ export class Lookup {
     debug: DebugService;
     renderGui: RenderGuiService;
     factory: FactoryService;
-    loader: SetupService;
+    setup: SetupService;
     controller: ControllerService;
     update: UpdateService;
     
@@ -34,6 +38,10 @@ export class Lookup {
     worldProvider: WorldProvider;
     activeObj: ActiveMeshObjStoreDecorator;
     activeQuarters: ActiveQuarterStoreDecorator;
+
+    tileStore: TileStore;
+
+    tileFactory: TileFactory;
     
     private isReady: boolean = false;
     private onReadyFuncs: (() => void)[] = [];
@@ -41,17 +49,26 @@ export class Lookup {
     constructor() {
         this.worldProvider = new WorldProvider();
         lookup.worldProvider = this.worldProvider;
+        this.tileStore = new TileStore();
+        lookup.tileStore = this.tileStore;
         this.renderGui = new RenderGuiService();
         lookup.renderGui = this.renderGui;
         this.controller = new ControllerService();
         lookup.controller = this.controller;
         this.keyboard = new KeyboardService();
         lookup.keyboard = this.keyboard;
+
+        this.pointer = new PointerService();
+        lookup.pointer = this.pointer;
+
         this.debug = new DebugService();
         lookup.debug = this.debug;
 
+        this.tileFactory = new TileFactory();
+        lookup.tileFactory = this.tileFactory;
+
         this.factory = new FactoryService(this);
-        this.loader = new SetupService(this);
+        this.setup = new SetupService(this);
         this.update = new UpdateService(this);
         
         this.itemFactory = new ItemObjFactory(this);
