@@ -43,7 +43,7 @@ export class QuarterFactory {
         const translateY = position.y * size.y - size.y / 2;
 
         ground.translate(new Vector3(translateX, 0, translateY), 1, Space.WORLD);
-        ground.parent = this.worldProvider.world.basicComp.platform;
+        ground.parent = this.worldProvider.world.ground;
         ground.translate(Axis.Y, 0.2, Space.WORLD);
 
         const quarter = new QuarterObj(id, ground);

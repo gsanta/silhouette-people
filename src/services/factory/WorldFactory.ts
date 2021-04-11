@@ -76,7 +76,7 @@ export class WorldFactory {
 
         ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, this.lookup.scene);
 
-        worldObj.basicComp.platform = ground;
+        worldObj.ground = ground;
     }
 
     private createQuarters(grounds: GroundJson[][], worldObj: WorldObj) {
