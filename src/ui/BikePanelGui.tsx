@@ -1,11 +1,23 @@
 import React from "react";
 import { GuiProps } from './GuiProps';
 import './../../assets/css/bike-panel.scss'
+import { InjectProperty } from "../di/diDecorators";
+import { MeshStore } from "../stores/MeshStore";
+import { lookup } from "../services/Lookup";
 
 export class BikePanelGui extends React.Component<GuiProps> {
+
+    @InjectProperty("MeshStore")
+    private meshStore: MeshStore;
+
+    constructor(props: GuiProps) {
+        super(props);
+        this.meshStore = lookup.meshStore;
+    }
+
     render() {
         const { world } = this.props;
-        const player = world.activeObj.getActivePlayer(); 
+        const player = this.meshStore.getActivePlayer(); 
 
         if (!player || !player.player.hasBikeVechicle()) {
             return null;

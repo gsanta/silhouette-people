@@ -1,17 +1,16 @@
 import { Container, Control, RadioButton, StackPanel } from "babylonjs-gui";
 import { InjectProperty } from "../../di/diDecorators";
-import { WorldObj } from "../../model/objs/WorldObj";
-import { WorldProvider } from "../../stores/WorldProvider";
-import { lookup, Lookup } from "../Lookup";
+import { MeshStore } from "../../stores/MeshStore";
+import { lookup } from "../Lookup";
 import { IGUIComponent } from "./IGUIComponent";
 
 
 export class PlayerRadioButtonGroup implements IGUIComponent {
-    @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
+    @InjectProperty("MeshStore")
+    private meshStore: MeshStore;
 
     constructor() {
-        this.worldProvider = lookup.worldProvider;
+        this.meshStore = lookup.meshStore;
     }
     
     render(parent: Container) {
@@ -37,8 +36,7 @@ export class PlayerRadioButtonGroup implements IGUIComponent {
     }
 
     private activatePlayer(playerId: string) {
-        const world = this.worldProvider.world;
-        world.obj.getObjById(playerId).player.setActive(true);
+        this.meshStore.getById(playerId).player.setActive(true);
     }
 
     private addRadio(text: string, parent: Container, onClick: (state: boolean) => void) {

@@ -4,7 +4,7 @@ import { lookup, Lookup } from "../../services/Lookup";
 import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
 import { PlayerIdleState } from "./PlayerIdleState";
 import { InjectProperty } from "../../di/diDecorators";
-import { KeyboardService } from "../../services/KeyboardService";
+import { KeyboardService } from "../../services/input/KeyboardService";
 
 export class PlayerMovingState extends AbstractMeshObjState {
 

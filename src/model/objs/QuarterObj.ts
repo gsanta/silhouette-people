@@ -5,28 +5,29 @@ import { Rect } from "../Rect";
 import { WorldObj } from "./WorldObj";
 import { MeshObj } from "./MeshObj";
 import { TilingComponent } from "./TilingComponent";
+import { InjectProperty } from "../../di/diDecorators";
+import { WorldProvider } from "../../services/WorldProvider";
+import { lookup } from "../../services/Lookup";
 
 export class QuarterObj  {
     id: string;
     index: number;
-    private map: QuarterMap;
-    private world: WorldObj;
+    tiles: TilingComponent;
     readonly mesh: Mesh;
 
-    tiles: TilingComponent;
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
 
-    constructor(id: string, world: WorldObj, mesh: Mesh) {
-        this.world = world;
+    private map: QuarterMap;
+
+    constructor(id: string, mesh: Mesh) {
+        this.worldProvider = lookup.worldProvider;
         this.mesh = mesh;
         this.id = id;
 
         const b = this.getBounds2D();
         this.map = new QuarterMap(b.tl, b.br, 0.5);
         this.tiles = new TilingComponent(this);
-    }
-
-    getAllGameObjects(): MeshObj[] {
-        return this.world.obj.getAll().filter(obj => obj.getQuarter() === this);
     }
 
     getMap() {
@@ -60,7 +61,7 @@ export class QuarterObj  {
     }
 
     getQuarterPosition(): Vector2 {
-        const quarterCols = this.world.quarterNum.x;
+        const quarterCols = this.worldProvider.world.quarterNum.x;
         const y = Math.floor(this.index / quarterCols);
         const x = this.index % quarterCols;
         return new Vector2(x, y);

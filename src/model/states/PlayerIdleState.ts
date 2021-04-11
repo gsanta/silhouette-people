@@ -1,5 +1,5 @@
 import { InjectProperty } from "../../di/diDecorators";
-import { KeyboardService } from "../../services/KeyboardService";
+import { KeyboardService } from "../../services/input/KeyboardService";
 import { lookup } from "../../services/Lookup";
 import { MeshObj } from "../objs/MeshObj";
 import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";

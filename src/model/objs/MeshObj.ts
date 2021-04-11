@@ -1,6 +1,6 @@
 import { AnimationGroup, Axis, Mesh, Quaternion, Skeleton, Space, Vector2, Vector3 } from "babylonjs";
 import { IComponent } from "../IComponent";
-import { Lookup } from "../../services/Lookup";
+import { lookup, Lookup } from "../../services/Lookup";
 import { WorldObj } from "./WorldObj";
 import { QuarterObj } from "./QuarterObj";
 import { StateComponent } from "../components/StateComponent";
@@ -9,6 +9,8 @@ import { MeshComponent } from "../components/MeshComponent";
 import { AddonComponent } from "../components/AddonComponent";
 import { PlayerComponent } from "../components/PlayerComponent";
 import { BikeData } from "./BikeData";
+import { InjectProperty } from "../../di/diDecorators";
+import { QuarterStore } from "../../stores/QuarterStore";
 
 export enum MeshObjType {
     Player = 'player',
@@ -74,30 +76,33 @@ export class MeshObj {
     allMeshes: Mesh[] = [];
 
     state: StateComponent;
+    additionalComponents: IComponent[] = [];
+    readonly worldObj: WorldObj;
+    quarterIndex: number;
+    
     readonly tag: TagComponent;
     readonly mesh: MeshComponent;
     readonly addon: AddonComponent;
     readonly player: PlayerComponent;
     readonly data: BikeData;
 
-    additionalComponents: IComponent[] = [];
+    @InjectProperty("QuarterStore")
+    private quarterStore: QuarterStore;
 
     private currentAnimation: AnimationGroup;
-
-    readonly worldObj: WorldObj;
-    quarterIndex: number;
 
     private frontDirection: Vector3 = new Vector3(0, 0, 1);
     private frontDirection2D: Vector2 = new Vector2(0, 1);
 
-    constructor(id: string, worldObj: WorldObj, lookup: Lookup) {
+    constructor(id: string, worldObj: WorldObj) {
         this.id = id;
         this.worldObj = worldObj;
+        this.quarterStore = lookup.quarterStore;
         this.tag = new TagComponent();
         this.mesh = new MeshComponent(this);
         this.state = new StateComponent(undefined);
         this.addon = new AddonComponent();
-        this.player = new PlayerComponent(this, worldObj, lookup);
+        this.player = new PlayerComponent(this, worldObj);
 
         this.data = new BikeData();
     }
@@ -164,7 +169,7 @@ export class MeshObj {
     }
 
     getQuarter(): QuarterObj {
-        return this.worldObj.quarter.getQuarter(this.quarterIndex);
+        return this.quarterStore.getQuarter(this.quarterIndex);
     }
 
     isAnimationRunning(name: string) {

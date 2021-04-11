@@ -1,6 +1,6 @@
-import { Scene, Vector2 } from "babylonjs";
+import { Engine, Scene, Vector2 } from "babylonjs";
 import { Lookup } from "../../services/Lookup";
-import { MeshObjStore } from "../../stores/MeshObjStore";
+import { MeshStore } from "../../stores/MeshStore";
 import { QuarterStore } from "../../stores/QuarterStore";
 import { BasicDistrictComponent } from "./BasicDistrictComponent";
 import { CameraObj } from "./CameraObj";
@@ -14,10 +14,9 @@ export class WorldObj {
     readonly quarterNum: Vector2;
 
     scene: Scene;
+    engine: Engine;
 
     basicComp: BasicDistrictComponent;
-    obj: MeshObjStore;
-    quarter: QuarterStore;
     camera: CameraObj;
 
     constructor(worldSize: Vector2, cameraLocation: number, quarterNum: Vector2) {
@@ -26,8 +25,5 @@ export class WorldObj {
         this.quarterNum = quarterNum;
         
         this.basicComp = new BasicDistrictComponent();
-
-        this.obj = new MeshObjStore(this);
-        this.quarter = new QuarterStore();
     }
 }

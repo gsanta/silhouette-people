@@ -4,7 +4,7 @@ import { InjectProperty } from "../../di/diDecorators";
 import { QuarterObj } from "../../model/objs/QuarterObj";
 import { TileObj } from "../../model/objs/TileObj";
 import { TileStore } from "../../stores/TileStore";
-import { WorldProvider } from "../../stores/WorldProvider";
+import { WorldProvider } from "../WorldProvider";
 import { lookup } from "../Lookup";
 
 export class TileFactory {

@@ -1,20 +1,20 @@
 import { Engine, Scene } from "babylonjs";
 import { DebugService } from "./DebugService";
-import { KeyboardService } from "./KeyboardService";
+import { KeyboardService } from "./input/KeyboardService";
 import { RenderGuiService } from "./RenderGuiService";
-import { FactoryService } from "./FactoryService";
-import { SetupService } from "./SetupService";
+import { SetupService } from "./game/SetupService";
 import { ControllerService } from "./ControllerService";
-import { WorldProvider } from "../stores/WorldProvider";
-import { UpdateService } from "./update/UpdateService";
-import { ActiveMeshObjStoreDecorator } from "../stores/ActiveMeshObjStoreDecorator";
-import { ActiveQuarterStoreDecorator } from "../stores/ActiveQuarterStoreDecorator";
-import { WorldObjFactory } from "./factory/WorldObjFactory";
-import { QuarterObjFactory } from "./factory/QuarterObjFactory";
-import { ItemObjFactory } from "./factory/ItemObjFactory";
-import { PointerService } from "./PointerService";
+import { WorldProvider } from "./WorldProvider";
+import { UpdateService } from "./game/UpdateService";
+import { WorldFactory } from "./factory/WorldFactory";
+import { QuarterFactory } from "./factory/QuarterFactory";
+import { MeshFactory } from "./factory/MeshFactory";
+import { PointerService } from "./input/PointerService";
 import { TileStore } from "../stores/TileStore";
 import { TileFactory } from "./factory/TileFactory";
+import { QuarterStore } from "../stores/QuarterStore";
+import { MeshStore } from "../stores/MeshStore";
+import { RouteFactory } from "./factory/RouteFactory";
 
 export class Lookup {
     keyboard: KeyboardService;
@@ -26,20 +26,20 @@ export class Lookup {
 
     debug: DebugService;
     renderGui: RenderGuiService;
-    factory: FactoryService;
     setup: SetupService;
     controller: ControllerService;
     update: UpdateService;
     
-    itemFactory: ItemObjFactory;
-    quarterFactory: QuarterObjFactory;
-    worldFactory: WorldObjFactory;
+    itemFactory: MeshFactory;
+    quarterFactory: QuarterFactory;
+    worldFactory: WorldFactory;
+    routeFactory: RouteFactory;
 
     worldProvider: WorldProvider;
-    activeObj: ActiveMeshObjStoreDecorator;
-    activeQuarters: ActiveQuarterStoreDecorator;
 
     tileStore: TileStore;
+    quarterStore: QuarterStore;
+    meshStore: MeshStore;
 
     tileFactory: TileFactory;
     
@@ -49,8 +49,16 @@ export class Lookup {
     constructor() {
         this.worldProvider = new WorldProvider();
         lookup.worldProvider = this.worldProvider;
+
+        this.routeFactory = new RouteFactory();
+        lookup.routeFactory = this.routeFactory;
+
         this.tileStore = new TileStore();
         lookup.tileStore = this.tileStore;
+        this.quarterStore = new QuarterStore();
+        lookup.quarterStore = this.quarterStore;
+        this.meshStore = new MeshStore();
+        lookup.meshStore = this.meshStore;
         this.renderGui = new RenderGuiService();
         lookup.renderGui = this.renderGui;
         this.controller = new ControllerService();
@@ -67,16 +75,12 @@ export class Lookup {
         this.tileFactory = new TileFactory();
         lookup.tileFactory = this.tileFactory;
 
-        this.factory = new FactoryService(this);
         this.setup = new SetupService(this);
-        this.update = new UpdateService(this);
+        this.update = new UpdateService();
         
-        this.itemFactory = new ItemObjFactory(this);
-        this.quarterFactory = new QuarterObjFactory(this);
-        this.worldFactory = new WorldObjFactory(this);
-
-        this.activeObj = new ActiveMeshObjStoreDecorator(this);
-        this.activeQuarters = new ActiveQuarterStoreDecorator(this);
+        this.itemFactory = new MeshFactory(this);
+        this.quarterFactory = new QuarterFactory();
+        this.worldFactory = new WorldFactory(this);
     }
 
     setScene(scene: Scene) {

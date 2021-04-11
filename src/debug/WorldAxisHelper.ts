@@ -1,7 +1,7 @@
 import { Color3, Mesh, Vector3 } from "babylonjs";
 import { InjectProperty } from "../di/diDecorators";
 import { lookup, Lookup } from "../services/Lookup";
-import { WorldProvider } from "../stores/WorldProvider";
+import { WorldProvider } from "../services/WorldProvider";
 
 export class WorldAxisHelper {
     private meshes: Mesh[];

@@ -1,25 +1,30 @@
-import { Lookup } from "../../services/Lookup";
+import { InjectProperty } from "../../di/diDecorators";
+import { lookup } from "../../services/Lookup";
+import { MeshStore } from "../../stores/MeshStore";
 import { AddonName } from "../addons/AbstractAddon";
 import { MeshObj, MeshObjType } from "../objs/MeshObj";
 import { WorldObj } from "../objs/WorldObj";
 import { PlayerIdleState } from "../states/PlayerIdleState";
 
 export class PlayerComponent {
+
+    @InjectProperty("MeshStore")
+    private meshStore: MeshStore;
+
     private vehicle: MeshObj;
     private _isActive = false;
     private worldObj: WorldObj;
     private player: MeshObj;
-    private lookup: Lookup;
 
-    constructor(meshObj: MeshObj, worldObj: WorldObj, lookup: Lookup) {
+    constructor(meshObj: MeshObj, worldObj: WorldObj) {
         this.player = meshObj;
         this.worldObj = worldObj;
-        this.lookup = lookup;
+        this.meshStore = lookup.meshStore;
     }
 
     setActive(isActive: boolean) {
         if (isActive) {
-            const players = this.worldObj.obj.getObjsByType(MeshObjType.Player);
+            const players = this.meshStore.getObjsByType(MeshObjType.Player);
             const activePlayer = players.find(player => player.player.isActive());
 
             if (activePlayer && activePlayer !== this.player) {

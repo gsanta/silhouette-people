@@ -1,15 +1,15 @@
 import { InjectProperty } from "../di/diDecorators";
-import { WorldProvider } from "../stores/WorldProvider";
+import { MeshStore } from "../stores/MeshStore";
 import { lookup } from "./Lookup";
 
 export class RenderGuiService {
     private renderer: () => void;
 
-    @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
+    @InjectProperty("MeshStore")
+    private meshStore: MeshStore;
 
     constructor() {
-        this.worldProvider = lookup.worldProvider;
+        this.meshStore = lookup.meshStore;
     }
 
     setGuiRenderer(renderer: () => void) {
@@ -23,12 +23,9 @@ export class RenderGuiService {
     }
 
     private processDirtyObjs(): boolean {
-        const { world } = this.worldProvider;
-        if (!world) { return false } 
-
         let dirtyFound = false;
 
-        world.obj.getAll().forEach(obj => {
+        this.meshStore.getAll().forEach(obj => {
             if (obj.data.isDirty()) {
                 obj.data.clearDirty();
                 dirtyFound = true;

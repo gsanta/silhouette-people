@@ -1,14 +1,22 @@
 
 import { Axis, Space, Vector2, Vector3 } from "babylonjs";
-import { Lookup } from "../../services/Lookup";
+import { lookup, Lookup } from "../../services/Lookup";
 import { MeshObj } from "../objs/MeshObj";
 import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
 import { BikeSlowdownPhysics } from "./BikeSlowdownPhysics";
 import { BikeReversePhysics } from "./BikeReversePhysics";
 import { BikeSpeedupPhysics, BikeSpeedState } from "./BikeSpeedupPhysics";
+import { InjectProperty } from "../../di/diDecorators";
+import { KeyboardService } from "../../services/input/KeyboardService";
+import { WorldProvider } from "../../services/WorldProvider";
 
 export class BikeMovingState extends AbstractMeshObjState {
-    private readonly world: Lookup;
+    @InjectProperty("KeyboardService")
+    private keyboardService: KeyboardService;
+
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
+    
     private readonly rotationSpeed = Math.PI / 30;
     private speedPhysics: BikeSpeedupPhysics;
     private rollingPhysics: BikeSlowdownPhysics;
@@ -18,9 +26,10 @@ export class BikeMovingState extends AbstractMeshObjState {
 
     private speedStates: Set<BikeSpeedState> = new Set();
 
-    constructor(gameObject: MeshObj, world: Lookup) {
+    constructor(gameObject: MeshObj) {
         super(MeshObjStateName.BikeMovingState, gameObject);
-        this.world = world;
+        this.keyboardService = lookup.keyboard;
+        this.worldProvider = lookup.worldProvider;
 
         const speedRanges: [Vector2, Vector2][] = [
             [ new Vector2(-1.6, -10 / 3.6), new Vector2(1.4, 2.5) ],
@@ -72,7 +81,7 @@ export class BikeMovingState extends AbstractMeshObjState {
     }
 
     private updateSpeed() {
-        const deltaTime = this.world.engine.getDeltaTime();
+        const deltaTime = this.worldProvider.world.engine.getDeltaTime();
         const deltaTimeSec = deltaTime / 1000;
 
         const dominantState = this.getDominantSpeedState();
@@ -98,9 +107,9 @@ export class BikeMovingState extends AbstractMeshObjState {
     private updateRotation() {
         const rotation = new Vector3(0, 0, 0);
 
-        if (this.world.keyboard.activeKeys.has('a')) {
+        if (this.keyboardService.activeKeys.has('a')) {
             rotation.y -= this.rotationSpeed;
-        } else if (this.world.keyboard.activeKeys.has('d')) {
+        } else if (this.keyboardService.activeKeys.has('d')) {
             rotation.y += this.rotationSpeed;
         }
 

@@ -1,13 +1,16 @@
-import { WorldObj } from "../model/objs/WorldObj";
-import { MeshObj, MeshObjType, MeshObjTag } from "../model/objs/MeshObj";
-import { IMeshObjStore } from "./IMeshObjStore";
+import { InjectProperty } from "../di/diDecorators";
+import { MeshObj, MeshObjTag, MeshObjType } from "../model/objs/MeshObj";
+import { lookup } from "../services/Lookup";
+import { QuarterStore } from "./QuarterStore";
 
-export class MeshObjStore implements IMeshObjStore {
+export class MeshStore {
     private objs: MeshObj[] = [];
-    private district: WorldObj;
 
-    constructor(district: WorldObj) {
-        this.district = district;
+    @InjectProperty("QuarterStore")
+    private quarterStore: QuarterStore;
+
+    constructor() {
+        this.quarterStore = lookup.quarterStore;
     }
 
     addObj(gameObject: MeshObj) {
@@ -30,7 +33,7 @@ export class MeshObjStore implements IMeshObjStore {
         return this.objs.filter(obj => type.includes(obj.type)); 
     }
 
-    getObjById(id: string) {
+    getById(id: string) {
         return this.objs.find(obj => obj.id === id);
     }
 
@@ -45,7 +48,7 @@ export class MeshObjStore implements IMeshObjStore {
     private calcQuarterIndex(obj: MeshObj): number {
         const pos = obj.getPosition2D();
 
-        const quarterIndex = this.district.quarter.getAllQuarters().findIndex(quarter => quarter.containsPoint2D(pos));
+        const quarterIndex = this.quarterStore.getAllQuarters().findIndex(quarter => quarter.containsPoint2D(pos));
         return quarterIndex;
     }
 }

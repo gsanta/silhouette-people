@@ -1,8 +1,15 @@
 import { ArcRotateCamera, Vector2, Vector3 } from "babylonjs";
+import { InjectProperty } from "../../di/diDecorators";
+import { lookup } from "../../services/Lookup";
+import { QuarterStore } from "../../stores/QuarterStore";
 import { WorldObj } from "./WorldObj";
 
 
 export class CameraObj {
+
+    @InjectProperty("QuarterStore")
+    private quarterStore: QuarterStore;
+
     private worldObj: WorldObj;
     private quarterIndex: number = 2;
     private cornerIndex: number = 2;
@@ -12,6 +19,7 @@ export class CameraObj {
     constructor(camera: ArcRotateCamera, worldObj: WorldObj) {
         this.camera = camera;
         this.worldObj = worldObj;
+        this.quarterStore = lookup.quarterStore;
     }
 
     getCamera() {
@@ -58,7 +66,7 @@ export class CameraObj {
     }
 
     private updateCameraPosition() {
-        const quarter = this.worldObj.quarter.getQuarter(this.quarterIndex);
+        const quarter = this.quarterStore.getQuarter(this.quarterIndex);
 
         const size = quarter.getSize();
         const height = 25;

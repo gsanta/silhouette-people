@@ -1,7 +1,6 @@
 import { QuarterObj } from "../model/objs/QuarterObj";
-import { IQuarterStore } from "./IQuarterStore";
 
-export class QuarterStore implements IQuarterStore {
+export class QuarterStore {
     private quarters: QuarterObj[] = [];
 
     addQuarter(quarterObj: QuarterObj) {

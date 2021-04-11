@@ -2,19 +2,19 @@ import { InjectProperty } from "../di/diDecorators";
 import { RouteDebuggerComponent } from "../model/components/RouteDebuggerComponent";
 import { MeshObjTag } from "../model/objs/MeshObj";
 import { lookup } from "../services/Lookup";
-import { WorldProvider } from "../stores/WorldProvider";
+import { MeshStore } from "../stores/MeshStore";
 
 export class RouteDebugger {
 
-    @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
+    @InjectProperty("MeshStore")
+    private meshStore: MeshStore;
 
     constructor() {
-        this.worldProvider = lookup.worldProvider;
+        this.meshStore = lookup.meshStore;
     }
 
     show() {
-        const enemies = this.worldProvider.world.obj.getObjsByTag(MeshObjTag.Enemy);
+        const enemies = this.meshStore.getObjsByTag(MeshObjTag.Enemy);
         enemies.forEach(enemy => enemy.additionalComponents.push(new RouteDebuggerComponent()));
     }
 

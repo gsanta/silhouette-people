@@ -9,11 +9,9 @@ import { PlayerIdleState } from "./PlayerIdleState";
 import { BikeIdleState } from "./BikeIdleState";
 
 export class PlayerGetOffBikeState extends AbstractMeshObjState {
-    private world: Lookup;
 
-    constructor(gameObject: MeshObj, world: Lookup) {
+    constructor(gameObject: MeshObj) {
         super(MeshObjStateName.PlayerGetOnBikeState, gameObject);
-        this.world = world;
     }
 
     enter() {
@@ -22,7 +20,7 @@ export class PlayerGetOffBikeState extends AbstractMeshObjState {
         const vehicle = player.player.getVehicle();
         player.player.setVehicle(undefined);
 
-        vehicle.state.setState(new BikeIdleState(vehicle, this.world));
+        vehicle.state.setState(new BikeIdleState(vehicle));
         player.state.setState(new PlayerIdleState(player));
         player.getMesh().parent = vehicle.getMesh().parent;
         player.mesh.setPosition(vehicle.getPosition());

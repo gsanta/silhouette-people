@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { GuiProps } from './GuiProps';
 import { BikePanelGui } from './BikePanelGui';
-import { PointerService } from '../services/PointerService';
+import { PointerService } from '../services/input/PointerService';
 import { InjectProperty } from '../di/diDecorators';
 import { lookup } from '../services/Lookup';
 

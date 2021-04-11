@@ -1,9 +1,9 @@
 import { Vector2, Vector3 } from "babylonjs";
 import { PointerInfo } from "babylonjs/Events/pointerEvents";
-import { InjectProperty } from "../di/diDecorators";
-import { TileStore } from "../stores/TileStore";
-import { WorldProvider } from "../stores/WorldProvider";
-import { lookup } from "./Lookup";
+import { InjectProperty } from "../../di/diDecorators";
+import { TileStore } from "../../stores/TileStore";
+import { WorldProvider } from "../WorldProvider";
+import { lookup } from "../Lookup";
 
 export class PointerService {    
     down: Vector3;

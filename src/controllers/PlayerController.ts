@@ -1,21 +1,31 @@
 import { SpotLight } from "babylonjs";
+import { InjectProperty } from "../di/diDecorators";
 import { MeshObj, MeshObjType, MeshObjTag } from "../model/objs/MeshObj";
 import { PlayerGetOffBikeState } from "../model/states/PlayerGetOffBikeState";
 import { PlayerGetOnBikeState } from "../model/states/PlayerGetOnBikeState";
-import { Lookup } from "../services/Lookup";
+import { lookup, Lookup } from "../services/Lookup";
+import { RenderGuiService } from "../services/RenderGuiService";
+import { MeshStore } from "../stores/MeshStore";
 import { AbstractController, ControllerType } from "./IController";
 
 export class PlayerController extends AbstractController {
     type = ControllerType.Player;
-    private lookup: Lookup;
+    
+    @InjectProperty("MeshStore")
+    private meshStore: MeshStore;
 
-    constructor(lookup: Lookup) {
+    @InjectProperty("RenderGuiService")
+    private renderGuiService: RenderGuiService;
+
+    constructor() {
         super();
-        this.lookup = lookup;
+        this.meshStore = lookup.meshStore;
+        this.renderGuiService = lookup.renderGui;
     }
 
+
     keyboard(e: KeyboardEvent) {
-        const player = this.lookup.activeObj.getActivePlayer();
+        const player = this.meshStore.getActivePlayer();
 
         switch(e.key) {
             case 'e':
@@ -23,12 +33,12 @@ export class PlayerController extends AbstractController {
 
                 if (nearestActionableObj) {
                     this.activateActionable(player, nearestActionableObj);
-                    this.lookup.renderGui.render(true);
+                    this.renderGuiService.render(true);
                 }
             break;
             case 'q':
                 this.exitAction();
-                this.lookup.renderGui.render(true);
+                this.renderGuiService.render(true);
             break;
         }
     }
@@ -38,22 +48,22 @@ export class PlayerController extends AbstractController {
     }
 
     private exitAction() {
-        const player = this.lookup.activeObj.getActivePlayer();
-        player.state.setState(new PlayerGetOffBikeState(player, this.lookup));
+        const player = this.meshStore.getActivePlayer();
+        player.state.setState(new PlayerGetOffBikeState(player));
     }
 
     private activateActionable(player: MeshObj, actionableObj: MeshObj) {
         switch(actionableObj.type) {
             case MeshObjType.Bicycle1:
                 if (!player.player.hasBikeVechicle()) {
-                    player.state.setState(new PlayerGetOnBikeState(player, actionableObj, this.lookup));
+                    player.state.setState(new PlayerGetOnBikeState(player, actionableObj));
                 }
             break;
         }
     }
 
     private getNearestActionableObj(player: MeshObj): MeshObj  {
-        const bicycles = this.lookup.activeObj.getObjsByTag(MeshObjTag.Bicycle);
+        const bicycles = this.meshStore.getObjsByTag(MeshObjTag.Bicycle);
         const bikeAndDist = bicycles.map(bicycle => ({ bike: bicycle, dist: bicycle.mesh.distance(player)}));
         bikeAndDist.sort((d1, d2) => d1.dist - d2.dist);
 

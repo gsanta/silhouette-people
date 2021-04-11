@@ -14,7 +14,7 @@ import { StateFactoryFeature } from "./features/StateFactoryFeature";
 import { TagFactoryFeature } from "./features/TagFactoryFeature";
 import { TextureFactoryFeature } from "./features/TextureFactoryFeature";
 
-export class ItemObjFactory {
+export class MeshFactory {
     private lookup: Lookup;
     private indexesByType: Map<string, number> = new Map();
 
@@ -27,7 +27,7 @@ export class ItemObjFactory {
     async create(gameObjectJson: GameObjectJson, worldObj: WorldObj): Promise<MeshObj> {
         this.createFeatureFactories(worldObj);
         const id = this.generateId(gameObjectJson.type);
-        const gameObject = new MeshObj(id, worldObj, this.lookup);
+        const gameObject = new MeshObj(id, worldObj);
 
         gameObject.type = gameObjectJson.type;
         gameObject.ch = gameObjectJson.ch;

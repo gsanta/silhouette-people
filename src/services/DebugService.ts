@@ -3,7 +3,8 @@ import { QuarterMapDebugger } from "../debug/QuarterMapDebugger";
 import { RouteDebugger } from "../debug/RouteDebugger";
 import { WorldAxisHelper } from "../debug/WorldAxisHelper";
 import { InjectProperty } from "../di/diDecorators";
-import { WorldProvider } from "../stores/WorldProvider";
+import { MeshStore } from "../stores/MeshStore";
+import { WorldProvider } from "./WorldProvider";
 import { IGUIComponent } from "./debug/IGUIComponent";
 import { lookup } from "./Lookup";
 
@@ -15,10 +16,14 @@ export class DebugService {
 
     @InjectProperty("WorldProvider")
     private worldProvider: WorldProvider;
+    
+    @InjectProperty("MeshStore")
+    private meshStore: MeshStore;
 
     private guiComponents: IGUIComponent[] = [];
 
     constructor() {
+        this.meshStore = lookup.meshStore;
         this.worldProvider = lookup.worldProvider;
         this.worldAxisHelper = new WorldAxisHelper();
         this.enemyPathDebugger = new RouteDebugger();
@@ -50,10 +55,10 @@ export class DebugService {
     }
 
     setColliderMeshVisibility(isVisible: boolean) {
-        this.worldProvider.world.obj.getAll().forEach(go => go.setColliderVisibility(isVisible));
+        this.meshStore.getAll().forEach(go => go.setColliderVisibility(isVisible));
     }
 
     setMeshBoundingBoxVisibility(isVisible: boolean) {
-        this.worldProvider.world.obj.getAll().forEach(go => go.setBoundingBoxVisibility(isVisible));
+        this.meshStore.getAll().forEach(go => go.setBoundingBoxVisibility(isVisible));
     }
 }

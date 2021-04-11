@@ -42,11 +42,11 @@ export class StateFactoryFeature extends AbstractFactoryFeature {
             case MeshObjStateName.EnemyIdleState:
                 return new EnemyIdleState(gameObj);
             case MeshObjStateName.EnemyMovingState:
-                return new EnemyMovingState(gameObj, this.world);
+                return new EnemyMovingState(gameObj);
             case MeshObjStateName.BikeIdleState:
-                return new BikeIdleState(gameObj, this.world);
+                return new BikeIdleState(gameObj);
             case MeshObjStateName.BikeMovingState:
-                return new BikeMovingState(gameObj, this.world);
+                return new BikeMovingState(gameObj);
         }
     }
 }

@@ -1,28 +1,29 @@
-import { Lookup } from "../../services/Lookup";
+import { InjectProperty } from "../../di/diDecorators";
+import { KeyboardService } from "../../services/input/KeyboardService";
+import { lookup } from "../../services/Lookup";
 import { MeshObj } from "../objs/MeshObj";
 import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
 import { BikeMovingState } from "./BikeMovingState";
 
 export class BikeIdleState extends AbstractMeshObjState {
-    private world: Lookup;
+    @InjectProperty("KeyboardService")
+    private keyboardService: KeyboardService;
 
-    constructor(gameObject: MeshObj, world: Lookup) {
+    constructor(gameObject: MeshObj) {
         super(MeshObjStateName.BikeIdleState, gameObject);
-        this.world = world;
+        this.keyboardService = lookup.keyboard;
     }
 
     keyboard(e: KeyboardEvent) {
         if (!this.gameObject.tag.isPlayer()) { return undefined; }
     
-        const keyboard = this.world.keyboard;
-    
         if (
-            keyboard.checker.isMoveForward() ||
-            keyboard.checker.isMoveBackward() ||
-            keyboard.checker.isTurnLeft() ||
-            keyboard.checker.isTurnRight()
+            this.keyboardService.checker.isMoveForward() ||
+            this.keyboardService.checker.isMoveBackward() ||
+            this.keyboardService.checker.isTurnLeft() ||
+            this.keyboardService.checker.isTurnRight()
         ) {
-            this.gameObject.state.setState(new BikeMovingState(this.gameObject, this.world));
+            this.gameObject.state.setState(new BikeMovingState(this.gameObject));
         }
     }
 }

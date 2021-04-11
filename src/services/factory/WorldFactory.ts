@@ -1,21 +1,33 @@
 import { WorldObj } from "../../model/objs/WorldObj";
 import { GroundJson, WorldJson } from "../district/WorldJson";
 import { DistrictParser } from "../district/DistrictParser";
-import { Lookup } from "../Lookup";
+import { lookup, Lookup } from "../Lookup";
 import { GameObjectJson, MeshObjTag } from "../../model/objs/MeshObj";
 import { ArcRotateCamera, Axis, Color3, MeshBuilder, PhysicsImpostor, Scene, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
-import { QuarterObjConfig } from "./QuarterObjFactory";
+import { QuarterObjConfig } from "./QuarterFactory";
 import { CameraObj } from "../../model/objs/CameraObj";
 import { ControllerType } from "../../controllers/IController";
 import { CameraController } from "../../controllers/CameraController";
+import { QuarterStore } from "../../stores/QuarterStore";
+import { InjectProperty } from "../../di/diDecorators";
+import { MeshStore } from "../../stores/MeshStore";
 
-export class WorldObjFactory {
+export class WorldFactory {
+
+    @InjectProperty("MeshStore")
+    private meshStore: MeshStore;
+
+    @InjectProperty("QuarterStore")
+    private quarterStore: QuarterStore;
+
     private assetsPath = 'assets/levels';
     private lookup: Lookup;
     private worldMapParser: DistrictParser;
     
     constructor(lookup: Lookup) {
         this.lookup = lookup;
+        this.meshStore = lookup.meshStore;
+        this.quarterStore = lookup.quarterStore;
 
         this.worldMapParser = new DistrictParser();
     }
@@ -29,12 +41,14 @@ export class WorldObjFactory {
         this.worldMapParser.parse(json);
 
         const worldObj = new WorldObj(this.worldMapParser.getSize(), json.cameraLocation, this.worldMapParser.getQuarterNum());
+        lookup.worldProvider.world = worldObj;
+        worldObj.scene = scene;
+        worldObj.engine = scene.getEngine();
 
         worldObj.camera = this.createCamera(worldObj);
         this.createGround(worldObj);
         this.createQuarters(json.grounds, worldObj);
         await this.createGameObjs(this.worldMapParser.getGameObjJsons(), worldObj);
-        worldObj.scene = scene;
 
         return worldObj;
     }
@@ -77,7 +91,7 @@ export class WorldObjFactory {
                 const y = (rows - i) - rows / 2;
                 
                 const config: QuarterObjConfig = { color: grounds[i][j].color, position: new Vector2(x, y), size: quarterSize };
-                this.lookup.quarterFactory.createQuarter(config, worldObj);
+                this.lookup.quarterFactory.createQuarter(config);
             }
         }
     }
@@ -91,8 +105,8 @@ export class WorldObjFactory {
             .map(obj => obj.colliderMesh);
         
 
-        gameObjects.forEach(obj => worldObj.obj.addObj(obj));
-        worldObj.quarter.getQuarter(1).getMap().fillMeshes(colliderMeshes);
+        gameObjects.forEach(obj => this.meshStore.addObj(obj));
+        this.quarterStore.getQuarter(1).getMap().fillMeshes(colliderMeshes);
     }
 
     private async loadWorldJson(name: string): Promise<WorldJson> {

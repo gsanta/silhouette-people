@@ -1,11 +1,11 @@
 import { Scene } from "babylonjs";
-import { CameraController } from "../controllers/CameraController";
-import { PlayerController } from "../controllers/PlayerController";
-import { InjectProperty } from "../di/diDecorators";
-import { ControllerService } from "./ControllerService";
-import { DebugPanel } from "./debug/DebugPanel";
-import { Lookup } from "./Lookup";
-import { PointerService } from "./PointerService";
+import { CameraController } from "../../controllers/CameraController";
+import { PlayerController } from "../../controllers/PlayerController";
+import { InjectProperty } from "../../di/diDecorators";
+import { ControllerService } from "../ControllerService";
+import { DebugPanel } from "../debug/DebugPanel";
+import { Lookup } from "../Lookup";
+import { PointerService } from "../input/PointerService";
 
 export class SetupService {
     private lookup: Lookup;
@@ -28,7 +28,7 @@ export class SetupService {
     }
 
     async setup(scene: Scene) {
-        this.controllerService.addController(new PlayerController(this.lookup));
+        this.controllerService.addController(new PlayerController());
         this.controllerService.addController(new CameraController());
         this.lookup.worldProvider.world = await this.lookup.worldFactory.createWorldObj('level-1', scene);
         this.lookup.debug.addGuiComponent(new DebugPanel());
