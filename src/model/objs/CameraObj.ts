@@ -55,13 +55,13 @@ export class CameraObj {
         const rayOrigin = pickResult.ray.origin 
         const rayDirection = pickResult.ray.direction;
         
-        const planeNormal = rayDirection.negate();
+        const planeNormal = new Vector3(0, 1, 0);
         const planePoint = pos;
 
         const planePointMinusRayOrig = planePoint.subtract(rayOrigin);
         const t = Vector3.Dot(planePointMinusRayOrig, planeNormal) / Vector3.Dot(rayDirection, planeNormal);
         const p = rayOrigin.add(rayDirection.multiply(new Vector3(t, t, t)));
-
+        debugger;
         return p;
     }
 

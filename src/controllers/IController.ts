@@ -1,3 +1,4 @@
+import { PointerData } from "../services/input/PointerService";
 
 export enum ControllerType {
     Player = 'Player',
@@ -7,5 +8,6 @@ export enum ControllerType {
 export abstract class AbstractController {
     abstract type: ControllerType;
     keyboard(e: KeyboardEvent) {}
-    pointerDown() {}
+    pointerDown(pointer: PointerData) {}
+    pointerMove(pointer: PointerData) {}
 }

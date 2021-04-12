@@ -30,14 +30,13 @@ export class TileFactory {
         const quarterPosition = quarterObj.getQuarterPosition();
         const top = quarterPosition.y * quarterObj.tiles.TILES_PER_QUARTER_Y;
         const left = quarterPosition.x * quarterObj.tiles.TILES_PER_QUARTER_X;
-        const tilesPerRow = Math.floor(this.worldProvider.world.size.x / constants.TILE_SIZE);
 
         for (let xInd = 0; xInd < tileCols; xInd++) {
             for (let yInd = 0; yInd < tileRows; yInd++) {
                 const xRelPos = xInd - tileCols / 2;
                 const yRelPos = tileRows / 2 - yInd;
                 const xWorldPos = xRelPos * tileSize + center.x + tileSize / 2;
-                const yWorldPos = yRelPos * tileSize + center.y + tileSize / 2;
+                const yWorldPos = yRelPos * tileSize + center.y - tileSize / 2;
 
                 const id = `${quarterObj.id}-${xInd}-${yInd}`;
 
@@ -49,7 +48,7 @@ export class TileFactory {
                 ground.edgesWidth = 5.0;
                 ground.edgesColor = new Color4(0, 0, 1, 1);
 
-                this.tileStore.add(new TileObj(ground, (yInd + top) * tilesPerRow + left));
+                this.tileStore.add(new TileObj(ground, (yInd + top) * this.tileStore.TILES_PER_ROW + left + xInd));
             }
         }
     }

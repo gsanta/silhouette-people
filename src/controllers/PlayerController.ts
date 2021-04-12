@@ -3,13 +3,17 @@ import { InjectProperty } from "../di/diDecorators";
 import { MeshObj, MeshObjType, MeshObjTag } from "../model/objs/MeshObj";
 import { PlayerGetOffBikeState } from "../model/states/PlayerGetOffBikeState";
 import { PlayerGetOnBikeState } from "../model/states/PlayerGetOnBikeState";
+import { MouseButtonType, PointerData } from "../services/input/PointerService";
 import { lookup, Lookup } from "../services/Lookup";
 import { RenderGuiService } from "../services/RenderGuiService";
+import { TileMarker } from "../services/tile/TileMarker";
 import { MeshStore } from "../stores/MeshStore";
 import { AbstractController, ControllerType } from "./IController";
 
 export class PlayerController extends AbstractController {
     type = ControllerType.Player;
+
+    private tileMarker: TileMarker;
     
     @InjectProperty("MeshStore")
     private meshStore: MeshStore;
@@ -19,6 +23,7 @@ export class PlayerController extends AbstractController {
 
     constructor() {
         super();
+        this.tileMarker = new TileMarker();
         this.meshStore = lookup.meshStore;
         this.renderGuiService = lookup.renderGui;
     }
@@ -43,8 +48,20 @@ export class PlayerController extends AbstractController {
         }
     }
 
-    pointerDown() {
-        
+    pointerDown(pointer: PointerData) {
+        switch(pointer.buttonType) {
+            case MouseButtonType.LEFT:
+                this.tileMarker.markActive(pointer.down2D);
+            break;
+            case MouseButtonType.RIGHT:
+                this.tileMarker.unmarkActive(pointer.down2D);
+            break;
+        }
+    }
+
+    pointerMove(pointer: PointerData) {
+        this.tileMarker.unmarkHoverAll();
+        this.tileMarker.markHover(pointer.curr2D);
     }
 
     private exitAction() {

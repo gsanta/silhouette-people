@@ -11,6 +11,7 @@ import { CameraController } from "../../controllers/CameraController";
 import { QuarterStore } from "../../stores/QuarterStore";
 import { InjectProperty } from "../../di/diDecorators";
 import { MeshStore } from "../../stores/MeshStore";
+import { TileStore } from "../../stores/TileStore";
 
 export class WorldFactory {
 
@@ -20,6 +21,9 @@ export class WorldFactory {
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;
 
+    @InjectProperty("TileStore")
+    private tileStore: TileStore;
+
     private assetsPath = 'assets/levels';
     private lookup: Lookup;
     private worldMapParser: DistrictParser;
@@ -28,6 +32,7 @@ export class WorldFactory {
         this.lookup = lookup;
         this.meshStore = lookup.meshStore;
         this.quarterStore = lookup.quarterStore;
+        this.tileStore = lookup.tileStore;
 
         this.worldMapParser = new DistrictParser();
     }
@@ -44,6 +49,8 @@ export class WorldFactory {
         lookup.worldProvider.world = worldObj;
         worldObj.scene = scene;
         worldObj.engine = scene.getEngine();
+        this.tileStore.TILES_PER_ROW = Math.floor(worldObj.size.x / this.tileStore.TILE_SIZE); 
+        this.tileStore.TILES_PER_COL = Math.floor(worldObj.size.y / this.tileStore.TILE_SIZE); 
 
         worldObj.camera = this.createCamera(worldObj);
         this.createGround(worldObj);
