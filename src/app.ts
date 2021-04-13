@@ -1,8 +1,7 @@
-import { ArcRotateCamera, CannonJSPlugin, Color3, Color4, CubeTexture, Engine, HemisphericLight, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from "babylonjs";
+import { CannonJSPlugin, Color3, Color4, CubeTexture, Engine, HemisphericLight, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from "babylonjs";
 import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
-import { CameraObj } from "./model/objs/CameraObj";
 import { Lookup } from "./services/Lookup";
 import { AppGui } from './ui/AppGui';
 
@@ -90,9 +89,11 @@ function initGame(lookup: Lookup) {
             if (lookup.worldProvider.world) {
                 lookup.meshStore.getAll().forEach(gameObject => gameObject.update(lookup));
 
-                lookup.quarterStore.getAllQuarters()[0].tiles.activate();
+                // lookup.quarterStore.getAllQuarters()[0].tiles.activate();
                 lookup.quarterStore.getAllQuarters()[5].tiles.activate();
             }
+
+            lookup.controller.all.forEach(controller => controller.beforeRender());
         }
 
         lookup.renderGui.render();

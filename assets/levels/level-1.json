@@ -71,7 +71,7 @@
         "T5": "tree5",
         "T6": "tree6",
         "P1": "player",
-        "P2": "player",
+        "P": "player",
         "E": "enemy",
         "H": "house1",
         "H1": "house1",
@@ -174,7 +174,7 @@
             "ActivePlayer",
             "Addon Highlight"
         ],
-        "P2": [
+        "P": [
             "Id player2"
         ]
     }

@@ -10,4 +10,5 @@ export abstract class AbstractController {
     keyboard(e: KeyboardEvent) {}
     pointerDown(pointer: PointerData) {}
     pointerMove(pointer: PointerData) {}
+    beforeRender() {}
 }

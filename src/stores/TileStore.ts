@@ -16,6 +16,7 @@ export class TileStore {
     private hoverTileMaterial: StandardMaterial;
     private tileMap: {[key: number]: TileObj} = {}
     private tileList: TileObj[] = [];
+    private tileGraph: Map<TileObj, number[]> = new Map();
 
     @InjectProperty("WorldProvider")
     private worldProvider: WorldProvider;
@@ -27,6 +28,22 @@ export class TileStore {
     add(tile: TileObj) {
         this.tileMap[tile.index] = tile;
         this.tileList.push(tile);
+
+        // const leftIndex = tile.index % this.TILES_PER_ROW - 1;
+        // const rightIndex = (tile.index + 1) % this.TILES_PER_ROW;
+        // const topIndex = Math.floor(tile.index / this.TILES_PER_ROW) - 1;
+        // const bottomIndex = Math.floor(tile.index / this.TILES_PER_ROW) - 1;
+        const leftIndex = tile.index - 1;
+        const rightIndex = tile.index + 1;
+        const topIndex = tile.index - this.TILES_PER_ROW;
+        const bottomIndex = tile.index + this.TILES_PER_ROW;
+    
+        this.tileGraph.set(tile, [topIndex, rightIndex, bottomIndex, leftIndex]);
+    }
+
+    getNeighbourTiles(tile: TileObj): TileObj[] {
+        const neighbourIndexes = this.tileGraph.get(tile);
+        return neighbourIndexes.map(index => this.tileMap[index]).filter(tile => tile !== undefined);
     }
 
     getAll(): TileObj[] {
@@ -70,5 +87,33 @@ export class TileStore {
         }
 
         return this.hoverTileMaterial;
+    }
+}
+
+export class TileDepthFirstSearch {
+    
+    iterate(startTile: TileObj,  store: TileStore, maxDepth: number, callback: (tile: TileObj) => void) {
+        const stack: [TileObj, number][] = [];
+        const visited: Set<TileObj> = new Set();
+        let depth = 0;
+        
+        stack.push([startTile, 0]);
+
+        while (stack.length > 0) {
+            const [tile, tileDepth] = stack.pop();
+            
+            if (!visited.has(tile)) {
+                visited.add(tile);
+                
+                if (tileDepth <= maxDepth) {
+                    callback(tile);
+    
+                    depth++;
+                    const neightbourTiles = store.getNeighbourTiles(tile);
+                    neightbourTiles.forEach(tile => stack.push([tile, tileDepth + 1]));
+                }
+                
+            }
+        }
     }
 }

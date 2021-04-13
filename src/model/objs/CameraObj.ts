@@ -61,7 +61,6 @@ export class CameraObj {
         const planePointMinusRayOrig = planePoint.subtract(rayOrigin);
         const t = Vector3.Dot(planePointMinusRayOrig, planeNormal) / Vector3.Dot(rayDirection, planeNormal);
         const p = rayOrigin.add(rayDirection.multiply(new Vector3(t, t, t)));
-        debugger;
         return p;
     }
 
