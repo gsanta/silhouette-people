@@ -1,15 +1,15 @@
-import { AbstractMeshObjState } from "../states/AbstractMeshObjState";
+import { AbstractMeshState } from "../states/AbstractMeshState";
 
 export class StateComponent {
-    startState: AbstractMeshObjState;
-    currState: AbstractMeshObjState;
+    startState: AbstractMeshState;
+    currState: AbstractMeshState;
 
-    constructor(startState: AbstractMeshObjState) {
+    constructor(startState: AbstractMeshState) {
         this.startState = startState;
         this.currState = startState;
 
         if (this.currState) {
-            this.currState.enter();
+            this.currState.enterState();
         }
     }
 
@@ -22,23 +22,23 @@ export class StateComponent {
         this.transitionState(this.startState);
     }
 
-    setState(state: AbstractMeshObjState) {
+    setState(state: AbstractMeshState) {
         this.transitionState(state);
     }
 
     update() {
         if (this.currState) {
-            this.currState.update();
+            this.currState.beforeRender();
         }
     }
 
-    private transitionState(newState: AbstractMeshObjState) {
+    private transitionState(newState: AbstractMeshState) {
         if (!newState || this.currState == newState) { return; }
 
         if (this.currState) {
-            this.currState.exit();
+            this.currState.exitState();
         }
         this.currState = newState;
-        this.currState.enter();
+        this.currState.enterState();
     }
 }

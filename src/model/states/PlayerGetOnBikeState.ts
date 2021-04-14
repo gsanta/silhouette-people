@@ -1,18 +1,18 @@
 import { MeshObj } from "../objs/MeshObj";
-import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
+import { AbstractMeshState, MeshStateName } from "./AbstractMeshState";
 import { Vector3 } from "babylonjs";
 import { PlayerBikeState } from "./PlayerBikeState";
-import { BikeMovingState } from "./BikeMovingState";
+import { BikeMovingState } from "../bike/BikeMovingState";
 
-export class PlayerGetOnBikeState extends AbstractMeshObjState {
+export class PlayerGetOnBikeState extends AbstractMeshState {
     private bike: MeshObj;
 
     constructor(gameObject: MeshObj, bike: MeshObj) {
-        super(MeshObjStateName.PlayerGetOnBikeState, gameObject);
+        super(MeshStateName.PlayerGetOnBikeState, gameObject);
         this.bike = bike;
     }
 
-    enter() {
+    enterState() {
         const player = this.gameObject;
 
         // player.tag.removePlayer();

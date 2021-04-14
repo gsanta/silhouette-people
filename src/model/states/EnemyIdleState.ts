@@ -1,17 +1,17 @@
-import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
+import { AbstractMeshState, MeshStateName } from "./AbstractMeshState";
 import { MeshObj } from "../objs/MeshObj";
 
-export class EnemyIdleState extends AbstractMeshObjState {
+export class EnemyIdleState extends AbstractMeshState {
 
     constructor(gameObject: MeshObj) {
-        super(MeshObjStateName.EnemyIdleState, gameObject);
+        super(MeshStateName.EnemyIdleState, gameObject);
     }
 
-    enter() {
+    enterState() {
         this.gameObject.runAnimation('Idle');
     }
 
-    exit() {
+    exitState() {
         this.gameObject.stopCurrentAnimation();
     }
 }

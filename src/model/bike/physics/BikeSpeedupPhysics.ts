@@ -1,6 +1,7 @@
 import { Vector2 } from 'babylonjs';
 import regression from 'regression';
-import { MeshObj } from '../objs/MeshObj';
+import { MeshObj } from '../../objs/MeshObj';
+import { IBikePhysics } from './IBikePhysics';
 
 export interface BikeSpeedPhysicsConf {
     gearSpeedRanges: [Vector2, Vector2][];
@@ -14,7 +15,7 @@ export enum BikeSpeedState {
     Idle = 'Idle'
 }
 
-export class BikeSpeedupPhysics {
+export class BikeSpeedupPhysics implements IBikePhysics {
     private speedRanges: [Vector2, Vector2][];
     private equations: regression.Result[] = [];
     private speedLimits: [number, number][] = [];
@@ -23,9 +24,14 @@ export class BikeSpeedupPhysics {
     private maxTime = 0;
     private readonly bike: MeshObj;
 
-    constructor(bike: MeshObj, config: BikeSpeedPhysicsConf) {
+    constructor(bike: MeshObj) {
+        this.speedRanges = [
+            [ new Vector2(-1.6, -10 / 3.6), new Vector2(1.4, 2.5) ],
+            [ new Vector2(-0.1, 0), new Vector2(2, 5) ],
+            [ new Vector2(1.4, 10 / 3.6), new Vector2(4.4, 7.5) ]
+        ];
+    
         this.bike = bike;
-        this.speedRanges = config.gearSpeedRanges;
         this.setup();
         this.initGear();
     }

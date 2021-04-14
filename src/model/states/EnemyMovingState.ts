@@ -3,20 +3,20 @@ import { RouteFactory } from "../../services/factory/RouteFactory";
 import { lookup } from "../../services/Lookup";
 import { Route } from "../district/Route";
 import { MeshObj } from "../objs/MeshObj";
-import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
+import { AbstractMeshState, MeshStateName } from "./AbstractMeshState";
 
-export class EnemyMovingState extends AbstractMeshObjState {
+export class EnemyMovingState extends AbstractMeshState {
     route: Route;
 
     @InjectProperty("RouteFactory")
     private routeFactory: RouteFactory;
 
     constructor(gameObject: MeshObj) {
-        super(MeshObjStateName.EnemyMovingState, gameObject);
+        super(MeshStateName.EnemyMovingState, gameObject);
         this.routeFactory = lookup.routeFactory;
     }
 
-    update() {
+    beforeRender() {
         if (!this.route || this.route.isFinished) {
             this.route = this.routeFactory.createRandomRoute(this.gameObject);
         } else {
@@ -24,11 +24,11 @@ export class EnemyMovingState extends AbstractMeshObjState {
         }
     }
 
-    enter() {
+    enterState() {
         this.gameObject.runAnimation('Walk');
     }
 
-    exit() {
+    exitState() {
         this.gameObject.stopCurrentAnimation();
     }
 }

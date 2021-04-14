@@ -1,6 +1,7 @@
-import { MeshObj } from "../objs/MeshObj";
+import { MeshObj } from "../../objs/MeshObj";
+import { IBikePhysics } from "./IBikePhysics";
 
-export class BikeSlowdownPhysics {
+export class BikeSlowdownPhysics implements IBikePhysics {
     private gameObj: MeshObj;
     private readonly slowdown: number;
 

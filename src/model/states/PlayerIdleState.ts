@@ -2,15 +2,15 @@ import { InjectProperty } from "../../di/diDecorators";
 import { KeyboardService } from "../../services/input/KeyboardService";
 import { lookup } from "../../services/Lookup";
 import { MeshObj } from "../objs/MeshObj";
-import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
+import { AbstractMeshState, MeshStateName } from "./AbstractMeshState";
 import { PlayerMovingState } from "./PlayerMovingState";
 
-export class PlayerIdleState extends AbstractMeshObjState {
+export class PlayerIdleState extends AbstractMeshState {
     @InjectProperty("KeyboardService")
     private keyboardService: KeyboardService;
 
     constructor(gameObject: MeshObj) {
-        super(MeshObjStateName.PlayerIdleState, gameObject);
+        super(MeshStateName.PlayerIdleState, gameObject);
         this.keyboardService = lookup.keyboard;
     }
 
@@ -28,11 +28,11 @@ export class PlayerIdleState extends AbstractMeshObjState {
         }
     }
 
-    enter() {
+    enterState() {
         this.gameObject.runAnimation('Idle');
     }
 
-    exit() {
+    exitState() {
         this.gameObject.stopCurrentAnimation();
     }
 }

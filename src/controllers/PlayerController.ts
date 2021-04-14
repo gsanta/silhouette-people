@@ -1,10 +1,9 @@
-import { SpotLight } from "babylonjs";
 import { InjectProperty } from "../di/diDecorators";
-import { MeshObj, MeshObjType, MeshObjTag } from "../model/objs/MeshObj";
+import { MeshObj, MeshObjTag, MeshObjType } from "../model/objs/MeshObj";
 import { PlayerGetOffBikeState } from "../model/states/PlayerGetOffBikeState";
 import { PlayerGetOnBikeState } from "../model/states/PlayerGetOnBikeState";
 import { MouseButtonType, PointerData } from "../services/input/PointerService";
-import { lookup, Lookup } from "../services/Lookup";
+import { lookup } from "../services/Lookup";
 import { RenderGuiService } from "../services/RenderGuiService";
 import { TileMarker } from "../services/tile/TileMarker";
 import { MeshStore } from "../stores/MeshStore";

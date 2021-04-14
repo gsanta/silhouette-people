@@ -1,12 +1,12 @@
 import { Axis, Space, Vector3 } from "babylonjs";
 import { MeshObj } from "../objs/MeshObj";
 import { lookup, Lookup } from "../../services/Lookup";
-import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
+import { AbstractMeshState, MeshStateName } from "./AbstractMeshState";
 import { PlayerIdleState } from "./PlayerIdleState";
 import { InjectProperty } from "../../di/diDecorators";
 import { KeyboardService } from "../../services/input/KeyboardService";
 
-export class PlayerMovingState extends AbstractMeshObjState {
+export class PlayerMovingState extends AbstractMeshState {
 
     @InjectProperty("KeyboardService")
     private keyboardService: KeyboardService;
@@ -15,7 +15,7 @@ export class PlayerMovingState extends AbstractMeshObjState {
     private readonly rotationSpeed = Math.PI / 30;
 
     constructor(gameObject: MeshObj) {
-        super(MeshObjStateName.PlayerMovingState, gameObject);
+        super(MeshStateName.PlayerMovingState, gameObject);
         this.keyboardService = lookup.keyboard;
         this.updateKeyboard();
     }
@@ -55,7 +55,7 @@ export class PlayerMovingState extends AbstractMeshObjState {
         }
     }
 
-    update(): void {
+    beforeRender(): void {
         const mesh = this.gameObject.colliderMesh ? this.gameObject.colliderMesh : this.gameObject.mainMesh;
         var forward = this.gameObject.velocity;	
         var direction = this.gameObject.mainMesh.getDirection(forward);
@@ -64,11 +64,11 @@ export class PlayerMovingState extends AbstractMeshObjState {
         mesh.rotate(Axis.Y, this.gameObject.rotation.y, Space.WORLD);
     }
 
-    enter() {
+    enterState() {
         this.gameObject.runAnimation('Walk');
     }
 
-    exit() {
+    exitState() {
         this.gameObject.stopCurrentAnimation();
     }
 }

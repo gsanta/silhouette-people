@@ -1,16 +1,16 @@
 import { MeshObj } from "../objs/MeshObj";
-import { AbstractMeshObjState, MeshObjStateName } from "./AbstractMeshObjState";
+import { AbstractMeshState, MeshStateName } from "./AbstractMeshState";
 
-export class PlayerBikeState extends AbstractMeshObjState {
+export class PlayerBikeState extends AbstractMeshState {
     constructor(gameObject: MeshObj) {
-        super(MeshObjStateName.PlayerBikeState, gameObject);
+        super(MeshStateName.PlayerBikeState, gameObject);
     }
 
-    enter() {
+    enterState() {
         this.gameObject.runAnimation('Bicycle');
     }
 
-    exit() {
+    exitState() {
         this.gameObject.stopCurrentAnimation();
     }
 }
