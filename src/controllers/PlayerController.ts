@@ -29,20 +29,42 @@ export class PlayerController extends AbstractController {
 
 
     keyboard(e: KeyboardEvent) {
+        //         const velocity = new Vector3(0, 0, 0);
+//         const rotation = new Vector3(0, 0, 0);
+
+//         if (this.keyboardService.activeKeys.has('w')) {
+//             velocity.z = this.speed; 
+//         } else if (this.keyboardService.activeKeys.has('s')) {
+//             velocity.z = -this.speed;
+//         } else {
+//             velocity.z = 0;
+//         }
+
+//         if (this.keyboardService.activeKeys.has('a')) {
+//             rotation.y -= this.rotationSpeed;
+//         } else if (this.keyboardService.activeKeys.has('d')) {
+//             rotation.y += this.rotationSpeed;
+//         }
+
+//         this.gameObject.velocity = velocity;
+//         this.gameObject.rotation = rotation;
+
+//         if (
+//             !this.keyboardService.checker.isMoveForward() &&
+//             !this.keyboardService.checker.isMoveBackward() &&
+//             !this.keyboardService.checker.isTurnLeft() &&
+//             !this.keyboardService.checker.isTurnRight()
+//         ) {
+//             this.gameObject.state.setState(new PlayerIdleState(this.gameObject));
+//         }
         const player = this.meshStore.getActivePlayer();
 
         switch(e.key) {
             case 'e':
-                const nearestActionableObj = this.getNearestActionableObj(player);
 
-                if (nearestActionableObj) {
-                    this.activateActionable(player, nearestActionableObj);
-                    this.renderGuiService.render(true);
-                }
             break;
             case 'q':
                 this.exitAction();
-                this.renderGuiService.render(true);
             break;
         }
     }
@@ -63,9 +85,19 @@ export class PlayerController extends AbstractController {
         this.tileMarker.markHover(pointer.curr2D);
     }
 
+    private enterAction() {
+        const nearestActionableObj = this.getNearestActionableObj(player);
+
+        if (nearestActionableObj) {
+            this.activateActionable(player, nearestActionableObj);
+            this.renderGuiService.render(true);
+        }
+    }
+
     private exitAction() {
         const player = this.meshStore.getActivePlayer();
         player.state.setState(new PlayerGetOffBikeState(player));
+        this.renderGuiService.render(true);
     }
 
     private activateActionable(player: MeshObj, actionableObj: MeshObj) {

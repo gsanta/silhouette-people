@@ -7,7 +7,7 @@ export enum ControllerType {
 
 export abstract class AbstractController {
     abstract type: ControllerType;
-    keyboard(e: KeyboardEvent) {}
+    keyboard(e: KeyboardEvent, isKeyDown: boolean) {}
     pointerDown(pointer: PointerData) {}
     pointerMove(pointer: PointerData) {}
     beforeRender() {}

@@ -1,34 +1,57 @@
 
-import { Axis, Space, Vector2, Vector3 } from "babylonjs";
-import { lookup, Lookup } from "../../services/Lookup";
-import { MeshObj } from "../objs/MeshObj";
-import { AbstractMeshState, MeshStateName } from "../states/AbstractMeshState";
-import { BikeSlowdownPhysics } from "./physics/BikeSlowdownPhysics";
-import { BikeReversePhysics } from "./physics/BikeReversePhysics";
-import { BikeSpeedupPhysics, BikeSpeedState } from "./physics/BikeSpeedupPhysics";
+import { Axis, Space, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../di/diDecorators";
-import { KeyboardService } from "../../services/input/KeyboardService";
+import { lookup } from "../../services/Lookup";
 import { WorldProvider } from "../../services/WorldProvider";
+import { MeshObj } from "../objs/MeshObj";
 import { BikeState } from "./BikeState";
 import { BikeMasterPhysics } from "./physics/BikeMasterPhysics";
 
 export class BikeMovingState extends BikeState {
-    private bike: MeshObj;
     private physics: BikeMasterPhysics;
 
-    constructor(bike: MeshObj) {
-        super();
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
 
-        this.bike = bike;
+    constructor(bike: MeshObj) {
+        super(bike);
+
+        this.worldProvider = lookup.worldProvider;
         this.physics = new BikeMasterPhysics(this, this.bike);
     }
 
     setPedalling(isPedalling: boolean) {
         super.setPedalling(isPedalling);
 
-        this.physics.update()
+        const deltaTime = this.worldProvider.world.engine.getDeltaTime();
+        this.physics.update(deltaTime);
 
         return this;
+    }
+
+    beforeRender(): void {
+        this.updateMovement();
+    }
+
+    private updateMovement() {
+        const mesh = this.bike.getMesh();
+
+        
+        const deltaTime = this.worldProvider.world.engine.getDeltaTime();
+        const deltaTimeSec = deltaTime / 1000;
+        const displacement = this.speed * deltaTimeSec;
+        const displacementVec = new Vector3(displacement, displacement, displacement);
+        const forwardDir = new Vector3(0, 0, 1);
+        
+        var direction = mesh.getDirection(forwardDir);
+        direction.normalize().multiplyInPlace(displacementVec);
+        mesh.moveWithCollisions(direction);
+
+        mesh.rotate(Axis.Y, this.rotation, Space.LOCAL);
+    }
+
+    enterState() {
+        this.bike.runAnimation('Go');
     }
 }
 

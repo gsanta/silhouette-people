@@ -61,7 +61,7 @@ export interface GameObjectJson {
 }
 
 
-export class MeshObj {
+export class MeshObj<S = null> {
     id: string;
     mainMesh: Mesh;
     ch: string;
@@ -75,7 +75,7 @@ export class MeshObj {
     animationGroups: AnimationGroup[];
     allMeshes: Mesh[] = [];
 
-    state: StateComponent;
+    state: S;
     additionalComponents: IComponent[] = [];
     readonly worldObj: WorldObj;
     quarterIndex: number;
@@ -100,7 +100,6 @@ export class MeshObj {
         this.quarterStore = lookup.quarterStore;
         this.tag = new TagComponent();
         this.mesh = new MeshComponent(this);
-        this.state = new StateComponent(undefined);
         this.addon = new AddonComponent();
         this.player = new PlayerComponent(this, worldObj);
 
@@ -149,10 +148,6 @@ export class MeshObj {
 
     update(world: Lookup) {
         if (!this.getMesh()) { return; }
-
-        if (this.state) {
-            this.state.update();
-        }
 
         this.addon.getAll().forEach(addon => addon.update(this));
 

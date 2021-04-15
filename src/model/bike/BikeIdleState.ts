@@ -7,14 +7,6 @@ import { BikeMovingState } from "./BikeMovingState";
 import { BikeState } from "./BikeState";
 
 export class BikeIdleState extends BikeState {
-    private bike: MeshObj;
-
-    constructor(bike: MeshObj) {
-        super();
-        this.bike = bike;
-    }
-
-
     // @InjectProperty("KeyboardService")
     // private keyboardService: KeyboardService;
 
