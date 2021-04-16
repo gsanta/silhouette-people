@@ -1,14 +1,36 @@
-import { AbstractController, ControllerType } from "../controllers/IController";
+import { CameraController } from "../controllers/CameraController";
+import { AbstractController } from "../controllers/IController";
+import { PointerData } from "./input/PointerService";
 
+export class ControllerService extends AbstractController {
+    private cameraController: CameraController;
+    private masterController: AbstractController;
 
-export class ControllerService {
-    readonly all: AbstractController[] = [];
-
-    addController(controller: AbstractController) {
-        this.all.push(controller);
+    setCameraController(controller: CameraController) {
+        this.cameraController = controller;
     }
 
-    getByType(type: ControllerType) {
-        return this.all.find(controller => controller.type === type);
+    getCameraController() {
+        return this.cameraController;
+    }
+
+    setMasterController(controller: AbstractController) {
+        this.masterController = controller;
+    }
+
+    keyboard(e: KeyboardEvent, isKeyDown: boolean) {
+        this.masterController.keyboard(e, isKeyDown);
+    }
+
+    pointerDown(pointer: PointerData) {
+        this.masterController.pointerDown(pointer);
+    }
+
+    pointerMove(pointer: PointerData) {
+        this.masterController.pointerMove(pointer);
+    }
+
+    beforeRender() {
+        this.masterController.beforeRender();
     }
 }

@@ -28,11 +28,11 @@ export class KeyboardService {
     keyDown(e: KeyboardEvent) {
         this.activeKeys.add(e.key);
 
-        this.controllerService.all.forEach(controller => controller.keyboard(e, true));
+        this.controllerService.keyboard(e, true);
     }
 
     keyUp(e: KeyboardEvent) {
         this.activeKeys.delete(e.key);
-        this.controllerService.all.forEach(controller => controller.keyboard(e, false));
+        this.controllerService.keyboard(e, false);
     }
 }

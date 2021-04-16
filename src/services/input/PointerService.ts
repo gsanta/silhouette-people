@@ -53,13 +53,13 @@ export class PointerService {
     pointerDown(info: PointerInfo) {
         this.updatePointerData(info, { isDown: true });
 
-        this.controllerService.all.forEach(controller => controller.pointerDown(this.pointer));
+        this.controllerService.pointerDown(this.pointer);
     }
 
     pointerMove(info: PointerInfo) {
         this.updatePointerData(info, { isDown: false });
 
-        this.controllerService.all.forEach(controller => controller.pointerMove(this.pointer));
+        this.controllerService.pointerMove(this.pointer);
     }
 
     private updatePointerData(info: PointerInfo, eventInfo: { isDown: boolean }) {

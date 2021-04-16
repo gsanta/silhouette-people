@@ -66,7 +66,7 @@ export class WorldFactory {
 
         const cameraOj = new CameraObj(camera, worldObj);
 
-        (<CameraController> this.lookup.controller.getByType(ControllerType.Camera)).setCameraObj(cameraOj);
+        this.lookup.controller.getCameraController().setCameraObj(cameraOj);
 
         return cameraOj;
     }

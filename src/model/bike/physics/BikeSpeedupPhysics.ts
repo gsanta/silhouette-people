@@ -38,7 +38,6 @@ export class BikeSpeedupPhysics implements IBikePhysics {
     }
 
     setGear(gear: number) {
-        const speed = this.bike.state.getSpeed();
         this.bike.state.setGear(gear);
         this.initGear();
     }
