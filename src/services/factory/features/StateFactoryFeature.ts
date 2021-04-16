@@ -1,4 +1,4 @@
-import { MeshObj } from "../../../model/objs/MeshObj";
+import { MeshObj, Character, Bike } from "../../../model/objs/MeshObj";
 import { AbstractMeshState, MeshStateName } from "../../../model/states/AbstractMeshState";
 import { BikeIdleState } from "../../../model/bike/BikeIdleState";
 import { BikeMovingState } from "../../../model/bike/BikeMovingState";
@@ -7,8 +7,8 @@ import { EnemyMovingState } from "../../../model/states/EnemyMovingState";
 import { PlayerIdleState } from "../../../model/states/PlayerIdleState";
 import { PlayerMovingState } from "../../../model/states/PlayerMovingState";
 import { Lookup } from "../../Lookup";
-import { StateComponent } from "../../../model/components/StateComponent";
 import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
+import { MeshState } from "../../../model/states/MeshState";
 
 
 export class StateFactoryFeature extends AbstractFactoryFeature {
@@ -26,27 +26,23 @@ export class StateFactoryFeature extends AbstractFactoryFeature {
         return false;
     }
 
-    processFeature(gameObj: MeshObj, attrs: string[]) {
+    processFeature(mesh: MeshObj, attrs: string[]) {
         const [state] = attrs;
 
-        const initState = this.createState(gameObj, state as MeshStateName);
-        gameObj.state = new StateComponent(initState);
+        mesh.state = this.createState(mesh, state as MeshStateName);
+        mesh.state.enterState();
     }
 
-    private createState(gameObj: MeshObj, stateName: MeshStateName): AbstractMeshState {
+    private createState(gameObj: MeshObj, stateName: MeshStateName): MeshState {
         switch(stateName) {
             case MeshStateName.PlayerIdleState:
-                return new PlayerIdleState(gameObj);
+                return new PlayerIdleState(gameObj as Character);
             case MeshStateName.PlayerMovingState:
-                return new PlayerMovingState(gameObj);
-            case MeshStateName.EnemyIdleState:
-                return new EnemyIdleState(gameObj);
-            case MeshStateName.EnemyMovingState:
-                return new EnemyMovingState(gameObj);
+                return new PlayerMovingState(gameObj as Character);
             case MeshStateName.BikeIdleState:
-                return new BikeIdleState(gameObj);
+                return new BikeIdleState(gameObj as Bike);
             case MeshStateName.BikeMovingState:
-                return new BikeMovingState(gameObj);
+                return new BikeMovingState(gameObj as Bike);
         }
     }
 }

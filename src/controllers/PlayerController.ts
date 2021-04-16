@@ -1,7 +1,8 @@
 import { InjectProperty } from "../di/diDecorators";
-import { MeshObj, MeshObjTag, MeshObjType } from "../model/objs/MeshObj";
+import { MeshObj, MeshObjTag, MeshObjType, Character, Bike } from "../model/objs/MeshObj";
 import { PlayerGetOffBikeState } from "../model/states/PlayerGetOffBikeState";
 import { PlayerGetOnBikeState } from "../model/states/PlayerGetOnBikeState";
+import { KeyboardService } from "../services/input/KeyboardService";
 import { MouseButtonType, PointerData } from "../services/input/PointerService";
 import { lookup } from "../services/Lookup";
 import { RenderGuiService } from "../services/RenderGuiService";
@@ -12,56 +13,46 @@ import { AbstractController, ControllerType } from "./IController";
 export class PlayerController extends AbstractController {
     type = ControllerType.Player;
 
-    private tileMarker: TileMarker;
+    @InjectProperty("KeyboardService")
+    private keyboardService: KeyboardService;
     
     @InjectProperty("MeshStore")
     private meshStore: MeshStore;
-
+    
     @InjectProperty("RenderGuiService")
     private renderGuiService: RenderGuiService;
+    
+    private tileMarker: TileMarker;
 
     constructor() {
         super();
         this.tileMarker = new TileMarker();
+        this.keyboardService = lookup.keyboard;
         this.meshStore = lookup.meshStore;
         this.renderGuiService = lookup.renderGui;
     }
 
 
     keyboard(e: KeyboardEvent) {
-        //         const velocity = new Vector3(0, 0, 0);
-//         const rotation = new Vector3(0, 0, 0);
-
-//         if (this.keyboardService.activeKeys.has('w')) {
-//             velocity.z = this.speed; 
-//         } else if (this.keyboardService.activeKeys.has('s')) {
-//             velocity.z = -this.speed;
-//         } else {
-//             velocity.z = 0;
-//         }
-
-//         if (this.keyboardService.activeKeys.has('a')) {
-//             rotation.y -= this.rotationSpeed;
-//         } else if (this.keyboardService.activeKeys.has('d')) {
-//             rotation.y += this.rotationSpeed;
-//         }
-
-//         this.gameObject.velocity = velocity;
-//         this.gameObject.rotation = rotation;
-
-//         if (
-//             !this.keyboardService.checker.isMoveForward() &&
-//             !this.keyboardService.checker.isMoveBackward() &&
-//             !this.keyboardService.checker.isTurnLeft() &&
-//             !this.keyboardService.checker.isTurnRight()
-//         ) {
-//             this.gameObject.state.setState(new PlayerIdleState(this.gameObject));
-//         }
         const player = this.meshStore.getActivePlayer();
+
+        if (this.keyboardService.activeKeys.has('w')) {
+            player.state.setSpeed(player.state.speedConst);
+        } else if (this.keyboardService.activeKeys.has('s')) {
+            player.state.setSpeed(-player.state.speedConst);
+        } else {
+            player.state.setSpeed(0);
+        }
+
+        if (this.keyboardService.activeKeys.has('a')) {
+            player.state.setRotation(-player.state.rotationConst);
+        } else if (this.keyboardService.activeKeys.has('d')) {
+            player.state.setRotation(player.state.rotationConst);
+        }
 
         switch(e.key) {
             case 'e':
-
+                this.enterAction(player);
             break;
             case 'q':
                 this.exitAction();
@@ -85,7 +76,12 @@ export class PlayerController extends AbstractController {
         this.tileMarker.markHover(pointer.curr2D);
     }
 
-    private enterAction() {
+    beforeRender() {
+        const player = this.meshStore.getActivePlayer();
+        player.state.beforeRender();
+    }
+
+    private enterAction(player: Character) {
         const nearestActionableObj = this.getNearestActionableObj(player);
 
         if (nearestActionableObj) {
@@ -96,15 +92,15 @@ export class PlayerController extends AbstractController {
 
     private exitAction() {
         const player = this.meshStore.getActivePlayer();
-        player.state.setState(new PlayerGetOffBikeState(player));
+        player.state = new PlayerGetOffBikeState(player);
         this.renderGuiService.render(true);
     }
 
-    private activateActionable(player: MeshObj, actionableObj: MeshObj) {
+    private activateActionable(player: Character, actionableObj: MeshObj) {
         switch(actionableObj.type) {
             case MeshObjType.Bicycle1:
                 if (!player.player.hasBikeVechicle()) {
-                    player.state.setState(new PlayerGetOnBikeState(player, actionableObj));
+                    player.state = new PlayerGetOnBikeState(player, actionableObj as Bike);
                 }
             break;
         }

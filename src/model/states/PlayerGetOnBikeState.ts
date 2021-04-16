@@ -1,19 +1,19 @@
-import { MeshObj } from "../objs/MeshObj";
-import { AbstractMeshState, MeshStateName } from "./AbstractMeshState";
 import { Vector3 } from "babylonjs";
-import { PlayerBikeState } from "./PlayerBikeState";
 import { BikeMovingState } from "../bike/BikeMovingState";
+import { Bike, Character } from "../objs/MeshObj";
+import { PlayerBikeState } from "./PlayerBikeState";
+import { PlayerState } from "./PlayerState";
 
-export class PlayerGetOnBikeState extends AbstractMeshState {
-    private bike: MeshObj;
+export class PlayerGetOnBikeState extends PlayerState {
+    private bike: Bike;
 
-    constructor(gameObject: MeshObj, bike: MeshObj) {
-        super(MeshStateName.PlayerGetOnBikeState, gameObject);
+    constructor(player: Character, bike: Bike) {
+        super(player);
         this.bike = bike;
     }
 
     enterState() {
-        const player = this.gameObject;
+        const player = this.player;
 
         // player.tag.removePlayer();
         // const highlightAddon = player.addon.getByName(AddonName.Highlight);
@@ -24,8 +24,8 @@ export class PlayerGetOnBikeState extends AbstractMeshState {
         player.getMesh().checkCollisions = false;
         player.player.setVehicle(this.bike);
 
-        player.state.setState(new PlayerBikeState(player));
-        this.bike.state.setState(new BikeMovingState(this.bike));
+        player.state = new PlayerBikeState(player);
+        this.bike.state = new BikeMovingState(this.bike);
         // this.bike.tag.addPlayer();
         // this.bike.addon.add(highlightAddon);
     }

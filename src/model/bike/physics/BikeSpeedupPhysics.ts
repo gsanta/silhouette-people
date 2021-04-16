@@ -1,6 +1,6 @@
 import { Vector2 } from 'babylonjs';
 import regression from 'regression';
-import { MeshObj } from '../../objs/MeshObj';
+import { Bike } from '../../objs/MeshObj';
 import { IBikePhysics } from './IBikePhysics';
 
 export interface BikeSpeedPhysicsConf {
@@ -22,9 +22,9 @@ export class BikeSpeedupPhysics implements IBikePhysics {
     private startTime = 0;
     private currTime = 0;
     private maxTime = 0;
-    private readonly bike: MeshObj;
+    private readonly bike: Bike;
 
-    constructor(bike: MeshObj) {
+    constructor(bike: Bike) {
         this.speedRanges = [
             [ new Vector2(-1.6, -10 / 3.6), new Vector2(1.4, 2.5) ],
             [ new Vector2(-0.1, 0), new Vector2(2, 5) ],
@@ -37,13 +37,13 @@ export class BikeSpeedupPhysics implements IBikePhysics {
     }
 
     setGear(gear: number) {
-        const speed = this.bike.data.getSpeed();
-        this.bike.data.setGear(gear);
+        const speed = this.bike.state.getSpeed();
+        this.bike.state.setGear(gear);
         this.initGear();
     }
 
     update(deltaTime: number) {
-        const [ gear, speed ] = [this.bike.data.getGear(), this.bike.data.getSpeed()];
+        const [ gear, speed ] = [this.bike.state.getGear(), this.bike.state.getSpeed()];
 
         if (speed === 0) {
             this.initGear();
@@ -59,7 +59,7 @@ export class BikeSpeedupPhysics implements IBikePhysics {
             newSpeed = this.equations[gear].predict(this.currTime)[1];
         }
 
-        this.bike.data.setSpeed(newSpeed);
+        this.bike.state.setSpeed(newSpeed);
     }
 
     private resetTimers() {
@@ -69,8 +69,8 @@ export class BikeSpeedupPhysics implements IBikePhysics {
     }
 
     private initGear() {
-        const gear = this.bike.data.getGear();
-        const speed = this.bike.data.getSpeed();
+        const gear = this.bike.state.getGear();
+        const speed = this.bike.state.getSpeed();
         this.resetTimers();
 
         const [min, max] = [this.speedLimits[gear][0], this.speedLimits[gear][1]];

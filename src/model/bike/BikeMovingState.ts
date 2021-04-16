@@ -3,7 +3,7 @@ import { Axis, Space, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../di/diDecorators";
 import { lookup } from "../../services/Lookup";
 import { WorldProvider } from "../../services/WorldProvider";
-import { MeshObj } from "../objs/MeshObj";
+import { Bike } from "../objs/MeshObj";
 import { BikeState } from "./BikeState";
 import { BikeMasterPhysics } from "./physics/BikeMasterPhysics";
 
@@ -13,11 +13,11 @@ export class BikeMovingState extends BikeState {
     @InjectProperty("WorldProvider")
     private worldProvider: WorldProvider;
 
-    constructor(bike: MeshObj) {
+    constructor(bike: Bike) {
         super(bike);
 
         this.worldProvider = lookup.worldProvider;
-        this.physics = new BikeMasterPhysics(this, this.bike);
+        this.physics = new BikeMasterPhysics(this.bike);
     }
 
     setPedalling(isPedalling: boolean) {

@@ -2,7 +2,7 @@ import { InjectProperty } from "../../di/diDecorators";
 import { lookup } from "../../services/Lookup";
 import { MeshStore } from "../../stores/MeshStore";
 import { AddonName } from "../addons/AbstractAddon";
-import { MeshObj, MeshObjType } from "../objs/MeshObj";
+import { Bike, MeshObj, MeshObjType, Character } from "../objs/MeshObj";
 import { WorldObj } from "../objs/WorldObj";
 import { PlayerIdleState } from "../states/PlayerIdleState";
 
@@ -11,13 +11,13 @@ export class PlayerComponent {
     @InjectProperty("MeshStore")
     private meshStore: MeshStore;
 
-    private vehicle: MeshObj;
+    private bike: Bike;
     private _isActive = false;
     private worldObj: WorldObj;
-    private player: MeshObj;
+    private player: Character;
 
-    constructor(meshObj: MeshObj, worldObj: WorldObj) {
-        this.player = meshObj;
+    constructor(player: Character, worldObj: WorldObj) {
+        this.player = player;
         this.worldObj = worldObj;
         this.meshStore = lookup.meshStore;
     }
@@ -36,7 +36,7 @@ export class PlayerComponent {
             const otherPlayers = players.filter(player => player !== this.player);
             otherPlayers.forEach(player => player.player.setActive(false));
         } else {
-            this.player.state.setState(new PlayerIdleState(this.player));
+            this.player.state = new PlayerIdleState(this.player);
         }
 
         this._isActive = isActive;
@@ -46,15 +46,15 @@ export class PlayerComponent {
         return this._isActive;
     }
 
-    setVehicle(vehicle: MeshObj) {
-        this.vehicle = vehicle;
+    setVehicle(bike: Bike) {
+        this.bike = bike;
     }
 
-    getVehicle() {
-        return this.vehicle;
+    getBike(): Bike {
+        return this.bike;
     }
 
     hasBikeVechicle() {
-        return this.vehicle && this.vehicle.type === MeshObjType.Bicycle1;
+        return this.bike && this.bike.type === MeshObjType.Bicycle1;
     }
 }

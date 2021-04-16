@@ -120,7 +120,7 @@
             "Collider 1:3.5:1",
             "Physics 1",
             "Tag Enemy",
-            "State EnemyMovingState"
+            "State PlayerMovingState"
         ],
         "house1": [
             "Model house1.glb",
@@ -141,7 +141,8 @@
             "Model bicycle1.glb 0",
             "Texture palette.jpg",
             "Collider 1:1:1",
-            "Tag Bicycle"
+            "Tag Bicycle",
+            "State BikeIdleState"
         ],
         "busStop": [
             "Model bus_stop.glb",

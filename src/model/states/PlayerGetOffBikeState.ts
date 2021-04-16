@@ -1,27 +1,23 @@
-import { MeshObj } from "../objs/MeshObj";
-import { Lookup } from "../../services/Lookup";
-import { AbstractMeshState, MeshStateName } from "./AbstractMeshState";
-import { AddonName } from "../addons/AbstractAddon";
 import { Axis, Space, Vector3 } from "babylonjs";
-import { PlayerBikeState } from "./PlayerBikeState";
-import { BikeMovingState } from "../bike/BikeMovingState";
-import { PlayerIdleState } from "./PlayerIdleState";
 import { BikeIdleState } from "../bike/BikeIdleState";
+import { Character } from "../objs/MeshObj";
+import { PlayerIdleState } from "./PlayerIdleState";
+import { PlayerState } from "./PlayerState";
 
-export class PlayerGetOffBikeState extends AbstractMeshState {
+export class PlayerGetOffBikeState extends PlayerState {
 
-    constructor(gameObject: MeshObj) {
-        super(MeshStateName.PlayerGetOnBikeState, gameObject);
+    constructor(player: Character) {
+        super(player);
     }
 
     enterState() {
-        const player = this.gameObject;
+        const player = this.player;
         
-        const vehicle = player.player.getVehicle();
+        const vehicle = player.player.getBike();
         player.player.setVehicle(undefined);
 
-        vehicle.state.setState(new BikeIdleState(vehicle));
-        player.state.setState(new PlayerIdleState(player));
+        vehicle.state = new BikeIdleState(vehicle);
+        player.state = new PlayerIdleState(player);
         player.getMesh().parent = vehicle.getMesh().parent;
         player.mesh.setPosition(vehicle.getPosition());
         player.setRotation(vehicle.mesh.getRotation().y);
@@ -30,7 +26,7 @@ export class PlayerGetOffBikeState extends AbstractMeshState {
         dir.y = 0;
         player.getMesh().translate(dir, 1, Space.WORLD);
 
-        var direction = this.gameObject.mainMesh.getDirection(new Vector3(0, 0, 1));
+        var direction = player.mainMesh.getDirection(new Vector3(0, 0, 1));
         direction.normalize().multiplyInPlace(new Vector3(0.04, 0.04, 0.04));
 
         player.getMesh().translate(Axis.X, direction.x * 50, Space.WORLD);

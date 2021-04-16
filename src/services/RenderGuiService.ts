@@ -25,12 +25,19 @@ export class RenderGuiService {
     private processDirtyObjs(): boolean {
         let dirtyFound = false;
 
-        this.meshStore.getAll().forEach(obj => {
-            if (obj.data.isDirty()) {
-                obj.data.clearDirty();
+        this.meshStore.getPlayers().forEach(player => {
+            if (player.state.isDirty()) {
+                player.state.clearDirty();
                 dirtyFound = true;
             }
         });
+
+        this.meshStore.getBikes().forEach(bike => {
+            if (bike.state.isDirty()) {
+                bike.state.clearDirty();
+                dirtyFound = true;
+            }
+        })
 
         return dirtyFound;
     }

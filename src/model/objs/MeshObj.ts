@@ -3,14 +3,16 @@ import { IComponent } from "../IComponent";
 import { lookup, Lookup } from "../../services/Lookup";
 import { WorldObj } from "./WorldObj";
 import { QuarterObj } from "./QuarterObj";
-import { StateComponent } from "../components/StateComponent";
 import { TagComponent } from "../components/TagComponent";
 import { MeshComponent } from "../components/MeshComponent";
 import { AddonComponent } from "../components/AddonComponent";
 import { PlayerComponent } from "../components/PlayerComponent";
-import { BikeData } from "./BikeData";
 import { InjectProperty } from "../../di/diDecorators";
 import { QuarterStore } from "../../stores/QuarterStore";
+import { PlayerState } from "../states/PlayerState";
+import { BikeState } from "../bike/BikeState";
+import { MeshState } from "../states/MeshState";
+import { Route } from "../district/Route";
 
 export enum MeshObjType {
     Player = 'player',
@@ -60,20 +62,21 @@ export interface GameObjectJson {
     features?: string[];
 }
 
+export type Character = MeshObj<PlayerState>;
+export type Bike = MeshObj<BikeState>;
 
-export class MeshObj<S = null> {
+export class MeshObj<S extends MeshState = MeshState> {
     id: string;
-    mainMesh: Mesh;
     ch: string;
     type: MeshObjType;
-    // readonly location: LocationContext;
-    velocity: Vector3;
-    rotation: Vector3 = new Vector3(0, 0, 0);
+    
+    mainMesh: Mesh;
     colliderMesh: Mesh;
-    cameraTargetMesh: Mesh;
     skeleton: Skeleton;
     animationGroups: AnimationGroup[];
     allMeshes: Mesh[] = [];
+
+    route: Route;
 
     state: S;
     additionalComponents: IComponent[] = [];
@@ -84,7 +87,6 @@ export class MeshObj<S = null> {
     readonly mesh: MeshComponent;
     readonly addon: AddonComponent;
     readonly player: PlayerComponent;
-    readonly data: BikeData;
 
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;
@@ -101,20 +103,16 @@ export class MeshObj<S = null> {
         this.tag = new TagComponent();
         this.mesh = new MeshComponent(this);
         this.addon = new AddonComponent();
-        this.player = new PlayerComponent(this, worldObj);
-
-        this.data = new BikeData();
+        this.player = new PlayerComponent(this as any, worldObj);
     }
 
     debug(isDebug: boolean) {
         if (isDebug) {
             this.mainMesh && (this.mainMesh.showBoundingBox = true);
             this.colliderMesh && (this.colliderMesh.showBoundingBox = true);
-            this.cameraTargetMesh && (this.cameraTargetMesh.showBoundingBox = true);
         } else {
             this.mainMesh && (this.mainMesh.showBoundingBox = false);
             this.colliderMesh && (this.colliderMesh.showBoundingBox = false);
-            this.cameraTargetMesh && (this.cameraTargetMesh.showBoundingBox = false);
         }
     }
 

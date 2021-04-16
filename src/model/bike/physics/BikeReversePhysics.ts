@@ -1,15 +1,15 @@
 
-import { MeshObj } from "../../objs/MeshObj";
+import { Bike, MeshObj } from "../../objs/MeshObj";
 import { IBikePhysics } from "./IBikePhysics";
 
 export class BikeReversePhysics implements IBikePhysics {
-    private gameObj: MeshObj;
+    private bike: Bike;
 
-    constructor(gameObj: MeshObj) {
-        this.gameObj = gameObj;
+    constructor(bike: Bike) {
+        this.bike = bike;
     }
 
     update(_deltaTime: number) {
-        this.gameObj.data.setSpeed(-2);
+        this.bike.state.setSpeed(-2);
     }
 }

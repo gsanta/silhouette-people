@@ -1,25 +1,25 @@
-import { MeshObj } from "../../objs/MeshObj";
+import { Bike } from "../../objs/MeshObj";
 import { IBikePhysics } from "./IBikePhysics";
 
 export class BikeSlowdownPhysics implements IBikePhysics {
-    private gameObj: MeshObj;
+    private bike: Bike;
     private readonly slowdown: number;
 
-    constructor(gameObj: MeshObj, slowdownFactor: number) {
-        this.gameObj = gameObj;
+    constructor(bike: Bike, slowdownFactor: number) {
+        this.bike = bike;
 
         this.slowdown = slowdownFactor / 1000;
     }
 
     update(deltaTime: number) {
         const slowdownAmount = deltaTime * this.slowdown;
-        const speed = this.gameObj.data.getSpeed();
+        const speed = this.bike.state.getSpeed();
         let newSpeed = speed - slowdownAmount;
 
         if (newSpeed < 0) {
             newSpeed = 0;
         }
 
-        this.gameObj.data.setSpeed(newSpeed);
+        this.bike.state.setSpeed(newSpeed);
     }
 }

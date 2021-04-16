@@ -1,9 +1,10 @@
-import { MeshObj } from "../objs/MeshObj";
+import { Bike, MeshObj } from "../objs/MeshObj";
+import { MeshState } from "../states/MeshState";
 
 export type PedalDirection = 'forward' | 'backward';
 
-export abstract class BikeState {
-    protected bike: MeshObj;
+export abstract class BikeState extends MeshState {
+    protected bike: Bike;
 
     protected _isBraking = false
     protected _isPedalling = false;
@@ -12,14 +13,16 @@ export abstract class BikeState {
     protected gear: number = 0;
     protected rotation: number = 0;
 
-    private _isDirty = false;
-
-    constructor(bike: MeshObj) {
+    constructor(bike: Bike) {
+        super();
         this.bike = bike;
     }
 
     setBraking(isBraking: boolean): BikeState {
-        this._isBraking = isBraking;
+        if (this._isBraking !== isBraking) {
+            this._isDirty = true;
+            this._isBraking = isBraking;
+        }
 
         return this;
     }
@@ -29,7 +32,10 @@ export abstract class BikeState {
     }
 
     setPedalling(isPedalling: boolean): BikeState {
-        this._isPedalling = isPedalling;
+        if (this._isPedalling !== isPedalling) {
+            this._isDirty = true;
+            this._isPedalling = isPedalling;
+        }
 
         return this;
     }
@@ -39,7 +45,10 @@ export abstract class BikeState {
     }
 
     setPedalDirection(direction: PedalDirection): BikeState {
-        this.pedalDirection = direction;
+        if (this.pedalDirection !== direction) {
+            this._isDirty = true;
+            this.pedalDirection = direction;
+        }
 
         return this;
     }
@@ -74,15 +83,7 @@ export abstract class BikeState {
         return this.rotation;
     }
 
-    isDirty() {
-        return this._isDirty;
-    }
-
-    clearDirty() {
-        this._isDirty = false;
-    }
-
-    protected setSpeed(deltaTime: number) {
+    setSpeed(deltaTime: number) {
         const deltaTimeSec = deltaTime / 1000;
         this.speed = this.speed * deltaTimeSec;
     }

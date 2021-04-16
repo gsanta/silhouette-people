@@ -1,15 +1,25 @@
 import { Axis, Space, Vector3 } from "babylonjs";
-import { InjectProperty } from "../../di/diDecorators";
-import { KeyboardService } from "../../services/input/KeyboardService";
-import { lookup } from "../../services/Lookup";
-import { MeshObj } from "../objs/MeshObj";
-import { AbstractMeshState, MeshStateName } from "./AbstractMeshState";
 import { PlayerIdleState } from "./PlayerIdleState";
 import { PlayerState } from "./PlayerState";
 
 
 export class PlayerMovingState extends PlayerState {
 
+    setSpeed(speed: number) {
+        super.setSpeed(speed);
+
+        if (this.speed === 0) {
+            this.player.state = this.copState(new PlayerIdleState(this.player)); 
+        }
+    }
+
+    setRotation(rotation: number) {
+        super.setRotation(rotation);
+
+        if (this.rotation === 0) {
+            this.player.state = this.copState(new PlayerIdleState(this.player)); 
+        }
+    }
 
     beforeRender(): void {
         const mesh = this.player.getMesh();

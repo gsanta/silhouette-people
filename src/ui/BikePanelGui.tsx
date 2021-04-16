@@ -23,8 +23,8 @@ export class BikePanelGui extends React.Component<GuiProps> {
             return null;
         }
 
-        const bike = player.player.getVehicle();
-        let speed = bike.data.getSpeed();
+        const bike = player.player.getBike();
+        let speed = bike.state.getSpeed();
         speed = Math.trunc(speed * 10) / 10;
 
         return (
@@ -37,7 +37,7 @@ export class BikePanelGui extends React.Component<GuiProps> {
                     </div>
                     <div className="info-row">
                         <div>Gear</div>
-                        <div>{bike.data.getGear()}</div>
+                        <div>{bike.state.getGear()}</div>
                     </div>
                 </div>
             </div>

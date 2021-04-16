@@ -2,7 +2,8 @@ import { PointerData } from "../services/input/PointerService";
 
 export enum ControllerType {
     Player = 'Player',
-    Camera = 'Camera'
+    Camera = 'Camera',
+    Enemy = 'Enemy',
 }
 
 export abstract class AbstractController {
