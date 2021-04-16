@@ -1,25 +1,14 @@
-import { MeshObj, Character, Bike } from "../../../model/objs/MeshObj";
-import { AbstractMeshState, MeshStateName } from "../../../model/states/AbstractMeshState";
 import { BikeIdleState } from "../../../model/bike/BikeIdleState";
 import { BikeMovingState } from "../../../model/bike/BikeMovingState";
-import { EnemyIdleState } from "../../../model/states/EnemyIdleState";
-import { EnemyMovingState } from "../../../model/states/EnemyMovingState";
-import { PlayerIdleState } from "../../../model/states/PlayerIdleState";
-import { PlayerMovingState } from "../../../model/states/PlayerMovingState";
-import { Lookup } from "../../Lookup";
-import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
+import { Bike, Character, MeshObj } from "../../../model/objs/MeshObj";
+import { MeshStateName } from "../../../model/states/AbstractMeshState";
+import { CharacterIdleState } from "../../../model/states/CharacterIdleState";
+import { CharacterWalkingState } from "../../../model/states/CharacterWalkingState";
 import { MeshState } from "../../../model/states/MeshState";
+import { AbstractFactoryFeature } from "./AbstractFactoryFeacture";
 
 
 export class StateFactoryFeature extends AbstractFactoryFeature {
-
-    private world: Lookup;
-
-    constructor(world: Lookup) {
-        super();
-        this.world = world;
-    }
-
     feature = 'State';
 
     isAsync(): boolean {
@@ -33,12 +22,12 @@ export class StateFactoryFeature extends AbstractFactoryFeature {
         mesh.state.enterState();
     }
 
-    private createState(gameObj: MeshObj, stateName: MeshStateName): MeshState {
+    private createState(gameObj: MeshObj, stateName: MeshStateName): MeshState<MeshObj> {
         switch(stateName) {
-            case MeshStateName.PlayerIdleState:
-                return new PlayerIdleState(gameObj as Character);
-            case MeshStateName.PlayerMovingState:
-                return new PlayerMovingState(gameObj as Character);
+            case MeshStateName.CharacterIdleState:
+                return new CharacterIdleState(gameObj as Character);
+            case MeshStateName.CharacterWalkingState:
+                return new CharacterWalkingState(gameObj as Character);
             case MeshStateName.BikeIdleState:
                 return new BikeIdleState(gameObj as Bike);
             case MeshStateName.BikeMovingState:

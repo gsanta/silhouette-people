@@ -17,24 +17,23 @@ export class BikeMovingState extends BikeState {
         super(bike);
 
         this.worldProvider = lookup.worldProvider;
-        this.physics = new BikeMasterPhysics(this.bike);
+        this.physics = new BikeMasterPhysics(this.meshObj);
     }
 
     setPedalling(isPedalling: boolean) {
         super.setPedalling(isPedalling);
 
-        const deltaTime = this.worldProvider.world.engine.getDeltaTime();
-        this.physics.update(deltaTime);
-
         return this;
     }
-
+    
     beforeRender(): void {
+        const deltaTime = this.worldProvider.world.engine.getDeltaTime();
+        this.physics.update(deltaTime);
         this.updateMovement();
     }
 
     private updateMovement() {
-        const mesh = this.bike.getMesh();
+        const mesh = this.meshObj.getMesh();
 
         
         const deltaTime = this.worldProvider.world.engine.getDeltaTime();
@@ -51,7 +50,7 @@ export class BikeMovingState extends BikeState {
     }
 
     enterState() {
-        this.bike.runAnimation('Go');
+        this.meshObj.runAnimation('Go');
     }
 }
 

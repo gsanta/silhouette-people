@@ -1,7 +1,7 @@
 import { InjectProperty } from "../di/diDecorators";
 import { MeshObj, MeshObjTag, MeshObjType, Character, Bike } from "../model/objs/MeshObj";
-import { PlayerGetOffBikeState } from "../model/states/PlayerGetOffBikeState";
-import { PlayerGetOnBikeState } from "../model/states/PlayerGetOnBikeState";
+import { CharacterGetOffBikeState } from "../model/states/CharacterGetOffBikeState";
+import { CharacterGetOnBikeState } from "../model/states/CharacterGetOnBikeState";
 import { KeyboardService } from "../services/input/KeyboardService";
 import { MouseButtonType, PointerData } from "../services/input/PointerService";
 import { lookup } from "../services/Lookup";
@@ -48,6 +48,8 @@ export class PlayerController extends AbstractController {
             player.state.setRotation(-player.state.rotationConst);
         } else if (this.keyboardService.activeKeys.has('d')) {
             player.state.setRotation(player.state.rotationConst);
+        } else {
+            player.state.setRotation(0);
         }
 
         switch(e.key) {
@@ -92,7 +94,7 @@ export class PlayerController extends AbstractController {
 
     private exitAction() {
         const player = this.meshStore.getActivePlayer();
-        player.state = new PlayerGetOffBikeState(player);
+        player.state = new CharacterGetOffBikeState(player);
         this.renderGuiService.render(true);
     }
 
@@ -100,14 +102,14 @@ export class PlayerController extends AbstractController {
         switch(actionableObj.type) {
             case MeshObjType.Bicycle1:
                 if (!player.player.hasBikeVechicle()) {
-                    player.state = new PlayerGetOnBikeState(player, actionableObj as Bike);
+                    player.state = new CharacterGetOnBikeState(player, actionableObj as Bike);
                 }
             break;
         }
     }
 
     private getNearestActionableObj(player: MeshObj): MeshObj  {
-        const bicycles = this.meshStore.getObjsByTag(MeshObjTag.Bicycle);
+        const bicycles = this.meshStore.getBikes()
         const bikeAndDist = bicycles.map(bicycle => ({ bike: bicycle, dist: bicycle.mesh.distance(player)}));
         bikeAndDist.sort((d1, d2) => d1.dist - d2.dist);
 

@@ -1,9 +1,7 @@
-import { MeshStateName } from "../states/AbstractMeshState";
-import { IComponent } from "../IComponent";
-import { Character, MeshObj } from "../objs/MeshObj";
 import { Lookup } from "../../services/Lookup";
-import { EnemyMovingState } from "../states/EnemyMovingState";
 import { Route } from "../district/Route";
+import { IComponent } from "../IComponent";
+import { Character } from "../objs/MeshObj";
 
 export class RouteDebuggerComponent implements IComponent {
     private currRoute: Route;

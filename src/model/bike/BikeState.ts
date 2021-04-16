@@ -1,10 +1,11 @@
-import { Bike, MeshObj } from "../objs/MeshObj";
+import { Bike } from "../objs/MeshObj";
 import { MeshState } from "../states/MeshState";
 
 export type PedalDirection = 'forward' | 'backward';
 
-export abstract class BikeState extends MeshState {
-    protected bike: Bike;
+export abstract class BikeState extends MeshState<Bike> {
+
+    readonly rotationConst = Math.PI / 30;
 
     protected _isBraking = false
     protected _isPedalling = false;
@@ -14,8 +15,7 @@ export abstract class BikeState extends MeshState {
     protected rotation: number = 0;
 
     constructor(bike: Bike) {
-        super();
-        this.bike = bike;
+        super(bike);
     }
 
     setBraking(isBraking: boolean): BikeState {
@@ -83,15 +83,12 @@ export abstract class BikeState extends MeshState {
         return this.rotation;
     }
 
-    setSpeed(deltaTime: number) {
-        const deltaTimeSec = deltaTime / 1000;
-        this.speed = this.speed * deltaTimeSec;
+    setSpeed(speed: number) {
+        if (this.speed !== speed) {
+            this.speed = speed;
+            this._isDirty = true;
+        }
     }
-
-    exitState() {
-        this.bike.stopCurrentAnimation();
-    }
-
 
     copyTo(otherState: BikeState): BikeState {
         otherState._isBraking = this._isBraking;

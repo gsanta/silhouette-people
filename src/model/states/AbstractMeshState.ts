@@ -1,13 +1,9 @@
 import { MeshObj } from "../objs/MeshObj";
 
 export enum MeshStateName {
-    PlayerIdleState = 'PlayerIdleState',
-    PlayerMovingState = 'PlayerMovingState',
-    PlayerBikeState = 'PlayerBikeState',
-    PlayerGetOnBikeState = 'PlayerGetOnBikeState',
+    CharacterIdleState = 'CharacterIdleState',
+    CharacterWalkingState = 'CharacterWalkingState',
     
-    EnemyMovingState = 'EnemyMovingState',
-    EnemyIdleState = 'EnemyIdleState',
     BikeIdleState = 'BikeIdleState',
     BikeMovingState = 'BikeMovingState'
 }

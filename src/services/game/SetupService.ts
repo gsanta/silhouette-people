@@ -8,6 +8,7 @@ import { Lookup } from "../Lookup";
 import { PointerService } from "../input/PointerService";
 import { PlayerTilingController } from "../../controllers/PlayerTilingController";
 import { EnemyController } from "../../controllers/EnemyController";
+import { BikeController } from "../../controllers/BikeController";
 
 export class SetupService {
     private lookup: Lookup;
@@ -34,6 +35,7 @@ export class SetupService {
         this.controllerService.addController(new CameraController());
         this.controllerService.addController(new PlayerTilingController());
         this.controllerService.addController(new EnemyController());
+        this.controllerService.addController(new BikeController());
         this.lookup.worldProvider.world = await this.lookup.worldFactory.createWorldObj('level-1', scene);
         this.lookup.debug.addGuiComponent(new DebugPanel());
         this.lookup.debug.render();

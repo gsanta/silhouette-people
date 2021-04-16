@@ -22,6 +22,7 @@ export class BikeSpeedupPhysics implements IBikePhysics {
     private startTime = 0;
     private currTime = 0;
     private maxTime = 0;
+    private currentGear = 0;
     private readonly bike: Bike;
 
     constructor(bike: Bike) {
@@ -45,7 +46,7 @@ export class BikeSpeedupPhysics implements IBikePhysics {
     update(deltaTime: number) {
         const [ gear, speed ] = [this.bike.state.getGear(), this.bike.state.getSpeed()];
 
-        if (speed === 0) {
+        if (speed === 0 || gear !== this.currentGear) {
             this.initGear();
         }
 
@@ -81,6 +82,7 @@ export class BikeSpeedupPhysics implements IBikePhysics {
         this.startTime = minTime + ratio * 3;
         this.currTime = this.startTime;
         this.maxTime = maxTime;
+        this.currentGear = gear;
     }
 
     private setup() {

@@ -67,7 +67,7 @@
             "Collider 1:3.5:1",
             "Physics 1",
             "Tag Player",
-            "State PlayerIdleState",
+            "State CharacterIdleState",
             "Addon Highlight"
         ],
         "enemy": [

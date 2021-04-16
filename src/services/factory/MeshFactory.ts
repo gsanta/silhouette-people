@@ -67,7 +67,7 @@ export class MeshFactory {
             new TextureFactoryFeature(this.lookup),
             new CollisionFactoryFeature(worldObj, this.lookup),
             new PhysicsFactoryFeature(this.lookup),
-            new StateFactoryFeature(this.lookup),
+            new StateFactoryFeature(),
             new TagFactoryFeature(),
             new AddonFactoryFeature(this.lookup),
             new RotateFactoryFeature(),

@@ -9,7 +9,7 @@ import { AddonComponent } from "../components/AddonComponent";
 import { PlayerComponent } from "../components/PlayerComponent";
 import { InjectProperty } from "../../di/diDecorators";
 import { QuarterStore } from "../../stores/QuarterStore";
-import { PlayerState } from "../states/PlayerState";
+import { CharacterState } from "../states/CharacterState";
 import { BikeState } from "../bike/BikeState";
 import { MeshState } from "../states/MeshState";
 import { Route } from "../district/Route";
@@ -62,10 +62,10 @@ export interface GameObjectJson {
     features?: string[];
 }
 
-export type Character = MeshObj<PlayerState>;
+export type Character = MeshObj<CharacterState>;
 export type Bike = MeshObj<BikeState>;
 
-export class MeshObj<S extends MeshState = MeshState> {
+export class MeshObj<S extends MeshState<MeshObj> = any> {
     id: string;
     ch: string;
     type: MeshObjType;

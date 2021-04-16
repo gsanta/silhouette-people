@@ -4,7 +4,7 @@ import { MeshStore } from "../../stores/MeshStore";
 import { AddonName } from "../addons/AbstractAddon";
 import { Bike, MeshObj, MeshObjType, Character } from "../objs/MeshObj";
 import { WorldObj } from "../objs/WorldObj";
-import { PlayerIdleState } from "../states/PlayerIdleState";
+import { CharacterIdleState } from "../states/CharacterIdleState";
 
 export class PlayerComponent {
 
@@ -36,7 +36,7 @@ export class PlayerComponent {
             const otherPlayers = players.filter(player => player !== this.player);
             otherPlayers.forEach(player => player.player.setActive(false));
         } else {
-            this.player.state = new PlayerIdleState(this.player);
+            this.player.state = new CharacterIdleState(this.player);
         }
 
         this._isActive = isActive;

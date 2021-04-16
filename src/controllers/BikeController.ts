@@ -1,4 +1,5 @@
 import { InjectProperty } from "../di/diDecorators";
+import { KeyboardService } from "../services/input/KeyboardService";
 import { lookup } from "../services/Lookup";
 import { MeshStore } from "../stores/MeshStore";
 import { AbstractController } from "./IController";
@@ -9,10 +10,14 @@ export class BikeController extends AbstractController {
     @InjectProperty("MeshStore")
     private meshStore: MeshStore;
 
+    @InjectProperty("KeyboardService")
+    private keyboardService: KeyboardService;
+
     constructor() {
         super();
 
         this.meshStore = lookup.meshStore;
+        this.keyboardService = lookup.keyboard;
     }
 
     keyboard(e: KeyboardEvent, isKeyDown: boolean) {
@@ -54,5 +59,19 @@ export class BikeController extends AbstractController {
                 break;
             }
         }
+
+        if (this.keyboardService.activeKeys.has('a')) {
+            bike.state.setRotation(-bike.state.rotationConst);
+        } else if (this.keyboardService.activeKeys.has('d')) {
+            bike.state.setRotation(bike.state.rotationConst);
+        } else {
+            bike.state.setRotation(0);
+        }
+    }
+
+    beforeRender() {
+        const bike = this.meshStore.getBikes()[0];
+
+        bike.state.beforeRender();
     }
 }
