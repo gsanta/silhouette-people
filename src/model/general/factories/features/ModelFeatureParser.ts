@@ -28,10 +28,11 @@ export class ModelFeatureParser extends AbstractFeatureParser {
         const meshes = <Mesh[]> result.meshes;
         const mainMesh = mainMeshIndex ? meshes[mainMeshIndex] : this.findMainMesh(meshes);
 
-        gameObject.mesh.addMeshes(<Mesh[]> result.meshes, mainMesh);
+        gameObject.mainMesh = mainMesh;
+        gameObject.allMeshes = <Mesh[]> result.meshes;
 
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
-        gameObject.animationGroups = result.animationGroups;
+        gameObject.animation.setAnimations(result.animationGroups);
         gameObject.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
         gameObject.getMesh().parent = this.worldObj.ground;
     }

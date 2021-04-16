@@ -1,18 +1,19 @@
-import { AnimationGroup, Axis, Mesh, Quaternion, Skeleton, Space, Vector2, Vector3 } from "babylonjs";
-import { IComponent } from "../components/IComponent";
-import { lookup, Lookup } from "../../../services/Lookup";
-import { WorldObj } from "./WorldObj";
-import { QuarterObj } from "./QuarterObj";
-import { TagComponent } from "../components/TagComponent";
-import { MeshComponent } from "../components/MeshComponent";
-import { AddonComponent } from "../components/AddonComponent";
-import { PlayerComponent } from "../components/PlayerComponent";
+import { Axis, Mesh, Quaternion, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
+import { lookup, Lookup } from "../../../services/Lookup";
 import { QuarterStore } from "../../../stores/QuarterStore";
-import { CharacterState } from "../../character/states/CharacterState";
 import { BikeState } from "../../bike/BikeState";
-import { MeshState } from "../state/MeshState";
+import { CharacterState } from "../../character/states/CharacterState";
 import { Route } from "../../district/Route";
+import { AddonComponent } from "../components/AddonComponent";
+import { AnimationHandler } from "../components/AnimationHandler";
+import { IComponent } from "../components/IComponent";
+import { PlayerComponent } from "../components/PlayerComponent";
+import { TagHandler } from "../components/TagHandler";
+import { MeshState } from "../state/MeshState";
+import { GameObj } from "./GameObj";
+import { QuarterObj } from "./QuarterObj";
+import { WorldObj } from "./WorldObj";
 
 export enum MeshObjType {
     Player = 'player',
@@ -65,7 +66,7 @@ export interface GameObjectJson {
 export type Character = MeshObj<CharacterState>;
 export type Bike = MeshObj<BikeState>;
 
-export class MeshObj<S extends MeshState<MeshObj> = any> {
+export class MeshObj<S extends MeshState<MeshObj> = any> extends GameObj {
     id: string;
     ch: string;
     type: MeshObjType;
@@ -73,8 +74,9 @@ export class MeshObj<S extends MeshState<MeshObj> = any> {
     mainMesh: Mesh;
     colliderMesh: Mesh;
     skeleton: Skeleton;
-    animationGroups: AnimationGroup[];
     allMeshes: Mesh[] = [];
+    children: GameObj[] = [];
+    isActivePlayer: boolean = false;
 
     route: Route;
 
@@ -83,25 +85,21 @@ export class MeshObj<S extends MeshState<MeshObj> = any> {
     readonly worldObj: WorldObj;
     quarterIndex: number;
     
-    readonly tag: TagComponent;
-    readonly mesh: MeshComponent;
+    readonly tag: TagHandler;
+    readonly animation: AnimationHandler;
     readonly addon: AddonComponent;
     readonly player: PlayerComponent;
 
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;
 
-    private currentAnimation: AnimationGroup;
-
-    private frontDirection: Vector3 = new Vector3(0, 0, 1);
-    private frontDirection2D: Vector2 = new Vector2(0, 1);
-
     constructor(id: string, worldObj: WorldObj) {
+        super();
         this.id = id;
         this.worldObj = worldObj;
         this.quarterStore = lookup.quarterStore;
-        this.tag = new TagComponent();
-        this.mesh = new MeshComponent(this);
+        this.tag = new TagHandler();
+        this.animation = new AnimationHandler();
         this.addon = new AddonComponent();
         this.player = new PlayerComponent(this as any, worldObj);
     }
@@ -116,32 +114,12 @@ export class MeshObj<S extends MeshState<MeshObj> = any> {
         }
     }
 
-    move(speed: number) {
-        var forward = this.frontDirection;
-        var direction = this.mainMesh.getDirection(forward);
-        direction.normalize().multiplyInPlace(new Vector3(speed, speed, speed));
-        
-        this.getMesh().moveWithCollisions(direction);
-    }
-
-    getFrontDirection2D(): Vector2 {
-        return this.frontDirection2D;
-    }
-
-    translate(axis: Vector3, amount: number) {
-        this.getMesh().translate(axis, amount, Space.LOCAL);
-    }
-
     setRotation(rotation: number) {
         this.getMesh().rotationQuaternion = Quaternion.RotationAxis(Axis.Y, rotation);
     }
 
-    setColliderVisibility(isVisible: boolean) {
-        if (this.colliderMesh) { this.colliderMesh.showBoundingBox = isVisible; }
-    }
-
-    setBoundingBoxVisibility(isVisible: boolean) {
-        if (this.mainMesh) { this.mainMesh.showBoundingBox = isVisible; }
+    getRotation(): Vector3 {
+        return this.getMesh().rotationQuaternion.toEulerAngles();
     }
 
     update(world: Lookup) {
@@ -152,36 +130,42 @@ export class MeshObj<S extends MeshState<MeshObj> = any> {
         this.additionalComponents.forEach(comp => comp.update(this, world));
     }
 
+    move(speed: number) {
+        var forward = new Vector3(0, 0, 1);
+        var direction = this.getMesh().getDirection(forward);
+        direction.normalize().multiplyInPlace(new Vector3(speed, speed, speed));
+        this.getMesh().moveWithCollisions(direction);
+
+        this.children.forEach(child => child.setPosition(this.getPosition()));
+    }
+
+    setPosition2D(pos: Vector2) {
+        this.getMesh().setAbsolutePosition(new Vector3(pos.x, this.getPosition().y, pos.y));
+    }
+
     getPosition2D(): Vector2 {
         const pos = this.getMesh().getAbsolutePosition();
         return new Vector2(pos.x, pos.z);
     }
 
+    setPosition(pos: Vector3) {
+        this.getMesh().setAbsolutePosition(pos);
+
+        this.children.forEach(child => child.setPosition(this.getPosition()));
+    }
+
     getPosition(): Vector3 {
-        return this.getMesh().getAbsolutePosition();
+        const worldPos = this.worldObj.ground.getAbsolutePosition()
+        return this.getMesh().getAbsolutePosition().subtract(worldPos);
+    }
+
+    getDimensions(): Vector3 {
+        const mesh = this.getMesh();
+        return mesh.getBoundingInfo().boundingBox.extendSizeWorld;
     }
 
     getQuarter(): QuarterObj {
         return this.quarterStore.getQuarter(this.quarterIndex);
-    }
-
-    isAnimationRunning(name: string) {
-        return this.currentAnimation && this.currentAnimation.name === name;
-    }
-
-    runAnimation(name: string) {
-        const animationGroup = this.animationGroups.find(group => group.name === name);
-        if (animationGroup) {
-            animationGroup.start(true);
-            this.currentAnimation = animationGroup;
-        }
-    }
-
-    stopCurrentAnimation() {
-        if (this.currentAnimation) {
-            this.currentAnimation.stop();
-            this.currentAnimation = undefined;
-        }
     }
 
     dispose() {

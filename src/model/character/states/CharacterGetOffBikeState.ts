@@ -20,10 +20,10 @@ export class CharacterGetOffBikeState extends CharacterState {
         vehicle.state = new BikeIdleState(vehicle);
         player.state = new CharacterIdleState(player);
         player.getMesh().parent = vehicle.getMesh().parent;
-        player.mesh.setPosition(vehicle.getPosition());
-        player.setRotation(vehicle.mesh.getRotation().y);
+        player.setPosition(vehicle.getPosition());
+        player.setRotation(vehicle.getRotation().y);
 
-        const dir = player.mesh.getRotation().clone();
+        const dir = player.getRotation().clone();
         dir.y = 0;
         player.getMesh().translate(dir, 1, Space.WORLD);
 

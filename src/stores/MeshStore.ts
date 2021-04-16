@@ -21,8 +21,7 @@ export class MeshStore {
     }
 
     getActivePlayer(): Character {
-        const players = this.getObjsByTag(MeshObjTag.Player);
-        return <Character> (players.find(player => player.player.isActive()) || players[0]); 
+        return <Character> this.getPlayers().find(player => player.isActivePlayer); 
     }
 
     getPlayers(): Character[] {

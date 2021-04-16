@@ -1,7 +1,7 @@
 import { MeshObjTag } from "../objs/MeshObj";
 
 
-export class TagComponent {
+export class TagHandler {
     private tags: Set<MeshObjTag> = new Set();
 
     add(...tag: MeshObjTag[]) {
@@ -23,8 +23,6 @@ export class TagComponent {
     clear() {
         this.tags = new Set();
     }
-
-    // most common tag shortcuts
 
     isPlayer() {
         return this.has(MeshObjTag.Player);

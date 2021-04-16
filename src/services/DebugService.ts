@@ -13,9 +13,6 @@ export class DebugService {
     private enemyPathDebugger: RouteDebugger;
     private texture: AdvancedDynamicTexture;
     areaMapDebugger: QuarterMapDebugger;
-
-    @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
     
     @InjectProperty("MeshStore")
     private meshStore: MeshStore;
@@ -24,7 +21,6 @@ export class DebugService {
 
     constructor() {
         this.meshStore = lookup.meshStore;
-        this.worldProvider = lookup.worldProvider;
         this.worldAxisHelper = new WorldAxisHelper();
         this.enemyPathDebugger = new RouteDebugger();
         this.areaMapDebugger = new QuarterMapDebugger();
@@ -55,10 +51,10 @@ export class DebugService {
     }
 
     setColliderMeshVisibility(isVisible: boolean) {
-        this.meshStore.getAll().forEach(go => go.setColliderVisibility(isVisible));
+        this.meshStore.getAll().forEach(meshObj => meshObj.colliderMesh.showBoundingBox = isVisible);
     }
 
     setMeshBoundingBoxVisibility(isVisible: boolean) {
-        this.meshStore.getAll().forEach(go => go.setBoundingBoxVisibility(isVisible));
+        this.meshStore.getAll().forEach(meshObj => meshObj.mainMesh.showBoundingBox = isVisible);
     }
 }

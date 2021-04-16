@@ -13,15 +13,21 @@ import { RotateFeatureParser } from "../../model/general/factories/features/Rota
 import { StateFeatureParser } from "../../model/general/factories/features/StateFeatureParser";
 import { TagFeatureParser } from "../../model/general/factories/features/TagFeatureParser";
 import { TextureFeatureParser } from "../../model/general/factories/features/TextureFeatureParser";
+import { InjectProperty } from "../../di/diDecorators";
+import { ActivePlayerService } from "../ActivePlayerService";
 
 export class MeshFactory {
+    
+    @InjectProperty("ActivePlayerService")
+    private activePlayerService: ActivePlayerService;
+    
     private lookup: Lookup;
     private indexesByType: Map<string, number> = new Map();
-
-    featureFactories: AbstractFeatureParser[] = [];
+    private featureFactories: AbstractFeatureParser[] = [];
 
     constructor(lookup: Lookup) {
         this.lookup = lookup;
+        this.activePlayerService = lookup.activePlayerService;
     }
 
     async create(gameObjectJson: GameObjectJson, worldObj: WorldObj): Promise<MeshObj> {
@@ -72,7 +78,7 @@ export class MeshFactory {
             new AddonFeatureParser(this.lookup),
             new RotateFeatureParser(),
             new IdFeatureParser(),
-            new ActivePlayerFeatureParser()
+            new ActivePlayerFeatureParser(this.activePlayerService)
         ];
     }
 

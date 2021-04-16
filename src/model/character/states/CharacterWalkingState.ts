@@ -24,16 +24,13 @@ export class CharacterWalkingState extends CharacterState {
 
     beforeRender(): void {
         const mesh = this.meshObj.getMesh();
-        const forwardDir = new Vector3(0, 0, 1);
 
-        var direction = mesh.getDirection(forwardDir);
-        direction.normalize().multiplyInPlace(new Vector3(this.speed, this.speed, this.speed));
-        mesh.moveWithCollisions(direction);
+        this.meshObj.move(this.speed);
         mesh.rotate(Axis.Y, this.rotation, Space.WORLD);
     }
 
     enterState() {
-        this.meshObj.runAnimation('Walk');
+        this.meshObj.animation.runAnimation('Walk');
     }
 
     private changeStateIfNeeded() {

@@ -22,7 +22,7 @@ export class CharacterIdleState extends CharacterState {
     }
 
     enterState() {
-        this.meshObj.runAnimation('Idle');
+        this.meshObj.animation.runAnimation('Idle');
     }
 
     private changeStateIfNeeded() {

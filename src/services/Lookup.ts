@@ -15,6 +15,9 @@ import { TileFactory } from "./factory/TileFactory";
 import { QuarterStore } from "../stores/QuarterStore";
 import { MeshStore } from "../stores/MeshStore";
 import { RouteFactory } from "./factory/RouteFactory";
+import { LightStore } from "../stores/LightStore";
+import { LightFactory } from "./factory/LightFactory";
+import { ActivePlayerService } from "./ActivePlayerService";
 
 export class Lookup {
     keyboard: KeyboardService;
@@ -25,21 +28,25 @@ export class Lookup {
     canvas: HTMLCanvasElement;
 
     debug: DebugService;
+    activePlayerService: ActivePlayerService;
+
     renderGui: RenderGuiService;
     setup: SetupService;
     controller: ControllerService;
     update: UpdateService;
     
-    itemFactory: MeshFactory;
+    meshFactory: MeshFactory;
     quarterFactory: QuarterFactory;
     worldFactory: WorldFactory;
     routeFactory: RouteFactory;
+    lightFactory: LightFactory;
 
     worldProvider: WorldProvider;
 
     tileStore: TileStore;
     quarterStore: QuarterStore;
     meshStore: MeshStore;
+    lightStore: LightStore;
 
     tileFactory: TileFactory;
     
@@ -59,6 +66,9 @@ export class Lookup {
         lookup.quarterStore = this.quarterStore;
         this.meshStore = new MeshStore();
         lookup.meshStore = this.meshStore;
+        this.lightStore = new LightStore();
+        lookup.lightStore = this.lightStore;
+
         this.renderGui = new RenderGuiService();
         lookup.renderGui = this.renderGui;
         this.controller = new ControllerService();
@@ -77,8 +87,14 @@ export class Lookup {
 
         this.setup = new SetupService(this);
         this.update = new UpdateService();
+
+        this.lightFactory = new LightFactory();
+        lookup.lightFactory = this.lightFactory;
         
-        this.itemFactory = new MeshFactory(this);
+        this.activePlayerService = new ActivePlayerService();
+        lookup.activePlayerService = this.activePlayerService;
+
+        this.meshFactory = new MeshFactory(this);
         this.quarterFactory = new QuarterFactory();
         this.worldFactory = new WorldFactory(this);
     }

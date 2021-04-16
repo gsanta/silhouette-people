@@ -1,15 +1,27 @@
-import { NodeMaterial, SpotLight, Tools, Vector3 } from "babylonjs";
+import { NodeMaterial, SpotLight, Tools, Vector2, Vector3 } from "babylonjs";
 import { Lookup } from "../../../services/Lookup";
+import { GameObj } from "./GameObj";
 
-export class LightObj {
+export class LightObj extends GameObj {
     light: SpotLight;
 
     constructor(light: SpotLight) {
+        super();
         this.light = light;
+    }
+
+    setPosition2D(pos: Vector2) {
+        this.light.position.x = pos.x;
+        this.light.position.z = pos.y;
+        this.light.setDirectionToTarget(new Vector3(pos.x, 0, pos.y));
     }
 
     setPosition(pos: Vector3) {
         LightObj.setPosition(this.light, pos);
+    }
+
+    getPosition(): Vector3 {
+        return this.light.position;
     }
 
     dispose() {

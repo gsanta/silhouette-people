@@ -8,6 +8,6 @@ export class CharacterBikingState extends CharacterState {
     }
 
     enterState() {
-        this.meshObj.runAnimation('Bicycle');
+        this.meshObj.animation.runAnimation('Bicycle');
     }
 }

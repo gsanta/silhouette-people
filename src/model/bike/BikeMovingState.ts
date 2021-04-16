@@ -50,7 +50,7 @@ export class BikeMovingState extends BikeState {
     }
 
     enterState() {
-        this.meshObj.runAnimation('Go');
+        this.meshObj.animation.runAnimation('Go');
     }
 }
 

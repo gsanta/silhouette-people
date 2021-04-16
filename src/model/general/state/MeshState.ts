@@ -24,6 +24,6 @@ export abstract class MeshState<M extends MeshObj> {
 
     enterState() {}
     exitState() {
-        this.meshObj.stopCurrentAnimation();
+        this.meshObj.animation.stopCurrentAnimation();
     }
 }

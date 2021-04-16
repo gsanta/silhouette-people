@@ -104,7 +104,7 @@ export class WorldFactory {
     }
 
     async createGameObjs(gameObjJsons: GameObjectJson[], worldObj: WorldObj) {
-        const itemFactory = this.lookup.itemFactory;
+        const itemFactory = this.lookup.meshFactory;
         
         const gameObjects = await Promise.all(gameObjJsons.map(json =>  itemFactory.create(json, worldObj)));
         const colliderMeshes = gameObjects

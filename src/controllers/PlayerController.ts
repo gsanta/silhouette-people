@@ -9,6 +9,7 @@ import { RenderGuiService } from "../services/RenderGuiService";
 import { TileMarker } from "../services/tile/TileMarker";
 import { MeshStore } from "../stores/MeshStore";
 import { AbstractController, ControllerType } from "./IController";
+import { Vector2 } from "babylonjs";
 
 export class PlayerController extends AbstractController {
     type = ControllerType.Player;
@@ -110,9 +111,13 @@ export class PlayerController extends AbstractController {
 
     private getNearestActionableObj(player: MeshObj): MeshObj  {
         const bicycles = this.meshStore.getBikes()
-        const bikeAndDist = bicycles.map(bicycle => ({ bike: bicycle, dist: bicycle.mesh.distance(player)}));
+        const bikeAndDist = bicycles.map(bicycle => ({ bike: bicycle, dist: this.distance(bicycle, player)}));
         bikeAndDist.sort((d1, d2) => d1.dist - d2.dist);
 
         return bikeAndDist[0].dist < 1.5 ? bikeAndDist[0].bike : undefined;
+    }
+
+    private distance(meshObj1: MeshObj, meshObj2: MeshObj) {
+        return Vector2.Distance(meshObj1.getPosition2D(), meshObj2.getPosition2D());
     }
 }

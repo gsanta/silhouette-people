@@ -23,14 +23,14 @@ export class AddonFeatureParser extends AbstractFeatureParser {
         const [addonName, ...addonAttrs] = attrs;
         
         const addon = this.createAddon(gameObject, <AddonName> addonName.trim(), addonAttrs);
-        gameObject.addon.add(addon);
+        // gameObject.addon.add(addon);
         // addons.forEach(addon => gameObject.addon.add(this.createAddon(gameObject, <AddonName> addon.trim())));
     }
 
     private createAddon(gameObj: MeshObj, addonName: AddonName, addonAttrs: any[]) {
         switch(addonName) {
-            case AddonName.Highlight:
-                return new HighlightAddon(this.world);
+            // case AddonName.Highlight:
+                // return new HighlightAddon(this.world);
         }
     } 
 }

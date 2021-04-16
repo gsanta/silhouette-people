@@ -1,6 +1,6 @@
-import { Axis, Quaternion, Vector2 } from "babylonjs";
-import { MeshObj } from "../general/objs/MeshObj";
+import { Vector2 } from "babylonjs";
 import { Lookup } from "../../services/Lookup";
+import { MeshObj } from "../general/objs/MeshObj";
 
 export class Route {
     path: Vector2[];
@@ -10,11 +10,11 @@ export class Route {
     private currPos: Vector2;
     isFinished = false;
 
-    private gameObject: MeshObj;
+    private meshObj: MeshObj;
     private world: Lookup;
 
     constructor(gameObject: MeshObj, path: Vector2[]) {
-        this.gameObject = gameObject;
+        this.meshObj = gameObject;
         this.path = path;
 
         if (this.path.length < 2) {
@@ -37,20 +37,20 @@ export class Route {
         const dirVector = this.toPoint.subtract(this.fromPoint);
         const dirAngle = Math.atan2(dirVector.y, dirVector.x);
 
-        this.gameObject.setRotation(Math.PI / 2 - dirAngle);
-        this.gameObject.move(0.04);
+        this.meshObj.setRotation(Math.PI / 2 - dirAngle);
+        this.meshObj.move(0.04);
 
         this.prevPos = this.currPos;
-        this.currPos = this.gameObject.getPosition2D();
+        this.currPos = this.meshObj.getPosition2D();
     }
 
     private checkDestReached() {
-        if (!this.isDestReached(this.gameObject)) { return; }
+        if (!this.isDestReached(this.meshObj)) { return; }
 
         if (this.toPoint === this.path[this.path.length - 1]) {
             this.isFinished = true;
         } else {
-            this.fromPoint = this.gameObject.getPosition2D();
+            this.fromPoint = this.meshObj.getPosition2D();
             this.toPoint = this.path[this.path.indexOf(this.toPoint) + 1];
         }
     }

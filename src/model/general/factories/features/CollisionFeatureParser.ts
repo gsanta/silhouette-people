@@ -24,8 +24,8 @@ export class CollisionFeatureParser extends AbstractFeatureParser {
     processFeature(gameObj: MeshObj, attrs: string[]) {
         const dimStr = attrs[0];
     
-        const dimensions = dimStr ? parseStrVector(dimStr) : gameObj.mesh.getDimensions();
-        const position = gameObj.mesh.getPositionRelativeToDistrict();
+        const dimensions = dimStr ? parseStrVector(dimStr) : gameObj.getDimensions();
+        const position = gameObj.getPosition();
 
         const [width, depth, height] = [dimensions.x, dimensions.z, dimensions.y];
         const collider = MeshBuilder.CreateBox(`${gameObj.id}-collider`, { width, depth, height}, this.lookup.scene);
