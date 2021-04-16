@@ -1,4 +1,4 @@
-import { CameraObj } from "../model/objs/CameraObj";
+import { CameraObj } from "../model/general/objs/CameraObj";
 import { AbstractController, ControllerType } from "./IController";
 
 // TODO merge with CameraObj

@@ -1,6 +1,6 @@
 import { Vector2 } from 'babylonjs';
 import regression from 'regression';
-import { Bike } from '../../objs/MeshObj';
+import { Bike } from '../../general/objs/MeshObj';
 import { IBikePhysics } from './IBikePhysics';
 
 export interface BikeSpeedPhysicsConf {

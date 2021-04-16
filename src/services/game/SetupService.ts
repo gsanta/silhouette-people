@@ -5,7 +5,7 @@ import { ControllerService } from "../ControllerService";
 import { DebugPanel } from "../debug/DebugPanel";
 import { PointerService } from "../input/PointerService";
 import { Lookup } from "../Lookup";
-import { NormalModeController } from "../NormalModeController";
+import { NormalModeController } from "../../model/general/controller/NormalModeController";
 
 export class SetupService {
     private lookup: Lookup;

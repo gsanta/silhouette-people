@@ -3,7 +3,7 @@ import { Axis, Space, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../di/diDecorators";
 import { lookup } from "../../services/Lookup";
 import { WorldProvider } from "../../services/WorldProvider";
-import { Bike } from "../objs/MeshObj";
+import { Bike } from "../general/objs/MeshObj";
 import { BikeState } from "./BikeState";
 import { BikeMasterPhysics } from "./physics/BikeMasterPhysics";
 

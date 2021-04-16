@@ -1,6 +1,6 @@
 import { InjectProperty } from "../di/diDecorators";
-import { RouteDebuggerComponent } from "../model/components/RouteDebuggerComponent";
-import { MeshObjTag } from "../model/objs/MeshObj";
+import { RouteDebuggerComponent } from "../model/general/components/RouteDebuggerComponent";
+import { MeshObjTag } from "../model/general/objs/MeshObj";
 import { lookup } from "../services/Lookup";
 import { MeshStore } from "../stores/MeshStore";
 

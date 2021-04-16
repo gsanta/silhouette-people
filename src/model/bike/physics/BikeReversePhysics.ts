@@ -1,5 +1,5 @@
 
-import { Bike, MeshObj } from "../../objs/MeshObj";
+import { Bike, MeshObj } from "../../general/objs/MeshObj";
 import { IBikePhysics } from "./IBikePhysics";
 
 export class BikeReversePhysics implements IBikePhysics {

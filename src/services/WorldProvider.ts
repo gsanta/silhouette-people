@@ -1,5 +1,5 @@
-import { LightObj } from "../model/objs/LightObj";
-import { WorldObj } from "../model/objs/WorldObj";
+import { LightObj } from "../model/general/objs/LightObj";
+import { WorldObj } from "../model/general/objs/WorldObj";
 
 export class WorldProvider {
     private worldObj: WorldObj;

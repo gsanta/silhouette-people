@@ -1,4 +1,4 @@
-import { Bike, MeshObj } from "../../objs/MeshObj";
+import { Bike, MeshObj } from "../../general/objs/MeshObj";
 import { BikeState } from "../BikeState";
 import { BikeReversePhysics } from "./BikeReversePhysics";
 import { BikeSlowdownPhysics } from "./BikeSlowdownPhysics";

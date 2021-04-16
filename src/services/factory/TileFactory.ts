@@ -1,8 +1,8 @@
 import { Axis, Color4, MeshBuilder, Space, Vector3 } from "babylonjs";
 import { constants } from "../../contants";
 import { InjectProperty } from "../../di/diDecorators";
-import { QuarterObj } from "../../model/objs/QuarterObj";
-import { TileObj } from "../../model/objs/TileObj";
+import { QuarterObj } from "../../model/general/objs/QuarterObj";
+import { TileObj } from "../../model/general/objs/TileObj";
 import { TileStore } from "../../stores/TileStore";
 import { WorldProvider } from "../WorldProvider";
 import { lookup } from "../Lookup";

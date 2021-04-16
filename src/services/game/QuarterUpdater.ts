@@ -1,5 +1,5 @@
 import { InjectProperty } from "../../di/diDecorators";
-import { MeshObj } from "../../model/objs/MeshObj";
+import { MeshObj } from "../../model/general/objs/MeshObj";
 import { MeshStore } from "../../stores/MeshStore";
 import { QuarterStore } from "../../stores/QuarterStore";
 import { WorldProvider } from "../WorldProvider";
@@ -20,7 +20,6 @@ export class QuarterUpdater {
         this.quarterStore = lookup.quarterStore;
         this.worldProvider = lookup.worldProvider;
     }
-
 
     updateQuarterBasedOnPlayerPosition() {
         const player = this.meshStore.getActivePlayer();

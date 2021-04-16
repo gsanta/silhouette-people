@@ -1,11 +1,11 @@
-import { WorldObj } from "../../model/objs/WorldObj";
+import { WorldObj } from "../../model/general/objs/WorldObj";
 import { GroundJson, WorldJson } from "../district/WorldJson";
 import { DistrictParser } from "../district/DistrictParser";
 import { lookup, Lookup } from "../Lookup";
-import { GameObjectJson, MeshObjTag } from "../../model/objs/MeshObj";
+import { GameObjectJson, MeshObjTag } from "../../model/general/objs/MeshObj";
 import { ArcRotateCamera, Axis, Color3, MeshBuilder, PhysicsImpostor, Scene, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
 import { QuarterObjConfig } from "./QuarterFactory";
-import { CameraObj } from "../../model/objs/CameraObj";
+import { CameraObj } from "../../model/general/objs/CameraObj";
 import { ControllerType } from "../../controllers/IController";
 import { CameraController } from "../../controllers/CameraController";
 import { QuarterStore } from "../../stores/QuarterStore";

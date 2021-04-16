@@ -1,7 +1,7 @@
 import { InjectProperty } from "../di/diDecorators";
-import { MeshObj, MeshObjTag, MeshObjType, Character, Bike } from "../model/objs/MeshObj";
-import { CharacterGetOffBikeState } from "../model/states/CharacterGetOffBikeState";
-import { CharacterGetOnBikeState } from "../model/states/CharacterGetOnBikeState";
+import { MeshObj, MeshObjTag, MeshObjType, Character, Bike } from "../model/general/objs/MeshObj";
+import { CharacterGetOffBikeState } from "../model/character/states/CharacterGetOffBikeState";
+import { CharacterGetOnBikeState } from "../model/character/states/CharacterGetOnBikeState";
 import { KeyboardService } from "../services/input/KeyboardService";
 import { MouseButtonType, PointerData } from "../services/input/PointerService";
 import { lookup } from "../services/Lookup";

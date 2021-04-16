@@ -1,5 +1,5 @@
 import { InjectProperty } from "../di/diDecorators";
-import { Bike, MeshObj, MeshObjTag, MeshObjType, Character } from "../model/objs/MeshObj";
+import { Bike, MeshObj, MeshObjTag, MeshObjType, Character } from "../model/general/objs/MeshObj";
 import { lookup } from "../services/Lookup";
 import { QuarterStore } from "./QuarterStore";
 

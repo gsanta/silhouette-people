@@ -1,10 +1,9 @@
 import { Axis, Color3, Color4, MeshBuilder, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../di/diDecorators";
-import { QuarterObj } from "../../model/objs/QuarterObj";
-import { WorldObj } from "../../model/objs/WorldObj";
+import { QuarterObj } from "../../model/general/objs/QuarterObj";
 import { QuarterStore } from "../../stores/QuarterStore";
+import { lookup } from "../Lookup";
 import { WorldProvider } from "../WorldProvider";
-import { lookup, Lookup } from "../Lookup";
 
 export interface QuarterObjConfig {
     color: string;

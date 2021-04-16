@@ -1,7 +1,7 @@
 import { Vector3 } from "babylonjs";
 import { Lookup } from "../../services/Lookup";
-import { MeshObj } from "../objs/MeshObj";
-import { LightObj } from "../objs/LightObj";
+import { MeshObj } from "../general/objs/MeshObj";
+import { LightObj } from "../general/objs/LightObj";
 import { AbstractAddon, AddonName } from "./AbstractAddon";
 
 export class HighlightAddon extends AbstractAddon {

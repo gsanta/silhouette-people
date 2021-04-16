@@ -1,5 +1,5 @@
-import { Bike } from "../objs/MeshObj";
-import { MeshState } from "../states/MeshState";
+import { Bike } from "../general/objs/MeshObj";
+import { MeshState } from "../general/state/MeshState";
 
 export type PedalDirection = 'forward' | 'backward';
 

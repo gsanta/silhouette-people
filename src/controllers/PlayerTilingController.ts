@@ -1,5 +1,5 @@
 import { InjectProperty } from "../di/diDecorators";
-import { TileObj } from "../model/objs/TileObj";
+import { TileObj } from "../model/general/objs/TileObj";
 import { lookup } from "../services/Lookup";
 import { MeshStore } from "../stores/MeshStore";
 import { TileDepthFirstSearch, TileStore } from "../stores/TileStore";

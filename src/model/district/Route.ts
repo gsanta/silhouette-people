@@ -1,5 +1,5 @@
 import { Axis, Quaternion, Vector2 } from "babylonjs";
-import { MeshObj } from "../objs/MeshObj";
+import { MeshObj } from "../general/objs/MeshObj";
 import { Lookup } from "../../services/Lookup";
 
 export class Route {

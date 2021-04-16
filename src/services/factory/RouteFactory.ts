@@ -1,6 +1,6 @@
 import { Route } from "../../model/district/Route";
-import { MeshObj } from "../../model/objs/MeshObj";
-import { QuarterObj } from "../../model/objs/QuarterObj";
+import { MeshObj } from "../../model/general/objs/MeshObj";
+import { QuarterObj } from "../../model/general/objs/QuarterObj";
 import { IPathFinder } from "../district/path/IPathFinder";
 import { MasterPathFinder } from "../district/path/MasterPathFinder";
 

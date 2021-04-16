@@ -1,4 +1,4 @@
-import { MeshObj } from "../objs/MeshObj";
+import { MeshObj } from "../general/objs/MeshObj";
 
 
 export enum AddonName {

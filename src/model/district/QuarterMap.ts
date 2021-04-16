@@ -1,5 +1,5 @@
 import { Mesh, Vector2, Vector3 } from "babylonjs";
-import { Rect } from "../Rect";
+import { Rect } from "../general/shape/Rect";
 
 export class QuarterMap {
     readonly topLeft: Vector2;
