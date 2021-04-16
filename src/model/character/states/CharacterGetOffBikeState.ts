@@ -1,6 +1,6 @@
 import { Axis, Space, Vector3 } from "babylonjs";
 import { BikeIdleState } from "../../bike/BikeIdleState";
-import { Character } from "../../general/objs/MeshObj";
+import { Bike, Character } from "../../general/objs/MeshObj";
 import { CharacterIdleState } from "./CharacterIdleState";
 import { CharacterState } from "./CharacterState";
 
@@ -14,14 +14,14 @@ export class CharacterGetOffBikeState extends CharacterState {
     enterState() {
         const player = this.meshObj;
         
-        const vehicle = player.player.getBike();
-        player.player.setVehicle(undefined);
+        const bike = <Bike> player.getParent();
+        player.setParent(undefined);
 
-        vehicle.state = new BikeIdleState(vehicle);
+        bike.state = new BikeIdleState(bike);
         player.state = new CharacterIdleState(player);
-        player.getMesh().parent = vehicle.getMesh().parent;
-        player.setPosition(vehicle.getPosition());
-        player.setRotation(vehicle.getRotation().y);
+        player.getMesh().parent = bike.getMesh().parent;
+        player.setPosition(bike.getPosition());
+        player.setRotation(bike.getRotation().y);
 
         const dir = player.getRotation().clone();
         dir.y = 0;

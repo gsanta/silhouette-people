@@ -1,12 +1,21 @@
+import { DebugService } from "../../../services/DebugService";
 import { Lookup } from "../../../services/Lookup";
 import { Route } from "../../district/Route";
-import { IComponent } from "./IComponent";
-import { Character } from "../objs/MeshObj";
+import { Character, MeshObj } from "../objs/MeshObj";
 
-export class RouteDebuggerComponent implements IComponent {
+export class RouteDebuggerComponent {
     private currRoute: Route;
-    
-    update(character: Character, world: Lookup) {
+    private character: Character;
+    private debugService: DebugService;
+
+    constructor(character: Character, debugService: DebugService) {
+        this.character = character;
+
+        this.debugService = debugService;
+    }
+
+    update() {
+        const character = this.character;
         const quarterMap = character.getQuarter().getMap();
 
         if (!character.route || character.route.isFinished) {
@@ -25,8 +34,8 @@ export class RouteDebuggerComponent implements IComponent {
         this.currRoute = character.route;
         quarterMap.fillPath(character.route.path, 2);
 
-        if (world.debug.areaMapDebugger.isVisible()) {
-            world.debug.areaMapDebugger.update();
+        if (this.debugService.areaMapDebugger.isVisible()) {
+            this.debugService.areaMapDebugger.update();
         }
     }
 }

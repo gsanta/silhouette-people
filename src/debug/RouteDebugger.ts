@@ -1,24 +1,39 @@
+import { AbstractController } from "../controllers/IController";
 import { InjectProperty } from "../di/diDecorators";
 import { RouteDebuggerComponent } from "../model/general/components/RouteDebuggerComponent";
-import { MeshObjTag } from "../model/general/objs/MeshObj";
+import { DebugService } from "../services/DebugService";
 import { lookup } from "../services/Lookup";
 import { MeshStore } from "../stores/MeshStore";
 
-export class RouteDebugger {
+export class RouteDebugger extends AbstractController {
 
     @InjectProperty("MeshStore")
     private meshStore: MeshStore;
 
-    constructor() {
+    private debugService: DebugService;
+
+    private routeDebuggerComponent: RouteDebuggerComponent;
+
+    constructor(debugService: DebugService) {
+        super();
+        this.debugService = debugService;
         this.meshStore = lookup.meshStore;
     }
 
     show() {
-        const enemies = this.meshStore.getObjsByTag(MeshObjTag.Enemy);
-        enemies.forEach(enemy => enemy.additionalComponents.push(new RouteDebuggerComponent()));
+        const enemy = this.meshStore.getEnemies()[0];
+        if (enemy) {
+            this.routeDebuggerComponent = new RouteDebuggerComponent(enemy, this.debugService);
+        }
     }
 
     hide() {
+        this.routeDebuggerComponent = undefined;
+    }
 
+    beforeRender() {
+        if (this.routeDebuggerComponent) {
+            this.routeDebuggerComponent.update();
+        }
     }
 }

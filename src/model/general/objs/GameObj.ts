@@ -13,10 +13,13 @@ export abstract class GameObj {
         }
 
         this.parent = parent;
-        this.setPosition(this.parent.getPosition());
 
-        if (!parent.children.includes(this)) {
-            parent.children.push(this);
+        if (this.parent) {
+            this.setPosition(this.parent.getPosition());
+    
+            if (!parent.children.includes(this)) {
+                parent.children.push(this);
+            }
         }
     }
 

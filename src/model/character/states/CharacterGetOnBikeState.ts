@@ -20,7 +20,7 @@ export class CharacterGetOnBikeState extends CharacterState {
         player.setRotation(0);
         player.getMesh().parent = this.bike.getMesh();
         player.getMesh().checkCollisions = false;
-        player.player.setVehicle(this.bike);
+        player.setParent(this.bike);
 
         player.state = new CharacterBikingState(player);
         this.bike.state = new BikeMovingState(this.bike);

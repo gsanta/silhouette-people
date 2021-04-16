@@ -22,7 +22,7 @@ export class DebugService {
     constructor() {
         this.meshStore = lookup.meshStore;
         this.worldAxisHelper = new WorldAxisHelper();
-        this.enemyPathDebugger = new RouteDebugger();
+        this.enemyPathDebugger = new RouteDebugger(this);
         this.areaMapDebugger = new QuarterMapDebugger();
     }
 

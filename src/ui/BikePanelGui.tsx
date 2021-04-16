@@ -4,6 +4,7 @@ import './../../assets/css/bike-panel.scss'
 import { InjectProperty } from "../di/diDecorators";
 import { MeshStore } from "../stores/MeshStore";
 import { lookup } from "../services/Lookup";
+import { Bike } from "../model/general/objs/MeshObj";
 
 export class BikePanelGui extends React.Component<GuiProps> {
 
@@ -16,14 +17,13 @@ export class BikePanelGui extends React.Component<GuiProps> {
     }
 
     render() {
-        const { world } = this.props;
         const player = this.meshStore.getActivePlayer(); 
 
-        if (!player || !player.player.hasBikeVechicle()) {
+        if (!player || !player.getParent()) {
             return null;
         }
 
-        const bike = player.player.getBike();
+        const bike = player.getParent() as Bike;
         let speed = bike.state.getSpeed();
         speed = Math.trunc(speed * 10) / 10;
 

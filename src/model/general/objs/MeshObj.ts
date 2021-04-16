@@ -1,14 +1,11 @@
 import { Axis, Mesh, Quaternion, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { lookup, Lookup } from "../../../services/Lookup";
+import { lookup } from "../../../services/Lookup";
 import { QuarterStore } from "../../../stores/QuarterStore";
 import { BikeState } from "../../bike/BikeState";
 import { CharacterState } from "../../character/states/CharacterState";
 import { Route } from "../../district/Route";
-import { AddonComponent } from "../components/AddonComponent";
 import { AnimationHandler } from "../components/AnimationHandler";
-import { IComponent } from "../components/IComponent";
-import { PlayerComponent } from "../components/PlayerComponent";
 import { TagHandler } from "../components/TagHandler";
 import { MeshState } from "../state/MeshState";
 import { GameObj } from "./GameObj";
@@ -81,14 +78,11 @@ export class MeshObj<S extends MeshState<MeshObj> = any> extends GameObj {
     route: Route;
 
     state: S;
-    additionalComponents: IComponent[] = [];
     readonly worldObj: WorldObj;
     quarterIndex: number;
     
     readonly tag: TagHandler;
     readonly animation: AnimationHandler;
-    readonly addon: AddonComponent;
-    readonly player: PlayerComponent;
 
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;
@@ -100,18 +94,6 @@ export class MeshObj<S extends MeshState<MeshObj> = any> extends GameObj {
         this.quarterStore = lookup.quarterStore;
         this.tag = new TagHandler();
         this.animation = new AnimationHandler();
-        this.addon = new AddonComponent();
-        this.player = new PlayerComponent(this as any, worldObj);
-    }
-
-    debug(isDebug: boolean) {
-        if (isDebug) {
-            this.mainMesh && (this.mainMesh.showBoundingBox = true);
-            this.colliderMesh && (this.colliderMesh.showBoundingBox = true);
-        } else {
-            this.mainMesh && (this.mainMesh.showBoundingBox = false);
-            this.colliderMesh && (this.colliderMesh.showBoundingBox = false);
-        }
     }
 
     setRotation(rotation: number) {
@@ -120,14 +102,6 @@ export class MeshObj<S extends MeshState<MeshObj> = any> extends GameObj {
 
     getRotation(): Vector3 {
         return this.getMesh().rotationQuaternion.toEulerAngles();
-    }
-
-    update(world: Lookup) {
-        if (!this.getMesh()) { return; }
-
-        this.addon.getAll().forEach(addon => addon.update(this));
-
-        this.additionalComponents.forEach(comp => comp.update(this, world));
     }
 
     move(speed: number) {

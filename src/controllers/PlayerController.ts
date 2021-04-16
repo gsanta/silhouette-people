@@ -102,7 +102,7 @@ export class PlayerController extends AbstractController {
     private activateActionable(player: Character, actionableObj: MeshObj) {
         switch(actionableObj.type) {
             case MeshObjType.Bicycle1:
-                if (!player.player.hasBikeVechicle()) {
+                if (!player.getParent()) {
                     player.state = new CharacterGetOnBikeState(player, actionableObj as Bike);
                 }
             break;

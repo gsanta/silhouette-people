@@ -87,8 +87,6 @@ function initGame(lookup: Lookup) {
             lookup.update.update();
 
             if (lookup.worldProvider.world) {
-                lookup.meshStore.getAll().forEach(gameObject => gameObject.update(lookup));
-
                 lookup.quarterStore.getAllQuarters()[5].tiles.activate();
             }
 
