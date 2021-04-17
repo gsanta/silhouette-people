@@ -7,7 +7,6 @@ import { QuarterObj } from "./QuarterObj";
 export class TileObj {
     private mesh: Mesh;
     index: number;
-    quarter: QuarterObj;
 
     @InjectProperty("TileStore")
     private tileStore: TileStore;
@@ -15,11 +14,10 @@ export class TileObj {
     private isActive = false;
     private isHovered = false;
 
-    constructor(mesh: Mesh, index: number, quarter: QuarterObj) {
+    constructor(mesh: Mesh, index: number) {
         this.tileStore = lookup.tileStore;
         this.mesh = mesh;
         this.index = index;
-        this.quarter = quarter;
     }
 
     markActive() {

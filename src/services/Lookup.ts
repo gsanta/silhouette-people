@@ -87,14 +87,14 @@ export class Lookup {
         this.activePlayerService = new ActivePlayerService();
         lookup.activePlayerService = this.activePlayerService;
 
-        this.gameMode = new GameModeService();
-        lookup.gameMode = this.gameMode;
-
         this.debug = new DebugService();
         lookup.debug = this.debug;
 
         this.tileFactory = new TileFactory();
         lookup.tileFactory = this.tileFactory;
+
+        this.gameMode = new GameModeService();
+        lookup.gameMode = this.gameMode;
 
         this.setup = new SetupService(this);
         this.update = new UpdateService();

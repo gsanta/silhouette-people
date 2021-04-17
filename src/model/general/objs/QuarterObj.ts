@@ -1,18 +1,14 @@
 import { Mesh, Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
+import { InjectProperty } from "../../../di/diDecorators";
+import { lookup } from "../../../services/Lookup";
+import { WorldProvider } from "../../../services/WorldProvider";
 import { QuarterMap } from "../../district/QuarterMap";
 import { Rect } from "../shape/Rect";
-import { WorldObj } from "./WorldObj";
-import { MeshObj } from "./MeshObj";
-import { TilingComponent } from "../components/TilingComponent";
-import { InjectProperty } from "../../../di/diDecorators";
-import { WorldProvider } from "../../../services/WorldProvider";
-import { lookup } from "../../../services/Lookup";
 
 export class QuarterObj  {
     id: string;
     index: number;
-    tiles: TilingComponent;
     readonly mesh: Mesh;
 
     @InjectProperty("WorldProvider")
@@ -26,8 +22,7 @@ export class QuarterObj  {
         this.id = id;
 
         const b = this.getBounds2D();
-        this.map = new QuarterMap(b.tl, b.br, 0.5);
-        this.tiles = new TilingComponent(this);
+        this.map = new QuarterMap(b.min, b.max, 0.5);
     }
 
     getMap() {
@@ -35,9 +30,9 @@ export class QuarterObj  {
     }
 
     containsPoint2D(point: Vector2) {
-        const b = this.getBounds2D();
+        const {min, max} = this.getBounds2D();
 
-        if (point.x >= b.tl.x && point.x <= b.br.x && point.y <= b.tl.y && point.y >= b.br.y) {
+        if (point.x >= min.x && point.x <= max.x && point.y >= min.y && point.y <= max.y) {
             return true;
         }
         return false;
@@ -48,7 +43,7 @@ export class QuarterObj  {
         const [minX, minZ] = [boundingBox.minimumWorld.x, boundingBox.minimumWorld.z];
         const [maxX, maxZ] = [boundingBox.maximumWorld.x, boundingBox.maximumWorld.z];
 
-        return new Rect(new Vector2(minX, maxZ), new Vector2(maxX, minZ));
+        return new Rect(new Vector2(minX, minZ), new Vector2(maxX, maxZ));
     }
 
     getPosition2D(): Vector2 {

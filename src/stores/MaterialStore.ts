@@ -1,0 +1,49 @@
+import { Color3, StandardMaterial } from "babylonjs";
+import { InjectProperty } from "../di/diDecorators";
+import { lookup } from "../services/Lookup";
+import { WorldProvider } from "../services/WorldProvider";
+
+export class MaterialStore {
+    private tileMaterial: StandardMaterial; 
+    private activeTileMaterial: StandardMaterial; 
+    private hoverTileMaterial: StandardMaterial;
+
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
+
+    constructor() {
+        this.worldProvider = lookup.worldProvider;
+    }
+
+    getTileMaterial(): StandardMaterial {
+        if (!this.tileMaterial) {
+
+            this.tileMaterial = new StandardMaterial('tile-material-default', this.worldProvider.world.scene);
+            this.tileMaterial.alpha = 0;
+        }
+
+        return this.tileMaterial;
+    }
+
+    getActiveTileMaterial(): StandardMaterial {
+        if (!this.activeTileMaterial) { 
+
+            this.activeTileMaterial = new StandardMaterial('tile-material-active', this.worldProvider.world.scene);
+            this.activeTileMaterial.diffuseColor = Color3.Green();
+            this.activeTileMaterial.alpha = 0.5;
+        }
+
+        return this.activeTileMaterial;
+    }
+
+    getHoverTileMaterial(): StandardMaterial {
+        if (!this.hoverTileMaterial) { 
+
+            this.hoverTileMaterial = new StandardMaterial('tile-material-hover', this.worldProvider.world.scene);
+            this.hoverTileMaterial.diffuseColor = Color3.Green();
+            this.hoverTileMaterial.alpha = 0.2;
+        }
+
+        return this.hoverTileMaterial;
+    }
+}

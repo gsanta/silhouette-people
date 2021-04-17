@@ -2,8 +2,8 @@ import { Mesh, Vector2, Vector3 } from "babylonjs";
 import { Rect } from "../general/shape/Rect";
 
 export class QuarterMap {
-    readonly topLeft: Vector2;
-    readonly botRight: Vector2;
+    readonly min: Vector2;
+    readonly max: Vector2;
 
     readonly columns: number;
     readonly rows: number;
@@ -11,13 +11,13 @@ export class QuarterMap {
 
     private map: number[] = [];
 
-    constructor(topLeft: Vector2, botRight: Vector2, gridSize: number) {
-        this.topLeft = topLeft;
-        this.botRight = botRight;
+    constructor(min: Vector2, max: Vector2, gridSize: number) {
+        this.min = min;
+        this.max = max;
         this.gridSize = gridSize;
 
-        this.columns = (this.botRight.x - this.topLeft.x) / gridSize;
-        this.rows = (this.topLeft.y - this.botRight.y) / gridSize;
+        this.columns = (this.max.x - this.min.x) / gridSize;
+        this.rows = (this.max.y - this.min.y) / gridSize;
     }
 
     len() {
@@ -79,12 +79,12 @@ export class QuarterMap {
     }
 
     getIndexAtWorldCoordinate(coordinate: Vector2): number {
-        let col = Math.floor((coordinate.x - this.topLeft.x) / this.gridSize);
+        let col = Math.floor((coordinate.x - this.min.x) / this.gridSize);
         if (col < 0 || col >= this.columns) {
             return undefined;
         }
 
-        let row = Math.abs(Math.ceil((coordinate.y - this.topLeft.y) / this.gridSize));
+        let row = Math.abs(Math.ceil((coordinate.y - this.max.y) / this.gridSize));
         if (row < 0 || row >= this.getHeight()) {
             return undefined;
         }
@@ -98,8 +98,8 @@ export class QuarterMap {
 
     getWorldCoordinate(index: number) {
         const pos = this.getGridCoordinate(index);
-        const x = this.topLeft.x + pos.x * this.gridSize + this.gridSize / 2;
-        const y = this.topLeft.y - pos.y * this.gridSize - this.gridSize / 2;
+        const x = this.min.x + pos.x * this.gridSize + this.gridSize / 2;
+        const y = this.max.y - pos.y * this.gridSize - this.gridSize / 2;
         return new Vector2(x, y);
     }
     
@@ -114,11 +114,11 @@ export class QuarterMap {
     }
 
     getHeight() {
-        return Math.abs(this.botRight.y - this.topLeft.y) / this.gridSize;
+        return Math.abs(this.max.y - this.min.y) / this.gridSize;
     }
 
     getWidth() {
-        return this.botRight.x - this.topLeft.x;
+        return this.max.x - this.min.x;
     }
 
     toString() {

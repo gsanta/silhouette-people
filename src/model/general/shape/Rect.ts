@@ -1,20 +1,23 @@
-import { Vector2 } from "babylonjs/Maths/math.vector";
-
+import { Vector2 } from "babylonjs";
 
 export class Rect {
-    tl: Vector2;
-    br: Vector2;
+    min: Vector2;
+    max: Vector2;
 
-    constructor(topLeft: Vector2, botRight: Vector2) {
-        this.tl = topLeft;
-        this.br = botRight;
+    constructor(min: Vector2, max: Vector2) {
+        this.min = min;
+        this.max = max;
     }
 
     getWidth() {
-        return this.br.x - this.tl.x;
+        return this.max.x - this.min.x;
     }
 
     getHeight() {
-        return Math.abs(this.br.y - this.tl.y);
+        return this.max.y - this.min.y;
+    }
+
+    center(): Vector2 {
+        return  new Vector2((this.min.x + this.max.x) / 2, (this.min.y + this.max.y) / 2);
     }
 }

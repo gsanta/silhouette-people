@@ -1,29 +1,16 @@
-import { Color3, StandardMaterial, Vector2 } from "babylonjs";
-import { InjectProperty } from "../di/diDecorators";
+import { Vector2 } from "babylonjs";
 import { TileObj } from "../model/general/objs/TileObj";
-import { lookup } from "../services/Lookup";
-import { WorldProvider } from "../services/WorldProvider";
+
+type GraphMap = Map<TileObj, { cost: number, neighbour: TileObj }[]>;
 
 export class TileStore {
     readonly TILE_SIZE = 4;
     TILES_PER_ROW: number;
     TILES_PER_COL: number;
-    TILES_PER_QUARTER_ROW: number;
-    TILES_PER_QUARTER_COL: number;
-    
-    private tileMaterial: StandardMaterial; 
-    private activeTileMaterial: StandardMaterial; 
-    private hoverTileMaterial: StandardMaterial;
+
     private tileMap: {[key: number]: TileObj} = {}
     private tileList: TileObj[] = [];
     private tileGraph: Map<TileObj, number[]> = new Map();
-
-    @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
-
-    constructor() {
-        this.worldProvider = lookup.worldProvider;
-    }
 
     add(tile: TileObj) {
         this.tileMap[tile.index] = tile;
@@ -34,6 +21,14 @@ export class TileStore {
         const bottomIndex = tile.index + this.TILES_PER_ROW;
     
         this.tileGraph.set(tile, [topIndex, rightIndex, bottomIndex, leftIndex]);
+    }
+
+    setTiles(tiles: TileObj[]) {
+
+    }
+
+    clearTiles(): void {
+        this.tileGraph = new Map();
     }
 
     remove(tile: TileObj) {
@@ -57,46 +52,23 @@ export class TileStore {
         const index = y * this.TILES_PER_ROW + x;
         return this.tileMap[index];
     }
+}
 
-    getTileMaterial(): StandardMaterial {
-        if (!this.tileMaterial) {
+function createGraph(tiles: TileObj[]): GraphMap {
+    const indexMap: Map<number, TileObj> = new Map();
+    tiles.forEach(tile => indexMap.set(tile.index, tile));
 
-            this.tileMaterial = new StandardMaterial('tile-material-default', this.worldProvider.world.scene);
-            this.tileMaterial.alpha = 0;
-        }
+    const graphMap: GraphMap = new Map();
+    tiles.forEach(tile => {
 
-        return this.tileMaterial;
-    }
-
-    getActiveTileMaterial(): StandardMaterial {
-        if (!this.activeTileMaterial) { 
-
-            this.activeTileMaterial = new StandardMaterial('tile-material-active', this.worldProvider.world.scene);
-            this.activeTileMaterial.diffuseColor = Color3.Green();
-            this.activeTileMaterial.alpha = 0.5;
-        }
-
-        return this.activeTileMaterial;
-    }
-
-    getHoverTileMaterial(): StandardMaterial {
-        if (!this.hoverTileMaterial) { 
-
-            this.hoverTileMaterial = new StandardMaterial('tile-material-hover', this.worldProvider.world.scene);
-            this.hoverTileMaterial.diffuseColor = Color3.Green();
-            this.hoverTileMaterial.alpha = 0.2;
-        }
-
-        return this.hoverTileMaterial;
-    }
+        
+    });
 }
 
 export class TileDepthFirstSearch {
-    
     iterate(startTile: TileObj,  store: TileStore, maxDepth: number, callback: (tile: TileObj) => void) {
         const stack: [TileObj, number][] = [];
         const visited: Set<TileObj> = new Set();
-        let depth = 0;
         
         stack.push([startTile, 0]);
 
@@ -109,7 +81,6 @@ export class TileDepthFirstSearch {
                 if (tileDepth <= maxDepth) {
                     callback(tile);
     
-                    depth++;
                     const neightbourTiles = store.getNeighbourTiles(tile);
                     neightbourTiles.forEach(tile => stack.push([tile, tileDepth + 1]));
                 }
