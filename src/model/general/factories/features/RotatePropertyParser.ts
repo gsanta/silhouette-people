@@ -1,8 +1,8 @@
 import { Axis, Space, Tools } from "babylonjs";
 import { MeshObj } from "../../objs/MeshObj";
-import { AbstractFeatureParser } from "../AbstractFeactureParser";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
-export class RotateFeatureParser extends AbstractFeatureParser {
+export class RotatePropertyParser extends AbstractPropertyParser {
     feature = 'Rotate';
 
     isAsync(): boolean {

@@ -1,8 +1,8 @@
 import { ActivePlayerService } from "../../../../services/ActivePlayerService";
 import { MeshObj } from "../../objs/MeshObj";
-import { AbstractFeatureParser } from "../AbstractFeactureParser";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
-export class ActivePlayerFeatureParser extends AbstractFeatureParser {
+export class ActivePlayerPropertyParser extends AbstractPropertyParser {
     feature = 'ActivePlayer';
 
     private highlightService: ActivePlayerService;

@@ -2,10 +2,12 @@ import { Mesh } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { lookup } from "../../../services/Lookup";
 import { TileStore } from "../../../stores/TileStore";
+import { QuarterObj } from "./QuarterObj";
 
 export class TileObj {
     private mesh: Mesh;
     index: number;
+    quarter: QuarterObj;
 
     @InjectProperty("TileStore")
     private tileStore: TileStore;
@@ -13,10 +15,11 @@ export class TileObj {
     private isActive = false;
     private isHovered = false;
 
-    constructor(mesh: Mesh, index: number) {
+    constructor(mesh: Mesh, index: number, quarter: QuarterObj) {
         this.tileStore = lookup.tileStore;
         this.mesh = mesh;
         this.index = index;
+        this.quarter = quarter;
     }
 
     markActive() {
@@ -45,6 +48,11 @@ export class TileObj {
             this.isHovered = false;
             this.updateMaterial();
         }
+    }
+
+    dispose(tileStore: TileStore) {
+        tileStore.remove(this);
+        this.mesh.dispose();
     }
 
     private updateMaterial() {

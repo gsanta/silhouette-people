@@ -48,7 +48,9 @@ export class TileFactory {
                 ground.edgesWidth = 5.0;
                 ground.edgesColor = new Color4(0, 0, 1, 1);
 
-                this.tileStore.add(new TileObj(ground, (yInd + top) * this.tileStore.TILES_PER_ROW + left + xInd));
+                const index = (yInd + top) * this.tileStore.TILES_PER_ROW + left + xInd;
+
+                this.tileStore.add(new TileObj(ground, index, quarterObj));
             }
         }
     }

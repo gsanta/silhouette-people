@@ -1,7 +1,7 @@
 import { MeshObj } from "../../objs/MeshObj";
-import { AbstractFeatureParser } from "../AbstractFeactureParser";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
-export class IdFeatureParser extends AbstractFeatureParser {
+export class IdPropertyParser extends AbstractPropertyParser {
     feature = 'Id';
 
     processFeature(gameObj: MeshObj, attrs: string[]) {

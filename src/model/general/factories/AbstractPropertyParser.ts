@@ -1,7 +1,7 @@
 import { Vector3 } from "babylonjs";
 import { MeshObj } from "../objs/MeshObj";
 
-export abstract class AbstractFeatureParser {
+export abstract class AbstractPropertyParser {
     abstract feature: string;
 
     isAsync(): boolean { return false; }

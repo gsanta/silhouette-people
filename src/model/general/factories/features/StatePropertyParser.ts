@@ -5,10 +5,10 @@ import { MeshStateName } from "../../state/AbstractMeshState";
 import { CharacterIdleState } from "../../../character/states/CharacterIdleState";
 import { CharacterWalkingState } from "../../../character/states/CharacterWalkingState";
 import { MeshState } from "../../state/MeshState";
-import { AbstractFeatureParser } from "../AbstractFeactureParser";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 
-export class StateFeatureParser extends AbstractFeatureParser {
+export class StatePropertyParser extends AbstractPropertyParser {
     feature = 'State';
 
     isAsync(): boolean {

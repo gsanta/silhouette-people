@@ -1,20 +1,20 @@
 import { MeshObj, GameObjectJson, MeshObjType } from "../../model/general/objs/MeshObj";
 import { WorldObj } from "../../model/general/objs/WorldObj";
 import { Lookup } from "../Lookup";
-import { AbstractFeatureParser } from "../../model/general/factories/AbstractFeactureParser";
-import { ActivePlayerFeatureParser } from "../../model/general/factories/features/ActivePlayerFeatureParser";
-import { AddonFeatureParser } from "../../model/general/factories/features/AddonFeatureParser";
-import { CollisionFeatureParser } from "../../model/general/factories/features/CollisionFeatureParser";
-import { IdFeatureParser } from "../../model/general/factories/features/IdFeatureParser";
-import { ModelFeatureParser } from "../../model/general/factories/features/ModelFeatureParser";
-import { PhysicsFeatureParser } from "../../model/general/factories/features/PhysicsFeatureParser";
-import { PositionFeatureParser } from "../../model/general/factories/features/PositionFeatureParser";
-import { RotateFeatureParser } from "../../model/general/factories/features/RotateFeatureParser";
-import { StateFeatureParser } from "../../model/general/factories/features/StateFeatureParser";
-import { TagFeatureParser } from "../../model/general/factories/features/TagFeatureParser";
-import { TextureFeatureParser } from "../../model/general/factories/features/TextureFeatureParser";
+import { AbstractPropertyParser } from "../../model/general/factories/AbstractPropertyParser";
+import { ActivePlayerPropertyParser } from "../../model/general/factories/features/ActivePlayerPropertyParser";
+import { CollisionPropertyParser } from "../../model/general/factories/features/CollisionPropertyParser";
+import { IdPropertyParser } from "../../model/general/factories/features/IdPropertyParser";
+import { ModelPropertyParser } from "../../model/general/factories/features/ModelPropertyParser";
+import { PhysicsPropertyParser } from "../../model/general/factories/features/PhysicsPropertyParser";
+import { PositionPropertyParser } from "../../model/general/factories/features/PositionPropertyParser";
+import { RotatePropertyParser } from "../../model/general/factories/features/RotatePropertyParser";
+import { StatePropertyParser } from "../../model/general/factories/features/StatePropertyParser";
+import { TagPropertyParser } from "../../model/general/factories/features/TagPropertyParser";
+import { TexturePropertyParser } from "../../model/general/factories/features/TexturePropertyParser";
 import { InjectProperty } from "../../di/diDecorators";
 import { ActivePlayerService } from "../ActivePlayerService";
+import { HiddenPropertyParser } from "../../model/general/factories/features/HiddenPropertyParser";
 
 export class MeshFactory {
     
@@ -23,7 +23,7 @@ export class MeshFactory {
     
     private lookup: Lookup;
     private indexesByType: Map<string, number> = new Map();
-    private featureFactories: AbstractFeatureParser[] = [];
+    private featureFactories: AbstractPropertyParser[] = [];
 
     constructor(lookup: Lookup) {
         this.lookup = lookup;
@@ -57,7 +57,7 @@ export class MeshFactory {
         }
     }
 
-    private async processFeature(factory: AbstractFeatureParser, gameObj: MeshObj, feature: string): Promise<void> {
+    private async processFeature(factory: AbstractPropertyParser, gameObj: MeshObj, feature: string): Promise<void> {
         const [_featureName, ...attrs] = feature.split(' ').map(str => str.trim());
         if (factory.isAsync()) {
             await factory.processFeatureAsync(gameObj, attrs);
@@ -68,17 +68,17 @@ export class MeshFactory {
 
     private createFeatureFactories(worldObj: WorldObj) {
         this.featureFactories = [
-            new ModelFeatureParser(worldObj, this.lookup),
-            new PositionFeatureParser(),
-            new TextureFeatureParser(this.lookup),
-            new CollisionFeatureParser(worldObj, this.lookup),
-            new PhysicsFeatureParser(this.lookup),
-            new StateFeatureParser(),
-            new TagFeatureParser(),
-            new AddonFeatureParser(this.lookup),
-            new RotateFeatureParser(),
-            new IdFeatureParser(),
-            new ActivePlayerFeatureParser(this.activePlayerService)
+            new ModelPropertyParser(worldObj, this.lookup),
+            new PositionPropertyParser(),
+            new TexturePropertyParser(this.lookup),
+            new CollisionPropertyParser(worldObj, this.lookup),
+            new PhysicsPropertyParser(this.lookup),
+            new StatePropertyParser(),
+            new TagPropertyParser(),
+            new HiddenPropertyParser(),
+            new RotatePropertyParser(),
+            new IdPropertyParser(),
+            new ActivePlayerPropertyParser(this.activePlayerService)
         ];
     }
 

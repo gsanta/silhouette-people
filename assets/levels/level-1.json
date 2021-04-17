@@ -176,7 +176,8 @@
             "Addon Highlight"
         ],
         "P": [
-            "Id player2"
+            "Id player2",
+            "Hidden"
         ]
     }
 }

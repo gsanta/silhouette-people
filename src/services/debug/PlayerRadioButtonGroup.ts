@@ -2,6 +2,7 @@ import { Container, Control, RadioButton, StackPanel } from "babylonjs-gui";
 import { InjectProperty } from "../../di/diDecorators";
 import { MeshStore } from "../../stores/MeshStore";
 import { ActivePlayerService } from "../ActivePlayerService";
+import { GameModeService } from "../GameModeService";
 import { lookup } from "../Lookup";
 import { IGUIComponent } from "./IGUIComponent";
 
@@ -12,9 +13,13 @@ export class PlayerRadioButtonGroup implements IGUIComponent {
     @InjectProperty("ActivePlayerService")
     private activePlayerService: ActivePlayerService;
 
+    @InjectProperty("GameModeService")
+    private gameModeService: GameModeService;
+
     constructor() {
         this.meshStore = lookup.meshStore;
         this.activePlayerService = lookup.activePlayerService;
+        this.gameModeService = lookup.gameMode;
     }
     
     render(parent: Container) {
@@ -27,18 +32,26 @@ export class PlayerRadioButtonGroup implements IGUIComponent {
         
         this.addRadio('player1', panel, (isActive) => {
             if (isActive) {
-                this.activatePlayer('player1');
+                this.activateNormalMode();
             }
         });
         this.addRadio('player2', panel, (isActive) => {
             if (isActive) {
-                this.activatePlayer('player2');
+                this.activateGridMode();
             }
         });        
 
         parent.addControl(panel);
     }
 
+    private activateNormalMode() {
+        this.gameModeService.changeToRTM();    
+    }
+
+    private activateGridMode() {
+        this.gameModeService.changeToTBM();
+    }
+    
     private activatePlayer(playerId: string) {
         this.activePlayerService.activate(this.meshStore.getById(playerId));
     }

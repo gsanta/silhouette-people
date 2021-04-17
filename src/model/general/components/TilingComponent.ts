@@ -2,6 +2,7 @@ import { constants } from "../../../contants";
 import { InjectProperty } from "../../../di/diDecorators";
 import { TileFactory } from "../../../services/factory/TileFactory";
 import { lookup } from "../../../services/Lookup";
+import { TileStore } from "../../../stores/TileStore";
 import { QuarterObj } from "../objs/QuarterObj";
 
 export class TilingComponent {
@@ -13,8 +14,12 @@ export class TilingComponent {
     @InjectProperty("TileFactory")
     private tileFactory: TileFactory;
 
+    @InjectProperty("TileStore")
+    private tileStore: TileStore;
+
     constructor(quarterObj: QuarterObj) {
         this.tileFactory = lookup.tileFactory;
+        this.tileStore = lookup.tileStore;
         this.quarterObj = quarterObj;
         
         this.TILES_PER_QUARTER_X = Math.floor(quarterObj.getSize().x / constants.TILE_SIZE);
@@ -29,6 +34,7 @@ export class TilingComponent {
     }
 
     deactivate() {
-
+        this.tileStore.getAll().filter(tile => tile.quarter === this.quarterObj).forEach(tile => tile.dispose(this.tileStore));
+        this.isActive = false;
     }
 }

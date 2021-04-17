@@ -1,6 +1,6 @@
 import { Vector2, Vector3 } from "babylonjs";
 import { GameObjectJson, MeshObjType } from "../../model/general/objs/MeshObj";
-import { toStrVector } from "../../model/general/factories/AbstractFeactureParser";
+import { toStrVector } from "../../model/general/factories/AbstractPropertyParser";
 import { WorldJson } from "./WorldJson";
 
 export class DistrictParser {

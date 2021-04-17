@@ -1,7 +1,7 @@
 import { MeshObj, MeshObjTag } from "../../objs/MeshObj";
-import { AbstractFeatureParser } from "../AbstractFeactureParser";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
-export class TagFeatureParser extends AbstractFeatureParser {
+export class TagPropertyParser extends AbstractPropertyParser {
     feature = 'Tag';
 
     isAsync(): boolean {

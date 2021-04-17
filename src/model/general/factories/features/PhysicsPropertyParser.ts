@@ -1,9 +1,9 @@
 import { PhysicsImpostor } from "babylonjs";
 import { MeshObj } from "../../objs/MeshObj";
 import { Lookup } from "../../../../services/Lookup";
-import { AbstractFeatureParser } from "../AbstractFeactureParser";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
-export class PhysicsFeatureParser extends AbstractFeatureParser {
+export class PhysicsPropertyParser extends AbstractPropertyParser {
     private world: Lookup;
 
     constructor(world: Lookup) {

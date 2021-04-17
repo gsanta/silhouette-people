@@ -2,9 +2,9 @@ import { Axis, Mesh, SceneLoader, Space } from "babylonjs";
 import { MeshObj } from "../../objs/MeshObj";
 import { WorldObj } from "../../objs/WorldObj";
 import { Lookup } from "../../../../services/Lookup";
-import { AbstractFeatureParser } from "../AbstractFeactureParser";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
-export class ModelFeatureParser extends AbstractFeatureParser {
+export class ModelPropertyParser extends AbstractPropertyParser {
     private lookup: Lookup;
     private worldObj: WorldObj;
 

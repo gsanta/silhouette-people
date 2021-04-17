@@ -28,17 +28,18 @@ export class TileStore {
     add(tile: TileObj) {
         this.tileMap[tile.index] = tile;
         this.tileList.push(tile);
-
-        // const leftIndex = tile.index % this.TILES_PER_ROW - 1;
-        // const rightIndex = (tile.index + 1) % this.TILES_PER_ROW;
-        // const topIndex = Math.floor(tile.index / this.TILES_PER_ROW) - 1;
-        // const bottomIndex = Math.floor(tile.index / this.TILES_PER_ROW) - 1;
         const leftIndex = tile.index - 1;
         const rightIndex = tile.index + 1;
         const topIndex = tile.index - this.TILES_PER_ROW;
         const bottomIndex = tile.index + this.TILES_PER_ROW;
     
         this.tileGraph.set(tile, [topIndex, rightIndex, bottomIndex, leftIndex]);
+    }
+
+    remove(tile: TileObj) {
+        this.tileMap[tile.index] = undefined;
+        this.tileList = this.tileList.filter(t => t !== tile);
+        this.tileGraph.delete(tile);
     }
 
     getNeighbourTiles(tile: TileObj): TileObj[] {

@@ -1,8 +1,8 @@
 import { Axis, Space } from "babylonjs";
 import { MeshObj } from "../../objs/MeshObj";
-import { AbstractFeatureParser, parseStrVector } from "../AbstractFeactureParser";
+import { AbstractPropertyParser, parseStrVector } from "../AbstractPropertyParser";
 
-export class PositionFeatureParser extends AbstractFeatureParser {
+export class PositionPropertyParser extends AbstractPropertyParser {
     feature = 'Position';
 
     isAsync(): boolean {

@@ -1,9 +1,9 @@
 import { StandardMaterial, Texture } from "babylonjs";
 import { MeshObj } from "../../objs/MeshObj";
 import { Lookup } from "../../../../services/Lookup";
-import { AbstractFeatureParser } from "../AbstractFeactureParser";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
-export class TextureFeatureParser extends AbstractFeatureParser {
+export class TexturePropertyParser extends AbstractPropertyParser {
     private world: Lookup;
 
     constructor(world: Lookup) {

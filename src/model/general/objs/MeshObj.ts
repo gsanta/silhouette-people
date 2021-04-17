@@ -149,6 +149,10 @@ export class MeshObj<S extends MeshState<MeshObj> = any> extends GameObj {
         }
     }
 
+    setVisibility(isVisible: boolean) {
+        this.allMeshes.forEach(mesh => mesh.isVisible = isVisible);
+    }
+
     getMesh() {
         return this.colliderMesh ? this.colliderMesh : this.mainMesh;
     }

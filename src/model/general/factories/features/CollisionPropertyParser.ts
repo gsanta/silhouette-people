@@ -2,10 +2,10 @@ import { Axis, MeshBuilder, Space, StandardMaterial } from "babylonjs";
 import { MeshObj } from "../../objs/MeshObj";
 import { WorldObj } from "../../objs/WorldObj";
 import { Lookup } from "../../../../services/Lookup";
-import { AbstractFeatureParser, parseStrVector } from "../AbstractFeactureParser";
+import { AbstractPropertyParser, parseStrVector } from "../AbstractPropertyParser";
 
 
-export class CollisionFeatureParser extends AbstractFeatureParser {
+export class CollisionPropertyParser extends AbstractPropertyParser {
     private lookup: Lookup;
     private worldObj: WorldObj;
 

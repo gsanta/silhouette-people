@@ -18,6 +18,7 @@ import { RouteFactory } from "./factory/RouteFactory";
 import { LightStore } from "../stores/LightStore";
 import { LightFactory } from "./factory/LightFactory";
 import { ActivePlayerService } from "./ActivePlayerService";
+import { GameModeService } from "./GameModeService";
 
 export class Lookup {
     keyboard: KeyboardService;
@@ -34,6 +35,7 @@ export class Lookup {
     setup: SetupService;
     controller: ControllerService;
     update: UpdateService;
+    gameMode: GameModeService;
     
     meshFactory: MeshFactory;
     quarterFactory: QuarterFactory;
@@ -79,6 +81,15 @@ export class Lookup {
         this.pointer = new PointerService();
         lookup.pointer = this.pointer;
 
+        this.lightFactory = new LightFactory();
+        lookup.lightFactory = this.lightFactory;
+
+        this.activePlayerService = new ActivePlayerService();
+        lookup.activePlayerService = this.activePlayerService;
+
+        this.gameMode = new GameModeService();
+        lookup.gameMode = this.gameMode;
+
         this.debug = new DebugService();
         lookup.debug = this.debug;
 
@@ -87,12 +98,6 @@ export class Lookup {
 
         this.setup = new SetupService(this);
         this.update = new UpdateService();
-
-        this.lightFactory = new LightFactory();
-        lookup.lightFactory = this.lightFactory;
-        
-        this.activePlayerService = new ActivePlayerService();
-        lookup.activePlayerService = this.activePlayerService;
 
         this.meshFactory = new MeshFactory(this);
         this.quarterFactory = new QuarterFactory();
