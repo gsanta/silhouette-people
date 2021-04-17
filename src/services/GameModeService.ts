@@ -51,7 +51,7 @@ export class GameModeService {
     }
 
     changeToRTM() {
-        this.tileStore.getAll().forEach(tile => tile.dispose(this.tileStore));
+        this.tileStore.clearTiles();
         this.controllerService.setMasterController(new NormalModeController(this.controllerService.getCameraController()));
         const player1 = this.meshStore.getById('player1');
         player1.setVisibility(true);

@@ -1,91 +1,93 @@
 import { Vector2 } from "babylonjs";
 import { TileObj } from "../model/general/objs/TileObj";
+import { Rect } from "../model/general/shape/Rect";
+import { Graph } from "../model/graph/Graph";
 
-type GraphMap = Map<TileObj, { cost: number, neighbour: TileObj }[]>;
+type WeightedNeighbour = [TileObj, number];
+type GraphMap = Map<TileObj, WeightedNeighbour[]>;
 
-export class TileStore {
+export class TileStore implements Graph<TileObj, [TileObj, number, TileObj]> {
     readonly TILE_SIZE = 4;
     TILES_PER_ROW: number;
     TILES_PER_COL: number;
 
-    private tileMap: {[key: number]: TileObj} = {}
-    private tileList: TileObj[] = [];
-    private tileGraph: Map<TileObj, number[]> = new Map();
+    private bounds: Rect;
+    private tiles: TileObj[][];
+    private graphMap: GraphMap = new Map();
 
-    add(tile: TileObj) {
-        this.tileMap[tile.index] = tile;
-        this.tileList.push(tile);
-        const leftIndex = tile.index - 1;
-        const rightIndex = tile.index + 1;
-        const topIndex = tile.index - this.TILES_PER_ROW;
-        const bottomIndex = tile.index + this.TILES_PER_ROW;
-    
-        this.tileGraph.set(tile, [topIndex, rightIndex, bottomIndex, leftIndex]);
-    }
-
-    setTiles(tiles: TileObj[]) {
-
+    setTiles(tiles: TileObj[][], bounds: Rect) {
+        this.tiles = tiles;
+        this.graphMap = createGraph(tiles);
+        this.bounds = bounds;
     }
 
     clearTiles(): void {
-        this.tileGraph = new Map();
+        Array.from(this.graphMap.keys()).forEach(tile => tile.dispose())
+        this.graphMap = new Map();
     }
 
-    remove(tile: TileObj) {
-        this.tileMap[tile.index] = undefined;
-        this.tileList = this.tileList.filter(t => t !== tile);
-        this.tileGraph.delete(tile);
+    vertices(): TileObj[] {
+        return Array.from(this.graphMap.keys());
     }
 
-    getNeighbourTiles(tile: TileObj): TileObj[] {
-        const neighbourIndexes = this.tileGraph.get(tile);
-        return neighbourIndexes.map(index => this.tileMap[index]).filter(tile => tile !== undefined);
+    edgeBetween(v1: TileObj, v2: TileObj): [TileObj, number, TileObj] {
+        const neighbour = this.graphMap.get(v1).find(n => n[0] === v2);
+
+        if (neighbour) {
+            return [...neighbour, v1];
+        }
+    }
+
+    neighbours(v: TileObj): TileObj[] {
+        return this.graphMap.get(v).map(neighbour => neighbour[0]);
     }
 
     getAll(): TileObj[] {
-        return this.tileList;
+        return Array.from(this.graphMap.keys());
     }
 
     getTileByWorldPos(position: Vector2): TileObj {
-        const x = Math.floor(position.x / this.TILE_SIZE) + this.TILES_PER_ROW / 2;
-        const y = this.TILES_PER_COL / 2 - Math.floor(position.y / this.TILE_SIZE) - 1;
-        const index = y * this.TILES_PER_ROW + x;
-        return this.tileMap[index];
-    }
-}
-
-function createGraph(tiles: TileObj[]): GraphMap {
-    const indexMap: Map<number, TileObj> = new Map();
-    tiles.forEach(tile => indexMap.set(tile.index, tile));
-
-    const graphMap: GraphMap = new Map();
-    tiles.forEach(tile => {
-
-        
-    });
-}
-
-export class TileDepthFirstSearch {
-    iterate(startTile: TileObj,  store: TileStore, maxDepth: number, callback: (tile: TileObj) => void) {
-        const stack: [TileObj, number][] = [];
-        const visited: Set<TileObj> = new Set();
-        
-        stack.push([startTile, 0]);
-
-        while (stack.length > 0) {
-            const [tile, tileDepth] = stack.pop();
-            
-            if (!visited.has(tile)) {
-                visited.add(tile);
-                
-                if (tileDepth <= maxDepth) {
-                    callback(tile);
-    
-                    const neightbourTiles = store.getNeighbourTiles(tile);
-                    neightbourTiles.forEach(tile => stack.push([tile, tileDepth + 1]));
-                }
-                
-            }
+        if (this.bounds.containsPoint(position)) {
+            const tileRows = Math.floor(this.bounds.getHeight() / this.TILE_SIZE);
+            const relativeX = position.x - this.bounds.min.x;
+            const relativeY = position.y - this.bounds.min.y;
+            const tileX = Math.floor(relativeX / this.TILE_SIZE);
+            const tileY =  tileRows - Math.floor(relativeY / this.TILE_SIZE) - 1;
+            return this.tiles[tileY][tileX];
         }
     }
+}
+
+function createGraph(tiles: TileObj[][]): GraphMap {
+    const rows = tiles.length;
+    const cols = tiles[0].length;
+
+    const graphMap: GraphMap = new Map();
+
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+            const tile = tiles[row][col];
+            const neighbours: WeightedNeighbour[] = [];
+
+            if (row > 0) {
+                neighbours.push([tiles[row - 1][col], 1]);
+            }
+
+            if (col < cols - 1) {
+                neighbours.push([tiles[row][col + 1], 1]);
+            }
+
+            if (col > 0) {
+                neighbours.push([tiles[row][col - 1], 1]);
+            }
+
+            if (row < rows - 1) {
+                neighbours.push([tiles[row + 1][col], 1]);
+            }
+
+            graphMap.set(tile, neighbours);
+        }
+    }
+
+    return graphMap;
 }

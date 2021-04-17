@@ -1,10 +1,11 @@
 import { InjectProperty } from "../di/diDecorators";
 import { TileObj } from "../model/general/objs/TileObj";
+import { PointerData } from "../services/input/PointerService";
 import { lookup } from "../services/Lookup";
+import { TileMarker } from "../services/tile/TileMarker";
 import { MeshStore } from "../stores/MeshStore";
-import { TileDepthFirstSearch, TileStore } from "../stores/TileStore";
+import { TileStore } from "../stores/TileStore";
 import { AbstractController, ControllerType } from "./IController";
-
 
 export class PlayerTilingController extends AbstractController {
     type = ControllerType.Player;
@@ -16,11 +17,13 @@ export class PlayerTilingController extends AbstractController {
     private meshStore: MeshStore;
 
     private playerTile: TileObj;
+    private tileMarker: TileMarker;
 
     constructor() {
         super();
         this.tileStore = lookup.tileStore;
         this.meshStore = lookup.meshStore;
+        this.tileMarker = new TileMarker();
     }
 
     beforeRender() {
@@ -33,18 +36,15 @@ export class PlayerTilingController extends AbstractController {
         if (this.playerTile !== currPlayerTile) {
             this.removeTiles();
             this.playerTile = currPlayerTile;
-            this.markTiles();
         }
+    }
+
+    pointerMove(pointer: PointerData) {
+        this.tileMarker.unmarkHoverAll();
+        this.tileMarker.markHover(pointer.curr2D);
     }
 
     private removeTiles() {
         this.tileStore.getAll().forEach(tile => tile.unMarkActive());
-    }
-
-    private markTiles() {
-        const search = new TileDepthFirstSearch();
-        search.iterate(this.playerTile, this.tileStore, 3, (tile: TileObj) => {
-            tile.markActive();
-        });
     }
 }

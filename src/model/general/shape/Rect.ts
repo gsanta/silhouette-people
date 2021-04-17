@@ -20,4 +20,8 @@ export class Rect {
     center(): Vector2 {
         return  new Vector2((this.min.x + this.max.x) / 2, (this.min.y + this.max.y) / 2);
     }
+
+    containsPoint(point: Vector2): boolean {
+        return point.x > this.min.x && point.x < this.max.x && point.y > this.min.y && point.y < this.max.y;
+    }
 }

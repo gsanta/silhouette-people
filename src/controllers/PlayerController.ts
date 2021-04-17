@@ -74,11 +74,6 @@ export class PlayerController extends AbstractController {
         }
     }
 
-    pointerMove(pointer: PointerData) {
-        this.tileMarker.unmarkHoverAll();
-        this.tileMarker.markHover(pointer.curr2D);
-    }
-
     beforeRender() {
         const player = this.meshStore.getActivePlayer();
         player.state.beforeRender();

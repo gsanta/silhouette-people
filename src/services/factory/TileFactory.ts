@@ -3,6 +3,7 @@ import { Vector2 } from "babylonjs/Maths/math.vector";
 import { InjectProperty } from "../../di/diDecorators";
 import { TileObj } from "../../model/general/objs/TileObj";
 import { Rect } from "../../model/general/shape/Rect";
+import { MaterialStore } from "../../stores/MaterialStore";
 import { TileStore } from "../../stores/TileStore";
 import { lookup } from "../Lookup";
 
@@ -11,29 +12,39 @@ export class TileFactory {
     @InjectProperty("TileStore")
     private tileStore: TileStore;
 
+    @InjectProperty("MaterialStore")
+    private materialStore: MaterialStore;
+
     private readonly tileSize = 4;
 
     constructor() {
         this.tileStore = lookup.tileStore;
+        this.materialStore = lookup.materialStore;
     }
 
-    createTilesForArea(area: Rect) {
+    createTilesForArea(bounds: Rect) {
 
-        const center = area.center();
-        const width = area.getWidth();
-        const height = area.getHeight();
+        const center = bounds.center();
+        const width = bounds.getWidth();
+        const height = bounds.getHeight();
 
         const [cols, rows] = [width / this.tileSize, height / this.tileSize];
 
+        const tiles: TileObj[][] = [];
+
         for (let row = 0; row < rows; row++) {
+            tiles.push([]);
             for (let col = 0; col < cols; col++) {
-                this.createTile(center, cols, rows, col, row);
+                const tile = this.createTile(center, cols, rows, col, row);
+                tiles[row].push(tile);
             }
         }
+
+        this.tileStore.setTiles(tiles, bounds);
     }
 
-    private createTile(center: Vector2, cols: number, rows: number, col: number, row: number) {
-        const tileMaterial = this.tileStore.getTileMaterial();
+    private createTile(center: Vector2, cols: number, rows: number, col: number, row: number): TileObj {
+        const tileMaterial = this.materialStore.getTileMaterial();
 
         const relativeColPos = col - cols / 2;
         const relativeRowPos = rows / 2 - row;
@@ -52,6 +63,6 @@ export class TileFactory {
         ground.edgesWidth = 5.0;
         ground.edgesColor = new Color4(0, 0, 1, 1);
 
-        this.tileStore.add(new TileObj(ground, index));
+        return new TileObj(ground, index);
     }
 }
