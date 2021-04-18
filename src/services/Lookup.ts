@@ -63,6 +63,9 @@ export class Lookup {
         this.worldProvider = new WorldProvider();
         lookup.worldProvider = this.worldProvider;
 
+        this.routeStore = new RouteStore();
+        lookup.routeStore = this.routeStore;
+
         this.routeFactory = new RouteFactory();
         lookup.routeFactory = this.routeFactory;
 
@@ -76,8 +79,6 @@ export class Lookup {
         lookup.meshStore = this.meshStore;
         this.lightStore = new LightStore();
         lookup.lightStore = this.lightStore;
-        this.routeStore = new RouteStore();
-        lookup.routeStore = this.routeStore;
 
         this.renderGui = new RenderGuiService();
         lookup.renderGui = this.renderGui;

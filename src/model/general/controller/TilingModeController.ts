@@ -19,6 +19,10 @@ export class TilingModeController extends AbstractController {
         ];
     }
 
+    setup() {
+        this.delegates.forEach(delegate => delegate.setup());
+    }
+
     keyboard(e: KeyboardEvent, isKeyDown: boolean) {
         this.delegates.forEach(delegate => delegate.keyboard(e, isKeyDown));
     }

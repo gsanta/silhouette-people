@@ -29,14 +29,15 @@ export class EnemyController extends AbstractController {
         this.worldProvider = lookup.worldProvider;
     }
 
+    setup() {
+        const enemies = this.meshStore.getEnemies();
+        enemies.forEach(enemy => this.routeFactory.createRandomRoute(enemy));
+    }
 
     beforeRender() {
         const deltaTime = this.worldProvider.world.engine.getDeltaTime();
         const finishedRoutes = this.routeStore.getFinishedRoutes();
-
-        finishedRoutes.forEach(route => {
-            this.routeStore.addRoute(this.routeFactory.createRandomRoute(route.character));
-        });
+        finishedRoutes.forEach(route => this.routeFactory.createRandomRoute(route.character));
 
         this.routeStore.clearFinishedRoutes();
 

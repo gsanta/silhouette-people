@@ -1,6 +1,6 @@
 import { InjectProperty } from "../di/diDecorators";
 import { TileObj } from "../model/general/objs/TileObj";
-import { PointerData } from "../services/input/PointerService";
+import { MouseButtonType, PointerData } from "../services/input/PointerService";
 import { lookup } from "../services/Lookup";
 import { TileMarker } from "../services/tile/TileMarker";
 import { MeshStore } from "../stores/MeshStore";
@@ -45,8 +45,14 @@ export class PlayerTilingController extends AbstractController {
     }
 
     pointerDown(pointer: PointerData) {
-        this.tileMarker.unmarkHoverAll();
-        this.tileMarker.markActive(pointer.curr2D);
+        switch(pointer.buttonType) {
+            case MouseButtonType.LEFT:
+                this.tileMarker.markActive(pointer.down2D);
+            break;
+            case MouseButtonType.RIGHT:
+                this.tileMarker.unmarkActive(pointer.down2D);
+            break;
+        }
     }
 
     private removeTiles() {

@@ -18,6 +18,10 @@ export class ControllerService extends AbstractController {
         this.masterController = controller;
     }
 
+    setup() {
+        this.masterController.setup();
+    }
+
     keyboard(e: KeyboardEvent, isKeyDown: boolean) {
         this.masterController.keyboard(e, isKeyDown);
     }

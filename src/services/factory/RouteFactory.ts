@@ -1,14 +1,21 @@
-import { Route } from "../../model/general/objs/Route";
+import { InjectProperty } from "../../di/diDecorators";
 import { MeshObj } from "../../model/general/objs/MeshObj";
-import { QuarterObj } from "../../model/general/objs/QuarterObj";
+import { RealTimeRouteWalker } from "../../model/general/objs/RealTimeRouteWalker";
+import { Route } from "../../model/general/objs/Route";
+import { RouteStore } from "../../stores/RouteStore";
 import { IPathFinder } from "../district/path/IPathFinder";
 import { MasterPathFinder } from "../district/path/MasterPathFinder";
-import { RealTimeRouteWalker } from "../../model/general/objs/RealTimeRouteWalker";
+import { lookup } from "../Lookup";
 
 export class RouteFactory {
+    
+    @InjectProperty("RouteStore")
+    private routeStore: RouteStore;
+    
     private pathFinder: IPathFinder;
 
     constructor() {
+        this.routeStore = lookup.routeStore;
         this.pathFinder = new MasterPathFinder();
     }
     
@@ -33,5 +40,7 @@ export class RouteFactory {
         
         const route = new Route(gameObject, path);
         route.walker = new RealTimeRouteWalker(route);
+        
+        this.routeStore.addRoute(route);
     }
 }

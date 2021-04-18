@@ -63,17 +63,6 @@ export class PlayerController extends AbstractController {
         }
     }
 
-    pointerDown(pointer: PointerData) {
-        switch(pointer.buttonType) {
-            case MouseButtonType.LEFT:
-                this.tileMarker.markActive(pointer.down2D);
-            break;
-            case MouseButtonType.RIGHT:
-                this.tileMarker.unmarkActive(pointer.down2D);
-            break;
-        }
-    }
-
     beforeRender() {
         const player = this.meshStore.getActivePlayer();
         player.state.beforeRender();

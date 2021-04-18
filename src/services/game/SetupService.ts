@@ -36,5 +36,7 @@ export class SetupService {
         this.pointerService.listen();
 
         this._isReady = true;
+
+        this.controllerService.setup();
     }
 }

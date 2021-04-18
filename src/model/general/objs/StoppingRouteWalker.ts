@@ -2,7 +2,7 @@ import { Vector2 } from "babylonjs";
 import { Route } from "./Route";
 import { RouteWalker } from "./RouteWalker";
 
-export class RealTimeRouteWalker implements RouteWalker {
+export class StoppingRouteWalker implements RouteWalker {
 
     private _isFinished: boolean = false;
     private fromCheckPoint: Vector2;
@@ -26,7 +26,7 @@ export class RealTimeRouteWalker implements RouteWalker {
         if (!this.isFinished()) { this.moveGameObject(); }
     }
 
-    isFinished(): boolean {
+    isFinished() {
         return this._isFinished;
     }
 
