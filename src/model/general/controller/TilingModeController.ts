@@ -3,6 +3,7 @@ import { CameraController } from "../../../controllers/CameraController";
 import { EnemyController } from "../../../controllers/EnemyController";
 import { AbstractController } from "../../../controllers/IController";
 import { PlayerTilingController } from "../../../controllers/PlayerTilingController";
+import { RouteController } from "../../../controllers/RouteController";
 import { PointerData } from "../../../services/input/PointerService";
 
 export class TilingModeController extends AbstractController {
@@ -15,6 +16,7 @@ export class TilingModeController extends AbstractController {
             new PlayerTilingController(),
             new EnemyController(),
             new BikeController(),
+            new RouteController(),
             cameraController
         ];
     }

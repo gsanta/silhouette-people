@@ -3,7 +3,7 @@ import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
 import { Lookup } from "./services/Lookup";
-import { AppGui } from './ui/AppGui';
+import { AppComponent } from './ui/AppComponent';
 
 export function createGame() {
     const root = <HTMLCanvasElement> document.getElementById("root");
@@ -12,7 +12,7 @@ export function createGame() {
     (window as any).world = world;
 
     ReactDOM.render(
-        React.createElement(AppGui, { world: world, onReady: () => initGame(world) }),
+        React.createElement(AppComponent, { world: world, onReady: () => initGame(world) }),
         root
     );
 }

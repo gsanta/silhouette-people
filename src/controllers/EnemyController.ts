@@ -35,12 +35,12 @@ export class EnemyController extends AbstractController {
     }
 
     beforeRender() {
-        const deltaTime = this.worldProvider.world.engine.getDeltaTime();
+        // const deltaTime = this.worldProvider.world.engine.getDeltaTime();
         const finishedRoutes = this.routeStore.getFinishedRoutes();
         finishedRoutes.forEach(route => this.routeFactory.createRandomRoute(route.character));
 
         this.routeStore.clearFinishedRoutes();
 
-        this.routeStore.getRoutes().forEach(route => route.walker.step(deltaTime));
+        // this.routeStore.getRoutes().forEach(route => route.walker.step(deltaTime));
     }
 }

@@ -10,9 +10,5 @@ export class Route {
     constructor(character: Character, checkPoints: Vector2[]) {
         this.character = character;
         this.checkPoints = checkPoints;
-
-        if (this.checkPoints.length < 2) {
-            throw new Error('A route needs to contain at least two checkpoints');
-        }
     }
 }

@@ -1,16 +1,14 @@
 
 import * as React from 'react';
-import { GuiProps } from './GuiProps';
-import { BikePanelGui } from './BikePanelGui';
-import { PointerService } from '../services/input/PointerService';
-import { InjectProperty } from '../di/diDecorators';
-import { lookup } from '../services/Lookup';
+import { BikePanelComponent } from './BikePanelComponent';
+import { CombatControllerComponent } from './CombatControllerComponent';
+import { ComponentProps } from './ComponentProps';
 
-export interface AppGuiProps extends GuiProps {
+export interface AppComponentProps extends ComponentProps {
     onReady: () => void;
 }
 
-export class AppGui extends React.Component<AppGuiProps> {
+export class AppComponent extends React.Component<AppComponentProps> {
 
     componentDidMount() {
         this.props.world.renderGui.setGuiRenderer(() => this.forceUpdate());
@@ -25,7 +23,8 @@ export class AppGui extends React.Component<AppGuiProps> {
                     onKeyDown={e => this.props.world.keyboard.keyDown(e.nativeEvent)}
                     onKeyUp={e => this.props.world.keyboard.keyUp(e.nativeEvent)}
                 />
-                <BikePanelGui world={this.props.world} />
+                <BikePanelComponent world={this.props.world} />
+                <CombatControllerComponent/>
             </div>
         );
     }

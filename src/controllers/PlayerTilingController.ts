@@ -1,5 +1,8 @@
+import { Vector2 } from "babylonjs/Maths/math.vector";
 import { InjectProperty } from "../di/diDecorators";
+import { Route } from "../model/general/objs/Route";
 import { TileObj } from "../model/general/objs/TileObj";
+import { RouteFactory } from "../services/factory/RouteFactory";
 import { MouseButtonType, PointerData } from "../services/input/PointerService";
 import { lookup } from "../services/Lookup";
 import { TileMarker } from "../services/tile/TileMarker";
@@ -16,13 +19,20 @@ export class PlayerTilingController extends AbstractController {
     @InjectProperty("MeshStore")
     private meshStore: MeshStore;
 
+    @InjectProperty("RouteFactory")
+    private routeFactory: RouteFactory;
+
+
     private playerTile: TileObj;
     private tileMarker: TileMarker;
+    // routeTiles: TileObj[] = [];
+    route: Route;
 
     constructor() {
         super();
         this.tileStore = lookup.tileStore;
         this.meshStore = lookup.meshStore;
+        this.routeFactory = lookup.routeFactory;
         this.tileMarker = new TileMarker();
     }
 
@@ -45,14 +55,27 @@ export class PlayerTilingController extends AbstractController {
     }
 
     pointerDown(pointer: PointerData) {
+        let tile = this.tileStore.getTileByWorldPos(pointer.down2D);
         switch(pointer.buttonType) {
             case MouseButtonType.LEFT:
-                this.tileMarker.markActive(pointer.down2D);
+                tile.markActive();
+                if (!this.route) {
+                    this.route = this.createRoute(tile.getPosition2D());
+                } else {
+                    this.route.checkPoints.push(tile.getPosition2D())
+                }
             break;
             case MouseButtonType.RIGHT:
-                this.tileMarker.unmarkActive(pointer.down2D);
+                tile.unMarkActive();
+                // this.routeTiles = this.routeTiles.filter(t => t !== tile);
             break;
         }
+    }
+
+    private createRoute(initialCheckPoint: Vector2) {
+        const activePlayer = this.meshStore.getActivePlayer();
+        const route = this.routeFactory.createRoute(activePlayer, [initialCheckPoint]);
+        return route;
     }
 
     private removeTiles() {

@@ -1,5 +1,5 @@
 import { Lookup } from "../services/Lookup";
 
-export interface GuiProps {
+export interface ComponentProps {
     world: Lookup;
 }

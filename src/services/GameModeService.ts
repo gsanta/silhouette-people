@@ -8,6 +8,12 @@ import { ActivePlayerService } from "./ActivePlayerService";
 import { ControllerService } from "./ControllerService";
 import { TileFactory } from "./factory/TileFactory";
 import { lookup } from "./Lookup";
+import { RenderGuiService } from "./RenderGuiService";
+
+export enum GameMode {
+    REAL_TIME = 'REAL_TIME',
+    TURN_BASED = 'TURN_BASED'
+}
 
 export class GameModeService {
 
@@ -29,6 +35,11 @@ export class GameModeService {
     @InjectProperty("TileStore")
     private tileStore: TileStore;
 
+    @InjectProperty("RenderGuiService")
+    private renderGuiService: RenderGuiService;
+
+    gameMode: GameMode = GameMode.REAL_TIME;
+
     constructor() {
         this.quarterStore = lookup.quarterStore;
         this.controllerService = lookup.controller;
@@ -36,9 +47,11 @@ export class GameModeService {
         this.activePlayerService = lookup.activePlayerService;
         this.tileStore = lookup.tileStore;
         this.tileFactory = lookup.tileFactory;
+        this.renderGuiService = lookup.renderGui;
     }
 
     changeToTBSMode() {
+        this.gameMode = GameMode.TURN_BASED;
         const bounds = this.quarterStore.getAllQuarters()[5].getBounds2D();
         this.tileFactory.createTilesForArea(bounds);
 
@@ -48,9 +61,11 @@ export class GameModeService {
         this.activePlayerService.activate(player2);
         const player1 = this.meshStore.getById('player1');
         player1.setVisibility(false);
+        this.renderGuiService.render(true);
     }
 
     changeToRTSMode() {
+        this.gameMode = GameMode.REAL_TIME;
         this.tileStore.clearTiles();
         this.controllerService.setMasterController(new NormalModeController(this.controllerService.getCameraController()));
         const player1 = this.meshStore.getById('player1');
@@ -58,5 +73,6 @@ export class GameModeService {
         this.activePlayerService.activate(player1);
         const player2 = this.meshStore.getById('player2');
         player2.setVisibility(false);
+        this.renderGuiService.render(true);
     }
 }

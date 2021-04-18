@@ -21,6 +21,7 @@ import { ActivePlayerService } from "./ActivePlayerService";
 import { GameModeService } from "./GameModeService";
 import { MaterialStore } from "../stores/MaterialStore";
 import { RouteStore } from "../stores/RouteStore";
+import { TurnBasedCommandService } from "./TurnBasedCommandService";
 
 export class Lookup {
     keyboard: KeyboardService;
@@ -56,6 +57,8 @@ export class Lookup {
 
     tileFactory: TileFactory;
     
+    turnBasedCommandService: TurnBasedCommandService;
+
     private isReady: boolean = false;
     private onReadyFuncs: (() => void)[] = [];
 
@@ -111,6 +114,9 @@ export class Lookup {
         this.meshFactory = new MeshFactory(this);
         this.quarterFactory = new QuarterFactory();
         this.worldFactory = new WorldFactory(this);
+
+        this.turnBasedCommandService = new TurnBasedCommandService();
+        lookup.turnBasedCommandService = this.turnBasedCommandService;
     }
 
     setScene(scene: Scene) {

@@ -23,7 +23,7 @@
     "include": [
         "src/**/*.ts",
         "test/**/*.ts"
-    ],
+, "src/ui/CombatControllerComponent.tsx"    ],
     "exclude": [
         "node_modules"
     ]

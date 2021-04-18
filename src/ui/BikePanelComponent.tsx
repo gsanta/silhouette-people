@@ -1,17 +1,17 @@
 import React from "react";
-import { GuiProps } from './GuiProps';
+import { ComponentProps } from './ComponentProps';
 import './../../assets/css/bike-panel.scss'
 import { InjectProperty } from "../di/diDecorators";
 import { MeshStore } from "../stores/MeshStore";
 import { lookup } from "../services/Lookup";
 import { Bike } from "../model/general/objs/MeshObj";
 
-export class BikePanelGui extends React.Component<GuiProps> {
+export class BikePanelComponent extends React.Component<ComponentProps> {
 
     @InjectProperty("MeshStore")
     private meshStore: MeshStore;
 
-    constructor(props: GuiProps) {
+    constructor(props: ComponentProps) {
         super(props);
         this.meshStore = lookup.meshStore;
     }

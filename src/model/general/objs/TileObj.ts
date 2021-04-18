@@ -1,4 +1,4 @@
-import { Mesh } from "babylonjs";
+import { Mesh, Vector2 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { lookup } from "../../../services/Lookup";
 import { MaterialStore } from "../../../stores/MaterialStore";
@@ -22,6 +22,11 @@ export class TileObj {
         this.materialStore = lookup.materialStore;
         this.mesh = mesh;
         this.index = index;
+    }
+
+    getPosition2D(): Vector2 {
+        const pos = this.mesh.getAbsolutePosition();
+        return new Vector2(pos.x, pos.z);
     }
 
     markActive() {
