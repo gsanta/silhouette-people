@@ -4,7 +4,7 @@ import { lookup } from "../../../services/Lookup";
 import { QuarterStore } from "../../../stores/QuarterStore";
 import { BikeState } from "../../bike/BikeState";
 import { CharacterState } from "../../character/states/CharacterState";
-import { Route } from "../../district/Route";
+import { Route } from "./Route";
 import { AnimationHandler } from "../components/AnimationHandler";
 import { TagHandler } from "../components/TagHandler";
 import { MeshState } from "../state/MeshState";

@@ -38,7 +38,7 @@ export class GameModeService {
         this.tileFactory = lookup.tileFactory;
     }
 
-    changeToTBM() {
+    changeToTBSMode() {
         const bounds = this.quarterStore.getAllQuarters()[5].getBounds2D();
         this.tileFactory.createTilesForArea(bounds);
 
@@ -50,7 +50,7 @@ export class GameModeService {
         player1.setVisibility(false);
     }
 
-    changeToRTM() {
+    changeToRTSMode() {
         this.tileStore.clearTiles();
         this.controllerService.setMasterController(new NormalModeController(this.controllerService.getCameraController()));
         const player1 = this.meshStore.getById('player1');

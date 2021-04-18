@@ -45,11 +45,11 @@ export class PlayerRadioButtonGroup implements IGUIComponent {
     }
 
     private activateNormalMode() {
-        this.gameModeService.changeToRTM();    
+        this.gameModeService.changeToRTSMode();    
     }
 
     private activateGridMode() {
-        this.gameModeService.changeToTBM();
+        this.gameModeService.changeToTBSMode();
     }
     
     private activatePlayer(playerId: string) {

@@ -1,8 +1,9 @@
-import { Route } from "../../model/district/Route";
+import { Route } from "../../model/general/objs/Route";
 import { MeshObj } from "../../model/general/objs/MeshObj";
 import { QuarterObj } from "../../model/general/objs/QuarterObj";
 import { IPathFinder } from "../district/path/IPathFinder";
 import { MasterPathFinder } from "../district/path/MasterPathFinder";
+import { RealTimeRouteWalker } from "../../model/general/objs/RealTimeRouteWalker";
 
 export class RouteFactory {
     private pathFinder: IPathFinder;
@@ -30,6 +31,7 @@ export class RouteFactory {
 
         if (path.length < 2) { return undefined; }
         
-        return new Route(gameObject, path);
+        const route = new Route(gameObject, path);
+        route.walker = new RealTimeRouteWalker(route);
     }
 }

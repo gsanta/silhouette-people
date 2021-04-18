@@ -1,6 +1,6 @@
 import { DebugService } from "../../../services/DebugService";
 import { Lookup } from "../../../services/Lookup";
-import { Route } from "../../district/Route";
+import { Route } from "../objs/Route";
 import { Character, MeshObj } from "../objs/MeshObj";
 
 export class RouteDebuggerComponent {
@@ -18,9 +18,9 @@ export class RouteDebuggerComponent {
         const character = this.character;
         const quarterMap = character.getQuarter().getMap();
 
-        if (!character.route || character.route.isFinished) {
+        if (!character.route || character.route.walker.isFinished()) {
             if (this.currRoute) {
-                quarterMap.fillPath(this.currRoute.path, 0);
+                quarterMap.fillPath(this.currRoute.checkPoints, 0);
                 this.currRoute = undefined;
             }
 
@@ -28,11 +28,11 @@ export class RouteDebuggerComponent {
         }
         
         if (this.currRoute && character.route !== this.currRoute) {
-            quarterMap.fillPath(this.currRoute.path, 0);
+            quarterMap.fillPath(this.currRoute.checkPoints, 0);
         }
 
         this.currRoute = character.route;
-        quarterMap.fillPath(character.route.path, 2);
+        quarterMap.fillPath(character.route.checkPoints, 2);
 
         if (this.debugService.areaMapDebugger.isVisible()) {
             this.debugService.areaMapDebugger.update();

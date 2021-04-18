@@ -3,7 +3,7 @@ import { Vector3 } from "babylonjs/Maths/math.vector";
 import { InjectProperty } from "../../../di/diDecorators";
 import { lookup } from "../../../services/Lookup";
 import { WorldProvider } from "../../../services/WorldProvider";
-import { QuarterMap } from "../../district/QuarterMap";
+import { QuarterMap } from "../../quarter/QuarterMap";
 import { Rect } from "../shape/Rect";
 
 export class QuarterObj  {

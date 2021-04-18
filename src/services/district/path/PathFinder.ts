@@ -1,6 +1,6 @@
 import { Vector2 } from "babylonjs";
 import { astar, Graph } from 'javascript-astar';
-import { QuarterMap } from "../../../model/district/QuarterMap";
+import { QuarterMap } from "../../../model/quarter/QuarterMap";
 import { IPathFinder } from "./IPathFinder";
 
 export class PathFinder implements IPathFinder {

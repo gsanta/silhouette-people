@@ -44,6 +44,11 @@ export class PlayerTilingController extends AbstractController {
         this.tileMarker.markHover(pointer.curr2D);
     }
 
+    pointerDown(pointer: PointerData) {
+        this.tileMarker.unmarkHoverAll();
+        this.tileMarker.markActive(pointer.curr2D);
+    }
+
     private removeTiles() {
         this.tileStore.getAll().forEach(tile => tile.unMarkActive());
     }

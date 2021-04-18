@@ -20,6 +20,7 @@ import { LightFactory } from "./factory/LightFactory";
 import { ActivePlayerService } from "./ActivePlayerService";
 import { GameModeService } from "./GameModeService";
 import { MaterialStore } from "../stores/MaterialStore";
+import { RouteStore } from "../stores/RouteStore";
 
 export class Lookup {
     keyboard: KeyboardService;
@@ -51,6 +52,7 @@ export class Lookup {
     quarterStore: QuarterStore;
     meshStore: MeshStore;
     lightStore: LightStore;
+    routeStore: RouteStore;
 
     tileFactory: TileFactory;
     
@@ -74,6 +76,8 @@ export class Lookup {
         lookup.meshStore = this.meshStore;
         this.lightStore = new LightStore();
         lookup.lightStore = this.lightStore;
+        this.routeStore = new RouteStore();
+        lookup.routeStore = this.routeStore;
 
         this.renderGui = new RenderGuiService();
         lookup.renderGui = this.renderGui;
