@@ -9,15 +9,7 @@ export class CharacterIdleState extends CharacterState {
         this.enterState();
     }
 
-    setSpeed(speed: number) {
-        super.setSpeed(speed);
-
-        this.changeStateIfNeeded();
-    }
-
-    setRotation(rotation: number) {
-        super.setRotation(rotation);
-
+    beforeRender() {
         this.changeStateIfNeeded();
     }
 
@@ -26,8 +18,10 @@ export class CharacterIdleState extends CharacterState {
     }
 
     private changeStateIfNeeded() {
-        if (this.rotation !== 0 || this.speed !== 0) {
-            this.meshObj.state = this.copState(new CharacterWalkingState(this.meshObj)); 
+        const { walker } = this.meshObj;
+
+        if (walker.getRotation() !== 0 || walker.getSpeed() !== 0) {
+            this.meshObj.state = new CharacterWalkingState(this.meshObj); 
         }
     }
 }

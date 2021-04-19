@@ -1,11 +1,11 @@
-import { Route } from "../model/general/objs/Route";
+import { RouteObj } from "../model/general/objs/RouteObj";
 
 
 export class RouteStore {
 
-    private routes: Route[] = [];
+    private routes: RouteObj[] = [];
 
-    addRoute(route: Route) {
+    addRoute(route: RouteObj) {
         this.routes.push(route);
     }
 
@@ -13,7 +13,7 @@ export class RouteStore {
         return this.getRoutes().filter(route => route.walker.isFinished());
     }
 
-    getRoutes(): Route[] {
+    getRoutes(): RouteObj[] {
         return this.routes;
     }
 

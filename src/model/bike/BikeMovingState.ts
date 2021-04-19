@@ -34,7 +34,6 @@ export class BikeMovingState extends BikeState {
 
     private updateMovement() {
         const mesh = this.meshObj.getMesh();
-
         
         const deltaTime = this.worldProvider.world.engine.getDeltaTime();
         const deltaTimeSec = deltaTime / 1000;

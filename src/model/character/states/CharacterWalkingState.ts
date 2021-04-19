@@ -1,32 +1,26 @@
-import { Axis, Space, Vector3 } from "babylonjs";
+import { InjectProperty } from "../../../di/diDecorators";
+import { lookup } from "../../../services/Lookup";
+import { WorldProvider } from "../../../services/WorldProvider";
 import { Character } from "../../general/objs/MeshObj";
 import { CharacterIdleState } from "./CharacterIdleState";
 import { CharacterState } from "./CharacterState";
 
 export class CharacterWalkingState extends CharacterState {
 
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
+
     constructor(player: Character) {
         super(player);
+        this.worldProvider = lookup.worldProvider;
         this.enterState();
     }
 
-    setSpeed(speed: number) {
-        super.setSpeed(speed);
-
-        this.changeStateIfNeeded();
-    }
-
-    setRotation(rotation: number) {
-        super.setRotation(rotation);
-
-        this.changeStateIfNeeded();
-    }
-
     beforeRender(): void {
-        const mesh = this.meshObj.getMesh();
-
-        this.meshObj.move(this.speed);
-        mesh.rotate(Axis.Y, this.rotation, Space.WORLD);
+        if (!this.changeStateIfNeeded()) {
+            const deltaTime = this.worldProvider.world.engine.getDeltaTime();
+            this.meshObj.walker.walk(deltaTime);
+        }
     }
 
     enterState() {
@@ -34,8 +28,12 @@ export class CharacterWalkingState extends CharacterState {
     }
 
     private changeStateIfNeeded() {
-        if (this.rotation === 0 && this.speed === 0) {
-            this.meshObj.state = this.copState(new CharacterIdleState(this.meshObj)); 
+        const { walker } = this.meshObj;
+        if (walker.getRotation() === 0 && walker.getSpeed() === 0) {
+            this.meshObj.state = new CharacterIdleState(this.meshObj);
+            return true;
         }
+
+        return false;
     }
 }

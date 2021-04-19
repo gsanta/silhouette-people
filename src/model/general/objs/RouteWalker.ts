@@ -1,22 +1,25 @@
 import { Vector2 } from "babylonjs";
-import { Route } from "./Route";
+import { RouteObj } from "./RouteObj";
 
 export abstract class RouteWalker {
     protected _isFinished: boolean = false;
-    protected fromCheckPoint: Vector2;
-    protected toCheckPoint: Vector2;
-    protected prevPos: Vector2;
-    protected currPos: Vector2;
+    fromCheckPoint: Vector2;
+    toCheckPoint: Vector2;
+    prevPos: Vector2;
+    currPos: Vector2;
     protected _isPaused = false;
-
     
-    constructor(public route: Route) {
-        this.fromCheckPoint = route.checkPoints[0];
-        this.toCheckPoint = route.checkPoints[1];
-        route.character.setPosition2D(this.fromCheckPoint);
-    }
+    constructor(public route: RouteObj) {}
 
-    abstract step(deltaTime: number): void;
+    step(deltaTime: number): void {
+        // if (this.isPaused() || this.isFinished()) { return; }
+    
+        // if (this.updateCheckPointsIfNeeded()) {
+        //     this.setPaused(true);
+        // }
+        
+        // if (!this.isFinished()) { this.route.character.walker.walk(); }
+    }
 
     isFinished(): boolean {
         return this._isFinished;
@@ -38,8 +41,6 @@ export abstract class RouteWalker {
     protected setNextCheckPoint() {
         const { character, checkPoints } = this.route;
     
-        if (!this.isCheckPointReached()) { return; }
-    
         if (this.toCheckPoint === checkPoints[checkPoints.length - 1]) {
             this._isFinished = true;
         } else {
@@ -48,11 +49,24 @@ export abstract class RouteWalker {
         }
     }
     
-    protected isCheckPointReached() {
+    updateCheckPointsIfNeeded() {
+        if (!this.fromCheckPoint || !this.toCheckPoint) {
+            this.initCheckPoints();
+            this.route.character.setPosition2D(this.fromCheckPoint);
+        } else if (this.isCheckPointReached()) {
+            this.setNextCheckPoint();
+            return true;
+        }
+    }
+
+    private initCheckPoints() {
+        const { checkPoints } = this.route;
+        this.fromCheckPoint = checkPoints[0];
+        this.toCheckPoint = checkPoints[1];
+    }
+
+    private isCheckPointReached() {
         const { character } = this.route;
-    
-        if (!this.toCheckPoint) { return true; }
-    
         const curr = character.getPosition();
     
         const isWithinDestRadius = this.toCheckPoint.subtract(new Vector2(curr.x, curr.z)).length() < 0.2;

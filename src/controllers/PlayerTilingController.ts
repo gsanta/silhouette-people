@@ -1,6 +1,6 @@
-import { Vector2 } from "babylonjs/Maths/math.vector";
 import { InjectProperty } from "../di/diDecorators";
-import { Route } from "../model/general/objs/Route";
+import { RouteBasedCharacterWalker } from "../model/character/states/RouteBasedCharacterWalker";
+import { RouteObj } from "../model/general/objs/RouteObj";
 import { TileObj } from "../model/general/objs/TileObj";
 import { RouteFactory } from "../services/factory/RouteFactory";
 import { MouseButtonType, PointerData } from "../services/input/PointerService";
@@ -26,7 +26,7 @@ export class PlayerTilingController extends AbstractController {
     private playerTile: TileObj;
     private tileMarker: TileMarker;
     // routeTiles: TileObj[] = [];
-    route: Route;
+    route: RouteObj;
 
     constructor() {
         super();
@@ -43,10 +43,10 @@ export class PlayerTilingController extends AbstractController {
 
         const currPlayerTile = this.tileStore.getTileByWorldPos(activePlayer.getPosition2D());
     
-        if (this.playerTile !== currPlayerTile) {
-            this.removeTiles();
-            this.playerTile = currPlayerTile;
-        }
+        // if (this.playerTile !== currPlayerTile) {
+        //     // this.removeTiles();
+        //     this.playerTile = currPlayerTile;
+        // }
     }
 
     pointerMove(pointer: PointerData) {
@@ -60,10 +60,9 @@ export class PlayerTilingController extends AbstractController {
             case MouseButtonType.LEFT:
                 tile.markActive();
                 if (!this.route) {
-                    this.route = this.createRoute(tile.getPosition2D());
-                } else {
-                    this.route.checkPoints.push(tile.getPosition2D())
+                    this.route = this.createRoute();
                 }
+                this.route.checkPoints.push(tile.getPosition2D())
             break;
             case MouseButtonType.RIGHT:
                 tile.unMarkActive();
@@ -72,9 +71,12 @@ export class PlayerTilingController extends AbstractController {
         }
     }
 
-    private createRoute(initialCheckPoint: Vector2) {
+    private createRoute() {
         const activePlayer = this.meshStore.getActivePlayer();
+        const initialCheckPoint = activePlayer.getPosition2D();
         const route = this.routeFactory.createRoute(activePlayer, [initialCheckPoint]);
+        route.walker.setPaused(true);
+        activePlayer.walker = new RouteBasedCharacterWalker(route);
         return route;
     }
 

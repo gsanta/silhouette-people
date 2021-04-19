@@ -30,16 +30,16 @@ export class EnemyController extends AbstractController {
     }
 
     setup() {
-        const enemies = this.meshStore.getEnemies();
-        enemies.forEach(enemy => this.routeFactory.createRandomRoute(enemy));
+        // const enemies = this.meshStore.getEnemies();
+        // enemies.forEach(enemy => this.routeFactory.createRandomRoute(enemy));
     }
 
     beforeRender() {
         // const deltaTime = this.worldProvider.world.engine.getDeltaTime();
-        const finishedRoutes = this.routeStore.getFinishedRoutes();
-        finishedRoutes.forEach(route => this.routeFactory.createRandomRoute(route.character));
+        // const finishedRoutes = this.routeStore.getFinishedRoutes();
+        // finishedRoutes.forEach(route => this.routeFactory.createRandomRoute(route.character));
 
-        this.routeStore.clearFinishedRoutes();
+        // this.routeStore.clearFinishedRoutes();
 
         // this.routeStore.getRoutes().forEach(route => route.walker.step(deltaTime));
     }

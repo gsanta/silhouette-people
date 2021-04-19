@@ -2,7 +2,7 @@ import { Vector2 } from "babylonjs/Maths/math.vector";
 import { InjectProperty } from "../../di/diDecorators";
 import { Character, MeshObj } from "../../model/general/objs/MeshObj";
 import { RealTimeRouteWalker } from "../../model/general/objs/RealTimeRouteWalker";
-import { Route } from "../../model/general/objs/Route";
+import { RouteObj } from "../../model/general/objs/RouteObj";
 import { RouteStore } from "../../stores/RouteStore";
 import { IPathFinder } from "../district/path/IPathFinder";
 import { MasterPathFinder } from "../district/path/MasterPathFinder";
@@ -20,7 +20,7 @@ export class RouteFactory {
         this.pathFinder = new MasterPathFinder();
     }
     
-    createRandomRoute(character: Character): Route {
+    createRandomRoute(character: Character): RouteObj {
         const quarterMap = character.getQuarter().getMap();
         const pos = character.getPosition2D();
         const maxIndex = quarterMap.len();
@@ -39,14 +39,14 @@ export class RouteFactory {
 
         if (path.length < 2) { return undefined; }
         
-        const route = new Route(character, path);
+        const route = new RouteObj(character, path);
         route.walker = new RealTimeRouteWalker(route);
         
         this.routeStore.addRoute(route);
     }
 
-    createRoute(character: Character, checkPoints: Vector2[]): Route {
-        const route = new Route(character, checkPoints);
+    createRoute(character: Character, checkPoints: Vector2[]): RouteObj {
+        const route = new RouteObj(character, checkPoints);
         route.walker = new RealTimeRouteWalker(route);
 
         this.routeStore.addRoute(route);

@@ -25,6 +25,9 @@ export class PlayerController extends AbstractController {
     
     private tileMarker: TileMarker;
 
+    readonly speedConst = 0.04;
+    readonly rotationConst = Math.PI / 30;
+
     constructor() {
         super();
         this.tileMarker = new TileMarker();
@@ -38,19 +41,19 @@ export class PlayerController extends AbstractController {
         const player = this.meshStore.getActivePlayer();
 
         if (this.keyboardService.activeKeys.has('w')) {
-            player.state.setSpeed(player.state.speedConst);
+            player.walker.setSpeed(this.speedConst);
         } else if (this.keyboardService.activeKeys.has('s')) {
-            player.state.setSpeed(-player.state.speedConst);
+            player.walker.setSpeed(-this.speedConst);
         } else {
-            player.state.setSpeed(0);
+            player.walker.setSpeed(0);
         }
 
         if (this.keyboardService.activeKeys.has('a')) {
-            player.state.setRotation(-player.state.rotationConst);
+            player.walker.setRotation(-this.rotationConst);
         } else if (this.keyboardService.activeKeys.has('d')) {
-            player.state.setRotation(player.state.rotationConst);
+            player.walker.setRotation(this.rotationConst);
         } else {
-            player.state.setRotation(0);
+            player.walker.setRotation(0);
         }
 
         switch(e.key) {
