@@ -1,5 +1,5 @@
 import { ActivePlayerService } from "../../../../services/ActivePlayerService";
-import { MeshObj } from "../../objs/MeshObj";
+import { CharacterObj } from "../../objs/CharacterObj";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export class ActivePlayerPropertyParser extends AbstractPropertyParser {
@@ -12,7 +12,7 @@ export class ActivePlayerPropertyParser extends AbstractPropertyParser {
         this.highlightService = highlightService;
     }
 
-    processFeature(gameObj: MeshObj) {
+    processFeature(gameObj: CharacterObj) {
         this.highlightService.activate(gameObj);
     }
 }

@@ -1,12 +1,11 @@
-import { MeshObj } from "../objs/MeshObj";
+import { CharacterObj } from "../objs/CharacterObj";
 
-
-export abstract class MeshState<M extends MeshObj> {
+export abstract class MeshState {
     protected _isDirty = false;
-    protected meshObj: M;
+    protected character: CharacterObj;
 
-    constructor(meshObj: M) {
-        this.meshObj = meshObj;
+    constructor(meshObj: CharacterObj) {
+        this.character = meshObj;
         if (meshObj.state) {
             meshObj.state.exitState();
         }
@@ -24,6 +23,6 @@ export abstract class MeshState<M extends MeshObj> {
 
     enterState() {}
     exitState() {
-        this.meshObj.animation.stopCurrentAnimation();
+        this.character.animation.stopCurrentAnimation();
     }
 }

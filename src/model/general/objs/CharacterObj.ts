@@ -1,0 +1,13 @@
+import { BikeWalker } from "../../bike/BikeWalker";
+import { CharacterWalker } from "../../character/states/CharacterWalker";
+import { MeshState } from "../state/MeshState";
+import { MeshWalker } from "../state/MeshWalker";
+import { MeshObj } from "./MeshObj";
+
+export type HumanoidObj = CharacterObj<MeshWalker>;
+export type BikeObj = CharacterObj<BikeWalker>
+
+export class CharacterObj<W extends MeshWalker = MeshWalker> extends MeshObj {
+    state: MeshState;
+    walker: W;
+}

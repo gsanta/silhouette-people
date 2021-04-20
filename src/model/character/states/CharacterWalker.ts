@@ -1,10 +1,10 @@
 import { Axis, Space } from "babylonjs";
-import { Character } from "../../general/objs/MeshObj";
+import { HumanoidObj } from "../../general/objs/CharacterObj";
 import { MeshWalker } from "../../general/state/MeshWalker";
 
 
 export class CharacterWalker extends MeshWalker {
-    constructor(private character: Character) {
+    constructor(private character: HumanoidObj) {
         super();
     }
 

@@ -1,5 +1,6 @@
 import { InjectProperty } from "../di/diDecorators";
-import { Bike, MeshObj, MeshObjTag, MeshObjType, Character } from "../model/general/objs/MeshObj";
+import { BikeObj, HumanoidObj } from "../model/general/objs/CharacterObj";
+import { MeshObj, MeshObjTag, MeshObjType } from "../model/general/objs/MeshObj";
 import { lookup } from "../services/Lookup";
 import { QuarterStore } from "./QuarterStore";
 
@@ -20,20 +21,20 @@ export class MeshStore {
         gameObject.quarterIndex = quarterIndex;
     }
 
-    getActivePlayer(): Character {
-        return <Character> this.getPlayers().find(player => player.isActivePlayer); 
+    getActivePlayer(): HumanoidObj {
+        return <HumanoidObj> this.getPlayers().find(player => player.isActivePlayer); 
     }
 
-    getPlayers(): Character[] {
-        return <Character[]> this.getObjsByTag(MeshObjTag.Player)
+    getPlayers(): HumanoidObj[] {
+        return <HumanoidObj[]> this.getObjsByTag(MeshObjTag.Player)
     }
 
-    getBikes(): Bike[] {
-        return <Bike[]> this.getObjsByTag(MeshObjTag.Bicycle);
+    getBikes(): BikeObj[] {
+        return <BikeObj[]> this.getObjsByTag(MeshObjTag.Bicycle);
     }
 
-    getEnemies(): Character[] {
-        return <Character[]> this.getObjsByTag(MeshObjTag.Enemy);
+    getEnemies(): HumanoidObj[] {
+        return <HumanoidObj[]> this.getObjsByTag(MeshObjTag.Enemy);
     }
 
     getObjsByTag(tag: MeshObjTag): MeshObj[] {

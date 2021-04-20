@@ -1,7 +1,6 @@
 import { RouteObj } from "../../general/objs/RouteObj";
 import { MeshWalker } from "../../general/state/MeshWalker";
 
-
 export class RouteBasedCharacterWalker extends MeshWalker {
 
     constructor(private route: RouteObj) {

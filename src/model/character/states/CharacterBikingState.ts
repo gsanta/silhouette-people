@@ -1,13 +1,13 @@
-import { Character } from "../../general/objs/MeshObj";
-import { CharacterState } from "./CharacterState";
+import { CharacterObj } from "../../general/objs/CharacterObj";
+import { MeshState } from "../../general/state/MeshState";
 
-export class CharacterBikingState extends CharacterState {
-    constructor(player: Character) {
+export class CharacterBikingState extends MeshState {
+    constructor(player: CharacterObj) {
         super(player);
         this.enterState();
     }
 
     enterState() {
-        this.meshObj.animation.runAnimation('Bicycle');
+        this.character.animation.runAnimation('Bicycle');
     }
 }

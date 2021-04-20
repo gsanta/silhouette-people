@@ -26,46 +26,46 @@ export class BikeController extends AbstractController {
         if (isKeyDown) {
             switch(e.key) {
                 case '1':
-                    bike.state.setGear(0);
+                    bike.walker.setGear(0);
                 break;
                 case '2':
-                    bike.state.setGear(1);
+                    bike.walker.setGear(1);
                 break;
                 case '3':
-                    bike.state.setGear(2);
+                    bike.walker.setGear(2);
                 break;
                 case 'w':
-                    bike.state.setPedalling(true);
-                    bike.state.setPedalDirection('forward');
+                    bike.walker.setPedalling(true);
+                    bike.walker.setPedalDirection('forward');
                 break;
                 case 's':
-                    bike.state.setBraking(true);
+                    bike.walker.setBraking(true);
                 break;
                 case 'r':
-                    bike.state.setPedalling(true);
-                    bike.state.setPedalDirection('backward');
+                    bike.walker.setPedalling(true);
+                    bike.walker.setPedalDirection('backward');
                 break;
             }
         } else {
             switch(e.key) {
                 case 'w':
-                    bike.state.setPedalling(false);
+                    bike.walker.setPedalling(false);
                 break;
                 case 's':
-                    bike.state.setBraking(false);
+                    bike.walker.setBraking(false);
                 break;
                 case 'r':
-                    bike.state.setPedalling(false);
+                    bike.walker.setPedalling(false);
                 break;
             }
         }
 
         if (this.keyboardService.activeKeys.has('a')) {
-            bike.state.setRotation(-bike.state.rotationConst);
+            bike.walker.setRotation(-bike.walker.rotationConst);
         } else if (this.keyboardService.activeKeys.has('d')) {
-            bike.state.setRotation(bike.state.rotationConst);
+            bike.walker.setRotation(bike.walker.rotationConst);
         } else {
-            bike.state.setRotation(0);
+            bike.walker.setRotation(0);
         }
     }
 

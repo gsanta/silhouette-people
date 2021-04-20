@@ -1,11 +1,11 @@
+import { CharacterObj } from "../../general/objs/CharacterObj";
+import { MeshState } from "../../general/state/MeshState";
 import { CharacterWalkingState } from "./CharacterWalkingState";
-import { CharacterState } from "./CharacterState";
-import { Character } from "../../general/objs/MeshObj";
 
-export class CharacterIdleState extends CharacterState {
+export class CharacterIdleState extends MeshState {
 
-    constructor(player: Character) {
-        super(player);
+    constructor(character: CharacterObj) {
+        super(character);
         this.enterState();
     }
 
@@ -14,14 +14,14 @@ export class CharacterIdleState extends CharacterState {
     }
 
     enterState() {
-        this.meshObj.animation.runAnimation('Idle');
+        this.character.animation.runAnimation('Idle');
     }
 
     private changeStateIfNeeded() {
-        const { walker } = this.meshObj;
+        const { walker } = this.character;
 
         if (walker.getRotation() !== 0 || walker.getSpeed() !== 0) {
-            this.meshObj.state = new CharacterWalkingState(this.meshObj); 
+            this.character.state = new CharacterWalkingState(this.character); 
         }
     }
 }

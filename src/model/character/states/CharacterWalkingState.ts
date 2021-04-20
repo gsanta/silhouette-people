@@ -1,17 +1,17 @@
 import { InjectProperty } from "../../../di/diDecorators";
 import { lookup } from "../../../services/Lookup";
 import { WorldProvider } from "../../../services/WorldProvider";
-import { Character } from "../../general/objs/MeshObj";
+import { CharacterObj } from "../../general/objs/CharacterObj";
+import { MeshState } from "../../general/state/MeshState";
 import { CharacterIdleState } from "./CharacterIdleState";
-import { CharacterState } from "./CharacterState";
 
-export class CharacterWalkingState extends CharacterState {
+export class CharacterWalkingState extends MeshState {
 
     @InjectProperty("WorldProvider")
     private worldProvider: WorldProvider;
 
-    constructor(player: Character) {
-        super(player);
+    constructor(character: CharacterObj) {
+        super(character);
         this.worldProvider = lookup.worldProvider;
         this.enterState();
     }
@@ -19,18 +19,18 @@ export class CharacterWalkingState extends CharacterState {
     beforeRender(): void {
         if (!this.changeStateIfNeeded()) {
             const deltaTime = this.worldProvider.world.engine.getDeltaTime();
-            this.meshObj.walker.walk(deltaTime);
+            this.character.walker.walk(deltaTime);
         }
     }
 
     enterState() {
-        this.meshObj.animation.runAnimation('Walk');
+        this.character.animation.runAnimation('Walk');
     }
 
     private changeStateIfNeeded() {
-        const { walker } = this.meshObj;
+        const { walker } = this.character;
         if (walker.getRotation() === 0 && walker.getSpeed() === 0) {
-            this.meshObj.state = new CharacterIdleState(this.meshObj);
+            this.character.state = new CharacterIdleState(this.character);
             return true;
         }
 

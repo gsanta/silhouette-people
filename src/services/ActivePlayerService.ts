@@ -1,6 +1,6 @@
 import { InjectProperty } from "../di/diDecorators";
 import { CharacterIdleState } from "../model/character/states/CharacterIdleState";
-import { Character } from "../model/general/objs/MeshObj";
+import { CharacterObj } from "../model/general/objs/CharacterObj";
 import { HighlightHelper } from "../model/highlight/HighlightHelper";
 import { MeshStore } from "../stores/MeshStore";
 import { lookup } from "./Lookup";
@@ -17,7 +17,7 @@ export class ActivePlayerService {
         this.highlightHelper = new HighlightHelper();
     }
 
-    activate(player: Character) {
+    activate(player: CharacterObj) {
         this.deactivate();
         this.highlightHelper.attachHighlightTo(player);
         player.isActivePlayer = true;

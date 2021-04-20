@@ -1,13 +1,13 @@
 import { Vector2 } from "babylonjs";
-import { Character } from "./MeshObj";
+import { CharacterObj } from "./CharacterObj";
 import { RouteWalker } from "./RouteWalker";
 
 export class RouteObj {
     readonly checkPoints: Vector2[];
-    readonly character: Character;
+    readonly character: CharacterObj;
     walker: RouteWalker;
 
-    constructor(character: Character, checkPoints: Vector2[]) {
+    constructor(character: CharacterObj, checkPoints: Vector2[]) {
         this.character = character;
         this.checkPoints = checkPoints;
     }

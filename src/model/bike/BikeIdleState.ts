@@ -1,10 +1,16 @@
+import { MeshState } from "../general/state/MeshState";
 import { BikeMovingState } from "./BikeMovingState";
-import { BikeState } from "./BikeState";
 
-export class BikeIdleState extends BikeState {
-    setPedalling(isPedalling: boolean) {
-        super.setPedalling(isPedalling);
+export class BikeIdleState extends MeshState {
+    beforeRender() {
+        this.changeStateIfNeeded();
+    }
 
-        return isPedalling ? this.copyTo(new BikeMovingState(this.meshObj)) : this;
+    private changeStateIfNeeded() {
+        const { walker } = this.character;
+
+        if (walker.getRotation() !== 0 || walker.getSpeed() !== 0) {
+            this.character.state = new BikeMovingState(this.character); 
+        }
     }
 }

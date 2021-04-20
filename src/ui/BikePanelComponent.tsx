@@ -4,7 +4,7 @@ import './../../assets/css/bike-panel.scss'
 import { InjectProperty } from "../di/diDecorators";
 import { MeshStore } from "../stores/MeshStore";
 import { lookup } from "../services/Lookup";
-import { Bike } from "../model/general/objs/MeshObj";
+import { BikeObj } from "../model/general/objs/CharacterObj";
 
 export class BikePanelComponent extends React.Component<ComponentProps> {
 
@@ -23,8 +23,8 @@ export class BikePanelComponent extends React.Component<ComponentProps> {
             return null;
         }
 
-        const bike = player.getParent() as Bike;
-        let speed = bike.state.getSpeed();
+        const bike = player.getParent() as BikeObj;
+        let speed = bike.walker.getSpeed();
         speed = Math.trunc(speed * 10) / 10;
 
         return (
@@ -37,7 +37,7 @@ export class BikePanelComponent extends React.Component<ComponentProps> {
                     </div>
                     <div className="info-row">
                         <div>Gear</div>
-                        <div>{bike.state.getGear()}</div>
+                        <div>{bike.walker.getGear()}</div>
                     </div>
                 </div>
             </div>

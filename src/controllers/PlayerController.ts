@@ -1,15 +1,15 @@
+import { Vector2 } from "babylonjs";
 import { InjectProperty } from "../di/diDecorators";
-import { MeshObj, MeshObjTag, MeshObjType, Character, Bike } from "../model/general/objs/MeshObj";
 import { CharacterGetOffBikeState } from "../model/character/states/CharacterGetOffBikeState";
 import { CharacterGetOnBikeState } from "../model/character/states/CharacterGetOnBikeState";
+import { BikeObj, CharacterObj, HumanoidObj } from "../model/general/objs/CharacterObj";
+import { MeshObj, MeshObjType } from "../model/general/objs/MeshObj";
 import { KeyboardService } from "../services/input/KeyboardService";
-import { MouseButtonType, PointerData } from "../services/input/PointerService";
 import { lookup } from "../services/Lookup";
 import { RenderGuiService } from "../services/RenderGuiService";
 import { TileMarker } from "../services/tile/TileMarker";
 import { MeshStore } from "../stores/MeshStore";
 import { AbstractController, ControllerType } from "./IController";
-import { Vector2 } from "babylonjs";
 
 export class PlayerController extends AbstractController {
     type = ControllerType.Player;
@@ -71,7 +71,7 @@ export class PlayerController extends AbstractController {
         player.state.beforeRender();
     }
 
-    private enterAction(player: Character) {
+    private enterAction(player: HumanoidObj) {
         const nearestActionableObj = this.getNearestActionableObj(player);
 
         if (nearestActionableObj) {
@@ -86,11 +86,11 @@ export class PlayerController extends AbstractController {
         this.renderGuiService.render(true);
     }
 
-    private activateActionable(player: Character, actionableObj: MeshObj) {
+    private activateActionable(player: HumanoidObj, actionableObj: MeshObj) {
         switch(actionableObj.type) {
             case MeshObjType.Bicycle1:
                 if (!player.getParent()) {
-                    player.state = new CharacterGetOnBikeState(player, actionableObj as Bike);
+                    player.state = new CharacterGetOnBikeState(player, actionableObj as BikeObj);
                 }
             break;
         }

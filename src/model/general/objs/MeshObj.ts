@@ -2,17 +2,12 @@ import { Axis, Mesh, Quaternion, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { lookup } from "../../../services/Lookup";
 import { QuarterStore } from "../../../stores/QuarterStore";
-import { BikeState } from "../../bike/BikeState";
-import { CharacterState } from "../../character/states/CharacterState";
-import { RouteObj } from "./RouteObj";
 import { AnimationHandler } from "../components/AnimationHandler";
 import { TagHandler } from "../components/TagHandler";
-import { MeshState } from "../state/MeshState";
 import { GameObj } from "./GameObj";
 import { QuarterObj } from "./QuarterObj";
+import { RouteObj } from "./RouteObj";
 import { WorldObj } from "./WorldObj";
-import { MeshWalker } from "../state/MeshWalker";
-import { CharacterWalker } from "../../character/states/CharacterWalker";
 
 export enum MeshObjType {
     Player = 'player',
@@ -62,10 +57,7 @@ export interface GameObjectJson {
     features?: string[];
 }
 
-export type Character = MeshObj<CharacterState>;
-export type Bike = MeshObj<BikeState>;
-
-export class MeshObj<S extends MeshState<MeshObj> = any> extends GameObj {
+export class MeshObj extends GameObj {
     id: string;
     ch: string;
     type: MeshObjType;
@@ -79,8 +71,6 @@ export class MeshObj<S extends MeshState<MeshObj> = any> extends GameObj {
 
     route: RouteObj;
 
-    state: S;
-    walker: MeshWalker;
     readonly worldObj: WorldObj;
     quarterIndex: number;
     
@@ -97,7 +87,6 @@ export class MeshObj<S extends MeshState<MeshObj> = any> extends GameObj {
         this.quarterStore = lookup.quarterStore;
         this.tag = new TagHandler();
         this.animation = new AnimationHandler();
-        this.walker = new CharacterWalker(this);
     }
 
     setRotation(rotation: number) {

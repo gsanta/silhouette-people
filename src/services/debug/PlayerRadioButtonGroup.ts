@@ -51,10 +51,6 @@ export class PlayerRadioButtonGroup implements IGUIComponent {
     private activateGridMode() {
         this.gameModeService.changeToTBSMode();
     }
-    
-    private activatePlayer(playerId: string) {
-        this.activePlayerService.activate(this.meshStore.getById(playerId));
-    }
 
     private addRadio(text: string, parent: Container, onClick: (state: boolean) => void) {
         var button = new RadioButton();

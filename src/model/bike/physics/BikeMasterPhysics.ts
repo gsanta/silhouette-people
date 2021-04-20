@@ -1,5 +1,4 @@
-import { Bike, MeshObj } from "../../general/objs/MeshObj";
-import { BikeState } from "../BikeState";
+import { BikeObj } from "../../general/objs/CharacterObj";
 import { BikeReversePhysics } from "./BikeReversePhysics";
 import { BikeSlowdownPhysics } from "./BikeSlowdownPhysics";
 import { BikeSpeedupPhysics } from "./BikeSpeedupPhysics";
@@ -7,7 +6,7 @@ import { IBikePhysics } from "./IBikePhysics";
 
 
 export class BikeMasterPhysics implements IBikePhysics {
-    private bike: Bike;
+    private bike: BikeObj;
 
     private speedUpPhysics: BikeSpeedupPhysics;
     private rollingPhysics: BikeSlowdownPhysics;
@@ -15,7 +14,7 @@ export class BikeMasterPhysics implements IBikePhysics {
     private reversePhysics: BikeReversePhysics;
 
 
-    constructor(bike: Bike) {
+    constructor(bike: BikeObj) {
         this.bike = bike;
 
         this.speedUpPhysics = new BikeSpeedupPhysics(bike);
@@ -29,11 +28,11 @@ export class BikeMasterPhysics implements IBikePhysics {
     }
 
     private determinePhysics(): IBikePhysics {
-        const speed = this.bike.state.getSpeed();
-        if (this.bike.state.isBraking()) {
+        const speed = this.bike.walker.getSpeed();
+        if (this.bike.walker.isBraking()) {
             return this.brakingPhysics;
-        } else if (this.bike.state.isPedalling()) {
-            if (this.bike.state.getPedalDirection() === 'forward') {
+        } else if (this.bike.walker.isPedalling()) {
+            if (this.bike.walker.getPedalDirection() === 'forward') {
                 return this.speedUpPhysics;
             } else if (speed <= 0) {
                 return this.reversePhysics;

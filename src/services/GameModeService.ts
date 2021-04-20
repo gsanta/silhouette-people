@@ -1,6 +1,7 @@
 import { InjectProperty } from "../di/diDecorators";
 import { NormalModeController } from "../model/general/controller/NormalModeController";
 import { TilingModeController } from "../model/general/controller/TilingModeController";
+import { HumanoidObj } from "../model/general/objs/CharacterObj";
 import { MeshStore } from "../stores/MeshStore";
 import { QuarterStore } from "../stores/QuarterStore";
 import { TileStore } from "../stores/TileStore";
@@ -56,7 +57,7 @@ export class GameModeService {
         this.tileFactory.createTilesForArea(bounds);
 
         this.controllerService.setMasterController(new TilingModeController(this.controllerService.getCameraController()));
-        const player2 = this.meshStore.getById('player2');
+        const player2 = <HumanoidObj> this.meshStore.getById('player2');
         player2.setVisibility(true);
         this.activePlayerService.activate(player2);
         const player1 = this.meshStore.getById('player1');
@@ -68,7 +69,7 @@ export class GameModeService {
         this.gameMode = GameMode.REAL_TIME;
         this.tileStore.clearTiles();
         this.controllerService.setMasterController(new NormalModeController(this.controllerService.getCameraController()));
-        const player1 = this.meshStore.getById('player1');
+        const player1 = <HumanoidObj> this.meshStore.getById('player1');
         player1.setVisibility(true);
         this.activePlayerService.activate(player1);
         const player2 = this.meshStore.getById('player2');
