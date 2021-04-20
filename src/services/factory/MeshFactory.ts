@@ -15,6 +15,7 @@ import { TexturePropertyParser } from "../../model/general/factories/features/Te
 import { InjectProperty } from "../../di/diDecorators";
 import { ActivePlayerService } from "../ActivePlayerService";
 import { HiddenPropertyParser } from "../../model/general/factories/features/HiddenPropertyParser";
+import { WalkerPropertyParser } from "../../model/general/factories/features/WalkerPropertyParser";
 
 export class MeshFactory {
     
@@ -74,6 +75,7 @@ export class MeshFactory {
             new CollisionPropertyParser(worldObj, this.lookup),
             new PhysicsPropertyParser(this.lookup),
             new StatePropertyParser(),
+            new WalkerPropertyParser(),
             new TagPropertyParser(),
             new HiddenPropertyParser(),
             new RotatePropertyParser(),

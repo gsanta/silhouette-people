@@ -120,7 +120,8 @@
             "Collider 1:3.5:1",
             "Physics 1",
             "Tag Enemy",
-            "State CharacterWalkingState"
+            "State CharacterWalkingState",
+            "Walker CharacterWalker"
         ],
         "house1": [
             "Model house1.glb",
@@ -142,7 +143,8 @@
             "Texture palette.jpg",
             "Collider 1:1:1",
             "Tag Bicycle",
-            "State BikeIdleState"
+            "State BikeIdleState",
+            "Walker BikeWalker"
         ],
         "busStop": [
             "Model bus_stop.glb",
@@ -173,11 +175,13 @@
         "P1": [
             "Id player1",
             "ActivePlayer",
-            "Addon Highlight"
+            "Addon Highlight",
+            "Walker CharacterWalker"
         ],
         "P": [
             "Id player2",
-            "Hidden"
+            "Hidden",
+            "Walker CharacterWalker"
         ]
     }
 }

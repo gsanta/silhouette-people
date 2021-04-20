@@ -22,7 +22,7 @@ export class BikeSpeedupPhysics implements IBikePhysics {
     private startTime = 0;
     private currTime = 0;
     private maxTime = 0;
-    private currentGear = 0;
+    private currentGear = -1;
     private readonly bike: BikeObj;
 
     constructor(bike: BikeObj) {
@@ -34,7 +34,6 @@ export class BikeSpeedupPhysics implements IBikePhysics {
     
         this.bike = bike;
         this.setup();
-        this.initGear();
     }
 
     setGear(gear: number) {
