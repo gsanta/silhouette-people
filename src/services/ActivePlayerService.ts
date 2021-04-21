@@ -26,7 +26,7 @@ export class ActivePlayerService {
     deactivate() {
         const activePlayer = this.meshStore.getActivePlayer();
         if (activePlayer) {
-            activePlayer.state = new CharacterIdleState(activePlayer);
+            activePlayer.animationState = new CharacterIdleState(activePlayer);
             activePlayer.isActivePlayer = false;
         }
     }

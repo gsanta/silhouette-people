@@ -6,8 +6,8 @@ export abstract class MeshState {
 
     constructor(meshObj: CharacterObj) {
         this.character = meshObj;
-        if (meshObj.state) {
-            meshObj.state.exitState();
+        if (meshObj.animationState) {
+            meshObj.animationState.exitState();
         }
     }
 
@@ -19,7 +19,7 @@ export abstract class MeshState {
         this._isDirty = false;
     }
 
-    beforeRender() {}
+    update() {}
 
     enterState() {}
     exitState() {

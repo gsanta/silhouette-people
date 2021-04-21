@@ -9,7 +9,7 @@ export class CharacterIdleState extends MeshState {
         this.enterState();
     }
 
-    beforeRender() {
+    update() {
         this.changeStateIfNeeded();
     }
 
@@ -23,7 +23,7 @@ export class CharacterIdleState extends MeshState {
         if (!walker) { return; }
 
         if (walker.getRotation() !== 0 || walker.getSpeed() !== 0) {
-            this.character.state = new CharacterWalkingState(this.character); 
+            this.character.animationState = new CharacterWalkingState(this.character); 
         }
     }
 }

@@ -1,4 +1,5 @@
 import { InjectProperty } from "../di/diDecorators";
+import { BikeObj } from "../model/general/objs/CharacterObj";
 import { KeyboardService } from "../services/input/KeyboardService";
 import { lookup } from "../services/Lookup";
 import { MeshStore } from "../stores/MeshStore";
@@ -21,8 +22,12 @@ export class BikeController extends AbstractController {
     }
 
     keyboard(e: KeyboardEvent, isKeyDown: boolean) {
-        const bike = this.meshStore.getBikes()[0];
+        const player = this.meshStore.getActivePlayer();
 
+        if (!player.getParent()) { return; }
+
+        const bike = <BikeObj> player.getParent();
+        
         if (isKeyDown) {
             switch(e.key) {
                 case '1':
@@ -72,6 +77,6 @@ export class BikeController extends AbstractController {
     beforeRender() {
         const bike = this.meshStore.getBikes()[0];
 
-        bike.state.beforeRender();
+        bike.animationState.update();
     }
 }

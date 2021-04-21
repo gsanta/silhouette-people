@@ -17,8 +17,8 @@ export class StatePropertyParser extends AbstractPropertyParser {
     processFeature(mesh: CharacterObj, attrs: string[]) {
         const [state] = attrs;
 
-        mesh.state = this.createState(mesh, state as MeshStateName);
-        mesh.state.enterState();
+        mesh.animationState = this.createState(mesh, state as MeshStateName);
+        mesh.animationState.enterState();
     }
 
     private createState(gameObj: CharacterObj, stateName: MeshStateName): MeshState {

@@ -8,6 +8,6 @@ export type HumanoidObj = CharacterObj<MeshWalker>;
 export type BikeObj = CharacterObj<BikeWalker>
 
 export class CharacterObj<W extends MeshWalker = MeshWalker> extends MeshObj {
-    state: MeshState;
+    animationState: MeshState;
     walker: W;
 }

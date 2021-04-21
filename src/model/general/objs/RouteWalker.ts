@@ -12,13 +12,14 @@ export abstract class RouteWalker {
     constructor(public route: RouteObj) {}
 
     step(deltaTime: number): void {
-        // if (this.isPaused() || this.isFinished()) { return; }
+        if (this.isPaused() || this.isFinished()) { return; }
     
-        // if (this.updateCheckPointsIfNeeded()) {
-        //     this.setPaused(true);
-        // }
+        if (this.updateCheckPointsIfNeeded()) {
+            this.setPaused(true);
+        } else {
+            if (!this.isFinished()) { this.moveCharacter(); }
+        }
         
-        // if (!this.isFinished()) { this.route.character.walker.walk(); }
     }
 
     isFinished(): boolean {
@@ -31,6 +32,21 @@ export abstract class RouteWalker {
 
     setPaused(isPaused: boolean) {
         this._isPaused = isPaused;
+        
+        if (isPaused) {
+            const { character } = this.route;
+            character.walker.setSpeed(0);
+        }
+    }
+
+    private setFinished(isFinished) {
+        this._isFinished = isFinished;
+        
+        if (isFinished) {
+            const { character } = this.route;
+            character.walker.setSpeed(0);
+        }
+
     }
 
     isAtCheckPoint(): boolean {
@@ -42,7 +58,7 @@ export abstract class RouteWalker {
         const { character, checkPoints } = this.route;
     
         if (this.toCheckPoint === checkPoints[checkPoints.length - 1]) {
-            this._isFinished = true;
+            this.setFinished(true);
         } else {
             this.fromCheckPoint = character.getPosition2D();
             this.toCheckPoint = checkPoints[checkPoints.indexOf(this.toCheckPoint) + 1];
@@ -82,7 +98,7 @@ export abstract class RouteWalker {
         const dirAngle = Math.atan2(dirVector.y, dirVector.x);
 
         character.setRotation(Math.PI / 2 - dirAngle);
-        character.move(0.04);
+        character.walker.setSpeed(0.04)
 
         this.prevPos = this.currPos;
         this.currPos = character.getPosition2D();

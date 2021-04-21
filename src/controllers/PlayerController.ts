@@ -8,6 +8,7 @@ import { KeyboardService } from "../services/input/KeyboardService";
 import { lookup } from "../services/Lookup";
 import { RenderGuiService } from "../services/RenderGuiService";
 import { TileMarker } from "../services/tile/TileMarker";
+import { WorldProvider } from "../services/WorldProvider";
 import { MeshStore } from "../stores/MeshStore";
 import { AbstractController, ControllerType } from "./IController";
 
@@ -22,6 +23,9 @@ export class PlayerController extends AbstractController {
     
     @InjectProperty("RenderGuiService")
     private renderGuiService: RenderGuiService;
+
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
     
     private tileMarker: TileMarker;
 
@@ -34,6 +38,7 @@ export class PlayerController extends AbstractController {
         this.keyboardService = lookup.keyboard;
         this.meshStore = lookup.meshStore;
         this.renderGuiService = lookup.renderGui;
+        this.worldProvider = lookup.worldProvider;
     }
 
 
@@ -68,7 +73,9 @@ export class PlayerController extends AbstractController {
 
     beforeRender() {
         const player = this.meshStore.getActivePlayer();
-        player.state.beforeRender();
+        const deltaTime = this.worldProvider.world.engine.getDeltaTime();
+        player.walker.walk(deltaTime);
+        player.animationState.update();
     }
 
     private enterAction(player: HumanoidObj) {
@@ -82,7 +89,7 @@ export class PlayerController extends AbstractController {
 
     private exitAction() {
         const player = this.meshStore.getActivePlayer();
-        player.state = new CharacterGetOffBikeState(player);
+        player.animationState = new CharacterGetOffBikeState(player);
         this.renderGuiService.render(true);
     }
 
@@ -90,7 +97,7 @@ export class PlayerController extends AbstractController {
         switch(actionableObj.type) {
             case MeshObjType.Bicycle1:
                 if (!player.getParent()) {
-                    player.state = new CharacterGetOnBikeState(player, actionableObj as BikeObj);
+                    player.animationState = new CharacterGetOnBikeState(player, actionableObj as BikeObj);
                 }
             break;
         }

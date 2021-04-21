@@ -1,11 +1,13 @@
 import { InjectProperty } from "../di/diDecorators";
 import { RouteBasedCharacterWalker } from "../model/character/states/RouteBasedCharacterWalker";
+import { CharacterObj } from "../model/general/objs/CharacterObj";
 import { RouteObj } from "../model/general/objs/RouteObj";
 import { TileObj } from "../model/general/objs/TileObj";
 import { RouteFactory } from "../services/factory/RouteFactory";
 import { MouseButtonType, PointerData } from "../services/input/PointerService";
 import { lookup } from "../services/Lookup";
 import { TileMarker } from "../services/tile/TileMarker";
+import { WorldProvider } from "../services/WorldProvider";
 import { MeshStore } from "../stores/MeshStore";
 import { TileStore } from "../stores/TileStore";
 import { AbstractController, ControllerType } from "./IController";
@@ -22,6 +24,8 @@ export class PlayerTilingController extends AbstractController {
     @InjectProperty("RouteFactory")
     private routeFactory: RouteFactory;
 
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
 
     private playerTile: TileObj;
     private tileMarker: TileMarker;
@@ -33,15 +37,20 @@ export class PlayerTilingController extends AbstractController {
         this.tileStore = lookup.tileStore;
         this.meshStore = lookup.meshStore;
         this.routeFactory = lookup.routeFactory;
+        this.worldProvider = lookup.worldProvider;
         this.tileMarker = new TileMarker();
     }
 
     beforeRender() {
-        const activePlayer = this.meshStore.getById('player2');
+        const activePlayer = <CharacterObj> this.meshStore.getById('player2');
 
         if (!activePlayer) { return; }
 
         const currPlayerTile = this.tileStore.getTileByWorldPos(activePlayer.getPosition2D());
+
+        const deltaTime = this.worldProvider.world.engine.getDeltaTime();
+        activePlayer.walker.walk(deltaTime)
+        activePlayer.animationState.update();
     
         // if (this.playerTile !== currPlayerTile) {
         //     // this.removeTiles();

@@ -26,15 +26,15 @@ export class RenderGuiService {
         let dirtyFound = false;
 
         this.meshStore.getPlayers().forEach(player => {
-            if (player.state.isDirty()) {
-                player.state.clearDirty();
+            if (player.animationState.isDirty()) {
+                player.animationState.clearDirty();
                 dirtyFound = true;
             }
         });
 
         this.meshStore.getBikes().forEach(bike => {
-            if (bike.state.isDirty()) {
-                bike.state.clearDirty();
+            if (bike.animationState.isDirty()) {
+                bike.animationState.clearDirty();
                 dirtyFound = true;
             }
         })

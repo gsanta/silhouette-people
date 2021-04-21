@@ -16,11 +16,8 @@ export class CharacterWalkingState extends MeshState {
         this.enterState();
     }
 
-    beforeRender(): void {
-        if (!this.changeStateIfNeeded()) {
-            const deltaTime = this.worldProvider.world.engine.getDeltaTime();
-            this.character.walker.walk(deltaTime);
-        }
+    update(): void {
+        this.changeStateIfNeeded();
     }
 
     enterState() {
@@ -30,7 +27,7 @@ export class CharacterWalkingState extends MeshState {
     private changeStateIfNeeded() {
         const { walker } = this.character;
         if (walker.getRotation() === 0 && walker.getSpeed() === 0) {
-            this.character.state = new CharacterIdleState(this.character);
+            this.character.animationState = new CharacterIdleState(this.character);
             return true;
         }
 

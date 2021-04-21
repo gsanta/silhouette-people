@@ -2,7 +2,7 @@ import { MeshState } from "../general/state/MeshState";
 import { BikeMovingState } from "./BikeMovingState";
 
 export class BikeIdleState extends MeshState {
-    beforeRender() {
+    update() {
         this.changeStateIfNeeded();
     }
 
@@ -10,7 +10,7 @@ export class BikeIdleState extends MeshState {
         const { walker } = this.character;
 
         if (walker.getRotation() !== 0 || walker.getSpeed() !== 0) {
-            this.character.state = new BikeMovingState(this.character); 
+            this.character.animationState = new BikeMovingState(this.character); 
         }
     }
 }

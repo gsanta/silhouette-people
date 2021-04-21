@@ -16,7 +16,7 @@ export class BikeMovingState extends MeshState {
         this.worldProvider = lookup.worldProvider;
     }
     
-    beforeRender(): void {
+    update(): void {
         const deltaTime = this.worldProvider.world.engine.getDeltaTime();
         this.character.walker.walk(deltaTime);
     }
