@@ -7,6 +7,7 @@ import { RouteFactory } from "../services/factory/RouteFactory";
 import { MouseButtonType, PointerData } from "../services/input/PointerService";
 import { lookup } from "../services/Lookup";
 import { TileMarker } from "../services/tile/TileMarker";
+import { ToolService } from "../services/ToolService";
 import { WorldProvider } from "../services/WorldProvider";
 import { MaterialStore } from "../stores/MaterialStore";
 import { MeshStore } from "../stores/MeshStore";
@@ -32,6 +33,9 @@ export class PlayerTilingController extends AbstractController {
     @InjectProperty("WorldProvider")
     private worldProvider: WorldProvider;
 
+    @InjectProperty("ToolService")
+    private toolService: ToolService;
+
     private playerTile: TileObj;
     private tileMarker: TileMarker;
     private pathTool: PathTool;
@@ -45,8 +49,9 @@ export class PlayerTilingController extends AbstractController {
         this.routeFactory = lookup.routeFactory;
         this.worldProvider = lookup.worldProvider;
         this.materialStore = lookup.materialStore;
+        this.toolService = lookup.toolService;
         this.tileMarker = new TileMarker();
-        this.pathTool = new PathTool(this.worldProvider, this.materialStore);
+        this.pathTool = new PathTool(this.worldProvider, this.materialStore, this.meshStore);
     }
 
     beforeRender() {
@@ -67,13 +72,17 @@ export class PlayerTilingController extends AbstractController {
     }
 
     pointerMove(pointer: PointerData) {
-        this.pathTool.pointerMove(pointer);
+        if (this.toolService.getSelectedTool()) {
+            this.toolService.getSelectedTool().pointerMove(pointer);
+        }
         // this.tileMarker.unmarkHoverAll();
         // this.tileMarker.markHover(pointer.curr2D);
     }
 
     pointerDown(pointer: PointerData) {
-        this.pathTool.pointerDown(pointer);
+        if (this.toolService.getSelectedTool()) {
+            this.toolService.getSelectedTool().pointerDown(pointer);
+        }
         // let tile = this.tileStore.getTileByWorldPos(pointer.down2D);
         // switch(pointer.buttonType) {
         //     case MouseButtonType.LEFT:
@@ -90,16 +99,16 @@ export class PlayerTilingController extends AbstractController {
         // }
     }
 
-    private createRoute() {
-        const activePlayer = this.meshStore.getActivePlayer();
-        const initialCheckPoint = activePlayer.getPosition2D();
-        const route = this.routeFactory.createRoute(activePlayer, [initialCheckPoint]);
-        route.walker.setPaused(true);
-        activePlayer.walker = new RouteBasedCharacterWalker(route);
-        return route;
-    }
+    // private createRoute() {
+    //     const activePlayer = this.meshStore.getActivePlayer();
+    //     const initialCheckPoint = activePlayer.getPosition2D();
+    //     const route = this.routeFactory.createRoute(activePlayer, [initialCheckPoint]);
+    //     route.walker.setPaused(true);
+    //     activePlayer.walker = new RouteBasedCharacterWalker(route);
+    //     return route;
+    // }
 
-    private removeTiles() {
-        this.tileStore.getAll().forEach(tile => tile.unMarkActive());
-    }
+    // private removeTiles() {
+    //     this.tileStore.getAll().forEach(tile => tile.unMarkActive());
+    // }
 }

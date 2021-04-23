@@ -31,7 +31,7 @@ export class QuarterMap {
     fillRect(min: Vector3, max: Vector3, num: number) {
         const xNum = Math.ceil((max.x - min.x) / this.gridSize);
         const yNum = Math.ceil((max.z - min.z) / this.gridSize);
-        const topLeftIndex = this.getIndexAtWorldCoordinate(new Vector2(min.x, max.z));
+        const topLeftIndex = this.getIndexAtWorldCoordinate(new Vector3(min.x, 0, max.z));
         if (topLeftIndex) {
             const pos = this.getGridCoordinate(topLeftIndex);
     
@@ -43,7 +43,7 @@ export class QuarterMap {
         }
     }
 
-    fillPath(path: Vector2[], num: number) {
+    fillPath(path: Vector3[], num: number) {
         path.forEach(point => {
             const index = this.getIndexAtWorldCoordinate(point);
             if (index !== undefined) {
@@ -78,13 +78,13 @@ export class QuarterMap {
         return y * this.rows + x;
     }
 
-    getIndexAtWorldCoordinate(coordinate: Vector2): number {
+    getIndexAtWorldCoordinate(coordinate: Vector3): number {
         let col = Math.floor((coordinate.x - this.min.x) / this.gridSize);
         if (col < 0 || col >= this.columns) {
             return undefined;
         }
 
-        let row = Math.abs(Math.ceil((coordinate.y - this.max.y) / this.gridSize));
+        let row = Math.abs(Math.ceil((coordinate.z - this.max.y) / this.gridSize));
         if (row < 0 || row >= this.getHeight()) {
             return undefined;
         }

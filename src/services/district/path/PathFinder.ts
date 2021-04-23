@@ -1,4 +1,4 @@
-import { Vector2 } from "babylonjs";
+import { Vector2, Vector3 } from "babylonjs";
 import { astar, Graph } from 'javascript-astar';
 import { QuarterMap } from "../../../model/quarter/QuarterMap";
 import { IPathFinder } from "./IPathFinder";
@@ -6,8 +6,8 @@ import { IPathFinder } from "./IPathFinder";
 export class PathFinder implements IPathFinder {
     findPath(from: Vector2, to: Vector2, areaMap: QuarterMap): Vector2[] {
         const graph = new Graph(this.convertGraph(areaMap), { diagonal: true });
-        const startGrid = areaMap.getGridCoordinate(areaMap.getIndexAtWorldCoordinate(from));
-        const endGrid = areaMap.getGridCoordinate(areaMap.getIndexAtWorldCoordinate(to));
+        const startGrid = areaMap.getGridCoordinate(areaMap.getIndexAtWorldCoordinate(new Vector3(from.x, 0, from.y)));
+        const endGrid = areaMap.getGridCoordinate(areaMap.getIndexAtWorldCoordinate(new Vector3(to.x, 0, to.y)));
 
         const start = graph.grid[startGrid.x][startGrid.y];
         const end = graph.grid[endGrid.y][endGrid.y];

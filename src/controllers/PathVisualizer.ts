@@ -1,4 +1,5 @@
 import { Mesh, MeshBuilder, Vector3 } from "babylonjs";
+import { Path } from "../model/general/objs/Path";
 import { WorldProvider } from "../services/WorldProvider";
 import { MaterialStore } from "../stores/MaterialStore";
 
@@ -13,7 +14,7 @@ export class PathVisualizer {
         this.materialStore = materialStore;
     }
 
-    visualize(path: Vector3[], ribbon?: Mesh): Mesh {
+    visualize(path: Path, ribbon?: Mesh): Mesh {
         const pathes = this.createRibbonPathes(path);
         const updatedRibbon = MeshBuilder.CreateRibbon("ribbon", {pathArray: pathes, updatable: true, instance: ribbon}, this.worldProvider.world.scene);
 
@@ -24,27 +25,29 @@ export class PathVisualizer {
         return updatedRibbon;
     }
 
-    private createRibbonPathes(path: Vector3[]) {
-        const angle = this.getAngle(path);
+    private createRibbonPathes(path: Path) {
+        const angle = this.getAngle(path.getStartPoint(), path.getEndPoint());
         const angelPlus = angle + Math.PI / 2;
         const angelMinus = angle - Math.PI / 2;
         const radius = 0.2;
         
+        const [start, end] = [path.getStartPoint(), path.getEndPoint()];
+
         const path1 = [
-            path[0].add(new Vector3(radius * Math.cos(angelPlus), 0.5, radius * Math.sin(angelPlus))),
-            path[1].add(new Vector3(radius * Math.cos(angelPlus), 0.5, radius * Math.sin(angelPlus))),
+            start.add(new Vector3(radius * Math.cos(angelPlus), 0.5, radius * Math.sin(angelPlus))),
+            end.add(new Vector3(radius * Math.cos(angelPlus), 0.5, radius * Math.sin(angelPlus))),
         ];
 
         const path2 = [
-            path[0].add(new Vector3(radius * Math.cos(angelMinus), 0.5, radius * Math.sin(angelMinus))),
-            path[1].add(new Vector3(radius * Math.cos(angelMinus), 0.5, radius * Math.sin(angelMinus))),
+            start.add(new Vector3(radius * Math.cos(angelMinus), 0.5, radius * Math.sin(angelMinus))),
+            end.add(new Vector3(radius * Math.cos(angelMinus), 0.5, radius * Math.sin(angelMinus))),
         ];
 
         return [path1, path2];
     }
 
-    private getAngle(path: Vector3[]) {
-        const vector = path[1].subtract(path[0]);
+    private getAngle(startPoint: Vector3, endPoint) {
+        const vector = endPoint.subtract(startPoint);
         return Math.atan2(vector.z, vector.x);
     }
 }

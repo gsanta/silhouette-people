@@ -22,6 +22,7 @@ import { GameModeService } from "./GameModeService";
 import { MaterialStore } from "../stores/MaterialStore";
 import { RouteStore } from "../stores/RouteStore";
 import { TurnBasedCommandService } from "./TurnBasedCommandService";
+import { ToolService } from "./ToolService";
 
 export class Lookup {
     keyboard: KeyboardService;
@@ -55,6 +56,8 @@ export class Lookup {
     lightStore: LightStore;
     routeStore: RouteStore;
 
+    toolService: ToolService;
+
     tileFactory: TileFactory;
     
     turnBasedCommandService: TurnBasedCommandService;
@@ -82,6 +85,9 @@ export class Lookup {
         lookup.meshStore = this.meshStore;
         this.lightStore = new LightStore();
         lookup.lightStore = this.lightStore;
+
+        this.toolService = new ToolService();
+        lookup.toolService = this.toolService;
 
         this.renderGui = new RenderGuiService();
         lookup.renderGui = this.renderGui;

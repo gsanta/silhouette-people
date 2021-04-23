@@ -29,6 +29,6 @@ export class RouteBasedCharacterWalker extends MeshWalker {
         character.move(0.04);
 
         this.route.walker.prevPos = currPos;
-        this.route.walker.currPos = character.getPosition2D();
+        this.route.walker.currPos = character.getPosition();
     }
 }

@@ -1,12 +1,13 @@
 import { Vector2 } from "babylonjs";
+import { Vector3 } from "babylonjs/Maths/math.vector";
 import { RouteObj } from "./RouteObj";
 
 export abstract class RouteWalker {
     protected _isFinished: boolean = false;
-    fromCheckPoint: Vector2;
-    toCheckPoint: Vector2;
-    prevPos: Vector2;
-    currPos: Vector2;
+    fromCheckPoint: Vector3;
+    toCheckPoint: Vector3;
+    prevPos: Vector3;
+    currPos: Vector3;
     protected _isPaused = false;
     
     constructor(public route: RouteObj) {}
@@ -55,12 +56,13 @@ export abstract class RouteWalker {
 
 
     protected setNextCheckPoint() {
-        const { character, checkPoints } = this.route;
+        const { character} = this.route;
+        const checkPoints = this.route.getCheckpoints();
     
         if (this.toCheckPoint === checkPoints[checkPoints.length - 1]) {
             this.setFinished(true);
         } else {
-            this.fromCheckPoint = character.getPosition2D();
+            this.fromCheckPoint = character.getPosition();
             this.toCheckPoint = checkPoints[checkPoints.indexOf(this.toCheckPoint) + 1];
         }
     }
@@ -68,7 +70,7 @@ export abstract class RouteWalker {
     updateCheckPointsIfNeeded() {
         if (!this.fromCheckPoint || !this.toCheckPoint) {
             this.initCheckPoints();
-            this.route.character.setPosition2D(this.fromCheckPoint);
+            this.route.character.setPosition2D(new Vector2(this.fromCheckPoint.x, this.fromCheckPoint.z));
         } else if (this.isCheckPointReached()) {
             this.setNextCheckPoint();
             return true;
@@ -76,7 +78,7 @@ export abstract class RouteWalker {
     }
 
     private initCheckPoints() {
-        const { checkPoints } = this.route;
+        const checkPoints = this.route.getCheckpoints();
         this.fromCheckPoint = checkPoints[0];
         this.toCheckPoint = checkPoints[1];
     }
@@ -85,7 +87,7 @@ export abstract class RouteWalker {
         const { character } = this.route;
         const curr = character.getPosition();
     
-        const isWithinDestRadius = this.toCheckPoint.subtract(new Vector2(curr.x, curr.z)).length() < 0.2;
+        const isWithinDestRadius = this.toCheckPoint.subtract(curr).length() < 0.2;
         const isLeavingDest = this.prevPos && this.prevPos.subtract(this.toCheckPoint).length() < this.currPos.subtract(this.toCheckPoint).length();
     
         return isWithinDestRadius || isLeavingDest;
@@ -101,6 +103,6 @@ export abstract class RouteWalker {
         character.walker.setSpeed(0.04)
 
         this.prevPos = this.currPos;
-        this.currPos = character.getPosition2D();
+        this.currPos = character.getPosition();
     }
 }

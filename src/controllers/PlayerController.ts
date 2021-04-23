@@ -41,7 +41,6 @@ export class PlayerController extends AbstractController {
         this.worldProvider = lookup.worldProvider;
     }
 
-
     keyboard(e: KeyboardEvent) {
         const player = this.meshStore.getActivePlayer();
 

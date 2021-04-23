@@ -1,14 +1,29 @@
-import { Vector2 } from "babylonjs";
+import { Vector3 } from "babylonjs/Maths/math.vector";
 import { CharacterObj } from "./CharacterObj";
+import { Path } from "./Path";
 import { RouteWalker } from "./RouteWalker";
 
 export class RouteObj {
-    readonly checkPoints: Vector2[];
+    // readonly checkPoints: Vector2[];
     readonly character: CharacterObj;
     walker: RouteWalker;
 
-    constructor(character: CharacterObj, checkPoints: Vector2[]) {
+    readonly pathes: Path[] = [];
+
+    constructor(character: CharacterObj, pathes: Path[]) {
         this.character = character;
-        this.checkPoints = checkPoints;
+        this.pathes = pathes;
+    }
+
+    getCheckpoints() {
+        const points: Vector3[] = [];
+
+        points.push(this.pathes[0].getStartPoint(), this.pathes[0].getEndPoint());
+
+        for (let i = 1; i < this.pathes.length - 1; i++) {
+            points.push(this.pathes[i].getEndPoint());
+        }
+
+        return points;
     }
 }
