@@ -8,12 +8,17 @@ import { MouseButtonType, PointerData } from "../services/input/PointerService";
 import { lookup } from "../services/Lookup";
 import { TileMarker } from "../services/tile/TileMarker";
 import { WorldProvider } from "../services/WorldProvider";
+import { MaterialStore } from "../stores/MaterialStore";
 import { MeshStore } from "../stores/MeshStore";
 import { TileStore } from "../stores/TileStore";
 import { AbstractController, ControllerType } from "./IController";
+import { PathTool } from "./PathTool";
 
 export class PlayerTilingController extends AbstractController {
     type = ControllerType.Player;
+
+    @InjectProperty("MaterialStore")
+    private materialStore: MaterialStore;
 
     @InjectProperty("TileStore")
     private tileStore: TileStore;
@@ -29,6 +34,7 @@ export class PlayerTilingController extends AbstractController {
 
     private playerTile: TileObj;
     private tileMarker: TileMarker;
+    private pathTool: PathTool;
     // routeTiles: TileObj[] = [];
     route: RouteObj;
 
@@ -38,7 +44,9 @@ export class PlayerTilingController extends AbstractController {
         this.meshStore = lookup.meshStore;
         this.routeFactory = lookup.routeFactory;
         this.worldProvider = lookup.worldProvider;
+        this.materialStore = lookup.materialStore;
         this.tileMarker = new TileMarker();
+        this.pathTool = new PathTool(this.worldProvider, this.materialStore);
     }
 
     beforeRender() {
@@ -59,25 +67,27 @@ export class PlayerTilingController extends AbstractController {
     }
 
     pointerMove(pointer: PointerData) {
-        this.tileMarker.unmarkHoverAll();
-        this.tileMarker.markHover(pointer.curr2D);
+        this.pathTool.pointerMove(pointer);
+        // this.tileMarker.unmarkHoverAll();
+        // this.tileMarker.markHover(pointer.curr2D);
     }
 
     pointerDown(pointer: PointerData) {
-        let tile = this.tileStore.getTileByWorldPos(pointer.down2D);
-        switch(pointer.buttonType) {
-            case MouseButtonType.LEFT:
-                tile.markActive();
-                if (!this.route) {
-                    this.route = this.createRoute();
-                }
-                this.route.checkPoints.push(tile.getPosition2D())
-            break;
-            case MouseButtonType.RIGHT:
-                tile.unMarkActive();
-                // this.routeTiles = this.routeTiles.filter(t => t !== tile);
-            break;
-        }
+        this.pathTool.pointerDown(pointer);
+        // let tile = this.tileStore.getTileByWorldPos(pointer.down2D);
+        // switch(pointer.buttonType) {
+        //     case MouseButtonType.LEFT:
+        //         tile.markActive();
+        //         if (!this.route) {
+        //             this.route = this.createRoute();
+        //         }
+        //         this.route.checkPoints.push(tile.getPosition2D())
+        //     break;
+        //     case MouseButtonType.RIGHT:
+        //         tile.unMarkActive();
+        //         // this.routeTiles = this.routeTiles.filter(t => t !== tile);
+        //     break;
+        // }
     }
 
     private createRoute() {

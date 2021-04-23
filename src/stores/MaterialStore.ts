@@ -7,6 +7,7 @@ export class MaterialStore {
     private tileMaterial: StandardMaterial; 
     private activeTileMaterial: StandardMaterial; 
     private hoverTileMaterial: StandardMaterial;
+    private ribbonMaterial: StandardMaterial;
 
     @InjectProperty("WorldProvider")
     private worldProvider: WorldProvider;
@@ -45,5 +46,18 @@ export class MaterialStore {
         }
 
         return this.hoverTileMaterial;
+    }
+
+    getRibbonMaterial(): StandardMaterial {
+        if (!this.ribbonMaterial) {
+            var mat = new StandardMaterial("mat1", this.worldProvider.world.scene);
+            mat.alpha = 1;
+            mat.diffuseColor = new Color3(0.5, 0.5, 1.0);
+            mat.emissiveColor = Color3.Black();
+            mat.backFaceCulling = false;
+            this.ribbonMaterial = mat;
+        }
+
+        return this.ribbonMaterial;
     }
 }
