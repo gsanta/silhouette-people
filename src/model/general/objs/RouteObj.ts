@@ -4,7 +4,6 @@ import { Path } from "./Path";
 import { RouteWalker } from "./RouteWalker";
 
 export class RouteObj {
-    // readonly checkPoints: Vector2[];
     readonly character: CharacterObj;
     walker: RouteWalker;
 
@@ -13,6 +12,10 @@ export class RouteObj {
     constructor(character: CharacterObj, pathes: Path[]) {
         this.character = character;
         this.pathes = pathes;
+    }
+
+    addPath(path: Path) {
+        this.pathes.push(path);
     }
 
     getCheckpoints() {
@@ -25,5 +28,13 @@ export class RouteObj {
         }
 
         return points;
+    }
+    
+    getPathes(): Path[] {
+        return this.pathes;
+    }
+
+    dispose() {
+        this.pathes.forEach(path => path.dispose());
     }
 }

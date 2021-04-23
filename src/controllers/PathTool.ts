@@ -1,5 +1,6 @@
 import { Mesh } from "babylonjs";
 import { Path } from "../model/general/objs/Path";
+import { RouteObj } from "../model/general/objs/RouteObj";
 import { MeshState } from "../model/general/state/MeshState";
 import { PointerData } from "../services/input/PointerService";
 import { lookup } from "../services/Lookup";
@@ -15,7 +16,8 @@ export class PathTool implements Tool {
     private pathVisualizer: PathVisualizer;
     private pathBuilder: PathBuilder;
     
-    private path: Path;
+    private currentPath: Path;
+    private route: RouteObj;
     private ribbon: Mesh;
 
 
@@ -26,26 +28,36 @@ export class PathTool implements Tool {
     }
 
     pointerMove(pointer: PointerData) {
-        if (this.path) {
-            this.path = this.pathBuilder.updatePath(this.path, pointer.curr2D);
-            this.ribbon = this.pathVisualizer.visualize(this.path, this.ribbon);
+        if (this.currentPath) {
+            this.currentPath = this.pathBuilder.updatePath(this.currentPath, pointer.curr2D);
+
+            this.pathVisualizer.visualize(this.currentPath);
         }
     }
 
     pointerDown(pointer: PointerData) {
-        if (!this.path) {
-            this.path = this.pathBuilder.startPath(pointer.curr2D);
-        } else {
-            this.path = this.pathBuilder.closePath(this.path, pointer.curr2D);
-            if (this.ribbon) {
-                this.ribbon.dispose();
-            }
-            this.path = undefined;
-        }
+        this.currentPath = this.pathBuilder.closePath(this.currentPath, pointer.curr2D);;
+        this.currentPath = this.pathBuilder.startPath(pointer.curr2D);
+        this.ribbon = undefined;
+        this.route.addPath(this.currentPath);
     }
 
     select() {
+        this.initRoute();
+    }
+
+    cancel() {
+        if (this.route) {
+            this.route.dispose();
+        }
+
+        this.initRoute();
+    }
+
+    private initRoute() {
         const player = this.meshStore.getActivePlayer();
-        this.path = this.pathBuilder.startPath(player.getPosition2D());
+        this.currentPath = this.pathBuilder.startPath(player.getPosition2D());
+        this.ribbon = undefined;
+        this.route = new RouteObj(player, [this.currentPath]);
     }
 }

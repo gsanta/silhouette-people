@@ -4,6 +4,7 @@ import { CharacterObj } from "../model/general/objs/CharacterObj";
 import { RouteObj } from "../model/general/objs/RouteObj";
 import { TileObj } from "../model/general/objs/TileObj";
 import { RouteFactory } from "../services/factory/RouteFactory";
+import { KeyboardService } from "../services/input/KeyboardService";
 import { MouseButtonType, PointerData } from "../services/input/PointerService";
 import { lookup } from "../services/Lookup";
 import { TileMarker } from "../services/tile/TileMarker";
@@ -36,6 +37,9 @@ export class PlayerTilingController extends AbstractController {
     @InjectProperty("ToolService")
     private toolService: ToolService;
 
+    @InjectProperty("KeyboardService")
+    private keyboardService: KeyboardService;
+
     private playerTile: TileObj;
     private tileMarker: TileMarker;
     private pathTool: PathTool;
@@ -50,8 +54,19 @@ export class PlayerTilingController extends AbstractController {
         this.worldProvider = lookup.worldProvider;
         this.materialStore = lookup.materialStore;
         this.toolService = lookup.toolService;
+        this.keyboardService = lookup.keyboard;
         this.tileMarker = new TileMarker();
         this.pathTool = new PathTool(this.worldProvider, this.materialStore, this.meshStore);
+    }
+
+    keyboard(e: KeyboardEvent) {
+        switch(e.key) {
+            case 'Escape':
+                if (this.toolService.getSelectedTool()) {
+                    this.toolService.getSelectedTool().cancel();
+                }
+            break;
+        }
     }
 
     beforeRender() {
