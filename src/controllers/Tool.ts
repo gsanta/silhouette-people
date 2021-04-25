@@ -1,7 +1,8 @@
 import { PointerData } from "../services/input/PointerService";
 
 export enum ToolType {
-    PATH = 'PATH'
+    PATH = 'PATH',
+    MOVE = 'MOVE'
 }
 
 export abstract class Tool {
@@ -11,10 +12,16 @@ export abstract class Tool {
         this.type = type;
     }
 
+    beforeRender() {}
+
     pointerMove(pointer: PointerData) {}
     pointerDown(pointer: PointerData) {}
-    select(): void {}
+    select(isCanceled: boolean): void {}
+
+    isCanceled(): boolean { return false; }
     cancel(): void {}
+    reset(): void {}
+    
     keyDown(e: KeyboardEvent) {}
     keyUp(e: KeyboardEvent) {}
 }

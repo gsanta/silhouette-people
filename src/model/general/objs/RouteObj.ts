@@ -28,7 +28,7 @@ export class RouteObj {
 
         points.push(this.pathes[0].getStartPoint(), this.pathes[0].getEndPoint());
 
-        for (let i = 1; i < this.pathes.length - 1; i++) {
+        for (let i = 1; i < this.pathes.length; i++) {
             points.push(this.pathes[i].getEndPoint());
         }
 

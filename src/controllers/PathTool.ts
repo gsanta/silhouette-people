@@ -1,6 +1,7 @@
 import { Path } from "../model/general/objs/Path";
 import { RouteObj } from "../model/general/objs/RouteObj";
 import { PointerData } from "../services/input/PointerService";
+import { RenderGuiService } from "../services/RenderGuiService";
 import { ToolService } from "../services/ToolService";
 import { WorldProvider } from "../services/WorldProvider";
 import { MaterialStore } from "../stores/MaterialStore";
@@ -14,37 +15,52 @@ export class PathTool extends Tool {
     private meshStore: MeshStore;
     private routeStore: RouteStore;
     private toolService: ToolService;
+    private renderService: RenderGuiService;
     private pathVisualizer: PathVisualizer;
     private pathBuilder: PathBuilder;
     
     private currentPath: Path;
     private route: RouteObj;
+    private _isCanceled = true;;
 
-    constructor(worldProvider: WorldProvider, toolService: ToolService, materialStore: MaterialStore, meshStore: MeshStore, routeStore: RouteStore) {
+    constructor(worldProvider: WorldProvider, toolService: ToolService, materialStore: MaterialStore, meshStore: MeshStore, routeStore: RouteStore, renderService: RenderGuiService) {
         super(ToolType.PATH);
         this.meshStore = meshStore;
         this.routeStore = routeStore;
         this.toolService = toolService;
+        this.renderService = renderService;
         this.pathVisualizer = new PathVisualizer(worldProvider, materialStore);
         this.pathBuilder = new PathBuilder();
     }
 
     pointerMove(pointer: PointerData) {
+        if (this.isCanceled()) { return; }
+
         if (this.currentPath) {
             this.currentPath = this.pathBuilder.updatePath(this.currentPath, pointer.curr2D);
 
             this.pathVisualizer.visualize(this.currentPath);
+        } else {
+            this.initRoute();
         }
     }
 
     pointerDown(pointer: PointerData) {
+        if (this.isCanceled()) { return; }
+
         this.currentPath = this.pathBuilder.closePath(this.currentPath, pointer.curr2D);;
         this.currentPath = this.pathBuilder.startPath(pointer.curr2D);
         this.route.addPath(this.currentPath);
     }
 
-    select() {
-        this.initRoute();
+    isCanceled() {
+        return this._isCanceled;
+    }
+
+    select(isCanceled: boolean) {
+        this._isCanceled = isCanceled;
+
+        this.renderService.render();
     }
 
     cancel() {
@@ -52,24 +68,40 @@ export class PathTool extends Tool {
             this.route.dispose();
         }
 
-        this.initRoute();
+        this._isCanceled = true;
+        this.renderService.render();
+    }
+
+    reset() {
+        this._isCanceled = false;
+        this.renderService.render();
     }
 
     keyDown(e: KeyboardEvent) {
         if (e.key === 'Enter') {
             if (this.route) {
-                this.route.removePath(this.currentPath);
-                if (this.route.pathes.length > 0) {
-                    this.routeStore.addRoute(this.route);
-                    this.toolService.setSelectedTool(undefined);
-                }
+                this.finishRoute();
+                this.toolService.setSelectedTool(this.toolService.move, true);
             }
+        }
+    }
+
+    private finishRoute() {
+        if (this.currentPath) {
+            this.route.removePath(this.currentPath);
+            this.currentPath.dispose();
+        }
+        if (this.route.pathes.length > 0) {
+            this.routeStore.addRoute(this.route);
         }
     }
 
     private initRoute() {
         const player = this.meshStore.getActivePlayer();
-        this.currentPath = this.pathBuilder.startPath(player.getPosition2D());
-        this.route = new RouteObj(player, [this.currentPath]);
+        if (player) {
+            // this._isActive = false;
+            this.currentPath = this.pathBuilder.startPath(player.getPosition2D());
+            this.route = new RouteObj(player, [this.currentPath]);
+        }
     }
 }

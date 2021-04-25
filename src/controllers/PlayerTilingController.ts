@@ -61,13 +61,18 @@ export class PlayerTilingController extends AbstractController {
 
         const deltaTime = this.worldProvider.world.engine.getDeltaTime();
 
-        const route = this.routeStore.getRouteForCharacter(activePlayer);
-        if (route) {
-            route.walker.step(deltaTime);
+        const selectedTool = this.toolService.getSelectedTool();
+        if (selectedTool) {
+            selectedTool.beforeRender();
         }
+
+        // const route = this.routeStore.getRouteForCharacter(activePlayer);
+        // if (route) {
+        //     route.walker.step(deltaTime);
+        // }
         
-        activePlayer.walker.walk(deltaTime)
-        activePlayer.animationState.update();
+        // activePlayer.walker.walk(deltaTime)
+        // activePlayer.animationState.update();
     }
 
     pointerMove(pointer: PointerData) {

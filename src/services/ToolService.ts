@@ -1,3 +1,4 @@
+import { MoveTool } from "../controllers/MoveTool";
 import { PathTool } from "../controllers/PathTool";
 import { Tool } from "../controllers/Tool";
 import { InjectProperty } from "../di/diDecorators";
@@ -12,6 +13,7 @@ import { WorldProvider } from "./WorldProvider";
 export class ToolService implements KeyboardListener {
 
     path: PathTool;
+    move: MoveTool;
 
     @InjectProperty("WorldProvider")
     private worldProvider: WorldProvider;
@@ -42,13 +44,16 @@ export class ToolService implements KeyboardListener {
         this.renderGuiService = lookup.renderGui;
 
         this.keyboardService.addListener(this);
-        this.path = new PathTool(this.worldProvider, this, this.materialStore, this.meshStore, this.routeStore);
+        this.path = new PathTool(this.worldProvider, this, this.materialStore, this.meshStore, this.routeStore, this.renderGuiService);
+        this.move = new MoveTool(this.worldProvider, this.meshStore, this.routeStore, this.renderGuiService);
+        
+        this.setSelectedTool(this.path, true);
     }
 
-    setSelectedTool(tool: Tool) {
+    setSelectedTool(tool: Tool, isCanceled = false) {
         this.selectedTool = tool;
         if (this.selectedTool) {
-            this.selectedTool.select();
+            this.selectedTool.select(isCanceled);
         }
         this.renderGuiService.render();
     }
