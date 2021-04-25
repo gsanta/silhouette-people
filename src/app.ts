@@ -92,7 +92,7 @@ function initGame(lookup: Lookup) {
             lookup.controller.beforeRender();
         }
 
-        lookup.renderGui.render();
+        lookup.renderGui.processDirty();
     });
     
     window.addEventListener("resize", function () {

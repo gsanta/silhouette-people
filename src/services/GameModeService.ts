@@ -62,7 +62,7 @@ export class GameModeService {
         this.activePlayerService.activate(player2);
         const player1 = this.meshStore.getById('player1');
         player1.setVisibility(false);
-        this.renderGuiService.render(true);
+        this.renderGuiService.render();
     }
 
     changeToRTSMode() {
@@ -74,6 +74,6 @@ export class GameModeService {
         this.activePlayerService.activate(player1);
         const player2 = this.meshStore.getById('player2');
         player2.setVisibility(false);
-        this.renderGuiService.render(true);
+        this.renderGuiService.render();
     }
 }

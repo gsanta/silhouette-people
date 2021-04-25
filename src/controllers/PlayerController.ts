@@ -82,14 +82,14 @@ export class PlayerController extends AbstractController {
 
         if (nearestActionableObj) {
             this.activateActionable(player, nearestActionableObj);
-            this.renderGuiService.render(true);
+            this.renderGuiService.render();
         }
     }
 
     private exitAction() {
         const player = this.meshStore.getActivePlayer();
         player.animationState = new CharacterGetOffBikeState(player);
-        this.renderGuiService.render(true);
+        this.renderGuiService.render();
     }
 
     private activateActionable(player: HumanoidObj, actionableObj: MeshObj) {

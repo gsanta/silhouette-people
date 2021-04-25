@@ -2,42 +2,34 @@ import { Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
 import { RouteObj } from "./RouteObj";
 
-export abstract class RouteWalker {
+export class RouteWalker {
     protected _isFinished: boolean = false;
     fromCheckPoint: Vector3;
     toCheckPoint: Vector3;
     prevPos: Vector3;
     currPos: Vector3;
-    protected _isPaused = false;
+    protected _isStarted = false;
     
     constructor(public route: RouteObj) {}
 
     step(deltaTime: number): void {
-        if (this.isPaused() || this.isFinished()) { return; }
+        if (!this._isStarted || this._isFinished) { return; }
     
-        if (this.updateCheckPointsIfNeeded()) {
-            this.setPaused(true);
-        } else {
-            if (!this.isFinished()) { this.moveCharacter(); }
-        }
-        
+        this.updateCheckPointsIfNeeded()
+
+        if (!this.isFinished()) { this.moveCharacter(); }
     }
 
     isFinished(): boolean {
         return this._isFinished;
     }
 
-    isPaused(): boolean {
-        return this._isPaused;
+    isStarted(): boolean {
+        return this._isStarted;
     }
 
-    setPaused(isPaused: boolean) {
-        this._isPaused = isPaused;
-        
-        if (isPaused) {
-            const { character } = this.route;
-            character.walker.setSpeed(0);
-        }
+    setStarted() {
+        this._isStarted = true;
     }
 
     private setFinished(isFinished) {
@@ -53,7 +45,6 @@ export abstract class RouteWalker {
     isAtCheckPoint(): boolean {
         throw new Error("Method not implemented.");
     }
-
 
     protected setNextCheckPoint() {
         const { character} = this.route;
@@ -97,7 +88,7 @@ export abstract class RouteWalker {
         const { character } = this.route;
 
         const dirVector = this.toCheckPoint.subtract(this.fromCheckPoint);
-        const dirAngle = Math.atan2(dirVector.y, dirVector.x);
+        const dirAngle = Math.atan2(dirVector.z, dirVector.x);
 
         character.setRotation(Math.PI / 2 - dirAngle);
         character.walker.setSpeed(0.04)

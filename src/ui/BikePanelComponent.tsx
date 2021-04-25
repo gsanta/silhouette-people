@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentProps } from './ComponentProps';
-import './../../assets/css/bike-panel.scss'
+import './../../assets/css/action-panel.scss'
 import { InjectProperty } from "../di/diDecorators";
 import { MeshStore } from "../stores/MeshStore";
 import { lookup } from "../services/Lookup";
@@ -28,9 +28,9 @@ export class BikePanelComponent extends React.Component<ComponentProps> {
         speed = Math.trunc(speed * 10) / 10;
 
         return (
-            <div className="bike-panel">
-                <div className="info-panel-header">Bike info</div>
-                <div className="info-panel-body">
+            <div className="action-panel">
+                <div className="action-panel-header">Bike info</div>
+                <div className="action-panel-body">
                     <div className="info-row">
                         <div>Speed</div>
                         <div>{speed} km/h</div>

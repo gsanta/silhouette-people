@@ -1,28 +1,30 @@
-import { Mesh } from "babylonjs";
 import { Path } from "../model/general/objs/Path";
 import { RouteObj } from "../model/general/objs/RouteObj";
-import { MeshState } from "../model/general/state/MeshState";
 import { PointerData } from "../services/input/PointerService";
-import { lookup } from "../services/Lookup";
+import { ToolService } from "../services/ToolService";
 import { WorldProvider } from "../services/WorldProvider";
 import { MaterialStore } from "../stores/MaterialStore";
 import { MeshStore } from "../stores/MeshStore";
+import { RouteStore } from "../stores/RouteStore";
 import { PathBuilder } from "./PathBuilder";
 import { PathVisualizer } from "./PathVisualizer";
-import { Tool } from "./Tool";
+import { Tool, ToolType } from "./Tool";
 
-export class PathTool implements Tool {
+export class PathTool extends Tool {
     private meshStore: MeshStore;
+    private routeStore: RouteStore;
+    private toolService: ToolService;
     private pathVisualizer: PathVisualizer;
     private pathBuilder: PathBuilder;
     
     private currentPath: Path;
     private route: RouteObj;
-    private ribbon: Mesh;
 
-
-    constructor(worldProvider: WorldProvider, materialStore: MaterialStore, meshStore: MeshStore) {
-        this.meshStore = lookup.meshStore;
+    constructor(worldProvider: WorldProvider, toolService: ToolService, materialStore: MaterialStore, meshStore: MeshStore, routeStore: RouteStore) {
+        super(ToolType.PATH);
+        this.meshStore = meshStore;
+        this.routeStore = routeStore;
+        this.toolService = toolService;
         this.pathVisualizer = new PathVisualizer(worldProvider, materialStore);
         this.pathBuilder = new PathBuilder();
     }
@@ -38,7 +40,6 @@ export class PathTool implements Tool {
     pointerDown(pointer: PointerData) {
         this.currentPath = this.pathBuilder.closePath(this.currentPath, pointer.curr2D);;
         this.currentPath = this.pathBuilder.startPath(pointer.curr2D);
-        this.ribbon = undefined;
         this.route.addPath(this.currentPath);
     }
 
@@ -54,10 +55,21 @@ export class PathTool implements Tool {
         this.initRoute();
     }
 
+    keyDown(e: KeyboardEvent) {
+        if (e.key === 'Enter') {
+            if (this.route) {
+                this.route.removePath(this.currentPath);
+                if (this.route.pathes.length > 0) {
+                    this.routeStore.addRoute(this.route);
+                    this.toolService.setSelectedTool(undefined);
+                }
+            }
+        }
+    }
+
     private initRoute() {
         const player = this.meshStore.getActivePlayer();
         this.currentPath = this.pathBuilder.startPath(player.getPosition2D());
-        this.ribbon = undefined;
         this.route = new RouteObj(player, [this.currentPath]);
     }
 }

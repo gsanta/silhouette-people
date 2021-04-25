@@ -7,15 +7,20 @@ export class RouteObj {
     readonly character: CharacterObj;
     walker: RouteWalker;
 
-    readonly pathes: Path[] = [];
+    pathes: Path[] = [];
 
     constructor(character: CharacterObj, pathes: Path[]) {
         this.character = character;
         this.pathes = pathes;
+        this.walker = new RouteWalker(this);
     }
 
     addPath(path: Path) {
         this.pathes.push(path);
+    }
+
+    removePath(path: Path) {
+        this.pathes = this.pathes.filter(p => p !== path);
     }
 
     getCheckpoints() {

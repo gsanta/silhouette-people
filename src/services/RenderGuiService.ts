@@ -16,8 +16,12 @@ export class RenderGuiService {
         this.renderer = renderer;
     }
 
-    render(forced: boolean = false) {
-        if (forced || this.processDirtyObjs()) {
+    render() {
+        this.renderer && this.renderer();
+    }
+
+    processDirty() {
+        if (this.processDirtyObjs()) {
             this.renderer && this.renderer();
         }
     }

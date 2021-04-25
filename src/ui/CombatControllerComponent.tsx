@@ -5,6 +5,7 @@ import { lookup } from "../services/Lookup";
 import { ToolService } from "../services/ToolService";
 import { TurnBasedCommandService } from "../services/TurnBasedCommandService";
 import { MeshStore } from "../stores/MeshStore";
+import { ToolType } from "../controllers/Tool";
 
 export class CombatControllerComponent extends React.Component {
 
@@ -34,18 +35,32 @@ export class CombatControllerComponent extends React.Component {
         }
 
         return (
-            <div className="bike-panel">
-                <div className="info-panel-header">Combat control</div>
-                <div className="info-panel-body">
-                    <div className="info-row">
+            <div className="action-panel">
+                <div className="action-panel-header">Combat control</div>
+                <div className="action-panel-body">
+                    {/* <div className="info-row">
                         <button onClick={() => this.onClick()}>Start</button>
-                    </div>
-                    <div className="info-row">
-                        <button onClick={() => this.selectPathTool()}>Path</button>
-                    </div>
+                    </div> */}
+                    {this.renderDrawPathButton()}
                 </div>
             </div>
         );
+    }
+
+    private renderDrawPathButton() {
+        let className = 'button-action' 
+
+        const selectedTool = this.toolService.getSelectedTool();
+        if (selectedTool && selectedTool.type === ToolType.PATH) {
+            className = `${className} button-action-active`;
+        }
+
+        return (
+            <div className="info-row" onClick={() => this.selectPathTool()}>
+                <div className={className}>Draw Path</div>
+                {/* <button onClick={() => this.selectPathTool()}>Path</button> */}
+            </div>
+        )
     }
 
     private onClick() {

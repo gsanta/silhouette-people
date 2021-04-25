@@ -1,3 +1,4 @@
+import { CharacterObj } from "../model/general/objs/CharacterObj";
 import { RouteObj } from "../model/general/objs/RouteObj";
 
 
@@ -15,6 +16,10 @@ export class RouteStore {
 
     getRoutes(): RouteObj[] {
         return this.routes;
+    }
+
+    getRouteForCharacter(character: CharacterObj): RouteObj {
+        return this.routes.find(route => route.character === character);
     }
 
     clearFinishedRoutes() {

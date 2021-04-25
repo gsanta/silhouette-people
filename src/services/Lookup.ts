@@ -85,16 +85,15 @@ export class Lookup {
         lookup.meshStore = this.meshStore;
         this.lightStore = new LightStore();
         lookup.lightStore = this.lightStore;
-
-        this.toolService = new ToolService();
-        lookup.toolService = this.toolService;
-
+        
         this.renderGui = new RenderGuiService();
         lookup.renderGui = this.renderGui;
         this.controller = new ControllerService();
         lookup.controller = this.controller;
         this.keyboard = new KeyboardService();
         lookup.keyboard = this.keyboard;
+        this.toolService = new ToolService();
+        lookup.toolService = this.toolService;
 
         this.pointer = new PointerService();
         lookup.pointer = this.pointer;

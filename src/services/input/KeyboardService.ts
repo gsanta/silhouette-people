@@ -1,9 +1,12 @@
-import { KeyChecker } from "./KeyChecker";
 import { InjectProperty } from "../../di/diDecorators";
 import { ControllerService } from "../ControllerService";
-import { WorldProvider } from "../WorldProvider";
 import { lookup } from "../Lookup";
-import { MeshStore } from "../../stores/MeshStore";
+import { KeyChecker } from "./KeyChecker";
+
+export interface KeyboardListener {
+    onKeyDown(e: KeyboardEvent): void;
+    onKeyUp(e: KeyboardEvent): void;
+}
 
 export class KeyboardService {
     activeKeys: Set<string> = new Set();
@@ -12,27 +15,30 @@ export class KeyboardService {
     @InjectProperty("ControllerService")
     private controllerService: ControllerService;
 
-    @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
-
-    @InjectProperty("MeshStore")
-    private meshStore: MeshStore;
+    private listeners: KeyboardListener[] = [];
 
     constructor() {
         this.checker = new KeyChecker(this);
         this.controllerService = lookup.controller;
-        this.worldProvider = lookup.worldProvider;
-        this.meshStore = lookup.meshStore;
+    }
+
+    addListener(l: KeyboardListener) {
+        this.listeners.push(l);
+    }
+
+    removeListener(l: KeyboardListener) {
+        this.listeners = this.listeners.filter(listener => listener !== l);
     }
 
     keyDown(e: KeyboardEvent) {
         this.activeKeys.add(e.key);
-
+        this.listeners.forEach(l => l.onKeyDown(e));
         this.controllerService.keyboard(e, true);
     }
 
     keyUp(e: KeyboardEvent) {
         this.activeKeys.delete(e.key);
+        this.listeners.forEach(l => l.onKeyUp(e));
         this.controllerService.keyboard(e, false);
     }
 }

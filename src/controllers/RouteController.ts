@@ -19,10 +19,10 @@ export class RouteController extends AbstractController {
     }
 
     beforeRender() {
-        const deltaTime = this.worldProvider.world.engine.getDeltaTime();
+        // const deltaTime = this.worldProvider.world.engine.getDeltaTime();
     
-        this.routeStore.getRoutes()
-            .filter(route => !route.walker.isFinished())
-            .forEach(route => route.walker.step(deltaTime));
+        // this.routeStore.getRoutes()
+        //     .filter(route => !route.walker.isFinished())
+        //     .forEach(route => route.walker.step(deltaTime));
     }
 }
