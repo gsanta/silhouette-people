@@ -46,8 +46,6 @@ export class ToolService implements KeyboardListener {
         this.keyboardService.addListener(this);
         this.path = new PathTool(this.worldProvider, this, this.materialStore, this.meshStore, this.routeStore, this.renderGuiService);
         this.move = new MoveTool(this.worldProvider, this.meshStore, this.routeStore, this.renderGuiService);
-        
-        this.setSelectedTool(this.path, true);
     }
 
     setSelectedTool(tool: Tool, isCanceled = false) {

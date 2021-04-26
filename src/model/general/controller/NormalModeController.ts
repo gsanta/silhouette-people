@@ -3,6 +3,7 @@ import { CameraController } from "../../../controllers/CameraController";
 import { EnemyController } from "../../../controllers/EnemyController";
 import { AbstractController } from "../../../controllers/IController";
 import { PlayerController } from "../../../controllers/PlayerController";
+import { PlayerTilingController } from "../../../controllers/PlayerTilingController";
 import { RouteController } from "../../../controllers/RouteController";
 import { PointerData } from "../../../services/input/PointerService";
 
@@ -13,7 +14,7 @@ export class NormalModeController extends AbstractController {
     constructor(cameraController: CameraController) {
         super();
         this.delegates = [
-            new PlayerController(),
+            new PlayerTilingController(),
             new EnemyController(),
             new BikeController(),
             new RouteController(),

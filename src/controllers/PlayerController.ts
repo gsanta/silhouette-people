@@ -1,5 +1,6 @@
-import { Vector2 } from "babylonjs";
+import { Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../di/diDecorators";
+import { CharacterBikingState } from "../model/character/states/CharacterBikingState";
 import { CharacterGetOffBikeState } from "../model/character/states/CharacterGetOffBikeState";
 import { CharacterGetOnBikeState } from "../model/character/states/CharacterGetOnBikeState";
 import { BikeObj, CharacterObj, HumanoidObj } from "../model/general/objs/CharacterObj";
@@ -73,8 +74,12 @@ export class PlayerController extends AbstractController {
     beforeRender() {
         const player = this.meshStore.getActivePlayer();
         const deltaTime = this.worldProvider.world.engine.getDeltaTime();
-        player.walker.walk(deltaTime);
-        player.animationState.update();
+        // player.walker.walk(deltaTime);
+        // player.animationState.update();
+
+        if (!player.getParent()) {
+            this.parentToBike();
+        }
     }
 
     private enterAction(player: HumanoidObj) {
@@ -112,5 +117,18 @@ export class PlayerController extends AbstractController {
 
     private distance(meshObj1: MeshObj, meshObj2: MeshObj) {
         return Vector2.Distance(meshObj1.getPosition2D(), meshObj2.getPosition2D());
+    }
+
+    private parentToBike() {
+        const player = <HumanoidObj> this.meshStore.getById('player1');
+        const bike = this.meshStore.getBikes()[0];
+
+        player.getMesh().setAbsolutePosition(new Vector3(0, 0, 0));
+        player.setRotation(0);
+        player.getMesh().parent = bike.getMesh();
+        player.getMesh().checkCollisions = false;
+        player.setParent(bike);
+
+        player.animationState = new CharacterBikingState(player);
     }
 }

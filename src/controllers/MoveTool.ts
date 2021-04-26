@@ -11,7 +11,9 @@ export class MoveTool extends Tool {
     private routeStore: RouteStore;
     private renderService: RenderGuiService;
     private _isCanceled: boolean = true;
+
     private isWalking: boolean = false;
+    private isStarted: boolean = false;
 
     constructor(worldProvider: WorldProvider, meshStore: MeshStore, routeStore: RouteStore, renderService: RenderGuiService) {
         super(ToolType.MOVE);
@@ -24,9 +26,8 @@ export class MoveTool extends Tool {
     beforeRender() {
         if (this.isCanceled()) { return; }
 
-        if (this.isWalking) {
-            console.log('walking')
-            this.moveWalker();
+        if (this.isStarted) {
+            this.movePlayers();
         }
     }
 
@@ -52,6 +53,7 @@ export class MoveTool extends Tool {
     keyDown(e: KeyboardEvent) {
         if (e.key === 'w') {
             this.isWalking = true;
+            this.isStarted = true;
         }
     }
 
@@ -61,19 +63,27 @@ export class MoveTool extends Tool {
         }
     }
 
-    private moveWalker() {
-        const activePlayer = <CharacterObj> this.meshStore.getById('player2');
-
+    private movePlayers() {
+        const activePlayer = this.meshStore.getActivePlayer();
         if (!activePlayer) { return; }
+
+        let players = this.meshStore.getPlayers();
+        players = players.filter(player => player !== activePlayer);
 
         const deltaTime = this.worldProvider.world.engine.getDeltaTime();
 
-        const route = this.routeStore.getRouteForCharacter(activePlayer);
-        if (route) {
-            route.walker.step(deltaTime);
+        if (this.isWalking) {
+            this.walkCharacter(activePlayer, deltaTime);
         }
-        
-        activePlayer.walker.walk(deltaTime)
-        activePlayer.animationState.update();
+
+        players.forEach(player => this.walkCharacter(player, deltaTime));
+    }
+
+    private walkCharacter(character: CharacterObj, deltaTime: number) {
+        const route = this.routeStore.getRouteForCharacter(character);
+
+        if (route) {
+            route.walker.walk(deltaTime);        
+        }     
     }
 }

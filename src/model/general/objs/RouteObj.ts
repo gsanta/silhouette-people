@@ -1,5 +1,6 @@
 import { Vector3 } from "babylonjs/Maths/math.vector";
 import { CharacterObj } from "./CharacterObj";
+import { CharacterRouteWalker } from "./CharacterRouteWalker";
 import { Path } from "./Path";
 import { RouteWalker } from "./RouteWalker";
 
@@ -12,7 +13,7 @@ export class RouteObj {
     constructor(character: CharacterObj, pathes: Path[]) {
         this.character = character;
         this.pathes = pathes;
-        this.walker = new RouteWalker(this);
+        this.walker = new CharacterRouteWalker(this);
     }
 
     addPath(path: Path) {

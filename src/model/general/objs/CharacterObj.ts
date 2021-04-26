@@ -1,5 +1,4 @@
 import { BikeWalker } from "../../bike/BikeWalker";
-import { CharacterWalker } from "../../character/states/CharacterWalker";
 import { MeshState } from "../state/MeshState";
 import { MeshWalker } from "../state/MeshWalker";
 import { MeshObj } from "./MeshObj";

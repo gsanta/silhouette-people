@@ -180,7 +180,6 @@
         ],
         "P": [
             "Id player2",
-            "Hidden",
             "Walker CharacterWalker"
         ]
     }

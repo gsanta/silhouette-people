@@ -1,3 +1,4 @@
+import { CharacterObj } from "../model/general/objs/CharacterObj";
 import { Path } from "../model/general/objs/Path";
 import { RouteObj } from "../model/general/objs/RouteObj";
 import { PointerData } from "../services/input/PointerService";
@@ -19,6 +20,8 @@ export class PathTool extends Tool {
     private pathVisualizer: PathVisualizer;
     private pathBuilder: PathBuilder;
     
+    private currentCharacter: CharacterObj;
+    private characters: CharacterObj[];
     private currentPath: Path;
     private route: RouteObj;
     private _isCanceled = true;;
@@ -59,6 +62,7 @@ export class PathTool extends Tool {
 
     select(isCanceled: boolean) {
         this._isCanceled = isCanceled;
+        this.characters = this.meshStore.getPlayers();
 
         this.renderService.render();
     }
@@ -81,7 +85,10 @@ export class PathTool extends Tool {
         if (e.key === 'Enter') {
             if (this.route) {
                 this.finishRoute();
-                this.toolService.setSelectedTool(this.toolService.move, true);
+
+                if (this.currentCharacter === this.characters[this.characters.length - 1]) {
+                    this.toolService.setSelectedTool(this.toolService.move, true);
+                }
             }
         }
     }
@@ -91,17 +98,16 @@ export class PathTool extends Tool {
             this.route.removePath(this.currentPath);
             this.currentPath.dispose();
         }
+        this.currentPath = undefined;
         if (this.route.pathes.length > 0) {
             this.routeStore.addRoute(this.route);
         }
     }
 
     private initRoute() {
-        const player = this.meshStore.getActivePlayer();
-        if (player) {
-            // this._isActive = false;
-            this.currentPath = this.pathBuilder.startPath(player.getPosition2D());
-            this.route = new RouteObj(player, [this.currentPath]);
-        }
+        const characterIndex = this.characters.indexOf(this.currentCharacter) + 1;
+        this.currentCharacter = this.characters[characterIndex];
+        this.currentPath = this.pathBuilder.startPath(this.currentCharacter.getPosition2D());
+        this.route = new RouteObj(this.currentCharacter, [this.currentPath]);
     }
 }

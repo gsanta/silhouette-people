@@ -1,5 +1,7 @@
+import { Vector3 } from "babylonjs";
 import { InjectProperty } from "../di/diDecorators";
-import { CharacterObj } from "../model/general/objs/CharacterObj";
+import { CharacterBikingState } from "../model/character/states/CharacterBikingState";
+import { CharacterObj, HumanoidObj } from "../model/general/objs/CharacterObj";
 import { RouteObj } from "../model/general/objs/RouteObj";
 import { PointerData } from "../services/input/PointerService";
 import { lookup } from "../services/Lookup";
@@ -34,6 +36,8 @@ export class PlayerTilingController extends AbstractController {
 
     route: RouteObj;
 
+    private isInitialized = false;
+
     constructor() {
         super();
         this.tileStore = lookup.tileStore;
@@ -55,6 +59,12 @@ export class PlayerTilingController extends AbstractController {
     }
 
     beforeRender() {
+        if (!this.isInitialized) {
+            this.parentToBikeIfNeeded();
+            this.toolService.setSelectedTool(this.toolService.path, true);
+            this.isInitialized = true;
+        }
+
         const activePlayer = <CharacterObj> this.meshStore.getById('player2');
 
         if (!activePlayer) { return; }
@@ -85,5 +95,23 @@ export class PlayerTilingController extends AbstractController {
         if (this.toolService.getSelectedTool()) {
             this.toolService.getSelectedTool().pointerDown(pointer);
         }
+    }
+
+    private parentToBikeIfNeeded() {
+        const player = <HumanoidObj> this.meshStore.getById('player1');
+
+        if (player.getParent()) {
+            return;
+        }
+
+        const bike = this.meshStore.getBikes()[0];
+
+        player.getMesh().setAbsolutePosition(new Vector3(0, 0, 0));
+        player.setRotation(0);
+        player.getMesh().parent = bike.getMesh();
+        player.getMesh().checkCollisions = false;
+        player.setParent(bike);
+
+        player.animationState = new CharacterBikingState(player);
     }
 }

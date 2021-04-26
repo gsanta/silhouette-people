@@ -27,10 +27,6 @@ export class CombatControllerComponent extends React.Component {
     }
 
     render() {
-        if (this.gameModeService.gameMode !== GameMode.TURN_BASED) {
-            return null;
-        }
-
         return (
             <div className="action-panel">
                 <div className="action-panel-header">Combat control</div>

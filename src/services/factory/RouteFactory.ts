@@ -2,7 +2,6 @@ import { Vector3 } from "babylonjs";
 import { InjectProperty } from "../../di/diDecorators";
 import { CharacterObj } from "../../model/general/objs/CharacterObj";
 import { Path } from "../../model/general/objs/Path";
-import { RealTimeRouteWalker } from "../../model/general/objs/RealTimeRouteWalker";
 import { RouteObj } from "../../model/general/objs/RouteObj";
 import { RouteStore } from "../../stores/RouteStore";
 import { IPathFinder } from "../district/path/IPathFinder";
@@ -41,14 +40,14 @@ export class RouteFactory {
         if (path.length < 2) { return undefined; }
         
         const route = new RouteObj(character, [new Path(path)]);
-        route.walker = new RealTimeRouteWalker(route);
+        // route.walker = new RealTimeRouteWalker(route);
         
         this.routeStore.addRoute(route);
     }
 
     createRoute(character: CharacterObj, pathes: Path[]): RouteObj {
         const route = new RouteObj(character, pathes);
-        route.walker = new RealTimeRouteWalker(route);
+        // route.walker = new RealTimeRouteWalker(route);
 
         this.routeStore.addRoute(route);
         return route;
