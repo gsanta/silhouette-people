@@ -33,12 +33,14 @@ export class MoveTool extends Tool {
 
     select(isCanceled: boolean) {
         this._isCanceled = isCanceled;
-        const player = this.meshStore.getActivePlayer();
+        this.meshStore.getPlayers().forEach(player => {
+            const route = this.routeStore.getRouteForCharacter(player);
+            if (route) {
+                route.walker.setStarted();
+            }
+        });
+        // const player = this.meshStore.getActivePlayer();
         
-        const route = this.routeStore.getRouteForCharacter(player);
-        if (route) {
-            route.walker.setStarted();
-        }
     }
 
     isCanceled(): boolean {
@@ -67,14 +69,14 @@ export class MoveTool extends Tool {
         const activePlayer = this.meshStore.getActivePlayer();
         if (!activePlayer) { return; }
 
-        let players = this.meshStore.getPlayers();
-        players = players.filter(player => player !== activePlayer);
-
         const deltaTime = this.worldProvider.world.engine.getDeltaTime();
+        let players = this.meshStore.getPlayers();
+        // players = players.filter(player => player !== activePlayer);
 
-        if (this.isWalking) {
-            this.walkCharacter(activePlayer, deltaTime);
-        }
+
+        // if (this.isWalking) {
+        //     this.walkCharacter(activePlayer, deltaTime);
+        // }
 
         players.forEach(player => this.walkCharacter(player, deltaTime));
     }

@@ -1,9 +1,15 @@
+import { CharacterObj } from "../objs/CharacterObj";
 
 
 export abstract class MeshWalker {
     protected _isDirty = false;
     protected speed = 0;
     protected rotation = 0;
+    readonly character: CharacterObj;
+
+    constructor(character: CharacterObj) {
+        this.character = character;
+    }
 
     setSpeed(speed: number) {
         if (this.speed !== speed) {

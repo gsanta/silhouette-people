@@ -4,8 +4,8 @@ import { MeshWalker } from "../../general/state/MeshWalker";
 
 
 export class CharacterWalker extends MeshWalker {
-    constructor(private character: HumanoidObj) {
-        super();
+    constructor(character: HumanoidObj) {
+        super(character);
     }
 
     walk() {

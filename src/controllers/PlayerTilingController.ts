@@ -1,5 +1,6 @@
 import { Vector3 } from "babylonjs";
 import { InjectProperty } from "../di/diDecorators";
+import { BikeWalker } from "../model/bike/BikeWalker";
 import { CharacterBikingState } from "../model/character/states/CharacterBikingState";
 import { CharacterObj, HumanoidObj } from "../model/general/objs/CharacterObj";
 import { RouteObj } from "../model/general/objs/RouteObj";
@@ -111,6 +112,7 @@ export class PlayerTilingController extends AbstractController {
         player.getMesh().parent = bike.getMesh();
         player.getMesh().checkCollisions = false;
         player.setParent(bike);
+        player.walker = new BikeWalker(bike);
 
         player.animationState = new CharacterBikingState(player);
     }

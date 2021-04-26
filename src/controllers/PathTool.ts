@@ -107,6 +107,14 @@ export class PathTool extends Tool {
     private initRoute() {
         const characterIndex = this.characters.indexOf(this.currentCharacter) + 1;
         this.currentCharacter = this.characters[characterIndex];
+
+        // let character: CharacterObj;
+        // if (this.currentCharacter.getParent()) {
+        //     character = <CharacterObj> this.currentCharacter.getParent();
+        // } else {
+        //     character = this.currentCharacter;
+        // }
+
         this.currentPath = this.pathBuilder.startPath(this.currentCharacter.getPosition2D());
         this.route = new RouteObj(this.currentCharacter, [this.currentPath]);
     }

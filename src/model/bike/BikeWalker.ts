@@ -15,10 +15,10 @@ export class BikeWalker extends MeshWalker {
     protected pedalDirection: PedalDirection = 'forward'; 
     protected gear: number = 0;
 
-    constructor(private bike: BikeObj) {
-        super();
+    constructor(bike: BikeObj) {
+        super(bike);
 
-        this.physics = new BikeMasterPhysics(this.bike);
+        this.physics = new BikeMasterPhysics(<BikeObj> this.character);
     }
 
     setBraking(isBraking: boolean): void {
@@ -66,19 +66,23 @@ export class BikeWalker extends MeshWalker {
     }
 
     walk(deltaTime: number) {
-        this.physics.update(deltaTime);
+        // this.physics.update(deltaTime);
 
-        const mesh = this.bike.getMesh();
+        // const mesh = this.bike.getMesh();
         
-        const deltaTimeSec = deltaTime / 1000;
-        const displacement = this.speed * deltaTimeSec;
-        const displacementVec = new Vector3(displacement, displacement, displacement);
-        const forwardDir = new Vector3(0, 0, 1);
+        // const deltaTimeSec = deltaTime / 1000;
+        // const displacement = this.speed * deltaTimeSec;
+        // const displacementVec = new Vector3(displacement, displacement, displacement);
+        // const forwardDir = new Vector3(0, 0, 1);
         
-        var direction = mesh.getDirection(forwardDir);
-        direction.normalize().multiplyInPlace(displacementVec);
-        mesh.moveWithCollisions(direction);
+        // var direction = mesh.getDirection(forwardDir);
+        // direction.normalize().multiplyInPlace(displacementVec);
+        // mesh.moveWithCollisions(direction);
 
-        mesh.rotate(Axis.Y, this.rotation, Space.LOCAL);
+        // mesh.rotate(Axis.Y, this.rotation, Space.LOCAL);
+        const mesh = this.character.getMesh();
+
+        this.character.move(this.getSpeed());
+        mesh.rotate(Axis.Y, this.rotation, Space.WORLD);
     }
 }
