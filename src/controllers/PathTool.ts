@@ -115,7 +115,7 @@ export class PathTool extends Tool {
         //     character = this.currentCharacter;
         // }
 
-        this.currentPath = this.pathBuilder.startPath(this.currentCharacter.getPosition2D());
+        this.currentPath = this.pathBuilder.startPath(this.currentCharacter.instance.getPosition2D());
         this.route = new RouteObj(this.currentCharacter, [this.currentPath]);
     }
 }

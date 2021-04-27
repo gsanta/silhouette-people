@@ -18,6 +18,7 @@ export class PhysicsPropertyParser extends AbstractPropertyParser {
     }
 
     processFeature(gameObject: MeshObj): void {
-        gameObject.colliderMesh.physicsImpostor = new PhysicsImpostor(gameObject.colliderMesh, PhysicsImpostor.BoxImpostor, { mass: 1,  }, this.world.scene);
+        const colliderMesh = gameObject.instance.getColliderMesh();
+        colliderMesh.physicsImpostor = new PhysicsImpostor(colliderMesh, PhysicsImpostor.BoxImpostor, { mass: 1,  }, this.world.scene);
     }
 }

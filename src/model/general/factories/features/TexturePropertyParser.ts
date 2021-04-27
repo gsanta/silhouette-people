@@ -26,6 +26,6 @@ export class TexturePropertyParser extends AbstractPropertyParser {
         material.diffuseTexture = texture;
         material.specularColor = new BABYLON.Color3(0, 0, 0);
 
-        gameObject.allMeshes[index].material = material;
+        gameObject.instance.getAllMeshes()[index].material = material;
     }
 }

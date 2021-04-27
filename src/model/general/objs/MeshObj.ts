@@ -1,10 +1,11 @@
-import { Axis, Mesh, Quaternion, Skeleton, Vector2, Vector3 } from "babylonjs";
+import { Mesh, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { lookup } from "../../../services/Lookup";
 import { QuarterStore } from "../../../stores/QuarterStore";
 import { AnimationHandler } from "../components/AnimationHandler";
 import { TagHandler } from "../components/TagHandler";
 import { GameObj } from "./GameObj";
+import { MeshInstance } from "./MeshInstance";
 import { QuarterObj } from "./QuarterObj";
 import { RouteObj } from "./RouteObj";
 import { WorldObj } from "./WorldObj";
@@ -62,10 +63,7 @@ export class MeshObj extends GameObj {
     ch: string;
     type: MeshObjType;
     
-    mainMesh: Mesh;
-    colliderMesh: Mesh;
     skeleton: Skeleton;
-    allMeshes: Mesh[] = [];
     children: GameObj[] = [];
     isActivePlayer: boolean = false;
 
@@ -80,6 +78,8 @@ export class MeshObj extends GameObj {
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;
 
+    instance: MeshInstance;
+
     constructor(id: string, worldObj: WorldObj) {
         super();
         this.id = id;
@@ -89,46 +89,25 @@ export class MeshObj extends GameObj {
         this.animation = new AnimationHandler();
     }
 
-    setRotation(rotation: number) {
-        this.getMesh().rotationQuaternion = Quaternion.RotationAxis(Axis.Y, rotation);
+    setPosition(pos: Vector3): void {
+        this.instance.setPosition(pos);
     }
 
-    getRotation(): Vector3 {
-        return this.getMesh().rotationQuaternion.toEulerAngles();
+    getPosition(): Vector3 {
+        return this.instance.getPosition();
+    }
+
+    setPosition2D(pos: Vector2): void {
+        this.instance.setPosition2D(pos);
     }
 
     move(speed: number) {
         var forward = new Vector3(0, 0, 1);
-        var direction = this.getMesh().getDirection(forward);
+        var direction = this.instance.getMesh().getDirection(forward);
         direction.normalize().multiplyInPlace(new Vector3(speed, speed, speed));
-        this.getMesh().moveWithCollisions(direction);
+        this.instance.getMesh().moveWithCollisions(direction);
 
         this.children.forEach(child => child.setPosition(this.getPosition()));
-    }
-
-    setPosition2D(pos: Vector2) {
-        this.getMesh().setAbsolutePosition(new Vector3(pos.x, this.getPosition().y, pos.y));
-    }
-
-    getPosition2D(): Vector2 {
-        const pos = this.getMesh().getAbsolutePosition();
-        return new Vector2(pos.x, pos.z);
-    }
-
-    setPosition(pos: Vector3) {
-        this.getMesh().setAbsolutePosition(pos);
-
-        this.children.forEach(child => child.setPosition(this.getPosition()));
-    }
-
-    getPosition(): Vector3 {
-        const worldPos = this.worldObj.ground.getAbsolutePosition()
-        return this.getMesh().getAbsolutePosition().subtract(worldPos);
-    }
-
-    getDimensions(): Vector3 {
-        const mesh = this.getMesh();
-        return mesh.getBoundingInfo().boundingBox.extendSizeWorld;
     }
 
     getQuarter(): QuarterObj {
@@ -136,17 +115,6 @@ export class MeshObj extends GameObj {
     }
 
     dispose() {
-        this.allMeshes.forEach(mesh => mesh.dispose());
-        if (this.colliderMesh) {
-            this.colliderMesh.dispose();
-        }
-    }
-
-    setVisibility(isVisible: boolean) {
-        this.allMeshes.forEach(mesh => mesh.isVisible = isVisible);
-    }
-
-    getMesh() {
-        return this.colliderMesh ? this.colliderMesh : this.mainMesh;
+        this.instance.dispose();
     }
 }

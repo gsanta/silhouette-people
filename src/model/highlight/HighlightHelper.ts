@@ -49,7 +49,7 @@ export class HighlightHelper {
     }
 
     private async fetchProjectionLight() {
-        const pos = this.pendingMeshObj.getPosition2D();
+        const pos = this.pendingMeshObj.instance.getPosition2D();
 
         const lightObj = await this.lightFactory.createHighlightLight("RXBW6F", new Vector3(pos.x, 0, pos.y));
         this.lightStore.setHighlightLight(lightObj);

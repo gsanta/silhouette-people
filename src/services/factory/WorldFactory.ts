@@ -108,8 +108,8 @@ export class WorldFactory {
         
         const gameObjects = await Promise.all(gameObjJsons.map(json =>  itemFactory.create(json, worldObj)));
         const colliderMeshes = gameObjects
-            .filter(obj => obj.colliderMesh && obj.tag.doesNotHave(MeshObjTag.Player, MeshObjTag.Enemy, MeshObjTag.Bicycle))
-            .map(obj => obj.colliderMesh);
+            .filter(obj => obj.instance.getColliderMesh() && obj.tag.doesNotHave(MeshObjTag.Player, MeshObjTag.Enemy, MeshObjTag.Bicycle))
+            .map(obj => obj.instance.getColliderMesh());
         
 
         gameObjects.forEach(obj => this.meshStore.addObj(obj));

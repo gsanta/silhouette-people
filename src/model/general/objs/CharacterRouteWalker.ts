@@ -4,7 +4,7 @@ export class CharacterRouteWalker extends RouteWalker {
     protected updateCharacterState() {
         const { character } = this.route;
 
-        character.walker.character.setRotation(this.getDirection());
+        character.walker.character.instance.setRotation(this.getDirection());
         character.walker.setSpeed(0.04);
     }
 

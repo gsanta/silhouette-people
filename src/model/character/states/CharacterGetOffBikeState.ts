@@ -19,18 +19,18 @@ export class CharacterGetOffBikeState extends MeshState {
 
         bike.animationState = new BikeIdleState(bike);
         player.animationState = new CharacterIdleState(player);
-        player.getMesh().parent = bike.getMesh().parent;
-        player.setPosition(bike.getPosition());
-        player.setRotation(bike.getRotation().y);
+        player.instance.getMesh().parent = bike.instance.getMesh().parent;
+        player.instance.setPosition(bike.getPosition());
+        player.instance.setRotation(bike.instance.getRotation().y);
 
-        const dir = player.getRotation().clone();
+        const dir = player.instance.getRotation().clone();
         dir.y = 0;
-        player.getMesh().translate(dir, 1, Space.WORLD);
+        player.instance.getMesh().translate(dir, 1, Space.WORLD);
 
-        var direction = player.mainMesh.getDirection(new Vector3(0, 0, 1));
+        var direction = player.instance.getMesh().getDirection(new Vector3(0, 0, 1));
         direction.normalize().multiplyInPlace(new Vector3(0.04, 0.04, 0.04));
 
-        player.getMesh().translate(Axis.X, direction.x * 50, Space.WORLD);
-        player.getMesh().translate(Axis.Z, direction.z * 50, Space.WORLD);
+        player.instance.getMesh().translate(Axis.X, direction.x * 50, Space.WORLD);
+        player.instance.getMesh().translate(Axis.Z, direction.z * 50, Space.WORLD);
     }
 }

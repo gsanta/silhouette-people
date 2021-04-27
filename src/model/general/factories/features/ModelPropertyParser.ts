@@ -3,6 +3,7 @@ import { MeshObj } from "../../objs/MeshObj";
 import { WorldObj } from "../../objs/WorldObj";
 import { Lookup } from "../../../../services/Lookup";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
+import { MeshInstance } from "../../objs/MeshInstance";
 
 export class ModelPropertyParser extends AbstractPropertyParser {
     private lookup: Lookup;
@@ -27,14 +28,14 @@ export class ModelPropertyParser extends AbstractPropertyParser {
 
         const meshes = <Mesh[]> result.meshes;
         const mainMesh = mainMeshIndex ? meshes[mainMeshIndex] : this.findMainMesh(meshes);
+        const otherMeshes = meshes.filter(mesh => mesh !== mainMesh);
 
-        gameObject.mainMesh = mainMesh;
-        gameObject.allMeshes = <Mesh[]> result.meshes;
+        gameObject.instance = new MeshInstance([mainMesh, ...otherMeshes]);
 
         gameObject.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         gameObject.animation.setAnimations(result.animationGroups);
-        gameObject.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
-        gameObject.getMesh().parent = this.worldObj.ground;
+        gameObject.instance.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
+        gameObject.instance.getMesh().parent = this.worldObj.ground;
     }
 
     private async load(path: string) {

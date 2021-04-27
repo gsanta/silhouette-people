@@ -70,8 +70,8 @@ export class MeshFactory {
     private createFeatureFactories(worldObj: WorldObj) {
         this.featureFactories = [
             new ModelPropertyParser(worldObj, this.lookup),
-            new PositionPropertyParser(),
             new TexturePropertyParser(this.lookup),
+            new PositionPropertyParser(),  
             new CollisionPropertyParser(worldObj, this.lookup),
             new PhysicsPropertyParser(this.lookup),
             new StatePropertyParser(),

@@ -80,7 +80,7 @@ export class BikeWalker extends MeshWalker {
         // mesh.moveWithCollisions(direction);
 
         // mesh.rotate(Axis.Y, this.rotation, Space.LOCAL);
-        const mesh = this.character.getMesh();
+        const mesh = this.character.instance.getMesh();
 
         this.character.move(this.getSpeed());
         mesh.rotate(Axis.Y, this.rotation, Space.WORLD);

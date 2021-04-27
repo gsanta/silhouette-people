@@ -34,13 +34,13 @@ export class QuarterUpdater {
     private isQuarterChanged(player: MeshObj) {
         const camera = this.worldProvider.world.camera.getQuarterIndex();
         const quarter = this.quarterStore.getQuarter(camera);
-        const pos = player.getPosition2D();
+        const pos = player.instance.getPosition2D();
 
         return !quarter.containsPoint2D(pos);
     }
 
     private updateActiveQuarter(player: MeshObj): void {
-        const pos = player.getPosition2D();
+        const pos = player.instance.getPosition2D();
 
         const quarterIndex = this.quarterStore.getAllQuarters().findIndex(quarter => quarter.containsPoint2D(pos));
         this.worldProvider.world.camera.setQuarterIndex(quarterIndex);

@@ -13,7 +13,7 @@ export class PositionPropertyParser extends AbstractPropertyParser {
         const [posStr] = attrs;
         const pos = parseStrVector(posStr.trim());
 
-        gameObj.mainMesh.translate(Axis.X, pos.x, Space.WORLD);
-        gameObj.mainMesh.translate(Axis.Z, pos.z, Space.WORLD);
+        gameObj.instance.getAllMeshes()[0].translate(Axis.X, pos.x, Space.WORLD);
+        gameObj.instance.getAllMeshes()[0].translate(Axis.Z, pos.z, Space.WORLD);
     }
 }

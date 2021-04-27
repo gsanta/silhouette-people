@@ -51,10 +51,10 @@ export class DebugService {
     }
 
     setColliderMeshVisibility(isVisible: boolean) {
-        this.meshStore.getAll().forEach(meshObj => meshObj.colliderMesh.showBoundingBox = isVisible);
+        this.meshStore.getAll().forEach(meshObj => meshObj.instance.getMesh().showBoundingBox = isVisible);
     }
 
     setMeshBoundingBoxVisibility(isVisible: boolean) {
-        this.meshStore.getAll().forEach(meshObj => meshObj.mainMesh.showBoundingBox = isVisible);
+        this.meshStore.getAll().forEach(meshObj => meshObj.instance.getMesh().showBoundingBox = isVisible);
     }
 }

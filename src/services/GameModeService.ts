@@ -58,10 +58,10 @@ export class GameModeService {
 
         this.controllerService.setMasterController(new TilingModeController(this.controllerService.getCameraController()));
         const player2 = <HumanoidObj> this.meshStore.getById('player2');
-        player2.setVisibility(true);
+        player2.instance.setVisibility(true);
         this.activePlayerService.activate(player2);
         const player1 = this.meshStore.getById('player1');
-        player1.setVisibility(false);
+        player1.instance.setVisibility(false);
         this.renderGuiService.render();
     }
 
@@ -70,10 +70,10 @@ export class GameModeService {
         this.tileStore.clearTiles();
         this.controllerService.setMasterController(new NormalModeController(this.controllerService.getCameraController()));
         const player1 = <HumanoidObj> this.meshStore.getById('player1');
-        player1.setVisibility(true);
+        player1.instance.setVisibility(true);
         this.activePlayerService.activate(player1);
         const player2 = this.meshStore.getById('player2');
-        player2.setVisibility(false);
+        player2.instance.setVisibility(false);
         this.renderGuiService.render();
     }
 }

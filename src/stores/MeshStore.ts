@@ -58,7 +58,7 @@ export class MeshStore {
     }
 
     private calcQuarterIndex(obj: MeshObj): number {
-        const pos = obj.getPosition2D();
+        const pos = obj.instance.getPosition2D();
 
         const quarterIndex = this.quarterStore.getAllQuarters().findIndex(quarter => quarter.containsPoint2D(pos));
         return quarterIndex;

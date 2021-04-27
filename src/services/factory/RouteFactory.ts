@@ -22,7 +22,7 @@ export class RouteFactory {
     
     createRandomRoute(character: CharacterObj): RouteObj {
         const quarterMap = character.getQuarter().getMap();
-        const pos = character.getPosition2D();
+        const pos = character.instance.getPosition2D();
         const maxIndex = quarterMap.len();
 
         let randomIndex = Math.floor(Math.random() * maxIndex);

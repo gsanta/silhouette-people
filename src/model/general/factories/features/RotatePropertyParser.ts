@@ -13,6 +13,6 @@ export class RotatePropertyParser extends AbstractPropertyParser {
         const [rotation] = attrs;
         const rotationRad = Tools.ToRadians(parseInt(rotation, 10));
         
-        gameObj.getMesh().rotate(Axis.Y, rotationRad, Space.WORLD);
+        gameObj.instance.getMesh().rotate(Axis.Y, rotationRad, Space.WORLD);
     }
 }

@@ -116,17 +116,17 @@ export class PlayerController extends AbstractController {
     }
 
     private distance(meshObj1: MeshObj, meshObj2: MeshObj) {
-        return Vector2.Distance(meshObj1.getPosition2D(), meshObj2.getPosition2D());
+        return Vector2.Distance(meshObj1.instance.getPosition2D(), meshObj2.instance.getPosition2D());
     }
 
     private parentToBike() {
         const player = <HumanoidObj> this.meshStore.getById('player1');
         const bike = this.meshStore.getBikes()[0];
 
-        player.getMesh().setAbsolutePosition(new Vector3(0, 0, 0));
-        player.setRotation(0);
-        player.getMesh().parent = bike.getMesh();
-        player.getMesh().checkCollisions = false;
+        player.instance.getMesh().setAbsolutePosition(new Vector3(0, 0, 0));
+        player.instance.setRotation(0);
+        player.instance.getMesh().parent = bike.instance.getMesh();
+        player.instance.getMesh().checkCollisions = false;
         player.setParent(bike);
 
         player.animationState = new CharacterBikingState(player);

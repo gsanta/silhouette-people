@@ -6,6 +6,6 @@ export class HiddenPropertyParser extends AbstractPropertyParser {
     feature = 'Hidden';
 
     processFeature(meshObj: MeshObj) {
-        meshObj.setVisibility(false);
+        meshObj.instance.setVisibility(false);
     }
 }
