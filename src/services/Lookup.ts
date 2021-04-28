@@ -23,6 +23,7 @@ import { MaterialStore } from "../stores/MaterialStore";
 import { RouteStore } from "../stores/RouteStore";
 import { TurnBasedCommandService } from "./TurnBasedCommandService";
 import { ToolService } from "./ToolService";
+import { MeshInstanceStore } from "../stores/MeshInstanceStore";
 
 export class Lookup {
     keyboard: KeyboardService;
@@ -53,6 +54,7 @@ export class Lookup {
     tileStore: TileStore;
     quarterStore: QuarterStore;
     meshStore: MeshStore;
+    meshInstanceStore: MeshInstanceStore;
     lightStore: LightStore;
     routeStore: RouteStore;
 
@@ -83,6 +85,8 @@ export class Lookup {
         lookup.quarterStore = this.quarterStore;
         this.meshStore = new MeshStore();
         lookup.meshStore = this.meshStore;
+        this.meshInstanceStore = new MeshInstanceStore();
+        lookup.meshInstanceStore = this.meshInstanceStore;
         this.lightStore = new LightStore();
         lookup.lightStore = this.lightStore;
         

@@ -1,18 +1,22 @@
-import { Axis, Mesh, SceneLoader, Space } from "babylonjs";
+import { AbstractMesh, Axis, ISceneLoaderAsyncResult, Mesh, SceneLoader, Space } from "babylonjs";
 import { MeshObj } from "../../objs/MeshObj";
 import { WorldObj } from "../../objs/WorldObj";
-import { Lookup } from "../../../../services/Lookup";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 import { MeshInstance } from "../../objs/MeshInstance";
+import { WorldProvider } from "../../../../services/WorldProvider";
+import { MeshInstanceStore } from "../../../../stores/MeshInstanceStore";
+import { InstancedMesh } from "babylonjs/Meshes/instancedMesh";
 
 export class ModelPropertyParser extends AbstractPropertyParser {
-    private lookup: Lookup;
     private worldObj: WorldObj;
+    private meshInstanceStore: MeshInstanceStore;
+    private worldProvider: WorldProvider;
 
-    constructor(worldObj: WorldObj, lookup: Lookup) {
+    constructor(worldObj: WorldObj, worldProvider: WorldProvider, meshInstanceStore: MeshInstanceStore) {
         super();
-        this.lookup = lookup;
         this.worldObj = worldObj;
+        this.worldProvider = worldProvider;
+        this.meshInstanceStore = meshInstanceStore;
     }
 
     feature = 'Model';
@@ -22,8 +26,11 @@ export class ModelPropertyParser extends AbstractPropertyParser {
     }
 
     async processFeatureAsync(gameObject: MeshObj, attrs: string[]): Promise<void> {
-        const [modelPath, mainMeshIndex] = attrs;
+        const [modelPath, mainMeshIndex, instanced] = attrs;
+
         const result = await this.load(modelPath);
+
+
         result.animationGroups.forEach(animationGroup => animationGroup.stop());
 
         const meshes = <Mesh[]> result.meshes;
@@ -38,8 +45,20 @@ export class ModelPropertyParser extends AbstractPropertyParser {
         gameObject.instance.getMesh().parent = this.worldObj.ground;
     }
 
+    private getMeshes(meshObj: MeshObj, result: ISceneLoaderAsyncResult, isIntanced: boolean): AbstractMesh[] {
+        if (isIntanced && !this.meshInstanceStore.getInstance(meshObj.type)) {
+            this.meshInstanceStore.addInstance(meshObj.type, <Mesh> result.meshes[0]);
+            const instance = this.meshInstanceStore.getInstance(meshObj.type);
+            instance.isVisible = false;
+
+            return [instance.createInstance(meshObj.type)];
+        }
+
+        return <Mesh[]> result.meshes;
+    }
+
     private async load(path: string) {
-        return await SceneLoader.ImportMeshAsync('', "assets/models/", path, this.lookup.scene);
+        return await SceneLoader.ImportMeshAsync('', "assets/models/", path, this.worldProvider.world.scene);
     }
 
     private findMainMesh(meshes: Mesh[]) {

@@ -85,7 +85,7 @@
     },
     "features": {
         "tree1": [
-            "Model tree1.glb 0",
+            "Model tree1.glb 0 Instanced",
             "Collider 0.5:5:0.5"
         ],
         "tree2": [
