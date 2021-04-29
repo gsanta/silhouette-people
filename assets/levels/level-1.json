@@ -7,36 +7,21 @@
     "grounds": [
         [
             {
-                "color": "#FFFFFF"
+                "color": "#9e9e9e"
             },
             {
-                "color": "#FFFFFF"
+                "color": "#9e9e9e"
             },
             {
-                "color": "#F8DE7E"
+                "color": "#9e9e9e"
             },
             {
-                "color": "#FFFFFF"
+                "color": "#9e9e9e"
             }
         ],
         [
             {
-                "color": "#FFFFFF"
-            },
-            {
-                "color": "#FFFFFF"
-            },
-            {
-                "color": "#F8DE7E"
-            },
-            {
-                "color": "#FFFFFF"
-            }
-
-        ],
-        [
-            {
-                "color": "#FFFFFF"
+                "color": "#9e9e9e"
             },
             {
                 "color": "#9e9e9e"
@@ -45,21 +30,36 @@
                 "color": "#32CD32"
             },
             {
-                "color": "#FFFFFF"
+                "color": "#32CD32"
+            }
+
+        ],
+        [
+            {
+                "color": "#9e9e9e"
+            },
+            {
+                "color": "#9e9e9e"
+            },
+            {
+                "color": "#32CD32"
+            },
+            {
+                "color": "#32CD32"
             }
         ],
         [
             {
-                "color": "#FFFFFF"
-            },
-            {
-                "color": "#FFFFFF"
+                "color": "#9e9e9e"
             },
             {
                 "color": "#F8DE7E"
             },
             {
-                "color": "#FFFFFF"
+                "color": "#F8DE7E"
+            },
+            {
+                "color": "#F8DE7E"
             }
         ]
     ],
@@ -81,31 +81,32 @@
         "H5": "house3",
         "B": "bicycle1",
         "R": "road1",
+        "R1": "road1",
         "S": "busStop"
     },
     "features": {
         "tree1": [
-            "Model tree1.glb 0 Instanced",
+            "Model tree1.glb 0 RemoveRoot",
             "Collider 0.5:5:0.5"
         ],
         "tree2": [
-            "Model tree2.glb 0",
+            "Model tree2.glb 0 RemoveRoot",
             "Collider 0.5:5:0.5"
         ],
         "tree3": [
-            "Model tree3.glb 0",
+            "Model tree3.glb 0 RemoveRoot",
             "Collider 0.5:5:0.5"
         ],
         "tree4": [
-            "Model tree4.glb 0",
+            "Model tree4.glb 0 RemoveRoot",
             "Collider 0.3:5:0.3"
         ],
         "tree5": [
-            "Model tree5.glb 0",
+            "Model tree5.glb 0 RemoveRoot",
             "Collider 0.3:5:0.3"
         ],
         "tree6": [
-            "Model tree6.glb 0",
+            "Model tree6.glb 0 RemoveRoot",
             "Collider 0.3:5:0.3"
         ],
         "player": [
@@ -152,7 +153,10 @@
         ],
         "road1": [
             "Model road1.glb",
-            "Texture palette.jpg 1"
+            "Texture palette.jpg 0"
+        ],
+        "R1": [
+            "Rotate 90"
         ],
         "H1": [
             "Rotate 180"

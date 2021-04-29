@@ -1,14 +1,17 @@
 import { Axis, Quaternion, Vector2, Vector3 } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/index";
+import { MeshObj } from "./MeshObj";
 
 
 export class MeshInstance {
 
     private meshes: Mesh[];
     private colliderMesh: Mesh;
+    private meshObj: MeshObj;
 
-    constructor(meshes: Mesh[]) {
+    constructor(meshes: Mesh[], meshObj: MeshObj) {
         this.meshes = meshes;
+        this.meshObj = meshObj;
     }
 
     setRotation(rotation: number) {
@@ -31,11 +34,12 @@ export class MeshInstance {
     setPosition(pos: Vector3) {
         this.getMesh().setAbsolutePosition(pos);
 
-        // this.children.forEach(child => child.setPosition(this.getPosition()));
+        this.meshObj.children.forEach(child => child.setPosition(this.getPosition()));
     }
 
     getPosition(): Vector3 {
-        return this.getMesh().getAbsolutePosition();
+        const worldPos = this.meshObj.worldObj.ground.getAbsolutePosition()
+        return this.getMesh().getAbsolutePosition().subtract(worldPos);
     }
 
     getDimensions(): Vector3 {

@@ -16,18 +16,28 @@ import { InjectProperty } from "../../di/diDecorators";
 import { ActivePlayerService } from "../ActivePlayerService";
 import { HiddenPropertyParser } from "../../model/general/factories/features/HiddenPropertyParser";
 import { WalkerPropertyParser } from "../../model/general/factories/features/WalkerPropertyParser";
+import { WorldProvider } from "../WorldProvider";
+import { MeshInstanceStore } from "../../stores/MeshInstanceStore";
 
 export class MeshFactory {
     
     @InjectProperty("ActivePlayerService")
     private activePlayerService: ActivePlayerService;
     
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
+
+    @InjectProperty("MeshInstanceStore")
+    private meshInstanceStore: MeshInstanceStore;
+
     private lookup: Lookup;
     private indexesByType: Map<string, number> = new Map();
     private featureFactories: AbstractPropertyParser[] = [];
 
     constructor(lookup: Lookup) {
         this.lookup = lookup;
+        this.worldProvider = lookup.worldProvider;
+        this.meshInstanceStore = lookup.meshInstanceStore;
         this.activePlayerService = lookup.activePlayerService;
     }
 
@@ -69,7 +79,7 @@ export class MeshFactory {
 
     private createFeatureFactories(worldObj: WorldObj) {
         this.featureFactories = [
-            new ModelPropertyParser(worldObj, this.lookup),
+            new ModelPropertyParser(worldObj, this.worldProvider, this.meshInstanceStore),
             new TexturePropertyParser(this.lookup),
             new PositionPropertyParser(),  
             new CollisionPropertyParser(worldObj, this.lookup),

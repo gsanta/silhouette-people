@@ -1,6 +1,7 @@
 import { Control, StackPanel } from "babylonjs-gui";
 import { AdvancedDynamicTexture } from "babylonjs-gui/2D/advancedDynamicTexture";
 import { ColliderCheckbox } from "./ColliderCheckbox";
+import { FPSComponent } from "./FPSComponent";
 import { IGUIComponent } from "./IGUIComponent";
 import { MeshBoundingBoxCheckbox } from "./MeshBoundingBoxCheckbox";
 import { PlayerRadioButtonGroup } from "./PlayerRadioButtonGroup";
@@ -11,6 +12,7 @@ export class DebugPanel implements IGUIComponent {
     private children: IGUIComponent[] = [];
 
     constructor() {
+        this.children.push(new FPSComponent());
         this.children.push(new RouteDebuggerCheckbox());
         this.children.push(new ColliderCheckbox());
         this.children.push(new WorldAxisCheckbox());
