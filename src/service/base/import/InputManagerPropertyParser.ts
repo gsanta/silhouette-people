@@ -1,9 +1,10 @@
 
 
-import { KeyboardService } from "../keyboard/KeyboardService";
 import { BikeInputManager } from "../../../model/object/bike/BikeInputManager";
+import { BikeWalker } from "../../../model/object/bike/states/BikeWalker";
 import { CharacterInputManager } from "../../../model/object/character/CharacterInputManager";
-import { BikeObj, CharacterObj } from "../../../model/object/character/CharacterObj";
+import { CharacterObj } from "../../../model/object/character/CharacterObj";
+import { KeyboardService } from "../keyboard/KeyboardService";
 import { AbstractPropertyParser } from "./AbstractPropertyParser";
 
 enum InputManagerType {
@@ -33,7 +34,7 @@ export class InputManagerPropertyParser extends AbstractPropertyParser {
                 character.inputManager = new CharacterInputManager(character, this.keyboardService);
             break;
             case InputManagerType.BikeInputManager:
-                character.inputManager = new BikeInputManager(<BikeObj> character, this.keyboardService);
+                character.inputManager = new BikeInputManager(<BikeWalker> character.walker, this.keyboardService);
             break;
         }
     }

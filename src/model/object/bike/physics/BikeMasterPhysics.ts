@@ -1,4 +1,4 @@
-import { BikeObj } from "../../character/CharacterObj";
+import { BikeWalker } from "../states/BikeWalker";
 import { BikeReversePhysics } from "./BikeReversePhysics";
 import { BikeSlowdownPhysics } from "./BikeSlowdownPhysics";
 import { BikeSpeedupPhysics } from "./BikeSpeedupPhysics";
@@ -6,7 +6,7 @@ import { IBikePhysics } from "./IBikePhysics";
 
 
 export class BikeMasterPhysics implements IBikePhysics {
-    private bike: BikeObj;
+    private bikeWalker: BikeWalker;
 
     private speedUpPhysics: BikeSpeedupPhysics;
     private rollingPhysics: BikeSlowdownPhysics;
@@ -14,13 +14,13 @@ export class BikeMasterPhysics implements IBikePhysics {
     private reversePhysics: BikeReversePhysics;
 
 
-    constructor(bike: BikeObj) {
-        this.bike = bike;
+    constructor(bikeWalker: BikeWalker) {
+        this.bikeWalker = bikeWalker;
 
-        this.speedUpPhysics = new BikeSpeedupPhysics(bike);
-        this.rollingPhysics = new BikeSlowdownPhysics(bike, 2.5);
-        this.brakingPhysics = new BikeSlowdownPhysics(bike, 5);
-        this.reversePhysics = new BikeReversePhysics(bike);
+        this.speedUpPhysics = new BikeSpeedupPhysics(this.bikeWalker);
+        this.rollingPhysics = new BikeSlowdownPhysics(this.bikeWalker, 2.5);
+        this.brakingPhysics = new BikeSlowdownPhysics(this.bikeWalker, 5);
+        this.reversePhysics = new BikeReversePhysics(this.bikeWalker);
     }
 
     update(deltaTime: number) {
@@ -28,11 +28,11 @@ export class BikeMasterPhysics implements IBikePhysics {
     }
 
     private determinePhysics(): IBikePhysics {
-        const speed = this.bike.walker.getSpeed();
-        if (this.bike.walker.isBraking()) {
+        const speed = this.bikeWalker.getSpeed();
+        if (this.bikeWalker.isBraking()) {
             return this.brakingPhysics;
-        } else if (this.bike.walker.isPedalling()) {
-            if (this.bike.walker.getPedalDirection() === 'forward') {
+        } else if (this.bikeWalker.isPedalling()) {
+            if (this.bikeWalker.getPedalDirection() === 'forward') {
                 return this.speedUpPhysics;
             } else if (speed <= 0) {
                 return this.reversePhysics;

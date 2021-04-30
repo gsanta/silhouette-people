@@ -1,15 +1,15 @@
 import { KeyboardService } from "../../../service/base/keyboard/KeyboardService";
-import { BikeObj } from "../character/CharacterObj";
 import { MeshInputManager } from "../../MeshInputManager";
+import { BikeWalker } from "./states/BikeWalker";
 
 export class BikeInputManager extends MeshInputManager {
     private keyboardService: KeyboardService;
-    private bike: BikeObj;
+    private bikeWalker: BikeWalker;
 
-    constructor(bike: BikeObj, keyboardService: KeyboardService) {
+    constructor(bikeWalker: BikeWalker, keyboardService: KeyboardService) {
         super();
+        this.bikeWalker = bikeWalker;
         this.keyboardService = keyboardService;
-        this.bike = bike;
     }
 
     keyboard(e: KeyboardEvent, isKeyDown: boolean) {
@@ -23,53 +23,53 @@ export class BikeInputManager extends MeshInputManager {
     }
 
     private handleDirection() {
-        const bike = this.bike;
+        const walker = this.bikeWalker;
 
         if (this.keyboardService.activeKeys.has('a')) {
-            bike.walker.setRotation(-bike.walker.rotationConst);
+            walker.setRotation(-walker.rotationConst);
         } else if (this.keyboardService.activeKeys.has('d')) {
-            bike.walker.setRotation(bike.walker.rotationConst);
+            walker.setRotation(walker.rotationConst);
         } else {
-            bike.walker.setRotation(0);
+            walker.setRotation(0);
         }
     }
 
     private handleSpeed(e: KeyboardEvent, isKeyDown: boolean) {
-        const bike = this.bike;
+        const walker = this.bikeWalker;
 
         if (isKeyDown) {
             switch(e.key) {
                 case '1':
-                    bike.walker.setGear(0);
+                    walker.setGear(0);
                 break;
                 case '2':
-                    bike.walker.setGear(1);
+                    walker.setGear(1);
                 break;
                 case '3':
-                    bike.walker.setGear(2);
+                    walker.setGear(2);
                 break;
                 case 'w':
-                    bike.walker.setPedalling(true);
-                    bike.walker.setPedalDirection('forward');
+                    walker.setPedalling(true);
+                    walker.setPedalDirection('forward');
                 break;
                 case 's':
-                    bike.walker.setBraking(true);
+                    walker.setBraking(true);
                 break;
                 case 'r':
-                    bike.walker.setPedalling(true);
-                    bike.walker.setPedalDirection('backward');
+                    walker.setPedalling(true);
+                    walker.setPedalDirection('backward');
                 break;
             }
         } else {
             switch(e.key) {
                 case 'w':
-                    bike.walker.setPedalling(false);
+                    walker.setPedalling(false);
                 break;
                 case 's':
-                    bike.walker.setBraking(false);
+                    walker.setBraking(false);
                 break;
                 case 'r':
-                    bike.walker.setPedalling(false);
+                    walker.setPedalling(false);
                 break;
             }
         }

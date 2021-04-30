@@ -8,6 +8,7 @@ export class MeshInstance {
     private meshes: Mesh[];
     private colliderMesh: Mesh;
     private meshObj: MeshObj;
+    private positionChangeListeners: (() => void)[] = [];
 
     readonly isCloned: boolean;
 
@@ -27,6 +28,8 @@ export class MeshInstance {
 
     setPosition2D(pos: Vector2) {
         this.getMesh().setAbsolutePosition(new Vector3(pos.x, this.getPosition().y, pos.y));
+
+        this.emitPositionChange();
     }
 
     getPosition2D(): Vector2 {
@@ -37,7 +40,13 @@ export class MeshInstance {
     setPosition(pos: Vector3) {
         this.getMesh().setAbsolutePosition(pos);
 
-        this.meshObj.children.forEach(child => child.setPosition(this.getPosition()));
+        this.emitPositionChange();
+    }
+
+    moveWithCollision(displacement: Vector3) {
+        this.getMesh().moveWithCollisions(displacement);
+
+        this.emitPositionChange();
     }
 
     getPosition(): Vector3 {
@@ -68,6 +77,19 @@ export class MeshInstance {
 
     setVisibility(isVisible: boolean) {
         this.meshes.forEach(mesh => mesh.isVisible = isVisible);
+    }
+
+    addPositionChangeListener(callback: () => void) {
+        this.positionChangeListeners.push(callback);
+    }
+
+    removePositionChangeListener(callback: () => void) {
+        this.positionChangeListeners = this.positionChangeListeners.filter(listener => listener !== callback);
+    }
+
+    emitPositionChange() {
+        this.positionChangeListeners.forEach(listener => listener());
+        this.meshObj.children.forEach(child => child.instance.emitPositionChange())
     }
 
     dispose() {

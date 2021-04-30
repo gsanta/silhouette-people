@@ -135,7 +135,5 @@ export class QuarterMap {
                 str += arr[i][j]
             }
         }
-
-        console.log(str);
     }
 }

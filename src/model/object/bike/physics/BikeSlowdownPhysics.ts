@@ -1,25 +1,25 @@
-import { BikeObj } from "../../character/CharacterObj";
+import { BikeWalker } from "../states/BikeWalker";
 import { IBikePhysics } from "./IBikePhysics";
 
 export class BikeSlowdownPhysics implements IBikePhysics {
-    private bike: BikeObj;
+    private bikeWalker: BikeWalker;
     private readonly slowdown: number;
 
-    constructor(bike: BikeObj, slowdownFactor: number) {
-        this.bike = bike;
+    constructor(bikeWalker: BikeWalker, slowdownFactor: number) {
+        this.bikeWalker = bikeWalker;
 
         this.slowdown = slowdownFactor / 1000;
     }
 
     update(deltaTime: number) {
         const slowdownAmount = deltaTime * this.slowdown;
-        const speed = this.bike.walker.getSpeed();
+        const speed = this.bikeWalker.getSpeed();
         let newSpeed = speed - slowdownAmount;
 
         if (newSpeed < 0) {
             newSpeed = 0;
         }
 
-        this.bike.walker.setSpeed(newSpeed);
+        this.bikeWalker.setSpeed(newSpeed);
     }
 }

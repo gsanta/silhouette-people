@@ -114,9 +114,9 @@ export class PathTool extends Tool {
         
         let config: RouteConfig = { lockDirection: true };
 
-        // if (this.currentCharacter !== activeCharacter) {
-        //     config.lockSpeed = true;
-        // }
+        if (this.currentCharacter !== activeCharacter) {
+            config.lockSpeed = true;
+        }
         
         this.route = this.routeFactory.createRoute(this.currentCharacter, [this.currentPath], config);
     }

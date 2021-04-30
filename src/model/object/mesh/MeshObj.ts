@@ -64,7 +64,7 @@ export class MeshObj extends GameObj {
     type: MeshObjType;
     
     skeleton: Skeleton;
-    children: GameObj[] = [];
+    children: MeshObj[] = [];
     isActivePlayer: boolean = false;
 
     route: RouteObj;

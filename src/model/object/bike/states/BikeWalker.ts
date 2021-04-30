@@ -18,7 +18,7 @@ export class BikeWalker extends MeshWalker {
     constructor(bike: BikeObj) {
         super(bike);
 
-        this.physics = new BikeMasterPhysics(<BikeObj> this.character);
+        this.physics = new BikeMasterPhysics(this);
     }
 
     setBraking(isBraking: boolean): void {
@@ -77,12 +77,13 @@ export class BikeWalker extends MeshWalker {
         
         var direction = mesh.getDirection(forwardDir);
         direction.normalize().multiplyInPlace(displacementVec);
-        mesh.moveWithCollisions(direction);
+        // this.character.instance.moveWithCollision(displacement)
+        this.character.instance.moveWithCollision(direction);
 
         mesh.rotate(Axis.Y, this.rotation, Space.LOCAL);
         // const mesh = this.character.instance.getMesh();
 
         // this.character.move(this.getSpeed());
-        // mesh.rotate(Axis.Y, this.rotation, Space.WORLD);
+        // mesh.rotate(Axis.Y, this.rotation, Space.WORLD);e
     }
 }

@@ -25,10 +25,10 @@ export class LockedDirection implements LockedFeature {
     }
 
     enableFeature() {
-        this.character.inputManager.enableDirection();
+        this.character.inputManager.disableDirection();
     }
 
     disableFeature() {
-        this.character.inputManager.disableDirection();
+        this.character.inputManager.enableDirection();
     }
 }

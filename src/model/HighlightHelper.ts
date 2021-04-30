@@ -32,10 +32,10 @@ export class HighlightHelper {
     }
 
     private attachToMesh(meshObj: MeshObj, lightObj: LightObj) {
-
-        if (!meshObj.children.includes(lightObj)) {
-            lightObj.setParent(meshObj);
-        }
+        lightObj.setPosition2D(meshObj.instance.getPosition2D());
+        meshObj.instance.addPositionChangeListener(() => {
+            lightObj.setPosition2D(meshObj.instance.getPosition2D());
+        });
     }
 
     private loadLightObj(meshObj: MeshObj) {

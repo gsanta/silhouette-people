@@ -1,15 +1,15 @@
 
-import { BikeObj } from "../../character/CharacterObj";
+import { BikeWalker } from "../states/BikeWalker";
 import { IBikePhysics } from "./IBikePhysics";
 
 export class BikeReversePhysics implements IBikePhysics {
-    private bike: BikeObj;
+    private bikeWalker: BikeWalker;
 
-    constructor(bike: BikeObj) {
-        this.bike = bike;
+    constructor(bikeWalker: BikeWalker) {
+        this.bikeWalker = bikeWalker;
     }
 
     update(_deltaTime: number) {
-        this.bike.walker.setSpeed(-2);
+        this.bikeWalker.setSpeed(-2);
     }
 }
