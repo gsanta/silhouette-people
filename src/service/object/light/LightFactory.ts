@@ -1,6 +1,6 @@
 import { NodeMaterial, SpotLight, Tools, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { LightObj } from "../../../model/general/objs/LightObj";
+import { LightObj } from "../../../model/object/LightObj";
 import { lookup } from "../../Lookup";
 import { WorldProvider } from "../world/WorldProvider";
 

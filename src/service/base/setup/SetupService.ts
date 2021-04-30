@@ -5,7 +5,7 @@ import { PointerService } from "../pointer/PointerService";
 import { Lookup } from "../../Lookup";
 import { BikeParenter } from "./BikeParenter";
 import { MeshStore } from "../../../store/MeshStore";
-import { HumanoidObj } from "../../../model/general/objs/CharacterObj";
+import { HumanoidObj } from "../../../model/object/character/CharacterObj";
 import { ToolService } from "../../edit/ToolService";
 
 export class SetupService {

@@ -1,4 +1,4 @@
-import { QuarterObj } from "../model/general/objs/QuarterObj";
+import { QuarterObj } from "../model/object/quarter/QuarterObj";
 
 export class QuarterStore {
     private quarters: QuarterObj[] = [];

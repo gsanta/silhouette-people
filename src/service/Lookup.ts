@@ -9,7 +9,6 @@ import { WorldFactory } from "./object/world/WorldFactory";
 import { QuarterFactory } from "./object/quarter/QuarterFactory";
 import { MeshFactory } from "./object/mesh/MeshFactory";
 import { PointerService } from "./base/pointer/PointerService";
-import { TileStore } from "../store/TileStore";
 import { QuarterStore } from "../store/QuarterStore";
 import { MeshStore } from "../store/MeshStore";
 import { RouteFactory } from "./object/route/RouteFactory";
@@ -48,7 +47,6 @@ export class Lookup {
     worldProvider: WorldProvider;
 
     materialStore: MaterialStore;
-    tileStore: TileStore;
     quarterStore: QuarterStore;
     meshStore: MeshStore;
     assetContainerStore: AssetContainerStore;
@@ -75,8 +73,6 @@ export class Lookup {
 
         this.materialStore = new MaterialStore();
         lookup.materialStore = this.materialStore;
-        this.tileStore = new TileStore();
-        lookup.tileStore = this.tileStore;
         this.quarterStore = new QuarterStore();
         lookup.quarterStore = this.quarterStore;
         this.meshStore = new MeshStore();

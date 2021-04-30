@@ -1,4 +1,4 @@
-import { LightObj } from "../model/general/objs/LightObj";
+import { LightObj } from "../model/object/LightObj";
 
 
 export class LightStore {

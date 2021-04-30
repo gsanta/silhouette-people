@@ -1,7 +1,7 @@
 import { InjectProperty } from "../di/diDecorators";
-import { CharacterIdleState } from "../model/character/states/CharacterIdleState";
-import { CharacterObj } from "../model/general/objs/CharacterObj";
-import { HighlightHelper } from "../model/highlight/HighlightHelper";
+import { CharacterIdleState } from "../model/object/character/states/CharacterIdleState";
+import { CharacterObj } from "../model/object/character/CharacterObj";
+import { HighlightHelper } from "../model/HighlightHelper";
 import { MeshStore } from "../store/MeshStore";
 import { lookup } from "./Lookup";
 

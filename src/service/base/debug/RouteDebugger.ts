@@ -1,5 +1,5 @@
 import { InjectProperty } from "../../../di/diDecorators";
-import { RouteDebuggerComponent } from "../../../model/general/components/RouteDebuggerComponent";
+import { RouteDebuggerComponent } from "../../../model/RouteDebuggerComponent";
 import { DebugService } from "./DebugService";
 import { lookup } from "../../Lookup";
 import { MeshStore } from "../../../store/MeshStore";

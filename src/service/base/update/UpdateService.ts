@@ -1,5 +1,5 @@
 import { InjectProperty } from "../../../di/diDecorators";
-import { CharacterObj } from "../../../model/general/objs/CharacterObj";
+import { CharacterObj } from "../../../model/object/character/CharacterObj";
 import { MeshStore } from "../../../store/MeshStore";
 import { KeyboardListener, KeyboardService } from "../keyboard/KeyboardService";
 import { lookup } from "../../Lookup";

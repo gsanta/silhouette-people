@@ -1,13 +1,12 @@
 import { ArcRotateCamera, Axis, Color3, MeshBuilder, PhysicsImpostor, Scene, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { CameraObj } from "../../../model/general/objs/CameraObj";
-import { GameObjectJson, MeshObjTag } from "../../../model/general/objs/MeshObj";
-import { WorldObj } from "../../../model/general/objs/WorldObj";
+import { CameraObj } from "../../../model/object/CameraObj";
+import { GameObjectJson, MeshObjTag } from "../../../model/object/mesh/MeshObj";
+import { WorldObj } from "../../../model/object/WorldObj";
 import { MeshStore } from "../../../store/MeshStore";
 import { QuarterStore } from "../../../store/QuarterStore";
-import { TileStore } from "../../../store/TileStore";
-import { WorldMapParser } from "../../district/WorldMapParser";
-import { GroundJson, WorldJson } from "../../district/WorldJson";
+import { WorldMapParser } from "./WorldMapParser";
+import { GroundJson, WorldJson } from "./WorldJson";
 import { lookup, Lookup } from "../../Lookup";
 import { QuarterObjConfig } from "../quarter/QuarterFactory";
 import { ModelLoader } from "../mesh/ModelLoader";
@@ -21,9 +20,6 @@ export class WorldFactory {
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;
 
-    @InjectProperty("TileStore")
-    private tileStore: TileStore;
-
     @InjectProperty("CameraService")
     private cameraService: CameraService;
 
@@ -36,7 +32,6 @@ export class WorldFactory {
         this.lookup = lookup;
         this.meshStore = lookup.meshStore;
         this.quarterStore = lookup.quarterStore;
-        this.tileStore = lookup.tileStore;
         this.cameraService = lookup.cameraService;
 
         this.worldMapParser = new WorldMapParser();
@@ -55,8 +50,6 @@ export class WorldFactory {
         lookup.worldProvider.world = worldObj;
         worldObj.scene = scene;
         worldObj.engine = scene.getEngine();
-        this.tileStore.TILES_PER_ROW = Math.floor(worldObj.size.x / this.tileStore.TILE_SIZE); 
-        this.tileStore.TILES_PER_COL = Math.floor(worldObj.size.y / this.tileStore.TILE_SIZE); 
 
         worldObj.camera = this.createCamera(worldObj);
         this.createGround(worldObj);

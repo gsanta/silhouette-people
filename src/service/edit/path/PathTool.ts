@@ -1,6 +1,6 @@
-import { CharacterObj } from "../../../model/general/objs/CharacterObj";
-import { Path } from "../../../model/general/objs/Path";
-import { RouteObj } from "../../../model/general/objs/RouteObj";
+import { CharacterObj } from "../../../model/object/character/CharacterObj";
+import { PathObj } from "../../../model/object/PathObj";
+import { RouteObj } from "../../../model/object/route/RouteObj";
 import { RouteConfig, RouteFactory } from "../../object/route/RouteFactory";
 import { PointerData } from "../../base/pointer/PointerService";
 import { RenderGuiService } from "../ui/RenderGuiService";
@@ -24,7 +24,7 @@ export class PathTool extends Tool {
     
     private currentCharacter: CharacterObj;
     private characters: CharacterObj[];
-    private currentPath: Path;
+    private currentPath: PathObj;
     private route: RouteObj;
     private _isCanceled = true;;
 

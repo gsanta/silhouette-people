@@ -1,5 +1,5 @@
 import { InjectProperty } from "../../../di/diDecorators";
-import { MeshObj } from "../../../model/general/objs/MeshObj";
+import { MeshObj } from "../../../model/object/mesh/MeshObj";
 import { MeshStore } from "../../../store/MeshStore";
 import { QuarterStore } from "../../../store/QuarterStore";
 import { WorldProvider } from "../world/WorldProvider";

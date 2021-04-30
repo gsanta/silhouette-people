@@ -1,14 +1,14 @@
 import { Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { CharacterObj } from "../../../model/general/objs/CharacterObj";
-import { Path } from "../../../model/general/objs/Path";
-import { LockedDirection } from "../../../model/general/objs/route/LockedDirection";
-import { LockedSpeed } from "../../../model/general/objs/route/LockedSpeed";
-import { RouteObj } from "../../../model/general/objs/RouteObj";
-import { RouteWalker } from "../../../model/general/objs/RouteWalker";
+import { CharacterObj } from "../../../model/object/character/CharacterObj";
+import { PathObj } from "../../../model/object/PathObj";
+import { LockedDirection } from "../../../model/object/route/features/LockedDirection";
+import { LockedSpeed } from "../../../model/object/route/features/LockedSpeed";
+import { RouteObj } from "../../../model/object/route/RouteObj";
+import { RouteWalker } from "../../../model/object/route/RouteWalker";
 import { RouteStore } from "../../../store/RouteStore";
-import { IPathFinder } from "../../district/path/IPathFinder";
-import { MasterPathFinder } from "../../district/path/MasterPathFinder";
+import { IPathFinder } from "../path/path_finder/IPathFinder";
+import { MasterPathFinder } from "../path/path_finder/MasterPathFinder";
 import { lookup } from "../../Lookup";
 
 export interface RouteConfig {
@@ -47,13 +47,13 @@ export class RouteFactory {
 
         if (path.length < 2) { return undefined; }
         
-        const route = new RouteObj(character, [new Path(path)]);
+        const route = new RouteObj(character, [new PathObj(path)]);
         // route.walker = new RealTimeRouteWalker(route);
         
         this.routeStore.addRoute(route);
     }
 
-    createRoute(character: CharacterObj, pathes: Path[], config: RouteConfig): RouteObj {
+    createRoute(character: CharacterObj, pathes: PathObj[], config: RouteConfig): RouteObj {
         const route = new RouteObj(character, pathes);
         route.walker = this.createRouteWalker(route, config);
 

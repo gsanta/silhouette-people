@@ -1,5 +1,5 @@
 import { InjectProperty } from "../../../di/diDecorators";
-import { CameraObj } from "../../../model/general/objs/CameraObj";
+import { CameraObj } from "../../../model/object/CameraObj";
 import { KeyboardListener, KeyboardService } from "../../base/keyboard/KeyboardService";
 import { lookup } from "../../Lookup";
 

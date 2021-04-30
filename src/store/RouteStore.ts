@@ -1,5 +1,5 @@
-import { CharacterObj } from "../model/general/objs/CharacterObj";
-import { RouteObj } from "../model/general/objs/RouteObj";
+import { CharacterObj } from "../model/object/character/CharacterObj";
+import { RouteObj } from "../model/object/route/RouteObj";
 
 
 export class RouteStore {

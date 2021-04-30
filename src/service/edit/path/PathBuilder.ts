@@ -1,18 +1,18 @@
 import { Vector2, Vector3 } from "babylonjs";
-import { Path } from "../../../model/general/objs/Path";
+import { PathObj } from "../../../model/object/PathObj";
 
 export class PathBuilder {
 
-    startPath(pos: Vector2): Path {
-        return new Path([new Vector3(pos.x, 0.5, pos.y)]);
+    startPath(pos: Vector2): PathObj {
+        return new PathObj([new Vector3(pos.x, 0.5, pos.y)]);
     }
 
-    updatePath(path: Path, pos: Vector2): Path {
+    updatePath(path: PathObj, pos: Vector2): PathObj {
         path.setPoint(1, new Vector3(pos.x, 0.5, pos.y));
         return path;
     }
 
-    closePath(path: Path, pos: Vector2): Path {
+    closePath(path: PathObj, pos: Vector2): PathObj {
         path.addPoint(new Vector3(pos.x, 0.5, pos.y))
         return path;
     }    

@@ -1,4 +1,4 @@
-import { CharacterObj } from "../../../model/general/objs/CharacterObj";
+import { CharacterObj } from "../../../model/object/character/CharacterObj";
 import { RenderGuiService } from "../ui/RenderGuiService";
 import { WorldProvider } from "../../object/world/WorldProvider";
 import { MeshStore } from "../../../store/MeshStore";

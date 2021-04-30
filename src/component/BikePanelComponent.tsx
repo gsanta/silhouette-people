@@ -4,7 +4,7 @@ import './../../assets/css/action-panel.scss'
 import { InjectProperty } from "../di/diDecorators";
 import { MeshStore } from "../store/MeshStore";
 import { lookup } from "../service/Lookup";
-import { BikeObj } from "../model/general/objs/CharacterObj";
+import { BikeObj } from "../model/object/character/CharacterObj";
 
 export class BikePanelComponent extends React.Component<ComponentProps> {
 

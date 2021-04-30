@@ -1,7 +1,7 @@
 import { Vector3 } from "babylonjs";
-import { BikeWalker } from "../../../model/bike/BikeWalker";
-import { CharacterBikingState } from "../../../model/character/states/CharacterBikingState";
-import { BikeObj, HumanoidObj } from "../../../model/general/objs/CharacterObj";
+import { BikeWalker } from "../../../model/object/bike/states/BikeWalker";
+import { CharacterBikingState } from "../../../model/object/character/states/CharacterBikingState";
+import { BikeObj, HumanoidObj } from "../../../model/object/character/CharacterObj";
 
 export class BikeParenter {
     parentToBike(player: HumanoidObj, bike: BikeObj) {
