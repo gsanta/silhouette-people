@@ -2,8 +2,8 @@ import { CannonJSPlugin, Color3, Color4, CubeTexture, Engine, HemisphericLight, 
 import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
-import { Lookup } from "./services/Lookup";
-import { AppComponent } from './ui/AppComponent';
+import { Lookup } from "./service/Lookup";
+import { AppComponent } from './component/AppComponent';
 
 export function createGame() {
     const root = <HTMLCanvasElement> document.getElementById("root");

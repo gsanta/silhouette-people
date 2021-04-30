@@ -1,5 +1,5 @@
 import { NodeMaterial, SpotLight, Tools, Vector2, Vector3 } from "babylonjs";
-import { Lookup } from "../../../services/Lookup";
+import { Lookup } from "../../../service/Lookup";
 import { GameObj } from "./GameObj";
 
 export class LightObj extends GameObj {

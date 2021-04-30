@@ -1,7 +1,7 @@
 import { Mesh, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { lookup } from "../../../services/Lookup";
-import { QuarterStore } from "../../../stores/QuarterStore";
+import { lookup } from "../../../service/Lookup";
+import { QuarterStore } from "../../../store/QuarterStore";
 import { AnimationHandler } from "../components/AnimationHandler";
 import { TagHandler } from "../components/TagHandler";
 import { GameObj } from "./GameObj";

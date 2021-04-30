@@ -1,7 +1,7 @@
 import { Axis, MeshBuilder, Space, StandardMaterial } from "babylonjs";
 import { MeshObj } from "../../objs/MeshObj";
 import { WorldObj } from "../../objs/WorldObj";
-import { Lookup } from "../../../../services/Lookup";
+import { Lookup } from "../../../../service/Lookup";
 import { AbstractPropertyParser, parseStrVector } from "../AbstractPropertyParser";
 
 

@@ -1,4 +1,4 @@
-import { ActivePlayerService } from "../../../../services/ActivePlayerService";
+import { ActivePlayerService } from "../../../../service/ActivePlayerService";
 import { CharacterObj } from "../../objs/CharacterObj";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 

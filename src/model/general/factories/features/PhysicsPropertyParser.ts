@@ -1,6 +1,6 @@
 import { PhysicsImpostor } from "babylonjs";
 import { MeshObj } from "../../objs/MeshObj";
-import { Lookup } from "../../../../services/Lookup";
+import { Lookup } from "../../../../service/Lookup";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export class PhysicsPropertyParser extends AbstractPropertyParser {

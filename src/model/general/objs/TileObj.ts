@@ -1,8 +1,8 @@
 import { Mesh, Vector2 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { lookup } from "../../../services/Lookup";
-import { MaterialStore } from "../../../stores/MaterialStore";
-import { TileStore } from "../../../stores/TileStore";
+import { lookup } from "../../../service/Lookup";
+import { MaterialStore } from "../../../store/MaterialStore";
+import { TileStore } from "../../../store/TileStore";
 
 export class TileObj {
     private mesh: Mesh;
