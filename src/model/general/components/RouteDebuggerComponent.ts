@@ -1,4 +1,4 @@
-import { DebugService } from "../../../services/DebugService";
+import { DebugService } from "../../../services/base/debug/DebugService";
 import { CharacterObj } from "../objs/CharacterObj";
 import { RouteObj } from "../objs/RouteObj";
 

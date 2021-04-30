@@ -1,6 +1,6 @@
 import { InjectProperty } from "../../../di/diDecorators";
 import { lookup } from "../../../services/Lookup";
-import { WorldProvider } from "../../../services/WorldProvider";
+import { WorldProvider } from "../../../services/object/world/WorldProvider";
 import { CharacterObj } from "../../general/objs/CharacterObj";
 import { MeshState } from "../../general/state/MeshState";
 import { CharacterIdleState } from "./CharacterIdleState";

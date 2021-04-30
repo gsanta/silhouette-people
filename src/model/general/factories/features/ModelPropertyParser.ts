@@ -1,5 +1,5 @@
 import { AbstractMesh, Axis, Space } from "babylonjs";
-import { WorldProvider } from "../../../../services/WorldProvider";
+import { WorldProvider } from "../../../../services/object/world/WorldProvider";
 import { AssetContainerStore } from "../../../../stores/AssetContainerStore";
 import { MeshInstance } from "../../objs/MeshInstance";
 import { MeshObj } from "../../objs/MeshObj";

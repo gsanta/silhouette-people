@@ -1,29 +1,26 @@
 import { Engine, Scene } from "babylonjs";
-import { DebugService } from "./DebugService";
-import { KeyboardService } from "./input/KeyboardService";
-import { RenderGuiService } from "./RenderGuiService";
-import { SetupService } from "./game/SetupService";
-import { ControllerService } from "./ControllerService";
-import { WorldProvider } from "./WorldProvider";
-import { UpdateService } from "./game/UpdateService";
-import { WorldFactory } from "./factory/WorldFactory";
-import { QuarterFactory } from "./factory/QuarterFactory";
-import { MeshFactory } from "./factory/MeshFactory";
-import { PointerService } from "./input/PointerService";
+import { DebugService } from "./base/debug/DebugService";
+import { KeyboardService } from "./base/keyboard/KeyboardService";
+import { RenderGuiService } from "./edit/ui/RenderGuiService";
+import { SetupService } from "./base/setup/SetupService";
+import { WorldProvider } from "./object/world/WorldProvider";
+import { UpdateService } from "./base/update/UpdateService";
+import { WorldFactory } from "./object/world/WorldFactory";
+import { QuarterFactory } from "./object/quarter/QuarterFactory";
+import { MeshFactory } from "./object/mesh/MeshFactory";
+import { PointerService } from "./base/pointer/PointerService";
 import { TileStore } from "../stores/TileStore";
-import { TileFactory } from "./factory/TileFactory";
 import { QuarterStore } from "../stores/QuarterStore";
 import { MeshStore } from "../stores/MeshStore";
-import { RouteFactory } from "./factory/RouteFactory";
+import { RouteFactory } from "./object/route/RouteFactory";
 import { LightStore } from "../stores/LightStore";
-import { LightFactory } from "./factory/LightFactory";
+import { LightFactory } from "./object/light/LightFactory";
 import { ActivePlayerService } from "./ActivePlayerService";
-import { GameModeService } from "./GameModeService";
 import { MaterialStore } from "../stores/MaterialStore";
 import { RouteStore } from "../stores/RouteStore";
-import { TurnBasedCommandService } from "./TurnBasedCommandService";
-import { ToolService } from "./ToolService";
+import { ToolService } from "./edit/ToolService";
 import { AssetContainerStore } from "../stores/AssetContainerStore";
+import { CameraService } from "./edit/camera/CameraService";
 
 export class Lookup {
     keyboard: KeyboardService;
@@ -38,9 +35,9 @@ export class Lookup {
 
     renderGui: RenderGuiService;
     setup: SetupService;
-    controller: ControllerService;
     update: UpdateService;
-    gameMode: GameModeService;
+
+    cameraService: CameraService;
     
     meshFactory: MeshFactory;
     quarterFactory: QuarterFactory;
@@ -60,16 +57,15 @@ export class Lookup {
 
     toolService: ToolService;
 
-    tileFactory: TileFactory;
-    
-    turnBasedCommandService: TurnBasedCommandService;
-
     private isReady: boolean = false;
     private onReadyFuncs: (() => void)[] = [];
 
     constructor() {
         this.worldProvider = new WorldProvider();
         lookup.worldProvider = this.worldProvider;
+
+        this.keyboard = new KeyboardService();
+        lookup.keyboard = this.keyboard;
 
         this.routeStore = new RouteStore();
         lookup.routeStore = this.routeStore;
@@ -92,12 +88,10 @@ export class Lookup {
         
         this.renderGui = new RenderGuiService();
         lookup.renderGui = this.renderGui;
-        this.controller = new ControllerService();
-        lookup.controller = this.controller;
-        this.keyboard = new KeyboardService();
-        lookup.keyboard = this.keyboard;
         this.toolService = new ToolService();
         lookup.toolService = this.toolService;
+        this.cameraService = new CameraService();
+        lookup.cameraService = this.cameraService;
 
         this.pointer = new PointerService();
         lookup.pointer = this.pointer;
@@ -111,21 +105,12 @@ export class Lookup {
         this.debug = new DebugService();
         lookup.debug = this.debug;
 
-        this.tileFactory = new TileFactory();
-        lookup.tileFactory = this.tileFactory;
-
-        this.gameMode = new GameModeService();
-        lookup.gameMode = this.gameMode;
-
         this.setup = new SetupService(this);
         this.update = new UpdateService();
 
         this.meshFactory = new MeshFactory(this);
         this.quarterFactory = new QuarterFactory();
         this.worldFactory = new WorldFactory(this);
-
-        this.turnBasedCommandService = new TurnBasedCommandService();
-        lookup.turnBasedCommandService = this.turnBasedCommandService;
     }
 
     setScene(scene: Scene) {

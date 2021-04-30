@@ -1,6 +1,6 @@
 
 
-import { KeyboardService } from "../../../../services/input/KeyboardService";
+import { KeyboardService } from "../../../../services/base/keyboard/KeyboardService";
 import { BikeInputManager } from "../../input/BikeInputManager";
 import { CharacterInputManager } from "../../input/CharacterInputManager";
 import { BikeObj, CharacterObj } from "../../objs/CharacterObj";

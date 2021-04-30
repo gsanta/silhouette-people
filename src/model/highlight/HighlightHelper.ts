@@ -1,6 +1,6 @@
 import { Vector3 } from "babylonjs";
 import { InjectProperty } from "../../di/diDecorators";
-import { LightFactory } from "../../services/factory/LightFactory";
+import { LightFactory } from "../../services/object/light/LightFactory";
 import { lookup } from "../../services/Lookup";
 import { LightStore } from "../../stores/LightStore";
 import { LightObj } from "../general/objs/LightObj";

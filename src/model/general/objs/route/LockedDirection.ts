@@ -23,4 +23,12 @@ export class LockedDirection implements LockedFeature {
 
         return Math.PI / 2 - dirAngle;
     }
+
+    enableFeature() {
+        this.character.inputManager.enableDirection();
+    }
+
+    disableFeature() {
+        this.character.inputManager.disableDirection();
+    }
 }

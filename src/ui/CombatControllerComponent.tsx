@@ -1,28 +1,16 @@
 import React from "react";
+import { Tool, ToolType } from "../services/edit/Tool";
 import { InjectProperty } from "../di/diDecorators";
-import { GameMode, GameModeService } from "../services/GameModeService";
 import { lookup } from "../services/Lookup";
-import { ToolService } from "../services/ToolService";
-import { TurnBasedCommandService } from "../services/TurnBasedCommandService";
-import { MeshStore } from "../stores/MeshStore";
-import { Tool, ToolType } from "../controllers/Tool";
-import { PathTool } from "../controllers/PathTool";
+import { ToolService } from "../services/edit/ToolService";
 
 export class CombatControllerComponent extends React.Component {
-
-    @InjectProperty("MeshStore")
-    private meshStore: MeshStore;
-
-    @InjectProperty("GameModeService")
-    private gameModeService: GameModeService;
 
     @InjectProperty("ToolService")
     private toolService: ToolService;
 
     constructor(props: {}) {
         super(props);
-        this.meshStore = lookup.meshStore;
-        this.gameModeService = lookup.gameMode;
         this.toolService = lookup.toolService;
     }
 

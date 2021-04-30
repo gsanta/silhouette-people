@@ -14,4 +14,12 @@ export class LockedSpeed implements LockedFeature {
     update(deltaTime: number) {
         this.character.walker.setSpeed(0.04);
     }
+
+    enableFeature() {
+        this.character.inputManager.disableSpeed();
+    }
+
+    disableFeature() {
+        this.character.inputManager.enableSpeed();
+    }
 }

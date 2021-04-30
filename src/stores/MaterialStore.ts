@@ -1,7 +1,7 @@
 import { Color3, StandardMaterial } from "babylonjs";
 import { InjectProperty } from "../di/diDecorators";
 import { lookup } from "../services/Lookup";
-import { WorldProvider } from "../services/WorldProvider";
+import { WorldProvider } from "../services/object/world/WorldProvider";
 
 export class MaterialStore {
     private tileMaterial: StandardMaterial; 

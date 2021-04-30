@@ -3,7 +3,7 @@ import { Vector3 } from "babylonjs/Maths/math.vector";
 import { LockedFeature } from "./route/LockedFeature";
 import { RouteObj } from "./RouteObj";
 
-export abstract class RouteWalker {
+export class RouteWalker {
     protected _isFinished: boolean = false;
     fromCheckPoint: Vector3;
     toCheckPoint: Vector3;
@@ -25,11 +25,8 @@ export abstract class RouteWalker {
     
         this.checkpointHanlder.updateCheckPointsIfNeeded()
 
-        if (this.isFinished()) { 
-            this.stopCharacter()
-        } else {
+        if (!this.isFinished()) {
             this.lockedFeatures.forEach(lockedFeature => lockedFeature.update(deltaTime));
-            this.walkCharacter(deltaTime);
             this.prevPos = this.currPos;
             this.currPos = character.getPosition();    
         }
@@ -38,9 +35,6 @@ export abstract class RouteWalker {
     addFeature(lockedFeature: LockedFeature) {
         this.lockedFeatures.push(lockedFeature);
     }
-
-    protected abstract walkCharacter(deltaTime: number): void;
-    protected abstract stopCharacter(): void;
 
     isFinished(): boolean {
         return this._isFinished;
@@ -52,6 +46,8 @@ export abstract class RouteWalker {
 
     setStarted() {
         this._isStarted = true;
+
+        this.lockedFeatures.forEach(feature => feature.enableFeature());
     }
 
     setFinished(isFinished) {
@@ -61,6 +57,8 @@ export abstract class RouteWalker {
             const { character } = this.route;
             character.walker.setSpeed(0);
         }
+
+        this.lockedFeatures.forEach(feature => feature.disableFeature());
     }
 }
 

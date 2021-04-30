@@ -1,4 +1,4 @@
-import { KeyboardService } from "../../../services/input/KeyboardService";
+import { KeyboardService } from "../../../services/base/keyboard/KeyboardService";
 import { BikeObj } from "../objs/CharacterObj";
 import { MeshInputManager } from "./MeshInputManager";
 
