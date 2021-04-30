@@ -5,6 +5,7 @@ import { InjectProperty } from "../di/diDecorators";
 import { MaterialStore } from "../stores/MaterialStore";
 import { MeshStore } from "../stores/MeshStore";
 import { RouteStore } from "../stores/RouteStore";
+import { RouteFactory } from "./factory/RouteFactory";
 import { KeyboardListener, KeyboardService } from "./input/KeyboardService";
 import { lookup } from "./Lookup";
 import { RenderGuiService } from "./RenderGuiService";
@@ -27,6 +28,9 @@ export class ToolService implements KeyboardListener {
     @InjectProperty("RouteStore")
     private routeStore: RouteStore;
 
+    @InjectProperty("RouteFactory")
+    private routeFactory: RouteFactory;
+
     @InjectProperty("KeyboardService")
     private keyboardService: KeyboardService;
 
@@ -41,10 +45,11 @@ export class ToolService implements KeyboardListener {
         this.meshStore = lookup.meshStore;
         this.keyboardService = lookup.keyboard;
         this.routeStore = lookup.routeStore;
+        this.routeFactory = lookup.routeFactory;
         this.renderGuiService = lookup.renderGui;
 
         this.keyboardService.addListener(this);
-        this.path = new PathTool(this.worldProvider, this, this.materialStore, this.meshStore, this.routeStore, this.renderGuiService);
+        this.path = new PathTool(this.worldProvider, this, this.materialStore, this.meshStore, this.routeStore, this.renderGuiService, this.routeFactory);
         this.move = new MoveTool(this.worldProvider, this.meshStore, this.routeStore, this.renderGuiService);
     }
 

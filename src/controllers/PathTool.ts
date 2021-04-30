@@ -1,6 +1,7 @@
 import { CharacterObj } from "../model/general/objs/CharacterObj";
 import { Path } from "../model/general/objs/Path";
 import { RouteObj } from "../model/general/objs/RouteObj";
+import { RouteConfig, RouteFactory } from "../services/factory/RouteFactory";
 import { PointerData } from "../services/input/PointerService";
 import { RenderGuiService } from "../services/RenderGuiService";
 import { ToolService } from "../services/ToolService";
@@ -19,6 +20,7 @@ export class PathTool extends Tool {
     private renderService: RenderGuiService;
     private pathVisualizer: PathVisualizer;
     private pathBuilder: PathBuilder;
+    private routeFactory: RouteFactory;
     
     private currentCharacter: CharacterObj;
     private characters: CharacterObj[];
@@ -26,12 +28,13 @@ export class PathTool extends Tool {
     private route: RouteObj;
     private _isCanceled = true;;
 
-    constructor(worldProvider: WorldProvider, toolService: ToolService, materialStore: MaterialStore, meshStore: MeshStore, routeStore: RouteStore, renderService: RenderGuiService) {
+    constructor(worldProvider: WorldProvider, toolService: ToolService, materialStore: MaterialStore, meshStore: MeshStore, routeStore: RouteStore, renderService: RenderGuiService, routeFactory: RouteFactory) {
         super(ToolType.PATH);
         this.meshStore = meshStore;
         this.routeStore = routeStore;
         this.toolService = toolService;
         this.renderService = renderService;
+        this.routeFactory = routeFactory;
         this.pathVisualizer = new PathVisualizer(worldProvider, materialStore);
         this.pathBuilder = new PathBuilder();
     }
@@ -99,23 +102,22 @@ export class PathTool extends Tool {
             this.currentPath.dispose();
         }
         this.currentPath = undefined;
-        if (this.route.pathes.length > 0) {
-            this.routeStore.addRoute(this.route);
-        }
     }
 
     private initRoute() {
         const characterIndex = this.characters.indexOf(this.currentCharacter) + 1;
         this.currentCharacter = this.characters[characterIndex];
 
-        // let character: CharacterObj;
-        // if (this.currentCharacter.getParent()) {
-        //     character = <CharacterObj> this.currentCharacter.getParent();
-        // } else {
-        //     character = this.currentCharacter;
-        // }
+        const activeCharacter = this.meshStore.getActivePlayer();
 
         this.currentPath = this.pathBuilder.startPath(this.currentCharacter.instance.getPosition2D());
-        this.route = new RouteObj(this.currentCharacter, [this.currentPath]);
+        
+        let config: RouteConfig = { lockDirection: true };
+
+        if (this.currentCharacter !== activeCharacter) {
+            config.lockSpeed = true;
+        }
+        
+        this.route = this.routeFactory.createRoute(this.currentCharacter, [this.currentPath], config);
     }
 }

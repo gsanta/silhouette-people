@@ -1,12 +1,22 @@
 import { Vector3 } from "babylonjs";
 import { InjectProperty } from "../../di/diDecorators";
 import { CharacterObj } from "../../model/general/objs/CharacterObj";
+import { CharacterRouteWalker } from "../../model/general/objs/CharacterRouteWalker";
 import { Path } from "../../model/general/objs/Path";
+import { LockedDirection } from "../../model/general/objs/route/LockedDirection";
+import { LockedFeature } from "../../model/general/objs/route/LockedFeature";
+import { LockedSpeed } from "../../model/general/objs/route/LockedSpeed";
 import { RouteObj } from "../../model/general/objs/RouteObj";
+import { RouteWalker } from "../../model/general/objs/RouteWalker";
 import { RouteStore } from "../../stores/RouteStore";
 import { IPathFinder } from "../district/path/IPathFinder";
 import { MasterPathFinder } from "../district/path/MasterPathFinder";
 import { lookup } from "../Lookup";
+
+export interface RouteConfig {
+    lockSpeed?: boolean;
+    lockDirection?: boolean;
+}
 
 export class RouteFactory {
     
@@ -45,11 +55,25 @@ export class RouteFactory {
         this.routeStore.addRoute(route);
     }
 
-    createRoute(character: CharacterObj, pathes: Path[]): RouteObj {
+    createRoute(character: CharacterObj, pathes: Path[], config: RouteConfig): RouteObj {
         const route = new RouteObj(character, pathes);
-        // route.walker = new RealTimeRouteWalker(route);
+        route.walker = this.createRouteWalker(route, config);
 
         this.routeStore.addRoute(route);
         return route;
+    }
+
+    private createRouteWalker(route: RouteObj, config: RouteConfig): RouteWalker {
+        const routeWalker = new CharacterRouteWalker(route);
+
+        if (config.lockSpeed) {
+            routeWalker.addFeature(new LockedSpeed(routeWalker, route.character));
+        }
+
+        if (config.lockDirection) {
+            routeWalker.addFeature(new LockedDirection(routeWalker, route.character));
+        }
+
+        return routeWalker;
     }
 }

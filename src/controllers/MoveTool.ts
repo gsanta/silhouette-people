@@ -26,9 +26,9 @@ export class MoveTool extends Tool {
     beforeRender() {
         if (this.isCanceled()) { return; }
 
-        if (this.isStarted) {
+        // if (this.isStarted) {
             this.movePlayers();
-        }
+        // }
     }
 
     select(isCanceled: boolean) {
@@ -57,20 +57,30 @@ export class MoveTool extends Tool {
             this.isWalking = true;
             this.isStarted = true;
         }
+
+        const players = this.meshStore.getPlayers();
+        players.forEach(player => player.inputManager.keyboard(e, true));
     }
 
     keyUp(e: KeyboardEvent) {
         if (e.key === 'w') {
             this.isWalking = false;
         }
+
+        const players = this.meshStore.getPlayers();
+        players.forEach(player => player.inputManager.keyboard(e, false));
     }
 
     private movePlayers() {
+
+        const deltaTime = this.worldProvider.world.engine.getDeltaTime();
+        
+        let players = this.meshStore.getPlayers();
+        players.forEach(player => player.walker.walk(deltaTime));
+
         const activePlayer = this.meshStore.getActivePlayer();
         if (!activePlayer) { return; }
 
-        const deltaTime = this.worldProvider.world.engine.getDeltaTime();
-        let players = this.meshStore.getPlayers();
         // players = players.filter(player => player !== activePlayer);
 
 

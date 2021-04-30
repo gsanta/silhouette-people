@@ -13,7 +13,7 @@ export interface WorldJson {
     cameraLocation: number;
     grounds: QuarterJson[][];
     charToType: { [key: string]: string },
-    models: { [key: string]: string },
+    models: string[],
     textures: { [key: string]: string },
     textureMeshIndex: { [key: string]: number },
     collider: { [key: string]: string | boolean },

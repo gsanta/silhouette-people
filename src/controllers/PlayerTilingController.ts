@@ -62,7 +62,7 @@ export class PlayerTilingController extends AbstractController {
     beforeRender() {
         if (!this.isInitialized) {
             this.parentToBikeIfNeeded();
-            this.toolService.setSelectedTool(this.toolService.path, true);
+            this.toolService.setSelectedTool(this.toolService.move, true);
             this.isInitialized = true;
         }
 
@@ -98,6 +98,7 @@ export class PlayerTilingController extends AbstractController {
         }
     }
 
+    // TODO move somewhere else
     private parentToBikeIfNeeded() {
         const player = <HumanoidObj> this.meshStore.getById('player1');
 
@@ -113,6 +114,7 @@ export class PlayerTilingController extends AbstractController {
         player.instance.getMesh().checkCollisions = false;
         player.setParent(bike);
         player.walker = new BikeWalker(bike);
+        player.inputManager = bike.inputManager;
 
         player.animationState = new CharacterBikingState(player);
     }

@@ -1,4 +1,5 @@
 import { BikeWalker } from "../../bike/BikeWalker";
+import { MeshInputManager } from "../input/MeshInputManager";
 import { MeshState } from "../state/MeshState";
 import { MeshWalker } from "../state/MeshWalker";
 import { MeshObj } from "./MeshObj";
@@ -9,4 +10,5 @@ export type BikeObj = CharacterObj<BikeWalker>
 export class CharacterObj<W extends MeshWalker = MeshWalker> extends MeshObj {
     animationState: MeshState;
     walker: W;
+    inputManager: MeshInputManager;
 }

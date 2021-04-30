@@ -1,22 +1,21 @@
-import { AbstractMesh, Axis, ISceneLoaderAsyncResult, Mesh, SceneLoader, Space } from "babylonjs";
+import { AbstractMesh, Axis, Space } from "babylonjs";
+import { WorldProvider } from "../../../../services/WorldProvider";
+import { AssetContainerStore } from "../../../../stores/AssetContainerStore";
+import { MeshInstance } from "../../objs/MeshInstance";
 import { MeshObj } from "../../objs/MeshObj";
 import { WorldObj } from "../../objs/WorldObj";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
-import { MeshInstance } from "../../objs/MeshInstance";
-import { WorldProvider } from "../../../../services/WorldProvider";
-import { MeshInstanceStore } from "../../../../stores/MeshInstanceStore";
-import { InstancedMesh } from "babylonjs/Meshes/instancedMesh";
 
 export class ModelPropertyParser extends AbstractPropertyParser {
     private worldObj: WorldObj;
-    private meshInstanceStore: MeshInstanceStore;
+    private assetContainerStore: AssetContainerStore;
     private worldProvider: WorldProvider;
 
-    constructor(worldObj: WorldObj, worldProvider: WorldProvider, meshInstanceStore: MeshInstanceStore) {
+    constructor(worldObj: WorldObj, worldProvider: WorldProvider, assetContainerStore: AssetContainerStore) {
         super();
         this.worldObj = worldObj;
         this.worldProvider = worldProvider;
-        this.meshInstanceStore = meshInstanceStore;
+        this.assetContainerStore = assetContainerStore;
     }
 
     feature = 'Model';
@@ -26,9 +25,9 @@ export class ModelPropertyParser extends AbstractPropertyParser {
     }
 
     async processFeatureAsync(meshObj: MeshObj, attrs: string[]): Promise<void> {
-        const [modelPath, mainMeshIndex, removeRoot] = attrs;
+        const [modelType, mainMeshIndex, removeRoot] = attrs;
 
-        const result = await this.loadMeshOrGetFromCache(meshObj, modelPath);
+        const result = await this.assetContainerStore.instantiate(modelType);
                 
         let meshes = removeRoot ? this.removeRoot(result.meshes) : result.meshes;
 
@@ -37,7 +36,7 @@ export class ModelPropertyParser extends AbstractPropertyParser {
         const mainMesh = mainMeshIndex ? meshes[mainMeshIndex] : this.findMainMesh(meshes);
         const otherMeshes = meshes.filter(mesh => mesh !== mainMesh);
 
-        meshObj.instance = new MeshInstance([mainMesh, ...otherMeshes], meshObj);
+        meshObj.instance = new MeshInstance([mainMesh, ...otherMeshes], result.isCloned, meshObj);
 
         meshObj.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         meshObj.animation.setAnimations(result.animationGroups);
@@ -45,35 +44,22 @@ export class ModelPropertyParser extends AbstractPropertyParser {
         meshObj.instance.getMesh().parent = this.worldObj.ground;
     }
 
-    private async loadMeshOrGetFromCache(meshObj: MeshObj, modelPath: string): Promise<ISceneLoaderAsyncResult> {
-        let result: ISceneLoaderAsyncResult;
-
-        if (this.meshInstanceStore.hasInstance(meshObj.type)) {
-            result = this.meshInstanceStore.getInstance(meshObj.type);
-        } else {
-            result = await SceneLoader.ImportMeshAsync('', "assets/models/", modelPath, this.worldProvider.world.scene);
-            // this.meshInstanceStore.addInstance(meshObj.type, result);
-        }
-
-        return result;
-    }
-
     private removeRoot(meshes: AbstractMesh[]): AbstractMesh[] {
-        if (meshes[0].id === '__root__' && meshes.length > 1) {
+        if (meshes[0].id.indexOf('__root__') !== -1 && meshes[0].getChildMeshes().length > 0) {
             const root = meshes[0];
-            const mesh = meshes[1];
+            const oneChildMesh = root.getChildMeshes()[0];
+
             let newRoot: AbstractMesh;
-            if (mesh.parent) {
-                if (mesh.parent === root) {
-                    mesh.setParent(null);
-                    newRoot = <AbstractMesh> mesh;
-                } else if (mesh.parent.parent === root) {
-                    (<AbstractMesh> mesh.parent).setParent(null);
-                    newRoot = <AbstractMesh> mesh.parent;
-                }
+            if (oneChildMesh.parent === root) {
+                oneChildMesh.setParent(null);
+                newRoot = <AbstractMesh> oneChildMesh;
+            } else if (oneChildMesh.parent.parent === root) {
+                (<AbstractMesh> oneChildMesh.parent).setParent(null);
+                newRoot = <AbstractMesh> oneChildMesh.parent;
             }
 
             if (newRoot) {
+                root.dispose();
                 return [newRoot];
             }
         }

@@ -17,7 +17,9 @@ import { ActivePlayerService } from "../ActivePlayerService";
 import { HiddenPropertyParser } from "../../model/general/factories/features/HiddenPropertyParser";
 import { WalkerPropertyParser } from "../../model/general/factories/features/WalkerPropertyParser";
 import { WorldProvider } from "../WorldProvider";
-import { MeshInstanceStore } from "../../stores/MeshInstanceStore";
+import { AssetContainerStore } from "../../stores/AssetContainerStore";
+import { InputManagerPropertyParser } from "../../model/general/factories/features/InputManagerPropertyParser";
+import { KeyboardService } from "../input/KeyboardService";
 
 export class MeshFactory {
     
@@ -28,7 +30,10 @@ export class MeshFactory {
     private worldProvider: WorldProvider;
 
     @InjectProperty("MeshInstanceStore")
-    private meshInstanceStore: MeshInstanceStore;
+    private meshInstanceStore: AssetContainerStore;
+
+    @InjectProperty("KeyboardService")
+    private keyboardService: KeyboardService;
 
     private lookup: Lookup;
     private indexesByType: Map<string, number> = new Map();
@@ -37,8 +42,9 @@ export class MeshFactory {
     constructor(lookup: Lookup) {
         this.lookup = lookup;
         this.worldProvider = lookup.worldProvider;
-        this.meshInstanceStore = lookup.meshInstanceStore;
+        this.meshInstanceStore = lookup.assetContainerStore;
         this.activePlayerService = lookup.activePlayerService;
+        this.keyboardService = lookup.keyboard;
     }
 
     async create(gameObjectJson: GameObjectJson, worldObj: WorldObj): Promise<MeshObj> {
@@ -86,11 +92,12 @@ export class MeshFactory {
             new PhysicsPropertyParser(this.lookup),
             new StatePropertyParser(),
             new WalkerPropertyParser(),
+            new InputManagerPropertyParser(this.keyboardService),
             new TagPropertyParser(),
             new HiddenPropertyParser(),
             new RotatePropertyParser(),
             new IdPropertyParser(),
-            new ActivePlayerPropertyParser(this.activePlayerService)
+            new ActivePlayerPropertyParser(this.activePlayerService),
         ];
     }
 

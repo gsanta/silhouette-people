@@ -9,8 +9,11 @@ export class MeshInstance {
     private colliderMesh: Mesh;
     private meshObj: MeshObj;
 
-    constructor(meshes: Mesh[], meshObj: MeshObj) {
+    readonly isCloned: boolean;
+
+    constructor(meshes: Mesh[], isCloned: boolean, meshObj: MeshObj) {
         this.meshes = meshes;
+        this.isCloned = isCloned;
         this.meshObj = meshObj;
     }
 

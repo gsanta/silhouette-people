@@ -3,7 +3,7 @@ import { GameObjectJson, MeshObjType } from "../../model/general/objs/MeshObj";
 import { toStrVector } from "../../model/general/factories/AbstractPropertyParser";
 import { WorldJson } from "./WorldJson";
 
-export class DistrictParser {
+export class WorldMapParser {
     static CONVERSION_RATIO = 2;
     private mapRows: number;
     private mapCols: number;
@@ -79,11 +79,11 @@ export class DistrictParser {
         }
 
         const type = this.districtJson.charToType[char];
-        const halfCols = this.mapCols / 2 * DistrictParser.CONVERSION_RATIO;
-        const halfRows = this.mapRows / 2 * DistrictParser.CONVERSION_RATIO;
+        const halfCols = this.mapCols / 2 * WorldMapParser.CONVERSION_RATIO;
+        const halfRows = this.mapRows / 2 * WorldMapParser.CONVERSION_RATIO;
 
-        const posX = x * DistrictParser.CONVERSION_RATIO - halfCols;
-        const posY = -(y * DistrictParser.CONVERSION_RATIO - halfRows);
+        const posX = x * WorldMapParser.CONVERSION_RATIO - halfCols;
+        const posY = -(y * WorldMapParser.CONVERSION_RATIO - halfRows);
         const pos = new Vector3(posX, 0, posY);
 
         const typeFeatures = this.districtJson.features[type] || [];

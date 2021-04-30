@@ -1,5 +1,6 @@
 import { Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
+import { LockedFeature } from "./route/LockedFeature";
 import { RouteObj } from "./RouteObj";
 
 export abstract class RouteWalker {
@@ -9,8 +10,10 @@ export abstract class RouteWalker {
     prevPos: Vector3;
     currPos: Vector3;
     protected _isStarted = false;
+
     private checkpointHanlder: CheckpointUpdater;
-    
+    private lockedFeatures: LockedFeature[] = [];    
+
     constructor(public route: RouteObj) {
         this.checkpointHanlder = new CheckpointUpdater(this);
     }
@@ -22,16 +25,22 @@ export abstract class RouteWalker {
     
         this.checkpointHanlder.updateCheckPointsIfNeeded()
 
-        if (!this.isFinished()) { 
-            this.updateCharacterState();
-            character.walker.walk(deltaTime)
-            character.animationState.update();
+        if (this.isFinished()) { 
+            this.stopCharacter()
+        } else {
+            this.lockedFeatures.forEach(lockedFeature => lockedFeature.update(deltaTime));
+            this.walkCharacter(deltaTime);
             this.prevPos = this.currPos;
             this.currPos = character.getPosition();    
         }
     }
 
-    protected abstract updateCharacterState(): void;
+    addFeature(lockedFeature: LockedFeature) {
+        this.lockedFeatures.push(lockedFeature);
+    }
+
+    protected abstract walkCharacter(deltaTime: number): void;
+    protected abstract stopCharacter(): void;
 
     isFinished(): boolean {
         return this._isFinished;

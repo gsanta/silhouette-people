@@ -1,17 +1,16 @@
-import { WorldObj } from "../../model/general/objs/WorldObj";
-import { GroundJson, WorldJson } from "../district/WorldJson";
-import { DistrictParser } from "../district/DistrictParser";
-import { lookup, Lookup } from "../Lookup";
-import { GameObjectJson, MeshObjTag } from "../../model/general/objs/MeshObj";
 import { ArcRotateCamera, Axis, Color3, MeshBuilder, PhysicsImpostor, Scene, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
-import { QuarterObjConfig } from "./QuarterFactory";
-import { CameraObj } from "../../model/general/objs/CameraObj";
-import { ControllerType } from "../../controllers/IController";
-import { CameraController } from "../../controllers/CameraController";
-import { QuarterStore } from "../../stores/QuarterStore";
 import { InjectProperty } from "../../di/diDecorators";
+import { CameraObj } from "../../model/general/objs/CameraObj";
+import { GameObjectJson, MeshObjTag } from "../../model/general/objs/MeshObj";
+import { WorldObj } from "../../model/general/objs/WorldObj";
 import { MeshStore } from "../../stores/MeshStore";
+import { QuarterStore } from "../../stores/QuarterStore";
 import { TileStore } from "../../stores/TileStore";
+import { WorldMapParser } from "../district/WorldMapParser";
+import { GroundJson, WorldJson } from "../district/WorldJson";
+import { lookup, Lookup } from "../Lookup";
+import { QuarterObjConfig } from "./QuarterFactory";
+import { ModelLoader } from "./ModelLoader";
 
 export class WorldFactory {
 
@@ -26,7 +25,8 @@ export class WorldFactory {
 
     private assetsPath = 'assets/levels';
     private lookup: Lookup;
-    private worldMapParser: DistrictParser;
+    private worldMapParser: WorldMapParser;
+    private modelLoader: ModelLoader;
     
     constructor(lookup: Lookup) {
         this.lookup = lookup;
@@ -34,7 +34,8 @@ export class WorldFactory {
         this.quarterStore = lookup.quarterStore;
         this.tileStore = lookup.tileStore;
 
-        this.worldMapParser = new DistrictParser();
+        this.worldMapParser = new WorldMapParser();
+        this.modelLoader = new ModelLoader();
     }
 
     async createWorldObj(levelName: string, scene: Scene): Promise<WorldObj> {
@@ -55,6 +56,7 @@ export class WorldFactory {
         worldObj.camera = this.createCamera(worldObj);
         this.createGround(worldObj);
         this.createQuarters(json.grounds, worldObj);
+        await this.loadModels(json.models);
         await this.createGameObjs(this.worldMapParser.getGameObjJsons(), worldObj);
 
         return worldObj;
@@ -84,6 +86,13 @@ export class WorldFactory {
         ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, this.lookup.scene);
 
         worldObj.ground = ground;
+    }
+
+    private async loadModels(models: string[]) {
+        for (let model of models) {
+            const [type, path] = model.split(',').map(str => str.trim());
+            await this.modelLoader.loadModel(type, path);
+        }
     }
 
     private createQuarters(grounds: GroundJson[][], worldObj: WorldObj) {
