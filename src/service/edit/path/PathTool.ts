@@ -22,12 +22,12 @@ export class PathTool extends Tool {
     private pathBuilder: PathBuilder;
     private routeFactory: RouteFactory;
     
-    private currentCharacter: CharacterObj;
-    private characters: CharacterObj[];
+    private character: CharacterObj;
+    // private characters: CharacterObj[];
     private currentPath: PathObj;
     private route: RouteObj;
     private _isCanceled = true;
-    private pathReadyCallbacks: (() => void)[] = [];
+    private readyListeners: ((wasCanceled: boolean) => void)[] = [];
 
     constructor(worldProvider: WorldProvider, toolService: ToolService, materialStore: MaterialStore, meshStore: MeshStore, routeStore: RouteStore, renderService: RenderGuiService, routeFactory: RouteFactory) {
         super(ToolType.PATH);
@@ -66,7 +66,8 @@ export class PathTool extends Tool {
 
     select(isCanceled: boolean) {
         this._isCanceled = isCanceled;
-        this.characters = this.meshStore.getPlayers();
+        this.character = this.meshStore.getActivePlayer();
+        // this.characters = this.meshStore.getPlayers();
 
         this.renderService.render();
     }
@@ -77,6 +78,8 @@ export class PathTool extends Tool {
         }
 
         this._isCanceled = true;
+
+        this.readyListeners.forEach(listener => listener(true));
         this.renderService.render();
     }
 
@@ -86,23 +89,27 @@ export class PathTool extends Tool {
     }
 
     keyDown(e: KeyboardEvent) {
+        if (this._isCanceled) { return; }
+
         if (e.key === 'Enter') {
             if (this.route) {
                 this.finishRoute();
 
-                if (this.currentCharacter === this.characters[this.characters.length - 1]) {
-                    this.toolService.setSelectedTool(this.toolService.move, true);
-                }
+                // if (this.character === this.characters[this.characters.length - 1]) {
+                //     this.toolService.setSelectedTool(this.toolService.move, true);
+                // }
             }
+
+            this.readyListeners.forEach(listener => listener(false));
         }
     }
 
-    addOnReadyListener(callback: () => void) {
-        this.pathReadyCallbacks.push(callback);
+    onFinished(callback: (wasCanceled: boolean) => void) {
+        this.readyListeners.push(callback);
     }
 
-    removeOnReadyListener(callback: () => void) {
-        this.pathReadyCallbacks = this.pathReadyCallbacks.filter(cb => cb !== callback);
+    removeOnFinished(callback: (wasCanceled: boolean) => void) {
+        this.readyListeners = this.readyListeners.filter(cb => cb !== callback);
     }
 
     private finishRoute() {
@@ -114,19 +121,18 @@ export class PathTool extends Tool {
     }
 
     private initRoute() {
-        const characterIndex = this.characters.indexOf(this.currentCharacter) + 1;
-        this.currentCharacter = this.characters[characterIndex];
+        // const characterIndex = this.characters.indexOf(this.character) + 1;
+        // this.character = this.characters[characterIndex];
+        // const activeCharacter = this.meshStore.getActivePlayer();
 
-        const activeCharacter = this.meshStore.getActivePlayer();
-
-        this.currentPath = this.pathBuilder.startPath(this.currentCharacter.instance.getPosition2D());
+        this.currentPath = this.pathBuilder.startPath(this.character.instance.getPosition2D());
+        this.route = this.routeFactory.createRoute(this.character, [this.currentPath]);
         
-        let config: RouteConfig = { lockDirection: true };
+        // let config: RouteConfig = { lockDirection: true };
 
-        if (this.currentCharacter !== activeCharacter) {
-            config.lockSpeed = true;
-        }
+        // if (this.character !== activeCharacter) {
+        //     config.lockSpeed = true;
+        // }
         
-        this.route = this.routeFactory.createRoute(this.currentCharacter, [this.currentPath], config);
     }
 }

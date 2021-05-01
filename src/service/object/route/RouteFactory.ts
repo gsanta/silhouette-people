@@ -53,9 +53,9 @@ export class RouteFactory {
         this.routeStore.addRoute(route);
     }
 
-    createRoute(character: CharacterObj, pathes: PathObj[], config: RouteConfig): RouteObj {
+    createRoute(character: CharacterObj, pathes: PathObj[]): RouteObj {
         const route = new RouteObj(character, pathes);
-        route.walker = this.createRouteWalker(route, config);
+        route.walker = new RouteWalker(route);
 
         this.routeStore.addRoute(route);
         return route;

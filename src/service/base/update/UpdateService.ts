@@ -6,6 +6,7 @@ import { lookup } from "../../Lookup";
 import { ToolService } from "../../edit/ToolService";
 import { WorldProvider } from "../../object/world/WorldProvider";
 import { QuarterUpdater } from "../../object/quarter/QuarterUpdater";
+import { StageController } from "../../ui/stage/StageController";
 
 export class UpdateService implements KeyboardListener {
 
@@ -21,6 +22,9 @@ export class UpdateService implements KeyboardListener {
     @InjectProperty("KeyboardService")
     private keyboardService: KeyboardService;
 
+    @InjectProperty("StageController")
+    private stageController: StageController;
+
     private quarterUpdater: QuarterUpdater;
 
     constructor() {
@@ -28,6 +32,7 @@ export class UpdateService implements KeyboardListener {
         this.meshStore = lookup.meshStore;
         this.toolService = lookup.toolService;
         this.keyboardService = lookup.keyboard;
+        this.stageController = lookup.stageController;
 
         this.keyboardService.addListener(this);
         this.quarterUpdater = new QuarterUpdater();

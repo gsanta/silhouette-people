@@ -20,6 +20,7 @@ import { RouteStore } from "../store/RouteStore";
 import { ToolService } from "./edit/ToolService";
 import { AssetContainerStore } from "../store/AssetContainerStore";
 import { CameraService } from "./edit/camera/CameraService";
+import { StageController } from "./ui/stage/StageController";
 
 export class Lookup {
     keyboard: KeyboardService;
@@ -52,8 +53,9 @@ export class Lookup {
     assetContainerStore: AssetContainerStore;
     lightStore: LightStore;
     routeStore: RouteStore;
-
     toolService: ToolService;
+
+    stageController: StageController;
 
     private isReady: boolean = false;
     private onReadyFuncs: (() => void)[] = [];
@@ -101,12 +103,16 @@ export class Lookup {
         this.debug = new DebugService();
         lookup.debug = this.debug;
 
-        this.setup = new SetupService(this);
-        this.update = new UpdateService();
 
         this.meshFactory = new MeshFactory(this);
         this.quarterFactory = new QuarterFactory();
         this.worldFactory = new WorldFactory(this);
+
+        this.stageController = new StageController();
+        lookup.stageController = this.stageController;
+
+        this.setup = new SetupService(this);
+        this.update = new UpdateService();
     }
 
     setScene(scene: Scene) {
