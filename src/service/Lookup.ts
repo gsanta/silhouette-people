@@ -1,7 +1,7 @@
 import { Engine, Scene } from "babylonjs";
 import { DebugService } from "./base/debug/DebugService";
 import { KeyboardService } from "./base/keyboard/KeyboardService";
-import { RenderGuiService } from "./edit/ui/RenderGuiService";
+import { RenderGuiService } from "./ui/RenderGuiService";
 import { SetupService } from "./base/setup/SetupService";
 import { WorldProvider } from "./object/world/WorldProvider";
 import { UpdateService } from "./base/update/UpdateService";

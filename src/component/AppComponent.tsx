@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { BikePanelComponent } from './BikePanelComponent';
-import { CombatControllerComponent } from './CombatControllerComponent';
+import { CombatControllerComponent } from './GameStepComponent';
 import { ComponentProps } from './ComponentProps';
 
 export interface AppComponentProps extends ComponentProps {

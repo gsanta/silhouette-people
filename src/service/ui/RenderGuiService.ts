@@ -1,6 +1,6 @@
-import { InjectProperty } from "../../../di/diDecorators";
-import { MeshStore } from "../../../store/MeshStore";
-import { lookup } from "../../Lookup";
+import { InjectProperty } from "../../di/diDecorators";
+import { MeshStore } from "../../store/MeshStore";
+import { lookup } from "../Lookup";
 
 export class RenderGuiService {
     private renderer: () => void;

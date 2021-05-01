@@ -1,4 +1,4 @@
-import { RenderGuiService } from "../ui/RenderGuiService";
+import { RenderGuiService } from "../../ui/RenderGuiService";
 import { WorldProvider } from "../../object/world/WorldProvider";
 import { MeshStore } from "../../../store/MeshStore";
 import { RouteStore } from "../../../store/RouteStore";

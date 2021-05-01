@@ -8,7 +8,7 @@ import { RouteStore } from "../../store/RouteStore";
 import { RouteFactory } from "../object/route/RouteFactory";
 import { KeyboardListener, KeyboardService } from "../base/keyboard/KeyboardService";
 import { lookup } from "../Lookup";
-import { RenderGuiService } from "./ui/RenderGuiService";
+import { RenderGuiService } from "../ui/RenderGuiService";
 import { WorldProvider } from "../object/world/WorldProvider";
 
 export class ToolService implements KeyboardListener {

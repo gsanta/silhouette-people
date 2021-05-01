@@ -3,7 +3,7 @@ import { PathObj } from "../../../model/object/PathObj";
 import { RouteObj } from "../../../model/object/route/RouteObj";
 import { RouteConfig, RouteFactory } from "../../object/route/RouteFactory";
 import { PointerData } from "../../base/pointer/PointerService";
-import { RenderGuiService } from "../ui/RenderGuiService";
+import { RenderGuiService } from "../../ui/RenderGuiService";
 import { ToolService } from "../ToolService";
 import { WorldProvider } from "../../object/world/WorldProvider";
 import { MaterialStore } from "../../../store/MaterialStore";
@@ -26,7 +26,8 @@ export class PathTool extends Tool {
     private characters: CharacterObj[];
     private currentPath: PathObj;
     private route: RouteObj;
-    private _isCanceled = true;;
+    private _isCanceled = true;
+    private pathReadyCallbacks: (() => void)[] = [];
 
     constructor(worldProvider: WorldProvider, toolService: ToolService, materialStore: MaterialStore, meshStore: MeshStore, routeStore: RouteStore, renderService: RenderGuiService, routeFactory: RouteFactory) {
         super(ToolType.PATH);
@@ -94,6 +95,14 @@ export class PathTool extends Tool {
                 }
             }
         }
+    }
+
+    addOnReadyListener(callback: () => void) {
+        this.pathReadyCallbacks.push(callback);
+    }
+
+    removeOnReadyListener(callback: () => void) {
+        this.pathReadyCallbacks = this.pathReadyCallbacks.filter(cb => cb !== callback);
     }
 
     private finishRoute() {
