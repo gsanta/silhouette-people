@@ -1,10 +1,12 @@
 import { CharacterObj } from "../../../model/object/character/CharacterObj";
 import { MeshStore } from "../../../store/MeshStore";
 import { ActivePlayerService } from "../../ActivePlayerService";
-import { ToolService } from "../../edit/ToolService";
-import { GameStage, StageDescription, StepState } from "./GameStage";
-import { PlayerChooserHelper } from "./helpers/PlayerChooserHelper";
-import { StageController } from "./StageController";
+import { ToolService } from "../ToolService";
+import { GameStage } from "../../ui/stage/GameStage";
+import { PlayerChooserHelper } from "../../ui/stage/helpers/PlayerChooserHelper";
+import { StageDescriptionHelper } from "../../ui/stage/helpers/StageDescriptionHelper";
+import { StageController } from "../../ui/stage/StageController";
+import { StageDescription, StepState } from "../../ui/stage/StageDescription";
 
 export class RouteDefinitionStage implements GameStage {
 
@@ -13,6 +15,7 @@ export class RouteDefinitionStage implements GameStage {
     private activePlayerService: ActivePlayerService;
     private stageController: StageController;
     private playerChooserHelper: PlayerChooserHelper;
+    private stageDescriptionHelper: StageDescriptionHelper;
     private players: CharacterObj[] = [];
 
 
@@ -21,17 +24,19 @@ export class RouteDefinitionStage implements GameStage {
         this.toolService = toolService;
         this.meshStore = meshStore;
         this.activePlayerService = activePlayerService;
+        this.playerChooserHelper = new PlayerChooserHelper();
+        this.stageDescriptionHelper = new StageDescriptionHelper('Draw Route', this.playerChooserHelper);
         this.onRouteFinished = this.onRouteFinished.bind(this);
     }
 
     initStage() {
         this.players = this.meshStore.getPlayers();
-        this.playerChooserHelper = new PlayerChooserHelper(this.players);
+        this.playerChooserHelper.setPlayers(this.players);
+        this.stageDescriptionHelper.setPlayers(this.players);
         this.toolService.path.onFinished(this.onRouteFinished);
     }
 
     enterStage() {
-        this.playerChooserHelper = new PlayerChooserHelper(this.players);
         this.executeStep();
     }
 
@@ -42,31 +47,13 @@ export class RouteDefinitionStage implements GameStage {
             this.activePlayerService.activate(activePlayer);
             this.toolService.setSelectedTool(this.toolService.path);
         } else {
+            this.toolService.execute.removeOnFinished(this.onRouteFinished);
             this.stageController.enterNextStage()
         }
     }
 
-    getStepDescription(): StageDescription {
-        const stageDescription: Partial<StageDescription> = {
-            text: 'Draw routes'
-        }
-
-        const activePlayer = this.playerChooserHelper ? this.playerChooserHelper.getActivePlayer() : undefined;
-        stageDescription.steps = this.players.map(player => {
-            let state: StepState = StepState.Undefined;
-
-            if (this.playerChooserHelper && this.playerChooserHelper.isPlayerFinished(player)) {
-                state = StepState.Defined;
-            } else if (activePlayer === player) {
-                state = StepState.Pending;
-            }
-
-            return {
-                state
-            }
-        });
-
-        return <StageDescription> stageDescription;
+    getStageDescription(): StageDescription {
+        return this.stageDescriptionHelper.getDescription();
     }
 
     private onRouteFinished(wasCanceled: boolean) {

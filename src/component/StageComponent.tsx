@@ -5,7 +5,8 @@ import { lookup } from "../service/Lookup";
 import { ToolService } from "../service/edit/ToolService";
 import { Vector2 } from "babylonjs";
 import { StageController } from "../service/ui/stage/StageController";
-import { GameStage, StepState } from "../service/ui/stage/GameStage";
+import { GameStage } from "../service/ui/stage/GameStage";
+import { StageDescription, StepState } from "../service/ui/stage/StageDescription";
 
 export class StageComponent extends React.Component {
 
@@ -16,7 +17,7 @@ export class StageComponent extends React.Component {
     private stageController: StageController;
 
     private rotationStartPos = new Vector2(150, 22.5);
-    private rotationCenter = new Vector2(150, 150);
+    private center = new Vector2(150, 150);
 
     constructor(props: {}) {
         super(props);
@@ -30,22 +31,30 @@ export class StageComponent extends React.Component {
         const rotation1 = 15 / 180 * Math.PI;
         const rotPos = this.computeRotation(origPos, rotation1);
 
-        const stages = this.stageController.stages.map((stage, index) => this.renderStage(stage, index));
+        const activeStage = this.stageController.getActiveStage();
+        
+        const stageComponents = this.stageController.stages.map((stage, index) => this.renderStage(stage, index));
+        const textComponent = activeStage ? this.renderText(activeStage.getStageDescription()) : null;
 
         return (
             <div className="action-panel">
                 <svg className="circle-controller">
                     <circle cx="150" cy="150" r="140" fill="red" />
                     <circle cx="150" cy="150" r="115" fill="black" />
-                    {stages}
+                    {stageComponents}
+                    {textComponent}
                 </svg>
             </div>
         );
     }
 
+    private renderText(description: StageDescription) {
+        return <text x={this.center.x} y={this.center.y} fill="red" text-anchor="middle" className="stage-text">{description.text}</text>
+    }
+
     private renderStage(stage: GameStage, index: number) {
         const positions = this.getStepPositions(stage, index);
-        const steps = stage.getStepDescription().steps;
+        const steps = stage.getStageDescription().steps;
 
         
         return steps.map((step, index) => {
@@ -70,7 +79,7 @@ export class StageComponent extends React.Component {
 
     private getStepPositions(stage: GameStage, index: number): Vector2[] {
         const baseRotation = index * (Math.PI / 2);
-        const steps = stage.getStepDescription().steps;
+        const steps = stage.getStageDescription().steps;
         const offset = steps.length % 2 ? 0 : Math.PI / 16;
         const startRotation = baseRotation - Math.PI / 8 * Math.floor(steps.length / 2) + offset;
 
@@ -79,7 +88,7 @@ export class StageComponent extends React.Component {
 
     private createStep(rotation: number): Vector2 {
         const origPos = this.rotationStartPos;
-        const rotCenter = this.rotationCenter;
+        const rotCenter = this.center;
         
         const xRot = Math.cos(rotation) * (origPos.x - rotCenter.x) - Math.sin(rotation) * (origPos.y - rotCenter.y) + rotCenter.x;
         const yRot = Math.sin(rotation) * (origPos.x - rotCenter.x) + Math.cos(rotation) * (origPos.y - rotCenter.y) + rotCenter.y;

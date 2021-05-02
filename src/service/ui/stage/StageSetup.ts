@@ -4,8 +4,8 @@ import { RouteStore } from "../../../store/RouteStore";
 import { ActivePlayerService } from "../../ActivePlayerService";
 import { ToolService } from "../../edit/ToolService";
 import { lookup } from "../../Lookup";
-import { ExecutionStage } from "./ExecutionStage";
-import { RouteDefinitionStage } from "./RouteDefinitionStage";
+import { ExecutionStage } from "../../edit/execution/ExecutionStage";
+import { RouteDefinitionStage } from "../../edit/route/RouteDefinitionStage";
 import { StageController } from "./StageController";
 
 

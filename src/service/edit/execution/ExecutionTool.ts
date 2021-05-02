@@ -33,8 +33,10 @@ export class MoveTool extends Tool {
             this.updateRoutes(deltaTime, [this.activePlayer]);
             this.updateWalkers(deltaTime, [this.activePlayer]);
 
-            if (this.routeStore.getRouteForCharacter(this.activePlayer).walker.isFinished()) {
+            const route = this.routeStore.getRouteForCharacter(this.activePlayer);
+            if (route.walker.isFinished()) {
                 this.readyListeners.forEach(listener => listener(false));
+                this.routeStore.deleteRoute(route);
             }
         }
     }

@@ -15,25 +15,20 @@ import { Tool, ToolType } from "../Tool";
 
 export class PathTool extends Tool {
     private meshStore: MeshStore;
-    private routeStore: RouteStore;
-    private toolService: ToolService;
     private renderService: RenderGuiService;
     private pathVisualizer: PathVisualizer;
     private pathBuilder: PathBuilder;
     private routeFactory: RouteFactory;
     
     private character: CharacterObj;
-    // private characters: CharacterObj[];
     private currentPath: PathObj;
     private route: RouteObj;
     private _isCanceled = true;
     private readyListeners: ((wasCanceled: boolean) => void)[] = [];
 
-    constructor(worldProvider: WorldProvider, toolService: ToolService, materialStore: MaterialStore, meshStore: MeshStore, routeStore: RouteStore, renderService: RenderGuiService, routeFactory: RouteFactory) {
+    constructor(worldProvider: WorldProvider, materialStore: MaterialStore, meshStore: MeshStore, renderService: RenderGuiService, routeFactory: RouteFactory) {
         super(ToolType.PATH);
         this.meshStore = meshStore;
-        this.routeStore = routeStore;
-        this.toolService = toolService;
         this.renderService = renderService;
         this.routeFactory = routeFactory;
         this.pathVisualizer = new PathVisualizer(worldProvider, materialStore);
@@ -67,7 +62,6 @@ export class PathTool extends Tool {
     select(isCanceled: boolean) {
         this._isCanceled = isCanceled;
         this.character = this.meshStore.getActivePlayer();
-        // this.characters = this.meshStore.getPlayers();
 
         this.renderService.render();
     }
@@ -94,10 +88,6 @@ export class PathTool extends Tool {
         if (e.key === 'Enter') {
             if (this.route) {
                 this.finishRoute();
-
-                // if (this.character === this.characters[this.characters.length - 1]) {
-                //     this.toolService.setSelectedTool(this.toolService.move, true);
-                // }
             }
 
             this.readyListeners.forEach(listener => listener(false));
@@ -121,18 +111,8 @@ export class PathTool extends Tool {
     }
 
     private initRoute() {
-        // const characterIndex = this.characters.indexOf(this.character) + 1;
-        // this.character = this.characters[characterIndex];
-        // const activeCharacter = this.meshStore.getActivePlayer();
-        
         let config: RouteConfig = { lockDirection: true };
         this.currentPath = this.pathBuilder.startPath(this.character.instance.getPosition2D());
         this.route = this.routeFactory.createRoute(this.character, [this.currentPath], config);
-        
-
-        // if (this.character !== activeCharacter) {
-        //     config.lockSpeed = true;
-        // }
-        
     }
 }

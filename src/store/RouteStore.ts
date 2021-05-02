@@ -25,4 +25,9 @@ export class RouteStore {
     clearFinishedRoutes() {
         this.routes = this.getRoutes().filter(route => !route.walker.isFinished());
     }
+
+    deleteRoute(route: RouteObj) {
+        route.dispose();
+        this.routes = this.getRoutes().filter(r => r !== route);
+    }
 }

@@ -6,9 +6,12 @@ export class PlayerChooserHelper {
     private finishedPlayers: Set<CharacterObj>;
     private activePlayer: CharacterObj;
 
-    constructor(players: CharacterObj[]) {
+    setPlayers(players: CharacterObj[]) {
+        this.players = players;
+
         this.players = players;
         this.finishedPlayers = new Set();
+        this.activePlayer = undefined;
     }
 
     isPlayerFinished(player: CharacterObj): boolean {

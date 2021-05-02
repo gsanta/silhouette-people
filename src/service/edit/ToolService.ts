@@ -1,5 +1,5 @@
 import { MoveTool } from "./execution/ExecutionTool";
-import { PathTool } from "./path/PathTool";
+import { PathTool } from "./route/RouteTool";
 import { Tool } from "./Tool";
 import { InjectProperty } from "../../di/diDecorators";
 import { MaterialStore } from "../../store/MaterialStore";
@@ -49,7 +49,7 @@ export class ToolService implements KeyboardListener {
         this.renderGuiService = lookup.renderGui;
 
         this.keyboardService.addListener(this);
-        this.path = new PathTool(this.worldProvider, this, this.materialStore, this.meshStore, this.routeStore, this.renderGuiService, this.routeFactory);
+        this.path = new PathTool(this.worldProvider, this.materialStore, this.meshStore, this.renderGuiService, this.routeFactory);
         this.execute = new MoveTool(this.worldProvider, this.meshStore, this.routeStore, this.renderGuiService);
     }
 

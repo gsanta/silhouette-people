@@ -1,18 +1,21 @@
 import { CharacterObj } from "../../../model/object/character/CharacterObj";
 import { MeshStore } from "../../../store/MeshStore";
 import { ActivePlayerService } from "../../ActivePlayerService";
-import { ToolService } from "../../edit/ToolService";
-import { GameStage, StageDescription, StepState } from "./GameStage";
-import { PlayerChooserHelper } from "./helpers/PlayerChooserHelper";
-import { StageController } from "./StageController";
+import { ToolService } from "../ToolService";
+import { GameStage } from "../../ui/stage/GameStage";
+import { PlayerChooserHelper } from "../../ui/stage/helpers/PlayerChooserHelper";
+import { StageDescriptionHelper } from "../../ui/stage/helpers/StageDescriptionHelper";
+import { StageController } from "../../ui/stage/StageController";
+import { StageDescription, StepState } from "../../ui/stage/StageDescription";
 
 export class ExecutionStage implements GameStage {
     private meshStore: MeshStore;
     private players: CharacterObj[];
-    private playerChooserHelper: PlayerChooserHelper;
     private activePlayerService: ActivePlayerService;
     private toolService: ToolService;
     private stageController: StageController;
+    private playerChooserHelper: PlayerChooserHelper;
+    private stageDescriptionHelper: StageDescriptionHelper;
 
     constructor(stageController: StageController, toolService: ToolService, meshStore: MeshStore, activePlayerService: ActivePlayerService) {
         this.stageController = stageController;
@@ -20,12 +23,16 @@ export class ExecutionStage implements GameStage {
         this.meshStore = meshStore;
         this.activePlayerService = activePlayerService;
 
+        this.playerChooserHelper = new PlayerChooserHelper();
+        this.stageDescriptionHelper = new StageDescriptionHelper('Execute', this.playerChooserHelper);
+
         this.onExecutionFinished = this.onExecutionFinished.bind(this);
     }
 
     initStage() {
         this.players = this.meshStore.getPlayers();
-        this.playerChooserHelper = new PlayerChooserHelper(this.players);
+        this.playerChooserHelper.setPlayers(this.players);
+        this.stageDescriptionHelper.setPlayers(this.players);
         this.toolService.execute.onFinished(this.onExecutionFinished);
     }
 
@@ -40,34 +47,13 @@ export class ExecutionStage implements GameStage {
             this.activePlayerService.activate(activePlayer);
             this.toolService.setSelectedTool(this.toolService.execute);
         } else {
+            this.toolService.execute.removeOnFinished(this.onExecutionFinished);
             this.stageController.enterNextStage();
         }
     }
 
-    getStepDescription(): StageDescription {
-        const stageDescription: Partial<StageDescription> = {
-            text: 'Execute',
-            steps: []
-        }
-
-        if (this.players) {
-            const activePlayer = this.playerChooserHelper ? this.playerChooserHelper.getActivePlayer() : undefined;
-            stageDescription.steps = this.players.map(player => {
-                let state: StepState = StepState.Undefined;
-    
-                if (this.playerChooserHelper && this.playerChooserHelper.isPlayerFinished(player)) {
-                    state = StepState.Defined;
-                } else if (activePlayer === player) {
-                    state = StepState.Pending;
-                }
-    
-                return {
-                    state
-                }
-            });
-        }
-
-        return <StageDescription> stageDescription;
+    getStageDescription(): StageDescription {
+        return this.stageDescriptionHelper.getDescription();
     }
 
     private onExecutionFinished(wasCanceled: boolean) {
