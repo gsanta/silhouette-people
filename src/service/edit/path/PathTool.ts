@@ -124,11 +124,11 @@ export class PathTool extends Tool {
         // const characterIndex = this.characters.indexOf(this.character) + 1;
         // this.character = this.characters[characterIndex];
         // const activeCharacter = this.meshStore.getActivePlayer();
-
-        this.currentPath = this.pathBuilder.startPath(this.character.instance.getPosition2D());
-        this.route = this.routeFactory.createRoute(this.character, [this.currentPath]);
         
-        // let config: RouteConfig = { lockDirection: true };
+        let config: RouteConfig = { lockDirection: true };
+        this.currentPath = this.pathBuilder.startPath(this.character.instance.getPosition2D());
+        this.route = this.routeFactory.createRoute(this.character, [this.currentPath], config);
+        
 
         // if (this.character !== activeCharacter) {
         //     config.lockSpeed = true;

@@ -33,21 +33,11 @@ export class StageComponent extends React.Component {
         const stages = this.stageController.stages.map((stage, index) => this.renderStage(stage, index));
 
         return (
-            // <div className="action-panel">
-            //     <div className="action-panel-header">Combat control</div>
-            //     <div className="action-panel-body">
-            //         {this.renderButton()}
-            //     </div>
-            // </div>
-
             <div className="action-panel">
                 <svg className="circle-controller">
                     <circle cx="150" cy="150" r="140" fill="red" />
                     <circle cx="150" cy="150" r="115" fill="black" />
-
                     {stages}
-                    {/* <circle cx="150" cy="22.5" r="12" fill="black" />
-                    <circle cx={rotPos.x} cy={rotPos.y} r="12" fill="black" /> */}
                 </svg>
             </div>
         );

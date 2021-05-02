@@ -11,7 +11,7 @@ export class CharacterWalker extends MeshWalker {
     walk() {
         const mesh = this.character.instance.getMesh();
 
-        this.character.move(this.speed);
+        this.character.instance.move(this.speed);
         mesh.rotate(Axis.Y, this.rotation, Space.WORLD);
     }
 }

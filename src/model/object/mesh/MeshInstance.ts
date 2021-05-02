@@ -49,6 +49,16 @@ export class MeshInstance {
         this.emitPositionChange();
     }
 
+    move(speed: number) {
+        var forward = new Vector3(0, 0, 1);
+        var direction = this.getMesh().getDirection(forward);
+        direction.normalize().multiplyInPlace(new Vector3(speed, speed, speed));
+        this.getMesh().moveWithCollisions(direction);
+
+        this.meshObj.children.forEach(child => child.setPosition(this.getPosition()));
+        this.emitPositionChange();
+    }
+
     getPosition(): Vector3 {
         const worldPos = this.meshObj.worldObj.ground.getAbsolutePosition()
         return this.getMesh().getAbsolutePosition().subtract(worldPos);

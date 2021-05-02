@@ -101,15 +101,6 @@ export class MeshObj extends GameObj {
         this.instance.setPosition2D(pos);
     }
 
-    move(speed: number) {
-        var forward = new Vector3(0, 0, 1);
-        var direction = this.instance.getMesh().getDirection(forward);
-        direction.normalize().multiplyInPlace(new Vector3(speed, speed, speed));
-        this.instance.getMesh().moveWithCollisions(direction);
-
-        this.children.forEach(child => child.setPosition(this.getPosition()));
-    }
-
     getQuarter(): QuarterObj {
         return this.quarterStore.getQuarter(this.quarterIndex);
     }

@@ -42,13 +42,7 @@ export class MoveTool extends Tool {
     select(isCanceled: boolean) {
         this.activePlayer = this.meshStore.getActivePlayer();
         this._isCanceled = isCanceled;
-        this.meshStore.getPlayers().forEach(player => {
-            const route = this.routeStore.getRouteForCharacter(player);
-            if (route) {
-                route.walker.setStarted();
-            }
-        });
-        
+        this.startRoutes([this.activePlayer]);
     }
 
     isCanceled(): boolean {
@@ -83,6 +77,15 @@ export class MoveTool extends Tool {
     private updateInput(e: KeyboardEvent, isDown: boolean) {
         const activePlayer = this.meshStore.getActivePlayer();
         activePlayer.inputManager.keyboard(e, isDown);
+    }
+
+    private startRoutes(characters: CharacterObj[]) {
+        characters.forEach(player => {
+            const route = this.routeStore.getRouteForCharacter(player);
+            if (route) {
+                route.walker.setStarted();
+            }
+        });
     }
 
     private updateRoutes(deltaTime: number, characters: CharacterObj[]) {
