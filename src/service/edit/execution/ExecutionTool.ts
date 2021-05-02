@@ -3,6 +3,7 @@ import { WorldProvider } from "../../object/world/WorldProvider";
 import { MeshStore } from "../../../store/MeshStore";
 import { RouteStore } from "../../../store/RouteStore";
 import { Tool, ToolType } from "../Tool";
+import { CharacterObj } from "../../../model/object/character/CharacterObj";
 
 export class MoveTool extends Tool {
     private worldProvider: WorldProvider;
@@ -12,6 +13,8 @@ export class MoveTool extends Tool {
     private _isCanceled: boolean = true;
 
     private isStarted: boolean = false;
+    private readyListeners: ((wasCanceled: boolean) => void)[] = [];
+    private activePlayer: CharacterObj;
 
     constructor(worldProvider: WorldProvider, meshStore: MeshStore, routeStore: RouteStore, renderService: RenderGuiService) {
         super(ToolType.MOVE);
@@ -27,12 +30,17 @@ export class MoveTool extends Tool {
         if (this.isStarted) {
             const deltaTime = this.worldProvider.world.engine.getDeltaTime();
 
-            this.updateRoutes(deltaTime);
-            this.updateWalkers(deltaTime);
+            this.updateRoutes(deltaTime, [this.activePlayer]);
+            this.updateWalkers(deltaTime, [this.activePlayer]);
+
+            if (this.routeStore.getRouteForCharacter(this.activePlayer).walker.isFinished()) {
+                this.readyListeners.forEach(listener => listener(false));
+            }
         }
     }
 
     select(isCanceled: boolean) {
+        this.activePlayer = this.meshStore.getActivePlayer();
         this._isCanceled = isCanceled;
         this.meshStore.getPlayers().forEach(player => {
             const route = this.routeStore.getRouteForCharacter(player);
@@ -64,15 +72,21 @@ export class MoveTool extends Tool {
         this.updateInput(e, false);
     }
 
+    onFinished(callback: (wasCanceled: boolean) => void) {
+        this.readyListeners.push(callback);
+    }
+
+    removeOnFinished(callback: (wasCanceled: boolean) => void) {
+        this.readyListeners = this.readyListeners.filter(cb => cb !== callback);
+    }
+
     private updateInput(e: KeyboardEvent, isDown: boolean) {
         const activePlayer = this.meshStore.getActivePlayer();
         activePlayer.inputManager.keyboard(e, isDown);
     }
 
-    private updateRoutes(deltaTime: number) {
-        let players = this.meshStore.getPlayers();
-
-        players.forEach(player => {
+    private updateRoutes(deltaTime: number, characters: CharacterObj[]) {
+        characters.forEach(player => {
             const route = this.routeStore.getRouteForCharacter(player);
 
             if (route) {
@@ -81,9 +95,8 @@ export class MoveTool extends Tool {
         });
     }
 
-    private updateWalkers(deltaTime: number) {
-        let players = this.meshStore.getPlayers();
-        players.forEach(player => player.walker.walk(deltaTime));
-        players.forEach(player => player.animationState.update());
+    private updateWalkers(deltaTime: number, characters: CharacterObj[]) {
+        characters.forEach(player => player.walker.walk(deltaTime));
+        characters.forEach(player => player.animationState.update());
     }
 }

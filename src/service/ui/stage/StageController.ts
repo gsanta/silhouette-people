@@ -16,4 +16,10 @@ export class StageController {
     getActiveStage() {
         return this.activeStage;
     }
+
+    enterNextStage() {
+        const index = (this.stages.indexOf(this.activeStage) + 1) % this.stages.length;
+        this.activeStage = this.stages[index];
+        this.activeStage.enterStage();
+    }
 }

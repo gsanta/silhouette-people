@@ -41,11 +41,11 @@ export class StageSetup {
     setup() {
 
         if (!this.routeDefinitionStage) {
-            this.routeDefinitionStage = new RouteDefinitionStage(this.toolService, this.meshStore, this.activePlayerService, this.routeStore);
+            this.routeDefinitionStage = new RouteDefinitionStage(this.stageController, this.toolService, this.meshStore, this.activePlayerService);
         }
 
         if (!this.executionStage) {
-            this.executionStage = new ExecutionStage(this.meshStore);
+            this.executionStage = new ExecutionStage(this.stageController, this.toolService, this.meshStore, this.activePlayerService);
         }
 
         this.stageController.addStage(this.routeDefinitionStage);

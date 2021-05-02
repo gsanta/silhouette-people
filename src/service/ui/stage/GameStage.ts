@@ -1,3 +1,4 @@
+import { CharacterObj } from "../../../model/object/character/CharacterObj";
 
 export enum StepState {
     Undefined = 'Undefined',
@@ -13,6 +14,7 @@ export interface StageDescription {
 } 
 
 export interface GameStage {
+    initStage();
     enterStage();
 
     getStepDescription(): StageDescription;

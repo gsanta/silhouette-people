@@ -69,6 +69,7 @@ export class SetupService {
 
         this.bikeParenter.parentToBike(<HumanoidObj> this.meshStore.getById('player1'), this.meshStore.getBikes()[0], this.keyboardService);
 
+        this.stageController.stages.forEach(stage => stage.initStage());
         this.stageController.getActiveStage().enterStage();
 
         this.renderGuiService.render();

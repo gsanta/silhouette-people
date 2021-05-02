@@ -1,4 +1,4 @@
-import { MoveTool } from "./move/MoveTool";
+import { MoveTool } from "./execution/ExecutionTool";
 import { PathTool } from "./path/PathTool";
 import { Tool } from "./Tool";
 import { InjectProperty } from "../../di/diDecorators";
@@ -14,7 +14,7 @@ import { WorldProvider } from "../object/world/WorldProvider";
 export class ToolService implements KeyboardListener {
 
     path: PathTool;
-    move: MoveTool;
+    execute: MoveTool;
 
     @InjectProperty("WorldProvider")
     private worldProvider: WorldProvider;
@@ -50,7 +50,7 @@ export class ToolService implements KeyboardListener {
 
         this.keyboardService.addListener(this);
         this.path = new PathTool(this.worldProvider, this, this.materialStore, this.meshStore, this.routeStore, this.renderGuiService, this.routeFactory);
-        this.move = new MoveTool(this.worldProvider, this.meshStore, this.routeStore, this.renderGuiService);
+        this.execute = new MoveTool(this.worldProvider, this.meshStore, this.routeStore, this.renderGuiService);
     }
 
     setSelectedTool(tool: Tool, isCanceled = false) {

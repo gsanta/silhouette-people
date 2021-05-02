@@ -7,7 +7,7 @@ import { Vector2 } from "babylonjs";
 import { StageController } from "../service/ui/stage/StageController";
 import { GameStage, StepState } from "../service/ui/stage/GameStage";
 
-export class GameStageComponent extends React.Component {
+export class StageComponent extends React.Component {
 
     @InjectProperty("ToolService")
     private toolService: ToolService;
