@@ -4,7 +4,7 @@ import { PlayerChooserHelper } from "./PlayerChooserHelper";
 
 
 export class StageDescriptionHelper {
-    private players: CharacterObj[];
+    private players: CharacterObj[] = [];
     private playerChooserHelper: PlayerChooserHelper;
     private stageText: string;
 
@@ -22,7 +22,7 @@ export class StageDescriptionHelper {
 
         const stageDescription: StageDescription = {
             text: this.stageText,
-            steps: activePlayer ? this.getStepDescriptions(activePlayer) : []
+            steps: this.getStepDescriptions(activePlayer)
         }
 
         return stageDescription;

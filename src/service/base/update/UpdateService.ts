@@ -40,15 +40,7 @@ export class UpdateService implements KeyboardListener {
 
     onKeyDown(e: KeyboardEvent): void {}
 
-    onKeyUp(e: KeyboardEvent): void {
-        switch(e.key) {
-            case 'Escape':
-                if (this.toolService.getSelectedTool()) {
-                    this.toolService.getSelectedTool().cancel();
-                }
-            break;
-        }
-    }
+    onKeyUp(e: KeyboardEvent): void {}
 
     beforeRender() {
         this.quarterUpdater.updateQuarterBasedOnPlayerPosition();

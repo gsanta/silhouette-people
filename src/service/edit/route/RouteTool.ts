@@ -1,42 +1,43 @@
 import { CharacterObj } from "../../../model/object/character/CharacterObj";
 import { PathObj } from "../../../model/object/PathObj";
 import { RouteObj } from "../../../model/object/route/RouteObj";
-import { RouteConfig, RouteFactory } from "../../object/route/RouteFactory";
-import { PointerData } from "../../base/pointer/PointerService";
-import { RenderGuiService } from "../../ui/RenderGuiService";
-import { ToolService } from "../ToolService";
-import { WorldProvider } from "../../object/world/WorldProvider";
 import { MaterialStore } from "../../../store/MaterialStore";
 import { MeshStore } from "../../../store/MeshStore";
 import { RouteStore } from "../../../store/RouteStore";
+import { PointerData } from "../../base/pointer/PointerService";
+import { RouteConfig, RouteFactory } from "../../object/route/RouteFactory";
+import { WorldProvider } from "../../object/world/WorldProvider";
+import { RenderGuiService } from "../../ui/RenderGuiService";
+import { Tool, ToolType } from "../Tool";
 import { PathBuilder } from "./PathBuilder";
 import { PathVisualizer } from "./PathVisualizer";
-import { Tool, ToolType } from "../Tool";
 
-export class PathTool extends Tool {
+export class RouteTool extends Tool {
     private meshStore: MeshStore;
     private renderService: RenderGuiService;
     private pathVisualizer: PathVisualizer;
     private pathBuilder: PathBuilder;
     private routeFactory: RouteFactory;
+    private routeStore: RouteStore;
     
     private character: CharacterObj;
     private currentPath: PathObj;
     private route: RouteObj;
-    private _isCanceled = true;
-    private readyListeners: ((wasCanceled: boolean) => void)[] = [];
+    private _isReset = true;
+    private onFinishedListeners: ((wasCanceled: boolean) => void)[] = [];
 
-    constructor(worldProvider: WorldProvider, materialStore: MaterialStore, meshStore: MeshStore, renderService: RenderGuiService, routeFactory: RouteFactory) {
+    constructor(worldProvider: WorldProvider, materialStore: MaterialStore, meshStore: MeshStore, renderService: RenderGuiService, routeFactory: RouteFactory, routeStore: RouteStore) {
         super(ToolType.PATH);
         this.meshStore = meshStore;
         this.renderService = renderService;
         this.routeFactory = routeFactory;
+        this.routeStore = routeStore;
         this.pathVisualizer = new PathVisualizer(worldProvider, materialStore);
         this.pathBuilder = new PathBuilder();
     }
 
     pointerMove(pointer: PointerData) {
-        if (this.isCanceled()) { return; }
+        if (this.isReset()) { return; }
 
         if (this.currentPath) {
             this.currentPath = this.pathBuilder.updatePath(this.currentPath, pointer.curr2D);
@@ -48,19 +49,19 @@ export class PathTool extends Tool {
     }
 
     pointerDown(pointer: PointerData) {
-        if (this.isCanceled()) { return; }
+        if (this.isReset()) { return; }
 
         this.currentPath = this.pathBuilder.closePath(this.currentPath, pointer.curr2D);;
         this.currentPath = this.pathBuilder.startPath(pointer.curr2D);
         this.route.addPath(this.currentPath);
     }
 
-    isCanceled() {
-        return this._isCanceled;
+    isReset() {
+        return this._isReset;
     }
 
     select(isCanceled: boolean) {
-        this._isCanceled = isCanceled;
+        this._isReset = isCanceled;
         this.character = this.meshStore.getActivePlayer();
 
         this.renderService.render();
@@ -71,35 +72,39 @@ export class PathTool extends Tool {
             this.route.dispose();
         }
 
-        this._isCanceled = true;
+        this._isReset = true;
 
-        this.readyListeners.forEach(listener => listener(true));
+        this.onFinishedListeners.forEach(listener => listener(true));
         this.renderService.render();
     }
 
     reset() {
-        this._isCanceled = false;
+        this._isReset = false;
+        this.resetRoute();
         this.renderService.render();
     }
 
     keyDown(e: KeyboardEvent) {
-        if (this._isCanceled) { return; }
+        if (this._isReset) { return; }
 
         if (e.key === 'Enter') {
+            this._isReset = true;
             if (this.route) {
                 this.finishRoute();
             }
 
-            this.readyListeners.forEach(listener => listener(false));
+            this.onFinishedListeners.forEach(listener => listener(false));
+        } else if (e.key === 'Escape') {
+            this.resetRoute();
         }
     }
 
     onFinished(callback: (wasCanceled: boolean) => void) {
-        this.readyListeners.push(callback);
+        this.onFinishedListeners.push(callback);
     }
 
     removeOnFinished(callback: (wasCanceled: boolean) => void) {
-        this.readyListeners = this.readyListeners.filter(cb => cb !== callback);
+        this.onFinishedListeners = this.onFinishedListeners.filter(cb => cb !== callback);
     }
 
     private finishRoute() {
@@ -107,6 +112,14 @@ export class PathTool extends Tool {
             this.route.removePath(this.currentPath);
             this.currentPath.dispose();
         }
+        this.currentPath = undefined;
+    }
+
+    private resetRoute() {
+        if (this.route) {
+            this.routeStore.deleteRoute(this.route);
+        }
+        this.route = undefined;
         this.currentPath = undefined;
     }
 

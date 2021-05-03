@@ -27,27 +27,26 @@ export class ExecutionStage implements GameStage {
         this.stageDescriptionHelper = new StageDescriptionHelper('Execute', this.playerChooserHelper);
 
         this.onExecutionFinished = this.onExecutionFinished.bind(this);
-    }
-
-    initStage() {
-        this.players = this.meshStore.getPlayers();
-        this.playerChooserHelper.setPlayers(this.players);
-        this.stageDescriptionHelper.setPlayers(this.players);
         this.toolService.execute.onFinished(this.onExecutionFinished);
     }
 
-    enterStage() {
-        this.executeStep();
+    resetStage() {
+        this.players = this.meshStore.getPlayers();
+        this.playerChooserHelper.setPlayers(this.players);
+        this.stageDescriptionHelper.setPlayers(this.players);
     }
 
-    private executeStep() {
+    enterStage() {
+        this.nextStep();
+    }
+
+    nextStep() {
         const activePlayer = this.playerChooserHelper.determineNextActivePlayer();
 
         if (activePlayer) {
             this.activePlayerService.activate(activePlayer);
             this.toolService.setSelectedTool(this.toolService.execute);
         } else {
-            this.toolService.execute.removeOnFinished(this.onExecutionFinished);
             this.stageController.enterNextStage();
         }
     }
@@ -59,7 +58,7 @@ export class ExecutionStage implements GameStage {
     private onExecutionFinished(wasCanceled: boolean) {
         if (!wasCanceled) {
             this.playerChooserHelper.finishActivePlayer()
-            this.executeStep();
+            this.nextStep();
         }
     }
 }

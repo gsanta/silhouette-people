@@ -34,7 +34,7 @@ export class StageComponent extends React.Component {
         const activeStage = this.stageController.getActiveStage();
         
         const stageComponents = this.stageController.stages.map((stage, index) => this.renderStage(stage, index));
-        const textComponent = activeStage ? this.renderText(activeStage.getStageDescription()) : null;
+        const textComponent = activeStage ? this.renderText(activeStage, activeStage.getStageDescription()) : null;
 
         return (
             <div className="action-panel">
@@ -48,8 +48,19 @@ export class StageComponent extends React.Component {
         );
     }
 
-    private renderText(description: StageDescription) {
-        return <text x={this.center.x} y={this.center.y} fill="red" text-anchor="middle" className="stage-text">{description.text}</text>
+    private renderText(stage: GameStage, description: StageDescription) {
+        return (
+            <text 
+                x={this.center.x}
+                y={this.center.y}
+                fill="red"
+                text-anchor="middle"
+                className="stage-text"
+                onClick={() => stage.nextStep()}
+            >
+                {description.text}
+            </text>
+        )
     }
 
     private renderStage(stage: GameStage, index: number) {
@@ -121,7 +132,7 @@ export class StageComponent extends React.Component {
     private renderActionButton(text: string, tool: Tool) {
         let className = 'button-action' 
 
-        if (!tool.isCanceled()) {
+        if (!tool.isReset()) {
             className = `${className} button-action-active`;
         }
 
@@ -133,7 +144,7 @@ export class StageComponent extends React.Component {
     }
 
     private resetToolIfCanceled(tool: Tool) {
-        if (tool.isCanceled()) {
+        if (tool.isReset()) {
             tool.reset();
         }
     }

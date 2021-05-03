@@ -1,8 +1,9 @@
 import { StageDescription } from "./StageDescription";
 
 export interface GameStage {
-    initStage();
+    resetStage();
     enterStage();
+    nextStep();
 
     getStageDescription(): StageDescription;
 }

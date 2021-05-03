@@ -2,7 +2,7 @@ import { CharacterObj } from "../../../../model/object/character/CharacterObj";
 
 
 export class PlayerChooserHelper {
-    private players: CharacterObj[];
+    private players: CharacterObj[] = [];
     private finishedPlayers: Set<CharacterObj>;
     private activePlayer: CharacterObj;
 
@@ -34,7 +34,7 @@ export class PlayerChooserHelper {
     }
 
     private getNextPlayer(): CharacterObj {
-        if (!this.activePlayer) {
+        if (this.players.length > 0 && !this.activePlayer) {
             return this.players[0];
         } 
         
@@ -43,7 +43,7 @@ export class PlayerChooserHelper {
         const upperHalf = this.players.slice(nextIndex, this.players.length)
         const lowerHalf = this.players.slice(0, nextIndex);
 
-        const ordered = [...lowerHalf, ...upperHalf];
+        const ordered = [...upperHalf, ...lowerHalf];
 
         for (let player of ordered) {
             if (!this.finishedPlayers.has(player)) {

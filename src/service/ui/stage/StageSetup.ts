@@ -5,8 +5,10 @@ import { ActivePlayerService } from "../../ActivePlayerService";
 import { ToolService } from "../../edit/ToolService";
 import { lookup } from "../../Lookup";
 import { ExecutionStage } from "../../edit/execution/ExecutionStage";
-import { RouteDefinitionStage } from "../../edit/route/RouteDefinitionStage";
+import { RouteStage } from "../../edit/route/RouteStage";
 import { StageController } from "./StageController";
+import { NextTurnStage } from "./NextTurnStage";
+import { RenderGuiService } from "../RenderGuiService";
 
 
 export class StageSetup {
@@ -26,9 +28,13 @@ export class StageSetup {
     @InjectProperty('ActivePlayerService')
     private activePlayerService: ActivePlayerService;
 
+    @InjectProperty('RenderGuiService')
+    private renderGuiService: RenderGuiService;
 
-    private routeDefinitionStage: RouteDefinitionStage;
+
+    private routeDefinitionStage: RouteStage;
     private executionStage: ExecutionStage;
+    private nextTurnStage: NextTurnStage;
 
     constructor() {
         this.stageController = lookup.stageController;
@@ -36,20 +42,26 @@ export class StageSetup {
         this.meshStore = lookup.meshStore;
         this.routeStore = lookup.routeStore;
         this.activePlayerService = lookup.activePlayerService;
+        this.renderGuiService = lookup.renderGui;
     }
 
     setup() {
 
         if (!this.routeDefinitionStage) {
-            this.routeDefinitionStage = new RouteDefinitionStage(this.stageController, this.toolService, this.meshStore, this.activePlayerService);
+            this.routeDefinitionStage = new RouteStage(this.stageController, this.toolService, this.meshStore, this.activePlayerService);
         }
 
         if (!this.executionStage) {
             this.executionStage = new ExecutionStage(this.stageController, this.toolService, this.meshStore, this.activePlayerService);
         }
 
+        if (!this.nextTurnStage) {
+            this.nextTurnStage = new NextTurnStage(this.stageController, this.renderGuiService, this.meshStore, this.activePlayerService);
+        }
+
         this.stageController.addStage(this.routeDefinitionStage);
         this.stageController.addStage(this.executionStage);
+        this.stageController.addStage(this.nextTurnStage);
         // this.stageController.addStage()
     }
 }

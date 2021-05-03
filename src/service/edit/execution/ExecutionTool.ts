@@ -5,7 +5,7 @@ import { RouteStore } from "../../../store/RouteStore";
 import { Tool, ToolType } from "../Tool";
 import { CharacterObj } from "../../../model/object/character/CharacterObj";
 
-export class MoveTool extends Tool {
+export class ExecutionTool extends Tool {
     private worldProvider: WorldProvider;
     private meshStore: MeshStore;
     private routeStore: RouteStore;
@@ -25,7 +25,7 @@ export class MoveTool extends Tool {
     }
 
     beforeRender() {
-        if (this.isCanceled()) { return; }
+        if (this.isReset()) { return; }
 
         if (this.isStarted) {
             const deltaTime = this.worldProvider.world.engine.getDeltaTime();
@@ -34,7 +34,8 @@ export class MoveTool extends Tool {
             this.updateWalkers(deltaTime, [this.activePlayer]);
 
             const route = this.routeStore.getRouteForCharacter(this.activePlayer);
-            if (route.walker.isFinished()) {
+            if (route && route.walker.isFinished()) {
+                this.isStarted = false;
                 this.readyListeners.forEach(listener => listener(false));
                 this.routeStore.deleteRoute(route);
             }
@@ -47,7 +48,7 @@ export class MoveTool extends Tool {
         this.startRoutes([this.activePlayer]);
     }
 
-    isCanceled(): boolean {
+    isReset(): boolean {
         return this._isCanceled;
     }
 

@@ -18,7 +18,7 @@ export abstract class Tool {
     pointerDown(pointer: PointerData) {}
     select(isCanceled: boolean): void {}
 
-    isCanceled(): boolean { return false; }
+    isReset(): boolean { return false; }
     cancel(): void {}
     reset(): void {}
     
