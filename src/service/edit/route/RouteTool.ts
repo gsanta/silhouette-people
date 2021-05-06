@@ -126,6 +126,6 @@ export class RouteTool extends Tool {
     private initRoute() {
         let config: RouteConfig = { lockDirection: true };
         this.currentPath = this.pathBuilder.startPath(this.character.instance.getPosition2D());
-        this.route = this.routeFactory.createRoute(this.character, [this.currentPath], config);
+        this.route = this.routeFactory.createRoute([this.currentPath], config, this.character);
     }
 }

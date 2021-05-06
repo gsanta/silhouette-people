@@ -47,14 +47,14 @@ export class RouteFactory {
 
         if (path.length < 2) { return undefined; }
         
-        const route = new RouteObj(character, [new PathObj(path)]);
+        const route = new RouteObj([new PathObj(path)], character);
         // route.walker = new RealTimeRouteWalker(route);
         
         this.routeStore.addRoute(route);
     }
 
-    createRoute(character: CharacterObj, pathes: PathObj[], config: RouteConfig): RouteObj {
-        const route = new RouteObj(character, pathes);
+    createRoute(pathes: PathObj[], config: RouteConfig, character?: CharacterObj): RouteObj {
+        const route = new RouteObj(pathes, character);
         route.walker = this.createRouteWalker(route, config);
 
         this.routeStore.addRoute(route);

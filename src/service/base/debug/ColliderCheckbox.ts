@@ -9,7 +9,7 @@ export class ColliderCheckbox implements IGUIComponent {
     private debugService: DebugService;
 
     constructor() {
-        this.debugService = lookup.debug;
+        this.debugService = lookup.debugService;
     }
 
     render(parent: Container) {

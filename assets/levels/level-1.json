@@ -1,6 +1,7 @@
 {
     "id": "level-1",
     "map": null,
+    "routeMap": null,
     "rotationMap": null,
     "relativePos": "0:0",
     "cameraLocation": 2,

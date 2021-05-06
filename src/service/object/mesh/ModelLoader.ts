@@ -18,7 +18,7 @@ export class ModelLoader {
     }
 
     async loadModel(type: string, relativePath: string) {
-        const container = await SceneLoader.LoadAssetContainerAsync("assets/models/", relativePath, this.worldProvider.world.scene);
+        const container = await SceneLoader.LoadAssetContainerAsync("assets/models/", relativePath, this.worldProvider.scene);
         this.assetContainerStore.addInstance(type, container);
     }
 }

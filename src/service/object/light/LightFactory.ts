@@ -15,7 +15,7 @@ export class LightFactory {
     }
 
     async createHighlightLight(snippet: string, pos: Vector3): Promise<LightObj> {
-        const scene = this.worldProvider.world.scene;
+        const scene = this.worldProvider.scene;
         const light = new SpotLight("highlight-light", new Vector3(0, 6, 0), new Vector3(0, -1, 0), Tools.ToRadians(45), 1, scene);
     
         await NodeMaterial.ParseFromSnippetAsync(snippet, scene).then((nodeMaterial) => {

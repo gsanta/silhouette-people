@@ -25,7 +25,7 @@ export class WorldAxisHelper {
     }
 
     private createAxis(yPos: number, size: number) {
-        const scene = this.worldProvider.world.scene;
+        const scene = this.worldProvider.scene;
         const origin = new Vector3(0, yPos, 0);
         
         this.meshes = [];

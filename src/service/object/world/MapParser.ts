@@ -1,5 +1,5 @@
 import { Vector2, Vector3 } from "babylonjs";
-import { WorldJson } from "./WorldJson";
+import { WorldMap } from "./WorldMap";
 
 export const MAP_CONVERSION_RATIO = 2;
 
@@ -8,7 +8,7 @@ export interface ParsedItem {
     str: string;
 }
 
-export class WorldJsonParser {
+export class MapParser {
     private mapRows: number;
     private mapCols: number;
     
@@ -33,13 +33,12 @@ export class WorldJsonParser {
         return this.parsedItems;
     }
 
-    parse(json: WorldJson): void {
-        this.parseMap(json);
+    parse(json: WorldMap, map: string): void {
+        this.parseMap(json, map);
         this.parseItems();
     }
 
-    private parseMap(json: WorldJson) {
-        let map = json.map;
+    private parseMap(json: WorldMap, map: string) {
         map = map.trim();
 
         const firstLineRegex = /^.*$/m;

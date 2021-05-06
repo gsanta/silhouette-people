@@ -1,8 +1,13 @@
-import { LightObj } from "../../../model/object/LightObj";
+import { Scene } from "babylonjs";
 import { WorldObj } from "../../../model/object/WorldObj";
+import { WorldMap } from "./WorldMap";
 
 export class WorldProvider {
     private worldObj: WorldObj;
+
+    worldMap: WorldMap;
+    canvas: HTMLCanvasElement;
+    scene: Scene;
 
     get world(): WorldObj {
         return this.worldObj;

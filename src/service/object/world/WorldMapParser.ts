@@ -1,48 +1,41 @@
-import { Vector2 } from "babylonjs";
-import { GameObjectJson, MeshObjType } from "../../../model/object/mesh/MeshObj";
-import { toStrVector } from "../../base/import/AbstractPropertyParser";
-import { WorldJson } from "./WorldJson";
-import { ParsedItem, WorldJsonParser } from "./WorldJsonParser";
+import { RouteFactory } from "../route/RouteFactory";
+import { RouteMapParser } from "../route/RouteMapParser";
+import { ItemMapParser } from "./ItemMapParser";
+import { WorldMap } from "./WorldMap";
+import { WorldProvider } from "./WorldProvider";
 
 export class WorldMapParser {
-    private jsons: GameObjectJson[];
-    private worldJsonParser: WorldJsonParser;
+    readonly routeParser: RouteMapParser;
+    readonly itemParser: ItemMapParser;
+    
+    private readonly assetsPath = 'assets/levels';
+    private readonly worldProvider: WorldProvider;
 
-    constructor() {
-        this.worldJsonParser = new WorldJsonParser();
+    constructor(worldProvider: WorldProvider, routeFactory: RouteFactory) {
+        this.worldProvider = worldProvider;
+        this.routeParser = new RouteMapParser(routeFactory);
+        this.itemParser = new ItemMapParser();
     }
 
-    getSize(): Vector2 {
-        return this.worldJsonParser.getWorldSize();
+    async parse() {
+        const levelName = 'level-1';
+
+        const json = await this.loadWorldJson(levelName);
+        const map = await this.loadWorldMap(`${levelName}-map-1.txt`);
+        const routeMap = await this.loadWorldMap(`${levelName}-routes.txt`);
+        json.map = map;
+        json.routeMap = routeMap;
+
+        this.worldProvider.worldMap = json;
+        this.routeParser.parse(json);
+        this.itemParser.parse(json);
+    }
+    
+    private async loadWorldJson(name: string): Promise<WorldMap> {
+        return await fetch(`${this.assetsPath}/${name}.json`).then(res => res.json());
     }
 
-    getGameObjJsons(): GameObjectJson[] {
-        return this.jsons;
-    }
-
-    getQuarterNum(): Vector2 {
-        return this.worldJsonParser.getQuarterNum();
-    }
-
-    parse(json: WorldJson): void {
-        this.worldJsonParser.parse(json);
-
-        this.jsons = this.worldJsonParser.getParsedItems().map(item => this.createGameObject(item, json));
-    }
-
-    private createGameObject(parsedItem: ParsedItem, worldJson: WorldJson): GameObjectJson {
-        const type = worldJson.charToType[parsedItem.str];
-
-        const typeFeatures = worldJson.features[type] || [];
-        const charFeatures = worldJson.features[parsedItem.str] || [];
-        const features = [...typeFeatures, ...charFeatures];
-        features.splice(1, 0, `Position ${toStrVector(parsedItem.pos)}`);
-
-        return {
-            position: parsedItem.pos,
-            type: <MeshObjType> type,
-            ch: parsedItem.str,
-            features: features
-        };
+    private async loadWorldMap(name: string): Promise<string> {
+        return await fetch(`${this.assetsPath}/${name}`).then(res => res.text());
     }
 }

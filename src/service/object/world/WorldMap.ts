@@ -6,7 +6,7 @@ export interface QuarterJson {
     color: string;
 }
 
-export interface WorldJson {
+export interface WorldMap {
     id: string;
     size: string;
     relativePos: string;
@@ -20,5 +20,6 @@ export interface WorldJson {
     tags: { [key: string]: string },
     features: { [key: string]: string[] },
     map: string;
+    routeMap: string;
     rotationMap: string;
 }

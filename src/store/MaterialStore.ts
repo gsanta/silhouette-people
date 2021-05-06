@@ -19,7 +19,7 @@ export class MaterialStore {
     getTileMaterial(): StandardMaterial {
         if (!this.tileMaterial) {
 
-            this.tileMaterial = new StandardMaterial('tile-material-default', this.worldProvider.world.scene);
+            this.tileMaterial = new StandardMaterial('tile-material-default', this.worldProvider.scene);
             this.tileMaterial.alpha = 0;
         }
 
@@ -29,7 +29,7 @@ export class MaterialStore {
     getActiveTileMaterial(): StandardMaterial {
         if (!this.activeTileMaterial) { 
 
-            this.activeTileMaterial = new StandardMaterial('tile-material-active', this.worldProvider.world.scene);
+            this.activeTileMaterial = new StandardMaterial('tile-material-active', this.worldProvider.scene);
             this.activeTileMaterial.diffuseColor = Color3.Green();
             this.activeTileMaterial.alpha = 0.5;
         }
@@ -40,7 +40,7 @@ export class MaterialStore {
     getHoverTileMaterial(): StandardMaterial {
         if (!this.hoverTileMaterial) { 
 
-            this.hoverTileMaterial = new StandardMaterial('tile-material-hover', this.worldProvider.world.scene);
+            this.hoverTileMaterial = new StandardMaterial('tile-material-hover', this.worldProvider.scene);
             this.hoverTileMaterial.diffuseColor = Color3.Green();
             this.hoverTileMaterial.alpha = 0.2;
         }
@@ -50,7 +50,7 @@ export class MaterialStore {
 
     getRibbonMaterial(): StandardMaterial {
         if (!this.ribbonMaterial) {
-            var mat = new StandardMaterial("mat1", this.worldProvider.world.scene);
+            var mat = new StandardMaterial("mat1", this.worldProvider.scene);
             mat.alpha = 1;
             mat.diffuseColor = new Color3(0.5, 0.5, 1.0);
             mat.emissiveColor = Color3.Black();

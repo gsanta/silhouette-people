@@ -5,8 +5,6 @@ import { RenderGuiService } from "./ui/RenderGuiService";
 import { SetupService } from "./base/setup/SetupService";
 import { WorldProvider } from "./object/world/WorldProvider";
 import { UpdateService } from "./base/update/UpdateService";
-import { WorldFactory } from "./object/world/WorldFactory";
-import { QuarterFactory } from "./object/quarter/QuarterFactory";
 import { MeshFactory } from "./object/mesh/MeshFactory";
 import { PointerService } from "./base/pointer/PointerService";
 import { QuarterStore } from "../store/QuarterStore";
@@ -21,8 +19,11 @@ import { ToolService } from "./edit/ToolService";
 import { AssetContainerStore } from "../store/AssetContainerStore";
 import { CameraService } from "./edit/camera/CameraService";
 import { StageController } from "./ui/stage/StageController";
+import { RoutePool } from "./citizen/RoutePool";
+import { EventService } from "./base/EventService";
 
 export class Lookup {
+    eventService: EventService;
     keyboard: KeyboardService;
     pointer: PointerService;
 
@@ -30,7 +31,7 @@ export class Lookup {
     engine: Engine;
     canvas: HTMLCanvasElement;
 
-    debug: DebugService;
+    debugService: DebugService;
     activePlayerService: ActivePlayerService;
 
     renderGui: RenderGuiService;
@@ -40,8 +41,6 @@ export class Lookup {
     cameraService: CameraService;
     
     meshFactory: MeshFactory;
-    quarterFactory: QuarterFactory;
-    worldFactory: WorldFactory;
     routeFactory: RouteFactory;
     lightFactory: LightFactory;
 
@@ -57,12 +56,17 @@ export class Lookup {
 
     stageController: StageController;
 
+    routePool: RoutePool;
+
     private isReady: boolean = false;
     private onReadyFuncs: (() => void)[] = [];
 
     constructor() {
         this.worldProvider = new WorldProvider();
         lookup.worldProvider = this.worldProvider;
+
+        this.eventService = new EventService();
+        lookup.eventService = this.eventService;
 
         this.keyboard = new KeyboardService();
         lookup.keyboard = this.keyboard;
@@ -73,6 +77,8 @@ export class Lookup {
         this.routeFactory = new RouteFactory();
         lookup.routeFactory = this.routeFactory;
 
+        this.routePool = new RoutePool();
+        lookup.routePool = this.routePool;
         this.materialStore = new MaterialStore();
         lookup.materialStore = this.materialStore;
         this.quarterStore = new QuarterStore();
@@ -100,18 +106,15 @@ export class Lookup {
         this.activePlayerService = new ActivePlayerService();
         lookup.activePlayerService = this.activePlayerService;
 
-        this.debug = new DebugService();
-        lookup.debug = this.debug;
-
+        this.debugService = new DebugService();
+        lookup.debugService = this.debugService;
 
         this.meshFactory = new MeshFactory(this);
-        this.quarterFactory = new QuarterFactory();
-        this.worldFactory = new WorldFactory(this);
 
         this.stageController = new StageController();
         lookup.stageController = this.stageController;
 
-        this.setup = new SetupService(this);
+        this.setup = new SetupService();
         this.update = new UpdateService();
     }
 

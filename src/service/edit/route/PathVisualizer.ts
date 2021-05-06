@@ -23,10 +23,10 @@ export class PathVisualizer {
             const pathes = this.createArrowHeadPathes(path);
 
             const arrowHead = path.getArrowHead();
-            const updatedArrowHead = MeshBuilder.CreateRibbon("arrow-head", {pathArray: pathes, updatable: true, instance: arrowHead}, this.worldProvider.world.scene);
+            const updatedArrowHead = MeshBuilder.CreateRibbon("arrow-head", {pathArray: pathes, updatable: true, instance: arrowHead}, this.worldProvider.scene);
 
             if (!arrowHead) {
-                updatedArrowHead.material = new StandardMaterial('abcd', this.worldProvider.world.scene);
+                updatedArrowHead.material = new StandardMaterial('abcd', this.worldProvider.scene);
                 updatedArrowHead.material.wireframe = true;
                 path.addArrowHead(updatedArrowHead);
             }
@@ -55,7 +55,7 @@ export class PathVisualizer {
     private visualizeArrow(path: PathObj) {
         const pathes = this.createRibbonPathes(path);
         const ribbon = path.getMesh();
-        const updatedRibbon = MeshBuilder.CreateRibbon("ribbon", {pathArray: pathes, updatable: true, instance: ribbon}, this.worldProvider.world.scene);
+        const updatedRibbon = MeshBuilder.CreateRibbon("ribbon", {pathArray: pathes, updatable: true, instance: ribbon}, this.worldProvider.scene);
 
         if (!ribbon) {
             updatedRibbon.material = this.materialStore.getRibbonMaterial();

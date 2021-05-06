@@ -4,12 +4,12 @@ import { PathObj } from "../PathObj";
 import { RouteWalker } from "./RouteWalker";
 
 export class RouteObj {
-    readonly character: CharacterObj;
+    character: CharacterObj;
     walker: RouteWalker;
 
     pathes: PathObj[] = [];
 
-    constructor(character: CharacterObj, pathes: PathObj[]) {
+    constructor(pathes: PathObj[], character?: CharacterObj) {
         this.character = character;
         this.pathes = pathes;
     }

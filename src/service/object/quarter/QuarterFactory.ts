@@ -12,15 +12,12 @@ export interface QuarterObjConfig {
 }
 
 export class QuarterFactory {
-    @InjectProperty("QuarterStore")
-    private quarterStore: QuarterStore;
+    private readonly quarterStore: QuarterStore;
+    private readonly worldProvider: WorldProvider;
 
-    @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
-
-    constructor() {
-        this.quarterStore = lookup.quarterStore;
-        this.worldProvider = lookup.worldProvider;
+    constructor(worldProvider: WorldProvider, quarterStore: QuarterStore) {
+        this.quarterStore = quarterStore;
+        this.worldProvider = worldProvider;
     }
 
     createQuarter(config: QuarterObjConfig): void {
@@ -32,7 +29,7 @@ export class QuarterFactory {
         ground.edgesWidth = 5.0;
         ground.edgesColor = new Color4(0, 0, 1, 1);
         
-        const material = new StandardMaterial(`${id}-material`, this.worldProvider.world.scene);
+        const material = new StandardMaterial(`${id}-material`, this.worldProvider.scene);
         material.diffuseColor = Color3.FromHexString(color);
         material.specularColor = new Color3(0, 0, 0);
         ground.material = material;

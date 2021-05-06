@@ -5,14 +5,19 @@ import { GameObjectJson, MeshObjTag } from "../../../model/object/mesh/MeshObj";
 import { WorldObj } from "../../../model/object/WorldObj";
 import { MeshStore } from "../../../store/MeshStore";
 import { QuarterStore } from "../../../store/QuarterStore";
-import { WorldMapParser } from "./WorldMapParser";
-import { GroundJson, WorldJson } from "./WorldJson";
-import { lookup, Lookup } from "../../Lookup";
-import { QuarterObjConfig } from "../quarter/QuarterFactory";
-import { ModelLoader } from "../mesh/ModelLoader";
 import { CameraService } from "../../edit/camera/CameraService";
+import { lookup } from "../../Lookup";
+import { MeshFactory } from "../mesh/MeshFactory";
+import { ModelLoader } from "../mesh/ModelLoader";
+import { QuarterFactory, QuarterObjConfig } from "../quarter/QuarterFactory";
+import { GroundJson } from "./WorldMap";
+import { WorldMapParser } from "./WorldMapParser";
+import { WorldProvider } from "./WorldProvider";
 
 export class WorldFactory {
+
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
 
     @InjectProperty("MeshStore")
     private meshStore: MeshStore;
@@ -23,46 +28,48 @@ export class WorldFactory {
     @InjectProperty("CameraService")
     private cameraService: CameraService;
 
-    private assetsPath = 'assets/levels';
-    private lookup: Lookup;
-    private worldMapParser: WorldMapParser;
-    private modelLoader: ModelLoader;
     
-    constructor(lookup: Lookup) {
-        this.lookup = lookup;
+    @InjectProperty("MeshFactory")
+    private meshFactory: MeshFactory;
+    
+    private readonly quarterFactory: QuarterFactory;
+    private readonly worldMapParser: WorldMapParser;
+
+    private readonly modelLoader: ModelLoader;
+    
+    constructor(worldMapParser: WorldMapParser) {
         this.meshStore = lookup.meshStore;
         this.quarterStore = lookup.quarterStore;
         this.cameraService = lookup.cameraService;
-
-        this.worldMapParser = new WorldMapParser();
+        this.worldProvider = lookup.worldProvider;
+        this.meshFactory = lookup.meshFactory;
+        this.worldMapParser = worldMapParser;
+        this.quarterFactory = new QuarterFactory(this.worldProvider, this.quarterStore);
+        
         this.modelLoader = new ModelLoader();
     }
 
-    async createWorldObj(levelName: string, scene: Scene): Promise<WorldObj> {
+    async createWorldObj(scene: Scene): Promise<WorldObj> {
+        const { itemParser } = this.worldMapParser;
 
-        const json = await this.loadWorldJson(levelName);
-        const map = await this.loadWorldMap(levelName);
-        json.map = map;
-
-        this.worldMapParser.parse(json);
-
-        const worldObj = new WorldObj(this.worldMapParser.getSize(), json.cameraLocation, this.worldMapParser.getQuarterNum());
+        const json = this.worldProvider.worldMap;
+        const worldObj = new WorldObj(itemParser.getSize(), json.cameraLocation, itemParser.getQuarterNum());
         lookup.worldProvider.world = worldObj;
         worldObj.scene = scene;
         worldObj.engine = scene.getEngine();
 
         worldObj.camera = this.createCamera(worldObj);
         this.createGround(worldObj);
-        this.createQuarters(json.grounds, worldObj);
+        this.createQuarters(json.grounds);
         await this.loadModels(json.models);
-        await this.createGameObjs(this.worldMapParser.getGameObjJsons(), worldObj);
+        await this.createGameObjs(itemParser.getGameObjJsons(), worldObj);
 
         return worldObj;
     }
 
     createCamera(worldObj: WorldObj) {
-        const camera = new ArcRotateCamera("camera", Math.PI + Math.PI / 3, Math.PI / 3, 120, new Vector3(0, 0, 0), this.lookup.scene);
-        camera.attachControl(this.lookup.canvas, true);
+        const camera = new ArcRotateCamera("camera", Math.PI + Math.PI / 3, Math.PI / 3, 120, new Vector3(0, 0, 0), this.worldProvider.scene);
+        camera.attachControl(this.worldProvider.canvas, true);
 
         const cameraOj = new CameraObj(camera, worldObj);
 
@@ -76,12 +83,12 @@ export class WorldFactory {
 
         const ground = MeshBuilder.CreateBox('ground', { width: size, depth: size, height: 0.2 });
         ground.translate(Axis.Y, -0.21, Space.WORLD);
-        const material = new StandardMaterial(`ground--material`, this.lookup.scene);
+        const material = new StandardMaterial(`ground--material`, this.worldProvider.scene);
         material.diffuseColor = Color3.FromHexString('#FFFFFF');
         material.specularColor = new Color3(0, 0, 0);
         ground.material = material;
 
-        ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, this.lookup.scene);
+        ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, this.worldProvider.scene);
 
         worldObj.ground = ground;
     }
@@ -93,10 +100,12 @@ export class WorldFactory {
         }
     }
 
-    private createQuarters(grounds: GroundJson[][], worldObj: WorldObj) {
+    private createQuarters(grounds: GroundJson[][]) {
+        const { itemParser } = this.worldMapParser;
+
         const rows = grounds.length;
         const cols = grounds[0].length;
-        const worldSize = this.worldMapParser.getSize();
+        const worldSize = itemParser.getSize();
         const quarterSize = new Vector2(worldSize.x / cols, worldSize.y / rows);
 
         for (let i = 0; i < rows; i++) {
@@ -105,15 +114,13 @@ export class WorldFactory {
                 const y = (rows - i) - rows / 2;
                 
                 const config: QuarterObjConfig = { color: grounds[i][j].color, position: new Vector2(x, y), size: quarterSize };
-                this.lookup.quarterFactory.createQuarter(config);
+                this.quarterFactory.createQuarter(config);
             }
         }
     }
 
     async createGameObjs(gameObjJsons: GameObjectJson[], worldObj: WorldObj) {
-        const itemFactory = this.lookup.meshFactory;
-        
-        const gameObjects = await Promise.all(gameObjJsons.map(json =>  itemFactory.create(json, worldObj)));
+        const gameObjects = await Promise.all(gameObjJsons.map(json =>  this.meshFactory.create(json, worldObj)));
         const colliderMeshes = gameObjects
             .filter(obj => obj.instance.getColliderMesh() && obj.tag.doesNotHave(MeshObjTag.Player, MeshObjTag.Enemy, MeshObjTag.Bicycle))
             .map(obj => obj.instance.getColliderMesh());
@@ -121,13 +128,5 @@ export class WorldFactory {
 
         gameObjects.forEach(obj => this.meshStore.addObj(obj));
         this.quarterStore.getQuarter(1).getMap().fillMeshes(colliderMeshes);
-    }
-
-    private async loadWorldJson(name: string): Promise<WorldJson> {
-        return await fetch(`${this.assetsPath}/${name}.json`).then(res => res.json());
-    }
-
-    private async loadWorldMap(name: string): Promise<string> {
-        return await fetch(`${this.assetsPath}/${name}-map-1.txt`).then(res => res.text());
     }
 }

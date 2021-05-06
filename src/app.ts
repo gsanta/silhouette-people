@@ -27,8 +27,9 @@ function initGame(lookup: Lookup) {
     scene.clearColor = new Color4(0.52, 0.73, 0.4, 1);
     lookup.setScene(scene);
     lookup.engine = engine;
+    lookup.worldProvider.canvas = canvas;
+    lookup.worldProvider.scene = scene;
     lookup.canvas = canvas;
-
     // var terrainMaterial = new TerrainMaterial("terrainMaterial", scene);
     // terrainMaterial.specularColor = new BABYLON.Color3(0.5, 0.5, 0.5);
     // terrainMaterial.specularPower = 64;
@@ -95,5 +96,5 @@ function initGame(lookup: Lookup) {
     });
 
     lookup.setup.setup(scene);
-    lookup.debug.render();
+    lookup.debugService.render();
 }
