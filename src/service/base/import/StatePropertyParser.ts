@@ -7,17 +7,15 @@ import { MeshState } from "../../../model/object/mesh/MeshState";
 import { AbstractPropertyParser } from "./AbstractPropertyParser";
 import { CharacterObj } from "../../../model/object/character/CharacterObj";
 
-export class StatePropertyParser extends AbstractPropertyParser {
-    feature = 'State';
+export class StatePropertyParser extends AbstractPropertyParser<string> {
+    propName = 'state';
 
     isAsync(): boolean {
         return false;
     }
 
-    processFeature(mesh: CharacterObj, attrs: string[]) {
-        const [state] = attrs;
-
-        mesh.animationState = this.createState(mesh, state as MeshStateName);
+    processProperty(mesh: CharacterObj, stateName: string) {
+        mesh.animationState = this.createState(mesh, stateName as MeshStateName);
         mesh.animationState.enterState();
     }
 

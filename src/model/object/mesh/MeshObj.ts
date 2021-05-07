@@ -36,12 +36,12 @@ export enum MeshObjTag {
     ActiveVehicle = 'ActiveVehicle'
 }
 
-export interface GameObjectJson {
+export interface MeshConfig {
     id?: string;
     ch: string;
     type: MeshObjType;
 
-    features?: string[];
+    props: {[key: string]: any};
 }
 
 export class MeshObj extends GameObj {

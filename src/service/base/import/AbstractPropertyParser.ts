@@ -1,12 +1,12 @@
 import { Vector3 } from "babylonjs";
 import { MeshObj } from "../../../model/object/mesh/MeshObj";
 
-export abstract class AbstractPropertyParser {
-    abstract feature: string;
+export abstract class AbstractPropertyParser<P> {
+    abstract propName: string;
 
     isAsync(): boolean { return false; }
-    processFeature(gameObject: MeshObj, attrs: string[]) { throw new Error('Not implemented.'); }
-    processFeatureAsync(gameObject: MeshObj, attrs: string[]): Promise<void> { throw new Error('Not implemented.'); }
+    processProperty(meshItem: MeshObj, props: P) { throw new Error('Not implemented.'); }
+    processPropertyAsync(meshItem: MeshObj, props: P): Promise<void> { throw new Error('Not implemented.'); }
 }
 
 export function parseStrVector(vec: string): Vector3 {

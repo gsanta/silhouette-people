@@ -18,7 +18,7 @@ export interface WorldMap {
     textureMeshIndex: { [key: string]: number },
     collider: { [key: string]: string | boolean },
     tags: { [key: string]: string },
-    features: { [key: string]: string[] },
+    objects: { [key: string]: {properties: {[key: string]: any} }},
     map: string;
     routeMap: string;
     rotationMap: string;

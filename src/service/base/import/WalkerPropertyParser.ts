@@ -9,18 +9,15 @@ enum WalkerName {
     CharacterWalker = 'CharacterWalker'
 }
 
-export class WalkerPropertyParser extends AbstractPropertyParser {
-    feature = 'Walker';
+export class WalkerPropertyParser extends AbstractPropertyParser<string> {
+    propName = 'walker';
 
     isAsync(): boolean {
         return false;
     }
 
-    processFeature(mesh: CharacterObj, attrs: string[]) {
-        const [walker] = attrs;
-
-        mesh.walker = this.createWalker(mesh, walker as WalkerName);
-        1
+    processProperty(mesh: CharacterObj, walkerName: string) {
+        mesh.walker = this.createWalker(mesh, walkerName as WalkerName);
     }
 
     private createWalker(meshObj: CharacterObj, stateName: WalkerName): MeshWalker {

@@ -20,6 +20,7 @@ import { CitizenSetup } from "../../citizen/CitizenSetup";
 import { RoutePool } from "../../citizen/RoutePool";
 import { MeshFactory } from "../../object/mesh/MeshFactory";
 import { CitizenStore } from "../../../store/CitizenStore";
+import { FactorySetup } from "../../object/mesh/FactorySetup";
 
 export class SetupService {
 
@@ -64,6 +65,7 @@ export class SetupService {
 
     private bikeParenter: BikeParenter;
 
+    private factorySetup: FactorySetup;
     private citizenSetup: CitizenSetup;
     private stageSetup: StageSetup;
 
@@ -84,6 +86,7 @@ export class SetupService {
         this.worldFactory = new WorldFactory(this.worldMapParser, this.meshFactory);
         this.citizenSetup = new CitizenSetup(this.worldMapParser);
 
+        this.factorySetup = new FactorySetup();
         this.stageSetup = new StageSetup();
         this.bikeParenter = new BikeParenter();
     }
@@ -94,6 +97,8 @@ export class SetupService {
 
     async setup(scene: Scene) {
         await this.worldMapParser.parse();
+
+        this.factorySetup.setup();
         this.stageSetup.setup();
         // this.controllerService.setMasterController(new NormalModeController(this.controllerService.getCameraController()));
         this.worldProvider.world = await this.worldFactory.createWorldObj(scene);

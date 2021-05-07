@@ -1,63 +1,53 @@
-import { AbstractMesh, Axis, Space } from "babylonjs";
-import { WorldProvider } from "../../object/world/WorldProvider";
-import { AssetContainerStore } from "../../../store/AssetContainerStore";
+import { AbstractMesh, Axis, Mesh, Space } from "babylonjs";
 import { MeshInstance } from "../../../model/object/mesh/MeshInstance";
 import { MeshObj } from "../../../model/object/mesh/MeshObj";
-import { WorldObj } from "../../../model/object/WorldObj";
+import { AssetContainerStore } from "../../../store/AssetContainerStore";
+import { WorldProvider } from "../../object/world/WorldProvider";
 import { AbstractPropertyParser } from "./AbstractPropertyParser";
 
-export class ModelPropertyParser extends AbstractPropertyParser {
-    private worldObj: WorldObj;
+export interface ModelPropertyConfig {
+    path: string;
+    mainMeshIndex?: number;
+    canUseOriginalInstance?: boolean;
+    removeRoot?: boolean;
+}
+
+export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyConfig> {
+    propName = 'model';
+
     private assetContainerStore: AssetContainerStore;
     private worldProvider: WorldProvider;
 
-    constructor(worldObj: WorldObj, worldProvider: WorldProvider, assetContainerStore: AssetContainerStore) {
+    constructor(worldProvider: WorldProvider, assetContainerStore: AssetContainerStore) {
         super();
-        this.worldObj = worldObj;
         this.worldProvider = worldProvider;
         this.assetContainerStore = assetContainerStore;
     }
 
-    feature = 'Model';
 
     isAsync(): boolean {
         return true;
     }
 
-    async processFeatureAsync(meshObj: MeshObj, attrs: string[]): Promise<void> {
-        const [modelType, mainMeshIndex, ...rest] = attrs;
+    async processPropertyAsync(meshObj: MeshObj, props: ModelPropertyConfig): Promise<void> {
+        const removeRoot = props.removeRoot;
+        const canUseOriginalInstance = props.canUseOriginalInstance === false ? false : true
 
-        const removeRoot = this.shouldRemoveRoot(rest);
-        const canUseOriginalInstance = this.canUseOrigInstance(rest);
-
-        const result = await this.assetContainerStore.instantiate(modelType, canUseOriginalInstance);
+        const result = await this.assetContainerStore.instantiate(props.path, canUseOriginalInstance);
                 
         let meshes = removeRoot ? this.removeRoot(result.meshes) : result.meshes;
 
         result.animationGroups.forEach(animationGroup => animationGroup.stop());
 
-        const mainMesh = mainMeshIndex ? meshes[mainMeshIndex] : this.findMainMesh(meshes);
+        const mainMesh = props.mainMeshIndex !== undefined ? meshes[props.mainMeshIndex] : this.findMainMesh(meshes);
         const otherMeshes = meshes.filter(mesh => mesh !== mainMesh);
 
-        meshObj.instance = new MeshInstance([mainMesh, ...otherMeshes], result.isCloned, meshObj);
+        meshObj.instance = new MeshInstance(<Mesh[]> [mainMesh, ...otherMeshes], result.isCloned, meshObj);
 
         meshObj.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         meshObj.animation.setAnimations(result.animationGroups);
         meshObj.instance.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
-        meshObj.instance.getMesh().parent = this.worldObj.ground;
-    }
-
-    private shouldRemoveRoot(attrs: string[]): boolean {
-        const removeRootAttr = attrs.find(attr => attr.startsWith('RemoveRoot'));
-
-        return removeRootAttr && removeRootAttr.split('=')[1].toLocaleLowerCase() === 'true';
-    }
-
-    private canUseOrigInstance(attrs: string[]) {
-        const canUseOrigInstanceAttr = attrs.find(attr => attr.startsWith('RemoveRoot'));
-
-        const canNotUse = canUseOrigInstanceAttr && canUseOrigInstanceAttr.split('=')[1].toLocaleLowerCase() === 'false';
-        return canNotUse === false;
+        meshObj.instance.getMesh().parent = this.worldProvider.world.ground;
     }
 
     private removeRoot(meshes: AbstractMesh[]): AbstractMesh[] {

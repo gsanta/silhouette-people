@@ -85,7 +85,7 @@
         "R1": "road1",
         "S": "busStop"
     },
-"models": [
+    "models": [
         "tree1, tree1.glb",
         "tree2, tree2.glb",
         "tree3, tree3.glb",
@@ -99,105 +99,247 @@
         "road1, road1.glb",
         "bicycle1, bicycle1.glb"
     ],
-    "features": {
-        "tree1": [
-            "Model tree1 0 RemoveRoot=true",
-            "Collider 0.5:5:0.5"
-        ],
-        "tree2": [
-            "Model tree2 0 RemoveRoot=true",
-            "Collider 0.5:5:0.5"
-        ],
-        "tree3": [
-            "Model tree3 0 RemoveRoot=true",
-            "Collider 0.5:5:0.5"
-        ],
-        "tree4": [
-            "Model tree4 0 RemoveRoot=true",
-            "Collider 0.3:5:0.3"
-        ],
-        "tree5": [
-            "Model tree5 0 RemoveRoot=true",
-            "Collider 0.3:5:0.3"
-        ],
-        "tree6": [
-            "Model tree6 0 RemoveRoot=true",
-            "Collider 0.3:5:0.3"
-        ],
-        "player": [
-            "Model character 0 CanUserOrigInstance=False",
-            "Collider 1:3.5:1",
-            "Physics 1",
-            "Tag Player",
-            "State CharacterIdleState",
-            "InputManager CharacterInputManager"
-        ],
-        "enemy": [
-            "Model character 0",
-            "Collider 1:3.5:1",
-            "Physics 1",
-            "Tag Enemy",
-            "State CharacterWalkingState",
-            "Walker CharacterWalker"
-        ],
-        "house1": [
-            "Model house1 0 RemoveRoot=true",
-            "Texture palette.jpg",
-            "Collider 1:1:1"
-        ],
-        "house2": [
-            "Model house2 0 RemoveRoot=true",
-            "Texture palette.jpg",
-            "Collider 1:1:1"
-        ],
-        "house3": [
-            "Model house3 0 RemoveRoot=true",
-            "Texture palette.jpg",
-            "Collider 1:1:1"
-        ],
-        "bicycle1": [
-            "Model bicycle1 0",
-            "Texture palette.jpg",
-            "Collider 1:1:1",
-            "Tag Bicycle",
-            "State BikeIdleState",
-            "Walker BikeWalker",
-            "InputManager BikeInputManager"
-        ],
-        "road1": [
-            "Model road1 0 RemoveRoot=true",
-            "Texture palette.jpg 0"
-        ],
-        "R1": [
-            "Rotate 90"
-        ],
-        "H1": [
-            "Rotate 180"
-        ],
-        "H": [
-            "Rotate 90"
-        ],
-        "H2": [
-            "Rotate 90"
-        ],
-        "H3": [
-            "Rotate 90"
-        ],
-        "H5": [
-            "Rotate 180"
-        ],
-        "H4": [
-            "Rotate -90"
-        ],
-        "P1": [
-            "Id player1",
-            "ActivePlayer",
-            "Addon Highlight",
-            "Walker CharacterWalker"
-        ],
-        "P": [
-            "Id player2",
-            "Walker CharacterWalker"
-        ]
+    "objects": {
+        "tree1": {
+            "properties": {
+                "model": {
+                    "path": "tree1",
+                    "mainMeshIndex": 0,
+                    "removeRoot": true
+                },
+                "collider": {
+                    "dimension": "0.5:5:0.5"
+                }
+            }
+        },
+        "tree2": {
+            "properties": {
+                "model": {
+                    "path": "tree2",
+                    "mainMeshIndex": 0,
+                    "removeRoot": true
+                },
+                "collider": {
+                    "dimension": "0.5:5:0.5"
+                }
+            }
+        },
+        "tree3": {
+            "properties": {
+                "model": {
+                    "path": "tree3",
+                    "mainMeshIndex": 0,
+                    "removeRoot": true
+                },
+                "collider": {
+                    "dimension": "0.5:5:0.5"
+                }
+            }
+        },
+        "tree4": {
+            "properties": {
+                "model": {
+                    "path": "tree4",
+                    "mainMeshIndex": 0,
+                    "removeRoot": true
+                },
+                "collider": {
+                    "dimension": "0.3:5:0.3"
+                }
+            }
+        },
+        "tree5": {
+            "properties": {
+                "model": {
+                    "path": "tree5",
+                    "mainMeshIndex": 0,
+                    "removeRoot": true
+                },
+                "collider": {
+                    "dimension": "0.3:5:0.3"
+                }
+            }
+        },
+        "tree6": {
+            "properties": {
+                "model": {
+                    "path": "tree6",
+                    "mainMeshIndex": 0,
+                    "removeRoot": true
+                },
+                "collider": {
+                    "dimension": "0.3:5:0.3"
+                }
+            }
+        },
+        "player": {
+            "properties": {
+                "model": {
+                    "path": "character",
+                    "mainMeshIndex": 0,
+                    "canUseOriginalInstance": false
+                },
+                "collider": {
+                    "dimension": "1:3.5:1"
+                },
+                "physics": {
+                    "mass": 1
+                },
+                "tags": ["Player"],
+                "state": "CharacterIdleState",
+                "inputManager": "CharacterInputManager"
+            }
+        },
+        "enemy": {
+            "properties": {
+                "model": {
+                    "path": "character",
+                    "mainMeshIndex": 0,
+                    "canUseOriginalInstance": false
+                },
+                "collider": {
+                    "dimension": "1:3.5:1"
+                },
+                "physics": {
+                    "mass": 1
+                },
+                "tags": ["Enemy"],
+                "state": "CharacterIdleState",
+                "inputManager": "CharacterInputManager",
+                "walker": "CharacterWalker"
+            }
+        },
+        "house1": {
+            "properties": {
+                "model": {
+                    "path": "house1",
+                    "mainMeshIndex": 0,
+                    "removeRoot": true
+                },
+                "texture": {
+                    "path": "palette.jpg"
+                },
+                "collider": {
+                    "dimension": "1:1:1"
+                }
+            }
+        },
+        "house2": {
+            "properties": {
+                "model": {
+                    "path": "house2",
+                    "mainMeshIndex": 0,
+                    "removeRoot": true
+                },
+                "texture": {
+                    "path": "palette.jpg"
+                },
+                "collider": {
+                    "dimension": "1:1:1"
+                }
+            }
+        },
+        "house3": {
+            "properties": {
+                "model": {
+                    "path": "house3",
+                    "mainMeshIndex": 0,
+                    "removeRoot": true
+                },
+                "texture": {
+                    "path": "palette.jpg"
+                },                
+                "collider": {
+                    "dimension": "1:1:1"
+                }
+            }
+        },
+        "bicycle1": {
+            "properties": {
+                "model": {
+                    "path": "bicycle1",
+                    "mainMeshIndex": 0,
+                    "canUseOriginalInstance": false
+                },
+                "texture": {
+                    "path": "palette.jpg"
+                },
+                "collider": {
+                    "dimension": "1:1:1"
+                },
+                "physics": {
+                    "mass": 1
+                },
+                "tags": ["Bicycle"],
+                "state": "BikeIdleState",
+                "inputManager": "BikeInputManager",
+                "walker": "BikeWalker"
+            }
+        },
+        "road1": {
+            "properties": {
+                "model": {
+                    "path": "road1",
+                    "mainMeshIndex": 0,
+                    "removeRoot": true
+                },
+                "texture": {
+                    "path": "palette.jpg",
+                    "meshIndex": 0
+                },
+                "collider": {
+                    "dimension": "1:1:1"
+                }
+            }
+        },
+        "R1": {
+            "properties": {
+                "rotate": 90
+            }
+        },
+        "H1": {
+            "properties": {
+                "rotate": 180
+            }
+        },
+        "H": {
+            "properties": {
+                "rotate": 90
+            }
+        },
+        "H2": {
+            "properties": {
+                "rotate": 90
+            }
+        },
+        "H3": {
+            "properties": {
+                "rotate": 90
+            }
+        },
+        "H5": {
+            "properties": {
+                "rotate": 180
+            }
+        },
+        "H4": {
+            "properties": {
+                "rotate": -90
+            }
+        },
+        "P1": {
+            "properties": {
+                "id": "player1",
+                "addons": ["Highlight"],
+                "activePlayer": true,
+                "walker": "CharacterWalker"
+            }
+        },
+        "P": {
+            "properties": {
+                "id": "player2",
+                "walker": "CharacterWalker"
+            }
+        }
     }
 }

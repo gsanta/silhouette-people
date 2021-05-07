@@ -113,7 +113,7 @@ export class Lookup {
         this.debugService = new DebugService();
         lookup.debugService = this.debugService;
 
-        this.meshFactory = new MeshFactory(this);
+        this.meshFactory = new MeshFactory();
         lookup.meshFactory = this.meshFactory;
 
         this.stageController = new StageController();

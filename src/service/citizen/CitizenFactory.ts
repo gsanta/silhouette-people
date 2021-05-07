@@ -1,6 +1,6 @@
 import { Axis, Quaternion, Vector3 } from "babylonjs";
 import { CharacterObj } from "../../model/object/character/CharacterObj";
-import { GameObjectJson, MeshObjType } from "../../model/object/mesh/MeshObj";
+import { MeshConfig, MeshObjType } from "../../model/object/mesh/MeshObj";
 import { MeshFactory } from "../object/mesh/MeshFactory";
 import { WorldProvider } from "../object/world/WorldProvider";
 
@@ -22,12 +22,12 @@ export class CitizenFactory {
         return <CharacterObj> character;
     }
 
-    private createConfig(): GameObjectJson {
+    private createConfig(): MeshConfig {
         return {
             id: `${this.index++}`,
             ch: 'P',
             type: MeshObjType.Player,
-            features: [
+            props: [
                 "Model character 0 CanUserOrigInstance=False",
                 "Collider 1:3.5:1",
                 "Physics 1",

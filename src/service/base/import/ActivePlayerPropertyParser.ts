@@ -2,8 +2,8 @@ import { ActivePlayerService } from "../../ActivePlayerService";
 import { CharacterObj } from "../../../model/object/character/CharacterObj";
 import { AbstractPropertyParser } from "./AbstractPropertyParser";
 
-export class ActivePlayerPropertyParser extends AbstractPropertyParser {
-    feature = 'ActivePlayer';
+export class ActivePlayerPropertyParser extends AbstractPropertyParser<boolean> {
+    propName = 'ActivePlayer';
 
     private highlightService: ActivePlayerService;
 
@@ -12,7 +12,9 @@ export class ActivePlayerPropertyParser extends AbstractPropertyParser {
         this.highlightService = highlightService;
     }
 
-    processFeature(gameObj: CharacterObj) {
-        this.highlightService.activate(gameObj);
+    processProperty(gameObj: CharacterObj, isActive: boolean) {
+        if (isActive) {
+            this.highlightService.activate(gameObj);
+        }
     }
 }

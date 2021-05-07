@@ -1,28 +1,33 @@
 import { StandardMaterial, Texture } from "babylonjs";
 import { MeshObj } from "../../../model/object/mesh/MeshObj";
 import { Lookup } from "../../Lookup";
+import { WorldProvider } from "../../object/world/WorldProvider";
 import { AbstractPropertyParser } from "./AbstractPropertyParser";
 
-export class TexturePropertyParser extends AbstractPropertyParser {
-    private world: Lookup;
+export interface TexturePropertyConfig {
+    path: string;
+    meshIndex: number;
+}
 
-    constructor(world: Lookup) {
+export class TexturePropertyParser extends AbstractPropertyParser<TexturePropertyConfig> {
+    propName = 'texture';
+    
+    private readonly worldProvider: WorldProvider;
+
+    constructor(worldProvider: WorldProvider) {
         super();
-        this.world = world;
+        this.worldProvider = worldProvider;
     }
-
-    feature = 'Texture';
 
     isAsync(): boolean {
         return false;
     }
 
-    processFeature(gameObject: MeshObj, attrs: string[]) {
-        const [texturePath, textureIndex] = attrs;
-        const index = textureIndex !== undefined ? parseInt(textureIndex, 10) : 0;
+    processProperty(gameObject: MeshObj, config: TexturePropertyConfig) {
+        const index = config.meshIndex !== undefined ? config.meshIndex : 0;
 
-        const texture = new Texture(`assets/textures/${texturePath}`, this.world.scene);
-        const material = new StandardMaterial(gameObject.id, this.world.scene);
+        const texture = new Texture(`assets/textures/${config.path}`, this.worldProvider.scene);
+        const material = new StandardMaterial(gameObject.id, this.worldProvider.scene);
         material.diffuseTexture = texture;
         material.specularColor = new BABYLON.Color3(0, 0, 0);
 

@@ -1,14 +1,14 @@
 import { MeshObj, MeshObjTag } from "../../../model/object/mesh/MeshObj";
 import { AbstractPropertyParser } from "./AbstractPropertyParser";
 
-export class TagPropertyParser extends AbstractPropertyParser {
-    feature = 'Tag';
+export class TagPropertyParser extends AbstractPropertyParser<string[]> {
+    propName = 'tags';
 
     isAsync(): boolean {
         return false;
     }
 
-    processFeature(gameObject: MeshObj, attrs: string[]) {
-        gameObject.tag.add(...(attrs as MeshObjTag[]));
+    processProperty(gameObject: MeshObj, tags: string[]) {
+        gameObject.tag.add(...(tags as MeshObjTag[]));
     }
 }

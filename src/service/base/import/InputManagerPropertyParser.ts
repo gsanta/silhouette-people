@@ -12,7 +12,9 @@ enum InputManagerType {
     BikeInputManager = 'BikeInputManager'
 }
 
-export class InputManagerPropertyParser extends AbstractPropertyParser {
+export class InputManagerPropertyParser extends AbstractPropertyParser<string> {
+    propName = 'inputManager';
+
     private keyboardService: KeyboardService;
 
     constructor(keyboardService: KeyboardService) {
@@ -20,16 +22,12 @@ export class InputManagerPropertyParser extends AbstractPropertyParser {
         this.keyboardService = keyboardService;
     }
 
-    feature = 'InputManager';
-
     isAsync(): boolean {
         return false;
     }
 
-    processFeature(character: CharacterObj, attrs: string[]): void {
-        const input = <InputManagerType> attrs[0];
-
-        switch(input) {
+    processProperty(character: CharacterObj, inputManager: string): void {
+        switch(inputManager) {
             case InputManagerType.CharacterInputManager:
                 character.inputManager = new CharacterInputManager(character, this.keyboardService);
             break;
