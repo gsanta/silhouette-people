@@ -4,6 +4,8 @@ import { MeshStore } from "../../../store/MeshStore";
 import { RouteStore } from "../../../store/RouteStore";
 import { Tool, ToolType } from "../Tool";
 import { CharacterObj } from "../../../model/object/character/CharacterObj";
+import { CitizenExecutor } from "../../citizen/CitizenExecutor";
+import { RouteExecutor } from "./RouteExecutor";
 
 export class ExecutionTool extends Tool {
     private worldProvider: WorldProvider;
@@ -16,6 +18,8 @@ export class ExecutionTool extends Tool {
     private readyListeners: ((wasCanceled: boolean) => void)[] = [];
     private activePlayer: CharacterObj;
 
+    private routeExecutors: RouteExecutor[] = [];
+
     constructor(worldProvider: WorldProvider, meshStore: MeshStore, routeStore: RouteStore, renderService: RenderGuiService) {
         super(ToolType.MOVE);
         this.worldProvider = worldProvider;
@@ -24,12 +28,18 @@ export class ExecutionTool extends Tool {
         this.renderService = renderService;
     }
 
+    addRouteExecutor(routeExecutor: RouteExecutor) {
+        this.routeExecutors.push(routeExecutor);
+    }
+
     beforeRender() {
         if (this.isReset()) { return; }
 
-        if (this.isStarted) {
-            const deltaTime = this.worldProvider.world.engine.getDeltaTime();
+        const deltaTime = this.worldProvider.world.engine.getDeltaTime();
 
+        this.routeExecutors.forEach(executor => executor.updateRoutes(deltaTime));
+        if (this.isStarted) {
+            
             this.updateRoutes(deltaTime, [this.activePlayer]);
             this.updateWalkers(deltaTime, [this.activePlayer]);
 

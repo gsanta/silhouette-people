@@ -13,7 +13,8 @@ export class LockedDirection implements LockedFeature {
     }
 
     update(deltaTime: number) {
-        this.character.walker.character.instance.setRotation(this.getDirection());
+        const character = this.routeWalker.route.character;
+        character.walker.character.instance.setRotation(this.getDirection());
     }
 
     private getDirection(): number {
@@ -25,10 +26,16 @@ export class LockedDirection implements LockedFeature {
     }
 
     enableFeature() {
-        this.character.inputManager.disableDirection();
+        const character = this.routeWalker.route.character;
+        if (character.inputManager) {
+            character.inputManager.disableDirection();
+        }
     }
 
     disableFeature() {
-        this.character.inputManager.enableDirection();
+        const character = this.routeWalker.route.character;
+        if (character.inputManager) {
+            this.character.inputManager.enableDirection();
+        }
     }
 }

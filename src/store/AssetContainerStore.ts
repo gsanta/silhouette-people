@@ -1,4 +1,4 @@
-import { AnimationGroup, AssetContainer, Skeleton } from "babylonjs";
+import { AnimationGroup, AssetContainer, Axis, Quaternion, Skeleton, Vector3 } from "babylonjs";
 import { InstantiatedEntries } from "babylonjs/assetContainer";
 import { AbstractMesh } from "babylonjs/Meshes/index";
 
@@ -59,7 +59,8 @@ export class AssetContainerStore {
         entries.rootNodes.forEach((mesh: AbstractMesh) => {
             mesh.isVisible = true;
             mesh.getChildMeshes().forEach(mesh => mesh.isVisible = true);
-        })
+        });
+
         return {
             meshes: <AbstractMesh[]> entries.rootNodes,
             skeletons: entries.skeletons,

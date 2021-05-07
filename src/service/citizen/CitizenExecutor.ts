@@ -1,19 +1,23 @@
-import { CharacterObj } from "../../../model/object/character/CharacterObj";
-import { CitizenStore } from "../../../store/CitizenStore";
-import { RouteStore } from "../../../store/RouteStore";
-import { RoutePool } from "../../citizen/RoutePool";
+import { CitizenStore } from "../../store/CitizenStore";
+import { MaterialStore } from "../../store/MaterialStore";
+import { RouteStore } from "../../store/RouteStore";
+import { RouteExecutor } from "../edit/execution/RouteExecutor";
+import { PathVisualizer } from "../edit/route/PathVisualizer";
+import { WorldProvider } from "../object/world/WorldProvider";
+import { RoutePool } from "./RoutePool";
 
-
-export class CitizenRouteHandler {
+export class CitizenExecutor implements RouteExecutor {
 
     private routeStore: RouteStore;
     private citizenStore: CitizenStore;
     private routePool: RoutePool;
+    private pathVisualizer: PathVisualizer;
 
-    constructor(citizenStore: CitizenStore, routePool: RoutePool, routeStore: RouteStore) {
+    constructor(citizenStore: CitizenStore, routePool: RoutePool, routeStore: RouteStore, worldProvider: WorldProvider, materialStore: MaterialStore) {
         this.routeStore = routeStore;
         this.routePool = routePool;
         this.citizenStore = citizenStore;
+        this.pathVisualizer = new PathVisualizer(worldProvider, materialStore);
     }
 
     updateRoutes(deltaTime: number) {
@@ -36,6 +40,7 @@ export class CitizenRouteHandler {
                 route.walker.setStarted()
 
                 this.routeStore.addRoute(route);
+                this.pathVisualizer.visualize(route.pathes[0]);
             }
         });
     }

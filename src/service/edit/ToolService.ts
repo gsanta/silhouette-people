@@ -10,6 +10,7 @@ import { KeyboardListener, KeyboardService } from "../base/keyboard/KeyboardServ
 import { lookup } from "../Lookup";
 import { RenderGuiService } from "../ui/RenderGuiService";
 import { WorldProvider } from "../object/world/WorldProvider";
+import { CitizenExecutor } from "../citizen/CitizenExecutor";
 
 export class ToolService implements KeyboardListener {
 

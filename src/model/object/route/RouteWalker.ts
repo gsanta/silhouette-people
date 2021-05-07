@@ -47,6 +47,10 @@ export class RouteWalker {
     setStarted() {
         this._isStarted = true;
 
+        this.checkpointHanlder.initCheckPoints();
+        const character = this.route.character;
+        character.setPosition2D(new Vector2(this.fromCheckPoint.x, this.fromCheckPoint.z));
+
         this.lockedFeatures.forEach(feature => feature.enableFeature());
     }
 
@@ -64,16 +68,17 @@ export class RouteWalker {
 
 class CheckpointUpdater {
     constructor(private routeWalker: RouteWalker) {}
+
+    initCheckPoints() {
+        const route = this.routeWalker.route
+
+        const checkPoints = route.getCheckpoints();
+        this.routeWalker.fromCheckPoint = checkPoints[0];
+        this.routeWalker.toCheckPoint = checkPoints[1];
+    }
     
     updateCheckPointsIfNeeded() {
-        const route = this.routeWalker.route
-        const character = route.character;
-
-
-        if (!this.routeWalker.fromCheckPoint || !this.routeWalker.toCheckPoint) {
-            this.initCheckPoints();
-            character.setPosition2D(new Vector2(this.routeWalker.fromCheckPoint.x, this.routeWalker.fromCheckPoint.z));
-        } else if (this.isCheckPointReached()) {
+        if (this.isCheckPointReached()) {
             this.setNextCheckPoint();
             return true;
         }
@@ -91,14 +96,6 @@ class CheckpointUpdater {
             this.routeWalker.fromCheckPoint = character.getPosition();
             this.routeWalker.toCheckPoint = checkPoints[checkPoints.indexOf(toCheckPoint) + 1];
         }
-    }
-
-    private initCheckPoints() {
-        const route = this.routeWalker.route
-
-        const checkPoints = route.getCheckpoints();
-        this.routeWalker.fromCheckPoint = checkPoints[0];
-        this.routeWalker.toCheckPoint = checkPoints[1];
     }
 
     private isCheckPointReached() {

@@ -82,7 +82,7 @@ export class SetupService {
         
         this.worldMapParser = new WorldMapParser(this.worldProvider, this.routeFactory);
         this.worldFactory = new WorldFactory(this.worldMapParser, this.meshFactory);
-        this.citizenSetup = new CitizenSetup(this.worldMapParser, this.worldProvider, this.meshFactory, this.citizenStore);
+        this.citizenSetup = new CitizenSetup(this.worldMapParser);
 
         this.stageSetup = new StageSetup();
         this.bikeParenter = new BikeParenter();

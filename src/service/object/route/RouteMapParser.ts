@@ -40,7 +40,7 @@ export class RouteMapParser {
         return parsedRoutes.map(parsedRoute => {
             const path = this.createPath(parsedRoute)
             
-            return this.routeFactory.createRoute([path], {});
+            return this.routeFactory.createRoute([path], { lockDirection: true, lockSpeed: true });
         });
     }
 

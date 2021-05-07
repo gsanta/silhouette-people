@@ -1,3 +1,4 @@
+import { Axis, Quaternion, Vector3 } from "babylonjs";
 import { CharacterObj } from "../../model/object/character/CharacterObj";
 import { GameObjectJson, MeshObjType } from "../../model/object/mesh/MeshObj";
 import { MeshFactory } from "../object/mesh/MeshFactory";
@@ -27,10 +28,9 @@ export class CitizenFactory {
             ch: 'P',
             type: MeshObjType.Player,
             features: [
-                "Model character 0",
-                "Position 20:0:0",
+                "Model character 0 CanUserOrigInstance=False",
+                "Collider 1:3.5:1",
                 "Physics 1",
-                "Tag Player",
                 "State CharacterIdleState",
                 `Id citizen-${this.index++}`,
                 "Walker CharacterWalker"
