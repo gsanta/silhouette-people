@@ -25,9 +25,12 @@ export class ModelPropertyParser extends AbstractPropertyParser {
     }
 
     async processFeatureAsync(meshObj: MeshObj, attrs: string[]): Promise<void> {
-        const [modelType, mainMeshIndex, removeRoot] = attrs;
+        const [modelType, mainMeshIndex, ...rest] = attrs;
 
-        const result = await this.assetContainerStore.instantiate(modelType);
+        const removeRoot = this.shouldRemoveRoot(rest);
+        const canUseOriginalInstance = this.canUseOrigInstance(rest);
+
+        const result = await this.assetContainerStore.instantiate(modelType, canUseOriginalInstance);
                 
         let meshes = removeRoot ? this.removeRoot(result.meshes) : result.meshes;
 
@@ -42,6 +45,19 @@ export class ModelPropertyParser extends AbstractPropertyParser {
         meshObj.animation.setAnimations(result.animationGroups);
         meshObj.instance.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
         meshObj.instance.getMesh().parent = this.worldObj.ground;
+    }
+
+    private shouldRemoveRoot(attrs: string[]): boolean {
+        const removeRootAttr = attrs.find(attr => attr.startsWith('RemoveRoot'));
+
+        return removeRootAttr && removeRootAttr.split('=')[1].toLocaleLowerCase() === 'true';
+    }
+
+    private canUseOrigInstance(attrs: string[]) {
+        const canUseOrigInstanceAttr = attrs.find(attr => attr.startsWith('RemoveRoot'));
+
+        const canNotUse = canUseOrigInstanceAttr && canUseOrigInstanceAttr.split('=')[1].toLocaleLowerCase() === 'false';
+        return canNotUse === false;
     }
 
     private removeRoot(meshes: AbstractMesh[]): AbstractMesh[] {

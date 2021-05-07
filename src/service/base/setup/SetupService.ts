@@ -18,6 +18,8 @@ import { WorldProvider } from "../../object/world/WorldProvider";
 import { DebugService } from "../debug/DebugService";
 import { CitizenSetup } from "../../citizen/CitizenSetup";
 import { RoutePool } from "../../citizen/RoutePool";
+import { MeshFactory } from "../../object/mesh/MeshFactory";
+import { CitizenStore } from "../../../store/CitizenStore";
 
 export class SetupService {
 
@@ -48,6 +50,12 @@ export class SetupService {
     @InjectProperty("RouteFactory")
     private routeFactory: RouteFactory;
 
+    @InjectProperty("MeshFactory")
+    private meshFactory: MeshFactory;
+
+    @InjectProperty("CitizenStore")
+    private citizenStore: CitizenStore;
+
     private readonly worldFactory: WorldFactory;
 
     private worldMapParser: WorldMapParser;
@@ -69,10 +77,12 @@ export class SetupService {
         this.renderGuiService = lookup.renderGui;
         this.stageController = lookup.stageController;
         this.routeFactory = lookup.routeFactory;
+        this.meshFactory = lookup.meshFactory;
+        this.citizenStore = lookup.citizenStore;
         
         this.worldMapParser = new WorldMapParser(this.worldProvider, this.routeFactory);
-        this.worldFactory = new WorldFactory(this.worldMapParser);
-        this.citizenSetup = new CitizenSetup(this.worldMapParser);
+        this.worldFactory = new WorldFactory(this.worldMapParser, this.meshFactory);
+        this.citizenSetup = new CitizenSetup(this.worldMapParser, this.worldProvider, this.meshFactory, this.citizenStore);
 
         this.stageSetup = new StageSetup();
         this.bikeParenter = new BikeParenter();
@@ -84,13 +94,14 @@ export class SetupService {
 
     async setup(scene: Scene) {
         await this.worldMapParser.parse();
-        this.citizenSetup.setup();
         this.stageSetup.setup();
         // this.controllerService.setMasterController(new NormalModeController(this.controllerService.getCameraController()));
         this.worldProvider.world = await this.worldFactory.createWorldObj(scene);
         this.debugService.addGuiComponent(new DebugPanel());
         this.debugService.render();
         this.pointerService.listen();
+
+        await this.citizenSetup.setup();
         
         this._isReady = true;
         

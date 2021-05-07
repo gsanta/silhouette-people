@@ -39,7 +39,6 @@ export class ItemMapParser {
         features.splice(1, 0, `Position ${toStrVector(parsedItem.pos)}`);
 
         return {
-            position: parsedItem.pos,
             type: <MeshObjType> type,
             ch: parsedItem.str,
             features: features

@@ -21,6 +21,7 @@ import { CameraService } from "./edit/camera/CameraService";
 import { StageController } from "./ui/stage/StageController";
 import { RoutePool } from "./citizen/RoutePool";
 import { EventService } from "./base/EventService";
+import { CitizenStore } from "../store/CitizenStore";
 
 export class Lookup {
     eventService: EventService;
@@ -49,6 +50,7 @@ export class Lookup {
     materialStore: MaterialStore;
     quarterStore: QuarterStore;
     meshStore: MeshStore;
+    citizenStore: CitizenStore;
     assetContainerStore: AssetContainerStore;
     lightStore: LightStore;
     routeStore: RouteStore;
@@ -85,6 +87,8 @@ export class Lookup {
         lookup.quarterStore = this.quarterStore;
         this.meshStore = new MeshStore();
         lookup.meshStore = this.meshStore;
+        this.citizenStore = new CitizenStore();
+        lookup.citizenStore = this.citizenStore;
         this.assetContainerStore = new AssetContainerStore();
         lookup.assetContainerStore = this.assetContainerStore;
         this.lightStore = new LightStore();
@@ -110,6 +114,7 @@ export class Lookup {
         lookup.debugService = this.debugService;
 
         this.meshFactory = new MeshFactory(this);
+        lookup.meshFactory = this.meshFactory;
 
         this.stageController = new StageController();
         lookup.stageController = this.stageController;

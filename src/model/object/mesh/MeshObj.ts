@@ -40,21 +40,7 @@ export interface GameObjectJson {
     id?: string;
     ch: string;
     type: MeshObjType;
-    position: Vector3;
-    modelPath?: string;
-    texturePath?: string;
-    textureMeshIndex?: number;
 
-    collider?: boolean | Vector3;
-    rotation?: number;
-
-    physics?: boolean;
-    input?: boolean;    
-    cameraTarget?: {
-        relativPos: Vector3;
-    };
-
-    addons?: string[];
     features?: string[];
 }
 

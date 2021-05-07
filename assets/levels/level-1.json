@@ -101,31 +101,31 @@
     ],
     "features": {
         "tree1": [
-            "Model tree1 0 RemoveRoot",
+            "Model tree1 0 RemoveRoot=true",
             "Collider 0.5:5:0.5"
         ],
         "tree2": [
-            "Model tree2 0 RemoveRoot",
+            "Model tree2 0 RemoveRoot=true",
             "Collider 0.5:5:0.5"
         ],
         "tree3": [
-            "Model tree3 0 RemoveRoot",
+            "Model tree3 0 RemoveRoot=true",
             "Collider 0.5:5:0.5"
         ],
         "tree4": [
-            "Model tree4 0 RemoveRoot",
+            "Model tree4 0 RemoveRoot=true",
             "Collider 0.3:5:0.3"
         ],
         "tree5": [
-            "Model tree5 0 RemoveRoot",
+            "Model tree5 0 RemoveRoot=true",
             "Collider 0.3:5:0.3"
         ],
         "tree6": [
-            "Model tree6 0 RemoveRoot",
+            "Model tree6 0 RemoveRoot=true",
             "Collider 0.3:5:0.3"
         ],
         "player": [
-            "Model character 0",
+            "Model character 0 CanUserOrigInstance=False",
             "Collider 1:3.5:1",
             "Physics 1",
             "Tag Player",
@@ -141,17 +141,17 @@
             "Walker CharacterWalker"
         ],
         "house1": [
-            "Model house1 0 RemoveRoot",
+            "Model house1 0 RemoveRoot=true",
             "Texture palette.jpg",
             "Collider 1:1:1"
         ],
         "house2": [
-            "Model house2 0 RemoveRoot",
+            "Model house2 0 RemoveRoot=true",
             "Texture palette.jpg",
             "Collider 1:1:1"
         ],
         "house3": [
-            "Model house3 0 RemoveRoot",
+            "Model house3 0 RemoveRoot=true",
             "Texture palette.jpg",
             "Collider 1:1:1"
         ],
@@ -165,7 +165,7 @@
             "InputManager BikeInputManager"
         ],
         "road1": [
-            "Model road1 0 RemoveRoot",
+            "Model road1 0 RemoveRoot=true",
             "Texture palette.jpg 0"
         ],
         "R1": [

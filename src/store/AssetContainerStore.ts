@@ -27,18 +27,23 @@ export class AssetContainerStore {
         return this.instances.get(name);
     }
 
-    instantiate(name: string): InstantiatedAssets {
+    instantiate(name: string, canUseOriginalInstance = true): InstantiatedAssets {
         if (!this.instantiated.get(name)) {
             const container = this.instances.get(name);
             container.addAllToScene();
             this.instantiated.set(name, true);
 
-            return this.createInstancedAssetFromContainer(container);
-        } else {
-            const entries = this.instances.get(name).instantiateModelsToScene();
+            if (canUseOriginalInstance) {
+                return this.createInstancedAssetFromContainer(container);
+            } else {
+                container.meshes.forEach(mesh => mesh.isVisible = false);
+            }
 
-            return this.createInstantiatedAssetsFromEntries(entries);
-        }
+        } 
+
+        const entries = this.instances.get(name).instantiateModelsToScene();
+
+        return this.createInstantiatedAssetsFromEntries(entries);
     }
 
     private createInstancedAssetFromContainer(container: AssetContainer): InstantiatedAssets {
@@ -51,6 +56,10 @@ export class AssetContainerStore {
     }
 
     private createInstantiatedAssetsFromEntries(entries: InstantiatedEntries): InstantiatedAssets {
+        entries.rootNodes.forEach((mesh: AbstractMesh) => {
+            mesh.isVisible = true;
+            mesh.getChildMeshes().forEach(mesh => mesh.isVisible = true);
+        })
         return {
             meshes: <AbstractMesh[]> entries.rootNodes,
             skeletons: entries.skeletons,

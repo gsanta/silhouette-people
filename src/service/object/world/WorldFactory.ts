@@ -29,20 +29,18 @@ export class WorldFactory {
     private cameraService: CameraService;
 
     
-    @InjectProperty("MeshFactory")
-    private meshFactory: MeshFactory;
-    
+    private readonly meshFactory: MeshFactory;
     private readonly quarterFactory: QuarterFactory;
     private readonly worldMapParser: WorldMapParser;
 
     private readonly modelLoader: ModelLoader;
     
-    constructor(worldMapParser: WorldMapParser) {
+    constructor(worldMapParser: WorldMapParser, meshFactory: MeshFactory) {
         this.meshStore = lookup.meshStore;
         this.quarterStore = lookup.quarterStore;
         this.cameraService = lookup.cameraService;
         this.worldProvider = lookup.worldProvider;
-        this.meshFactory = lookup.meshFactory;
+        this.meshFactory = meshFactory;
         this.worldMapParser = worldMapParser;
         this.quarterFactory = new QuarterFactory(this.worldProvider, this.quarterStore);
         
