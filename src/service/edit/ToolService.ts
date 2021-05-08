@@ -11,6 +11,7 @@ import { lookup } from "../Lookup";
 import { RenderGuiService } from "../ui/RenderGuiService";
 import { WorldProvider } from "../object/world/WorldProvider";
 import { CitizenExecutor } from "../citizen/CitizenExecutor";
+import { PlayerStore } from "../player/PlayerStore";
 
 export class ToolService implements KeyboardListener {
 
@@ -25,6 +26,9 @@ export class ToolService implements KeyboardListener {
 
     @InjectProperty("MeshStore")
     private meshStore: MeshStore;
+
+    @InjectProperty("PlayerStore")
+    private playerStore: PlayerStore;
 
     @InjectProperty("RouteStore")
     private routeStore: RouteStore;
@@ -48,10 +52,11 @@ export class ToolService implements KeyboardListener {
         this.routeStore = lookup.routeStore;
         this.routeFactory = lookup.routeFactory;
         this.renderGuiService = lookup.renderGui;
+        this.playerStore = lookup.playerStore;
 
         this.keyboardService.addListener(this);
-        this.path = new RouteTool(this.worldProvider, this.materialStore, this.meshStore, this.renderGuiService, this.routeFactory, this.routeStore);
-        this.execute = new ExecutionTool(this.worldProvider, this.meshStore, this.routeStore, this.renderGuiService);
+        this.path = new RouteTool(this.worldProvider, this.materialStore, this.playerStore, this.renderGuiService, this.routeFactory, this.routeStore);
+        this.execute = new ExecutionTool(this.worldProvider, this.playerStore, this.routeStore, this.renderGuiService);
     }
 
     setSelectedTool(tool: Tool, isCanceled = false) {

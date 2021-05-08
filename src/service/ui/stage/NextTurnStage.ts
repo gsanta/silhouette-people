@@ -1,5 +1,6 @@
 import { MeshStore } from "../../../store/MeshStore";
 import { ActivePlayerService } from "../../ActivePlayerService";
+import { PlayerStore } from "../../player/PlayerStore";
 import { RenderGuiService } from "../RenderGuiService";
 import { GameStage } from "./GameStage";
 import { StageController } from "./StageController";
@@ -11,12 +12,12 @@ export class NextTurnStage implements GameStage {
     private renderGuiService: RenderGuiService;
     private stageController: StageController;
     private activePlayerService: ActivePlayerService;
-    private meshStore: MeshStore;
+    private playerStore: PlayerStore;
 
-    constructor(stageController: StageController, renderGuiService: RenderGuiService, meshStore: MeshStore, activePlayerService: ActivePlayerService) {
+    constructor(stageController: StageController, renderGuiService: RenderGuiService, playerStore: PlayerStore, activePlayerService: ActivePlayerService) {
         this.renderGuiService = renderGuiService;
         this.stageController = stageController;
-        this.meshStore = meshStore;
+        this.playerStore = playerStore;
         this.activePlayerService = activePlayerService;
     }
 
@@ -27,7 +28,7 @@ export class NextTurnStage implements GameStage {
     }
 
     nextStep() {
-        this.activePlayerService.activate(this.meshStore.getPlayers()[0]);
+        this.activePlayerService.activate(this.playerStore.getPlayers()[0]);
         this.stageController.stages.forEach(stage => stage.resetStage());
         this.stageController.enterNextStage();
         this.renderGuiService.render();

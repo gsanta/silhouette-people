@@ -1,6 +1,7 @@
 import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { MeshStore } from "../../../store/MeshStore";
 import { ActivePlayerService } from "../../ActivePlayerService";
+import { PlayerStore } from "../../player/PlayerStore";
 import { GameStage } from "../../ui/stage/GameStage";
 import { PlayerChooserHelper } from "../../ui/stage/helpers/PlayerChooserHelper";
 import { StageDescriptionHelper } from "../../ui/stage/helpers/StageDescriptionHelper";
@@ -11,17 +12,17 @@ import { ToolService } from "../ToolService";
 export class RouteStage implements GameStage {
 
     private toolService: ToolService;
-    private meshStore: MeshStore;
+    private playerStore: PlayerStore;
     private activePlayerService: ActivePlayerService;
     private stageController: StageController;
     private playerChooserHelper: PlayerChooserHelper;
     private stageDescriptionHelper: StageDescriptionHelper;
     private players: CharacterItem[] = [];
 
-    constructor(stageController: StageController, toolService: ToolService, meshStore: MeshStore, activePlayerService: ActivePlayerService) {
+    constructor(stageController: StageController, toolService: ToolService, playerStore: PlayerStore, activePlayerService: ActivePlayerService) {
         this.stageController = stageController;
         this.toolService = toolService;
-        this.meshStore = meshStore;
+        this.playerStore = playerStore;
         this.activePlayerService = activePlayerService;
         this.playerChooserHelper = new PlayerChooserHelper();
         this.stageDescriptionHelper = new StageDescriptionHelper('Draw Route', this.playerChooserHelper);
@@ -30,7 +31,7 @@ export class RouteStage implements GameStage {
     }
 
     resetStage() {
-        this.players = this.meshStore.getPlayers();
+        this.players = this.playerStore.getPlayers();
         this.playerChooserHelper.setPlayers(this.players);
         this.stageDescriptionHelper.setPlayers(this.players);
     }

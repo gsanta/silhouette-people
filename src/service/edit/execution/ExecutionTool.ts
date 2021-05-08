@@ -1,15 +1,14 @@
 import { RenderGuiService } from "../../ui/RenderGuiService";
 import { WorldProvider } from "../../object/world/WorldProvider";
-import { MeshStore } from "../../../store/MeshStore";
 import { RouteStore } from "../../../store/RouteStore";
 import { Tool, ToolType } from "../Tool";
 import { CharacterItem } from "../../../model/item/character/CharacterItem";
-import { CitizenExecutor } from "../../citizen/CitizenExecutor";
 import { RouteExecutor } from "./RouteExecutor";
+import { PlayerStore } from "../../player/PlayerStore";
 
 export class ExecutionTool extends Tool {
     private worldProvider: WorldProvider;
-    private meshStore: MeshStore;
+    private playerStore: PlayerStore;
     private routeStore: RouteStore;
     private renderService: RenderGuiService;
     private _isCanceled: boolean = true;
@@ -20,10 +19,10 @@ export class ExecutionTool extends Tool {
 
     private routeExecutors: RouteExecutor[] = [];
 
-    constructor(worldProvider: WorldProvider, meshStore: MeshStore, routeStore: RouteStore, renderService: RenderGuiService) {
+    constructor(worldProvider: WorldProvider, playerStore: PlayerStore, routeStore: RouteStore, renderService: RenderGuiService) {
         super(ToolType.MOVE);
         this.worldProvider = worldProvider;
-        this.meshStore = meshStore;
+        this.playerStore = playerStore;
         this.routeStore = routeStore;
         this.renderService = renderService;
     }
@@ -53,7 +52,7 @@ export class ExecutionTool extends Tool {
     }
 
     select(isCanceled: boolean) {
-        this.activePlayer = this.meshStore.getActivePlayer();
+        this.activePlayer = this.playerStore.getActivePlayer();
         this._isCanceled = isCanceled;
         this.startRoutes([this.activePlayer]);
     }
@@ -88,7 +87,7 @@ export class ExecutionTool extends Tool {
     }
 
     private updateInput(e: KeyboardEvent, isDown: boolean) {
-        const activePlayer = this.meshStore.getActivePlayer();
+        const activePlayer = this.playerStore.getActivePlayer();
         activePlayer.inputManager.keyboard(e, isDown);
     }
 

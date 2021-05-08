@@ -27,6 +27,6 @@ export class MeshItemLoader implements StoryLoader {
 
     private async processStory(story: StoryItem<MeshConfig>) {
         const meshItem = await this.meshFactory.create(story.data);
-        this.meshStore.addObj(meshItem);
+        this.meshStore.addItem(meshItem);
     }
 }

@@ -23,6 +23,7 @@ import { RoutePool } from "./citizen/RoutePool";
 import { EventService } from "./base/EventService";
 import { CitizenStore } from "../store/CitizenStore";
 import { Backlog } from "./story/Backlog";
+import { PlayerStore } from "./player/PlayerStore";
 
 export class Lookup {
     eventService: EventService;
@@ -54,6 +55,7 @@ export class Lookup {
     quarterStore: QuarterStore;
     meshStore: MeshStore;
     citizenStore: CitizenStore;
+    playerStore: PlayerStore;
     assetContainerStore: AssetContainerStore;
     lightStore: LightStore;
     routeStore: RouteStore;
@@ -95,6 +97,8 @@ export class Lookup {
         lookup.meshStore = this.meshStore;
         this.citizenStore = new CitizenStore();
         lookup.citizenStore = this.citizenStore;
+        this.playerStore = new PlayerStore();
+        lookup.playerStore = this.playerStore;
         this.assetContainerStore = new AssetContainerStore();
         lookup.assetContainerStore = this.assetContainerStore;
         this.lightStore = new LightStore();

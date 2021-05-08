@@ -29,7 +29,7 @@ export enum MeshObjType {
     QuarterGround = 'QuarterGround'
 }
 
-export enum MeshObjTag {
+export enum MeshItemTag {
     Player = 'Player',
     Citizen = 'Citizen',
     Enemy = 'Enemy',
@@ -50,6 +50,7 @@ export class MeshItem extends GameItem {
     
     skeleton: Skeleton;
     children: MeshItem[] = [];
+    // TODO create tag from it
     isActivePlayer: boolean = false;
 
     route: RouteItem;

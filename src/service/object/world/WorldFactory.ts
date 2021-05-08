@@ -1,7 +1,7 @@
 import { ArcRotateCamera, Axis, Color3, MeshBuilder, PhysicsImpostor, Scene, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { CameraItem } from "../../../model/item/CameraItem";
-import { MeshConfig, MeshObjTag } from "../../../model/item/mesh/MeshItem";
+import { MeshConfig, MeshItemTag } from "../../../model/item/mesh/MeshItem";
 import { WorldObj } from "../../../model/item/WorldObj";
 import { MeshStore } from "../../../store/MeshStore";
 import { QuarterStore } from "../../../store/QuarterStore";
@@ -112,11 +112,11 @@ export class WorldFactory {
     async createGameObjs(gameObjJsons: MeshConfig[], worldObj: WorldObj) {
         const gameObjects = await Promise.all(gameObjJsons.map(json =>  this.meshFactory.create(json)));
         const colliderMeshes = gameObjects
-            .filter(obj => obj.instance.getColliderMesh() && obj.tag.doesNotHave(MeshObjTag.Player, MeshObjTag.Enemy, MeshObjTag.Bicycle))
+            .filter(obj => obj.instance.getColliderMesh() && obj.tag.doesNotHave(MeshItemTag.Player, MeshItemTag.Enemy, MeshItemTag.Bicycle))
             .map(obj => obj.instance.getColliderMesh());
         
 
-        gameObjects.forEach(obj => this.meshStore.addObj(obj));
+        gameObjects.forEach(obj => this.meshStore.addItem(obj));
         this.quarterStore.getQuarter(1).getMap().fillMeshes(colliderMeshes);
     }
 }

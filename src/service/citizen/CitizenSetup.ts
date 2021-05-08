@@ -2,6 +2,7 @@ import { InjectProperty } from "../../di/diDecorators";
 import { CharacterItem } from "../../model/item/character/CharacterItem";
 import { CitizenStore } from "../../store/CitizenStore";
 import { MaterialStore } from "../../store/MaterialStore";
+import { MeshStore } from "../../store/MeshStore";
 import { RouteStore } from "../../store/RouteStore";
 import { EventService } from "../base/EventService";
 import { ToolService } from "../edit/ToolService";
@@ -32,11 +33,13 @@ export class CitizenSetup {
     @InjectProperty('MaterialStore')
     private materialStore: MaterialStore;
 
+    @InjectProperty('CitizenStore')
+    private citizenStore: CitizenStore;
+
     private readonly worldMapParser: WorldMapParser;
 
     private readonly routePool: RoutePool;
     private readonly citizenFactory: CitizenFactory;
-    private readonly citizenStore: CitizenStore;
     private readonly citizenExecutor: CitizenExecutor;
 
     constructor(worldMapParser: WorldMapParser) {
@@ -45,11 +48,11 @@ export class CitizenSetup {
         this.meshFactory = lookup.meshFactory;
         this.routeStore = lookup.routeStore;
         this.materialStore = lookup.materialStore;
+        this.citizenStore = lookup.citizenStore;
         this.worldMapParser = worldMapParser;
 
         this.routePool = new RoutePool();
         this.citizenFactory = new CitizenFactory(this.meshFactory, this.worldProvider);
-        this.citizenStore = new CitizenStore();
         this.citizenExecutor = new CitizenExecutor(this.citizenStore, this.routePool, this.routeStore, this.worldProvider, this.materialStore)
     }
 
@@ -57,9 +60,6 @@ export class CitizenSetup {
         const { routeParser } = this.worldMapParser;
 
         routeParser.getRoutes().forEach(route => this.routePool.addRoute(route));
-
-        const citizen = await this.citizenFactory.create();
-        this.citizenStore.addObj(<CharacterItem> citizen);
 
         this.toolService.execute.addRouteExecutor(this.citizenExecutor);
 

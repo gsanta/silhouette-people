@@ -1,18 +1,26 @@
+import { InjectProperty } from "../di/diDecorators";
 import { CharacterItem } from "../model/item/character/CharacterItem";
+import { MeshItemTag } from "../model/item/mesh/MeshItem";
+import { lookup } from "../service/Lookup";
+import { MeshStore } from "./MeshStore";
 
 export class CitizenStore {
-    private objs: CharacterItem[] = [];
+    @InjectProperty('MeshStore')
+    private meshStore: MeshStore;
 
-    addObj(gameObject: CharacterItem) {
-        this.objs.push(gameObject);
+    constructor() {
+        this.meshStore = lookup.meshStore;
+    }
+
+    addItem(item: CharacterItem) {
+        this.meshStore.addItem(item);
     }
 
     getAll(): CharacterItem[] {
-        return this.objs;
+        return <CharacterItem[]> this.meshStore.getByTag(MeshItemTag.Citizen);
     }
 
-    delete(citizen: CharacterItem) {
-        this.objs = this.objs.filter(obj => obj !== citizen);
-        citizen.dispose();
+    removeItem(citizen: CharacterItem, disposeMesh = false) {
+        this.meshStore.removeItem(citizen, disposeMesh);
     }
 }

@@ -2,22 +2,22 @@ import React from "react";
 import { ComponentProps } from './ComponentProps';
 import './../../assets/css/action-panel.scss'
 import { InjectProperty } from "../di/diDecorators";
-import { MeshStore } from "../store/MeshStore";
 import { lookup } from "../service/Lookup";
 import { BikeItem } from "../model/item/character/CharacterItem";
+import { PlayerStore } from "../service/player/PlayerStore";
 
 export class BikePanelComponent extends React.Component<ComponentProps> {
 
-    @InjectProperty("MeshStore")
-    private meshStore: MeshStore;
+    @InjectProperty("PlayerStore")
+    private playerStore: PlayerStore;
 
     constructor(props: ComponentProps) {
         super(props);
-        this.meshStore = lookup.meshStore;
+        this.playerStore = lookup.playerStore;
     }
 
     render() {
-        const player = this.meshStore.getActivePlayer(); 
+        const player = this.playerStore.getActivePlayer(); 
 
         if (!player || !player.getParent()) {
             return null;

@@ -1,6 +1,7 @@
 import { InjectProperty } from "../../di/diDecorators";
 import { MeshStore } from "../../store/MeshStore";
 import { lookup } from "../Lookup";
+import { PlayerStore } from "../player/PlayerStore";
 
 export class RenderGuiService {
     private renderer: () => void;
@@ -8,8 +9,12 @@ export class RenderGuiService {
     @InjectProperty("MeshStore")
     private meshStore: MeshStore;
 
+    @InjectProperty("PlayerStore")
+    private playerStore: PlayerStore;
+
     constructor() {
         this.meshStore = lookup.meshStore;
+        this.playerStore = lookup.playerStore;
     }
 
     setGuiRenderer(renderer: () => void) {
@@ -29,14 +34,14 @@ export class RenderGuiService {
     private processDirtyObjs(): boolean {
         let dirtyFound = false;
 
-        this.meshStore.getPlayers().forEach(player => {
+        this.playerStore.getPlayers().forEach(player => {
             if (player.animationState.isDirty()) {
                 player.animationState.clearDirty();
                 dirtyFound = true;
             }
         });
 
-        this.meshStore.getBikes().forEach(bike => {
+        this.playerStore.getBikes().forEach(bike => {
             if (bike.animationState.isDirty()) {
                 bike.animationState.clearDirty();
                 dirtyFound = true;

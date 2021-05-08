@@ -1,13 +1,13 @@
 import { InjectProperty } from "../../../di/diDecorators";
 import { MeshItem } from "../../../model/item/mesh/MeshItem";
-import { MeshStore } from "../../../store/MeshStore";
 import { QuarterStore } from "../../../store/QuarterStore";
 import { WorldProvider } from "../world/WorldProvider";
 import { lookup } from "../../Lookup";
+import { PlayerStore } from "../../player/PlayerStore";
 
 export class QuarterUpdater {
-    @InjectProperty("MeshStore")
-    private meshStore: MeshStore;
+    @InjectProperty("PlayerStore")
+    private playerStore: PlayerStore;
 
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;
@@ -16,13 +16,13 @@ export class QuarterUpdater {
     private worldProvider: WorldProvider;
 
     constructor() {
-        this.meshStore = lookup.meshStore;
+        this.playerStore = lookup.playerStore;
         this.quarterStore = lookup.quarterStore;
         this.worldProvider = lookup.worldProvider;
     }
 
     updateQuarterBasedOnPlayerPosition() {
-        const player = this.meshStore.getActivePlayer();
+        const player = this.playerStore.getActivePlayer();
 
         if (player) {
             if (this.isQuarterChanged(player)) {

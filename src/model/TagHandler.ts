@@ -1,22 +1,22 @@
-import { MeshObjTag } from "./item/mesh/MeshItem";
+import { MeshItemTag } from "./item/mesh/MeshItem";
 
 
 export class TagHandler {
-    private tags: Set<MeshObjTag> = new Set();
+    private tags: Set<MeshItemTag> = new Set();
 
-    add(...tag: MeshObjTag[]) {
+    add(...tag: MeshItemTag[]) {
         tag.forEach(t => this.tags.add(t));
     }
 
-    has(...tag: MeshObjTag[]) {
+    has(...tag: MeshItemTag[]) {
         return tag.every(t => this.tags.has(t));
     }
 
-    doesNotHave(...tag: MeshObjTag[]) {
+    doesNotHave(...tag: MeshItemTag[]) {
         return tag.every(t => !this.tags.has(t));
     }
 
-    remove(tag: MeshObjTag) {
+    remove(tag: MeshItemTag) {
         this.tags.delete(tag);
     }
 
@@ -25,14 +25,14 @@ export class TagHandler {
     }
 
     isPlayer() {
-        return this.has(MeshObjTag.Player);
+        return this.has(MeshItemTag.Player);
     }
 
     removePlayer() {
-        this.remove(MeshObjTag.Player);
+        this.remove(MeshItemTag.Player);
     }
 
     addPlayer() {
-        this.add(MeshObjTag.Player);
+        this.add(MeshItemTag.Player);
     }
 }

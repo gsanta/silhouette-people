@@ -7,13 +7,14 @@ import { RouteStore } from "../../../store/RouteStore";
 import { PointerData } from "../../base/pointer/PointerService";
 import { RouteConfig, RouteFactory } from "../../object/route/RouteFactory";
 import { WorldProvider } from "../../object/world/WorldProvider";
+import { PlayerStore } from "../../player/PlayerStore";
 import { RenderGuiService } from "../../ui/RenderGuiService";
 import { Tool, ToolType } from "../Tool";
 import { PathBuilder } from "./PathBuilder";
 import { PathVisualizer } from "./PathVisualizer";
 
 export class RouteTool extends Tool {
-    private meshStore: MeshStore;
+    private playerStore: PlayerStore;
     private renderService: RenderGuiService;
     private pathVisualizer: PathVisualizer;
     private pathBuilder: PathBuilder;
@@ -26,9 +27,9 @@ export class RouteTool extends Tool {
     private _isReset = true;
     private onFinishedListeners: ((wasCanceled: boolean) => void)[] = [];
 
-    constructor(worldProvider: WorldProvider, materialStore: MaterialStore, meshStore: MeshStore, renderService: RenderGuiService, routeFactory: RouteFactory, routeStore: RouteStore) {
+    constructor(worldProvider: WorldProvider, materialStore: MaterialStore, playerStore: PlayerStore, renderService: RenderGuiService, routeFactory: RouteFactory, routeStore: RouteStore) {
         super(ToolType.PATH);
-        this.meshStore = meshStore;
+        this.playerStore = playerStore;
         this.renderService = renderService;
         this.routeFactory = routeFactory;
         this.routeStore = routeStore;
@@ -62,7 +63,7 @@ export class RouteTool extends Tool {
 
     select(isCanceled: boolean) {
         this._isReset = isCanceled;
-        this.character = this.meshStore.getActivePlayer();
+        this.character = this.playerStore.getActivePlayer();
 
         this.renderService.render();
     }

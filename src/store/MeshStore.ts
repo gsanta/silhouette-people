@@ -1,11 +1,11 @@
 import { InjectProperty } from "../di/diDecorators";
-import { BikeItem, PersonItem } from "../model/item/character/CharacterItem";
-import { MeshItem, MeshObjTag, MeshObjType } from "../model/item/mesh/MeshItem";
+import { PersonItem } from "../model/item/character/CharacterItem";
+import { MeshItem, MeshItemTag } from "../model/item/mesh/MeshItem";
 import { lookup } from "../service/Lookup";
 import { QuarterStore } from "./QuarterStore";
 
 export class MeshStore {
-    private objs: MeshItem[] = [];
+    private items: MeshItem[] = [];
 
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;
@@ -14,43 +14,38 @@ export class MeshStore {
         this.quarterStore = lookup.quarterStore;
     }
 
-    addObj(gameObject: MeshItem) {
-        this.objs.push(gameObject);
+    addItem(gameObject: MeshItem) {
+        this.items.push(gameObject);
 
         const quarterIndex = this.calcQuarterIndex(gameObject);
         gameObject.quarterIndex = quarterIndex;
     }
 
-    getActivePlayer(): PersonItem {
-        return <PersonItem> this.getPlayers().find(player => player.isActivePlayer); 
-    }
-
-    getPlayers(): PersonItem[] {
-        return <PersonItem[]> this.getObjsByTag(MeshObjTag.Player)
-    }
-
-    getBikes(): BikeItem[] {
-        return <BikeItem[]> this.getObjsByTag(MeshObjTag.Bicycle);
+    removeItem(item: MeshItem, disposeMesh = false) {
+        this.items = this.items.filter(i => i !== item);
+        if (disposeMesh) {
+            item.dispose();
+        }
     }
 
     getEnemies(): PersonItem[] {
-        return <PersonItem[]> this.getObjsByTag(MeshObjTag.Enemy);
+        return <PersonItem[]> this.getByTag(MeshItemTag.Enemy);
     }
 
-    getObjsByTag(tag: MeshObjTag): MeshItem[] {
-        return this.objs.filter(gameObj => gameObj.tag.has(tag));
+    getByTag(tag: MeshItemTag): MeshItem[] {
+        return this.items.filter(gameObj => gameObj.tag.has(tag));
     }
 
     getById(id: string) {
-        return this.objs.find(obj => obj.id === id);
+        return this.items.find(obj => obj.id === id);
     }
 
     getAll(): MeshItem[] {
-        return this.objs;
+        return this.items;
     }
 
     dispose() {
-        this.objs.forEach(obj => obj.dispose());
+        this.items.forEach(obj => obj.dispose());
     }
 
     private calcQuarterIndex(obj: MeshItem): number {

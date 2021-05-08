@@ -1,15 +1,15 @@
 import { CharacterItem } from "../../../model/item/character/CharacterItem";
-import { MeshStore } from "../../../store/MeshStore";
 import { ActivePlayerService } from "../../ActivePlayerService";
-import { ToolService } from "../ToolService";
+import { PlayerStore } from "../../player/PlayerStore";
 import { GameStage } from "../../ui/stage/GameStage";
 import { PlayerChooserHelper } from "../../ui/stage/helpers/PlayerChooserHelper";
 import { StageDescriptionHelper } from "../../ui/stage/helpers/StageDescriptionHelper";
 import { StageController } from "../../ui/stage/StageController";
-import { StageDescription, StepState } from "../../ui/stage/StageDescription";
+import { StageDescription } from "../../ui/stage/StageDescription";
+import { ToolService } from "../ToolService";
 
 export class ExecutionStage implements GameStage {
-    private meshStore: MeshStore;
+    private playerStore: PlayerStore;
     private players: CharacterItem[];
     private activePlayerService: ActivePlayerService;
     private toolService: ToolService;
@@ -17,10 +17,10 @@ export class ExecutionStage implements GameStage {
     private playerChooserHelper: PlayerChooserHelper;
     private stageDescriptionHelper: StageDescriptionHelper;
 
-    constructor(stageController: StageController, toolService: ToolService, meshStore: MeshStore, activePlayerService: ActivePlayerService) {
+    constructor(stageController: StageController, toolService: ToolService, playerStore: PlayerStore, activePlayerService: ActivePlayerService) {
         this.stageController = stageController;
         this.toolService = toolService;
-        this.meshStore = meshStore;
+        this.playerStore = playerStore;
         this.activePlayerService = activePlayerService;
 
         this.playerChooserHelper = new PlayerChooserHelper();
@@ -31,7 +31,7 @@ export class ExecutionStage implements GameStage {
     }
 
     resetStage() {
-        this.players = this.meshStore.getPlayers();
+        this.players = this.playerStore.getPlayers();
         this.playerChooserHelper.setPlayers(this.players);
         this.stageDescriptionHelper.setPlayers(this.players);
     }

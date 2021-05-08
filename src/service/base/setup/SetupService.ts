@@ -22,6 +22,7 @@ import { MeshFactory } from "../../object/mesh/MeshFactory";
 import { CitizenStore } from "../../../store/CitizenStore";
 import { FactorySetup } from "../../object/mesh/FactorySetup";
 import { Backlog } from "../../story/Backlog";
+import { PlayerStore } from "../../player/PlayerStore";
 
 export class SetupService {
 
@@ -34,8 +35,8 @@ export class SetupService {
     @InjectProperty("PointerService")
     private pointerService: PointerService;
 
-    @InjectProperty("MeshStore")
-    private meshStore: MeshStore;
+    @InjectProperty("PlayerStore")
+    private playerStore: PlayerStore;
 
     @InjectProperty("ToolService")
     private toolService: ToolService;
@@ -77,7 +78,7 @@ export class SetupService {
         this.worldProvider = lookup.worldProvider;
         this.debugService = lookup.debugService;
         this.pointerService = lookup.pointer;
-        this.meshStore = lookup.meshStore;
+        this.playerStore = lookup.playerStore;
         this.toolService = lookup.toolService;
         this.keyboardService = lookup.keyboard;
         this.renderGuiService = lookup.renderGui;
@@ -119,7 +120,7 @@ export class SetupService {
         
         this.toolService.setSelectedTool(this.toolService.path, true);
 
-        this.bikeParenter.parentToBike(<PersonItem> this.meshStore.getById('player1'), this.meshStore.getBikes()[0], this.keyboardService);
+        this.bikeParenter.parentToBike(<PersonItem> this.playerStore.getPlayerById('player1'), this.playerStore.getBikes()[0], this.keyboardService);
 
         this.stageController.stages.forEach(stage => stage.resetStage());
         this.stageController.getActiveStage().enterStage();
