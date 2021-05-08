@@ -1,12 +1,12 @@
-import { CharacterObj } from "../../../../model/object/character/CharacterObj";
+import { CharacterItem } from "../../../../model/item/character/CharacterItem";
 
 
 export class PlayerChooserHelper {
-    private players: CharacterObj[] = [];
-    private finishedPlayers: Set<CharacterObj>;
-    private activePlayer: CharacterObj;
+    private players: CharacterItem[] = [];
+    private finishedPlayers: Set<CharacterItem>;
+    private activePlayer: CharacterItem;
 
-    setPlayers(players: CharacterObj[]) {
+    setPlayers(players: CharacterItem[]) {
         this.players = players;
 
         this.players = players;
@@ -14,7 +14,7 @@ export class PlayerChooserHelper {
         this.activePlayer = undefined;
     }
 
-    isPlayerFinished(player: CharacterObj): boolean {
+    isPlayerFinished(player: CharacterItem): boolean {
         return this.finishedPlayers.has(player);
     }
 
@@ -24,16 +24,16 @@ export class PlayerChooserHelper {
         }
     }
 
-    getActivePlayer(): CharacterObj {
+    getActivePlayer(): CharacterItem {
         return this.activePlayer;
     }
 
-    determineNextActivePlayer(): CharacterObj {
+    determineNextActivePlayer(): CharacterItem {
         this.activePlayer = this.getNextPlayer();
         return this.activePlayer;
     }
 
-    private getNextPlayer(): CharacterObj {
+    private getNextPlayer(): CharacterItem {
         if (this.players.length > 0 && !this.activePlayer) {
             return this.players[0];
         } 

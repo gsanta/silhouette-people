@@ -1,6 +1,6 @@
-import { CharacterObj } from "../../../model/object/character/CharacterObj";
-import { PathObj } from "../../../model/object/PathObj";
-import { RouteObj } from "../../../model/object/route/RouteObj";
+import { CharacterItem } from "../../../model/item/character/CharacterItem";
+import { PathItem } from "../../../model/item/PathItem";
+import { RouteItem } from "../../../model/item/route/RouteItem";
 import { MaterialStore } from "../../../store/MaterialStore";
 import { MeshStore } from "../../../store/MeshStore";
 import { RouteStore } from "../../../store/RouteStore";
@@ -20,9 +20,9 @@ export class RouteTool extends Tool {
     private routeFactory: RouteFactory;
     private routeStore: RouteStore;
     
-    private character: CharacterObj;
-    private currentPath: PathObj;
-    private route: RouteObj;
+    private character: CharacterItem;
+    private currentPath: PathItem;
+    private route: RouteItem;
     private _isReset = true;
     private onFinishedListeners: ((wasCanceled: boolean) => void)[] = [];
 

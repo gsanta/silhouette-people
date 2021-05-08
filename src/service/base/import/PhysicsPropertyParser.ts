@@ -1,5 +1,5 @@
 import { PhysicsImpostor } from "babylonjs";
-import { MeshObj } from "../../../model/object/mesh/MeshObj";
+import { MeshItem } from "../../../model/item/mesh/MeshItem";
 import { Lookup } from "../../Lookup";
 import { WorldProvider } from "../../object/world/WorldProvider";
 import { AbstractPropertyParser } from "./AbstractPropertyParser";
@@ -23,7 +23,7 @@ export class PhysicsPropertyParser extends AbstractPropertyParser<PhysicsPropert
         return false;
     }
 
-    processProperty(gameObject: MeshObj, config: PhysicsPropertyConfig): void {
+    processProperty(gameObject: MeshItem, config: PhysicsPropertyConfig): void {
         const colliderMesh = gameObject.instance.getColliderMesh();
         if (colliderMesh) {
             colliderMesh.physicsImpostor = new PhysicsImpostor(colliderMesh, PhysicsImpostor.BoxImpostor, { mass: config.mass,  }, this.worldProvider.scene);

@@ -1,5 +1,5 @@
 import { Mesh, MeshBuilder, StandardMaterial, Vector3 } from "babylonjs";
-import { PathObj } from "../../../model/object/PathObj";
+import { PathItem } from "../../../model/item/PathItem";
 import { WorldProvider } from "../../object/world/WorldProvider";
 import { MaterialStore } from "../../../store/MaterialStore";
 
@@ -14,12 +14,12 @@ export class PathVisualizer {
         this.materialStore = materialStore;
     }
 
-    visualize(path: PathObj): void {
+    visualize(path: PathItem): void {
         this.visualizeArrowHead(path);
         this.visualizeArrow(path);
     }
 
-    private visualizeArrowHead(path: PathObj) {
+    private visualizeArrowHead(path: PathItem) {
             const pathes = this.createArrowHeadPathes(path);
 
             const arrowHead = path.getArrowHead();
@@ -32,7 +32,7 @@ export class PathVisualizer {
             }
     }
 
-    private createArrowHeadPathes(path: PathObj) {
+    private createArrowHeadPathes(path: PathItem) {
         const angle = this.getAngle(path.getStartPoint(), path.getEndPoint());
         const angelPlus = angle + Math.PI / 2;
         const angelMinus = angle - Math.PI / 2;
@@ -52,7 +52,7 @@ export class PathVisualizer {
         return [path1, path2];
     }
 
-    private visualizeArrow(path: PathObj) {
+    private visualizeArrow(path: PathItem) {
         const pathes = this.createRibbonPathes(path);
         const ribbon = path.getMesh();
         const updatedRibbon = MeshBuilder.CreateRibbon("ribbon", {pathArray: pathes, updatable: true, instance: ribbon}, this.worldProvider.scene);
@@ -63,7 +63,7 @@ export class PathVisualizer {
         }
     }
 
-    private createRibbonPathes(path: PathObj) {
+    private createRibbonPathes(path: PathItem) {
         const angle = this.getAngle(path.getStartPoint(), path.getEndPoint());
         const angelPlus = angle + Math.PI / 2;
         const angelMinus = angle - Math.PI / 2;

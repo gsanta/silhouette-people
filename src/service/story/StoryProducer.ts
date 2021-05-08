@@ -1,4 +1,4 @@
-import { MeshConfig } from "../../model/object/mesh/MeshObj";
+import { MeshConfig } from "../../model/item/mesh/MeshItem";
 import { Backlog } from "./Backlog";
 import { StoryItem, StoryType } from "./StoryItem";
 

@@ -1,6 +1,6 @@
 import { Axis, Quaternion, Vector3 } from "babylonjs";
-import { CharacterObj } from "../../model/object/character/CharacterObj";
-import { MeshConfig, MeshObjType } from "../../model/object/mesh/MeshObj";
+import { CharacterItem } from "../../model/item/character/CharacterItem";
+import { MeshConfig, MeshObjType } from "../../model/item/mesh/MeshItem";
 import { MeshFactory } from "../object/mesh/MeshFactory";
 import { WorldProvider } from "../object/world/WorldProvider";
 
@@ -16,10 +16,10 @@ export class CitizenFactory {
         this.worldProvider = worldProvider;
     }
 
-    async create(): Promise<CharacterObj> {
+    async create(): Promise<CharacterItem> {
         const character = await this.meshFactory.create(this.createConfig());
 
-        return <CharacterObj> character;
+        return <CharacterItem> character;
     }
 
     private createConfig(): MeshConfig {

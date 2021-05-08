@@ -1,6 +1,6 @@
 import { AbstractMesh, Axis, Mesh, Space } from "babylonjs";
-import { MeshInstance } from "../../../model/object/mesh/MeshInstance";
-import { MeshObj } from "../../../model/object/mesh/MeshObj";
+import { MeshInstance } from "../../../model/item/mesh/MeshInstance";
+import { MeshItem } from "../../../model/item/mesh/MeshItem";
 import { AssetContainerStore } from "../../../store/AssetContainerStore";
 import { WorldProvider } from "../../object/world/WorldProvider";
 import { AbstractPropertyParser } from "./AbstractPropertyParser";
@@ -29,13 +29,14 @@ export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyCon
         return true;
     }
 
-    async processPropertyAsync(meshObj: MeshObj, props: ModelPropertyConfig): Promise<void> {
+    async processPropertyAsync(meshObj: MeshItem, props: ModelPropertyConfig): Promise<void> {
         const removeRoot = props.removeRoot;
+        // TODO for static objects there is a problem when using original instances, check it
         const canUseOriginalInstance = props.canUseOriginalInstance === false ? false : true
 
-        const result = await this.assetContainerStore.instantiate(props.path, canUseOriginalInstance);
+        const result = await this.assetContainerStore.instantiate(props.path, false);
                 
-        let meshes = removeRoot ? this.removeRoot(result.meshes) : result.meshes;
+        let meshes = removeRoot === true ? this.removeRoot(result.meshes) : result.meshes;
 
         result.animationGroups.forEach(animationGroup => animationGroup.stop());
 

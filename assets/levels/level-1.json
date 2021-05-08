@@ -71,8 +71,9 @@
         "T4": "tree4",
         "T5": "tree5",
         "T6": "tree6",
-        "P1": "player",
-        "P": "player",
+        "P1": "character",
+        "P": "character",
+        "C": "character",
         "E": "enemy",
         "H": "house1",
         "H1": "house1",
@@ -172,7 +173,7 @@
                 }
             }
         },
-        "player": {
+        "character": {
             "properties": {
                 "model": {
                     "path": "character",
@@ -185,7 +186,6 @@
                 "physics": {
                     "mass": 1
                 },
-                "tags": ["Player"],
                 "state": "CharacterIdleState",
                 "inputManager": "CharacterInputManager"
             }
@@ -332,12 +332,20 @@
                 "id": "player1",
                 "addons": ["Highlight"],
                 "activePlayer": true,
+                "tags": ["Player"],
                 "walker": "CharacterWalker"
             }
         },
         "P": {
             "properties": {
                 "id": "player2",
+                "tags": ["Player"],
+                "walker": "CharacterWalker"
+            }
+        },
+        "C": {
+            "properties": {
+                "tags": ["Citizen"],
                 "walker": "CharacterWalker"
             }
         }

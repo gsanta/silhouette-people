@@ -1,5 +1,5 @@
 import { Axis, Space } from "babylonjs";
-import { MeshObj } from "../../../model/object/mesh/MeshObj";
+import { MeshItem } from "../../../model/item/mesh/MeshItem";
 import { AbstractPropertyParser, parseStrVector } from "./AbstractPropertyParser";
 
 export class PositionPropertyParser extends AbstractPropertyParser<string> {
@@ -9,7 +9,7 @@ export class PositionPropertyParser extends AbstractPropertyParser<string> {
         return false;
     }
 
-    processProperty(gameObj: MeshObj, position: string) {
+    processProperty(gameObj: MeshItem, position: string) {
         const pos = parseStrVector(position.trim());
 
         gameObj.instance.getAllMeshes()[0].translate(Axis.X, pos.x, Space.WORLD);

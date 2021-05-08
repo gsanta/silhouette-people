@@ -1,6 +1,6 @@
 import { Axis, Color3, Color4, MeshBuilder, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { QuarterObj } from "../../../model/object/quarter/QuarterObj";
+import { QuarterItem } from "../../../model/item/quarter/QuarterItem";
 import { QuarterStore } from "../../../store/QuarterStore";
 import { lookup } from "../../Lookup";
 import { WorldProvider } from "../world/WorldProvider";
@@ -42,7 +42,7 @@ export class QuarterFactory {
         ground.parent = this.worldProvider.world.ground;
         ground.translate(Axis.Y, 0.2, Space.WORLD);
 
-        const quarter = new QuarterObj(id, ground);
+        const quarter = new QuarterItem(id, ground);
         
         this.quarterStore.addQuarter(quarter);
     }

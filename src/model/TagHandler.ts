@@ -1,4 +1,4 @@
-import { MeshObjTag } from "./object/mesh/MeshObj";
+import { MeshObjTag } from "./item/mesh/MeshItem";
 
 
 export class TagHandler {

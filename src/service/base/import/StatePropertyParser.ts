@@ -1,11 +1,11 @@
-import { BikeIdleState } from "../../../model/object/bike/states/BikeIdleState";
-import { BikeMovingState } from "../../../model/object/bike/states/BikeMovingState";
-import { MeshStateName } from "../../../model/object/mesh/AbstractMeshState";
-import { CharacterIdleState } from "../../../model/object/character/states/CharacterIdleState";
-import { CharacterWalkingState } from "../../../model/object/character/states/CharacterWalkingState";
-import { MeshState } from "../../../model/object/mesh/MeshState";
+import { BikeIdleState } from "../../../model/item/bike/states/BikeIdleState";
+import { BikeMovingState } from "../../../model/item/bike/states/BikeMovingState";
+import { MeshStateName } from "../../../model/item/mesh/AbstractMeshState";
+import { CharacterIdleState } from "../../../model/item/character/states/CharacterIdleState";
+import { CharacterWalkingState } from "../../../model/item/character/states/CharacterWalkingState";
+import { MeshState } from "../../../model/item/mesh/MeshState";
 import { AbstractPropertyParser } from "./AbstractPropertyParser";
-import { CharacterObj } from "../../../model/object/character/CharacterObj";
+import { CharacterItem } from "../../../model/item/character/CharacterItem";
 
 export class StatePropertyParser extends AbstractPropertyParser<string> {
     propName = 'state';
@@ -14,12 +14,12 @@ export class StatePropertyParser extends AbstractPropertyParser<string> {
         return false;
     }
 
-    processProperty(mesh: CharacterObj, stateName: string) {
+    processProperty(mesh: CharacterItem, stateName: string) {
         mesh.animationState = this.createState(mesh, stateName as MeshStateName);
         mesh.animationState.enterState();
     }
 
-    private createState(gameObj: CharacterObj, stateName: MeshStateName): MeshState {
+    private createState(gameObj: CharacterItem, stateName: MeshStateName): MeshState {
         switch(stateName) {
             case MeshStateName.CharacterIdleState:
                 return new CharacterIdleState(gameObj);

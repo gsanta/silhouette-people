@@ -1,4 +1,4 @@
-import { CharacterObj } from "../../../model/object/character/CharacterObj";
+import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { MeshStore } from "../../../store/MeshStore";
 import { ActivePlayerService } from "../../ActivePlayerService";
 import { ToolService } from "../ToolService";
@@ -10,7 +10,7 @@ import { StageDescription, StepState } from "../../ui/stage/StageDescription";
 
 export class ExecutionStage implements GameStage {
     private meshStore: MeshStore;
-    private players: CharacterObj[];
+    private players: CharacterItem[];
     private activePlayerService: ActivePlayerService;
     private toolService: ToolService;
     private stageController: StageController;

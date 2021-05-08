@@ -1,5 +1,5 @@
 import { Vector2 } from "babylonjs";
-import { QuarterMap } from "../../../../model/object/quarter/QuarterMap";
+import { QuarterMap } from "../../../../model/item/quarter/QuarterMap";
 import { IPathFinder } from "./IPathFinder";
 import { PathFinder } from "./PathFinder";
 import { PathRedundancyEliminationDecorator } from "./PathRedundancyEliminationDecorator";

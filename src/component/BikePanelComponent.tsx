@@ -4,7 +4,7 @@ import './../../assets/css/action-panel.scss'
 import { InjectProperty } from "../di/diDecorators";
 import { MeshStore } from "../store/MeshStore";
 import { lookup } from "../service/Lookup";
-import { BikeObj } from "../model/object/character/CharacterObj";
+import { BikeItem } from "../model/item/character/CharacterItem";
 
 export class BikePanelComponent extends React.Component<ComponentProps> {
 
@@ -23,7 +23,7 @@ export class BikePanelComponent extends React.Component<ComponentProps> {
             return null;
         }
 
-        const bike = player.getParent() as BikeObj;
+        const bike = player.getParent() as BikeItem;
         let speed = bike.walker.getSpeed();
         speed = Math.trunc(speed * 10) / 10;
 

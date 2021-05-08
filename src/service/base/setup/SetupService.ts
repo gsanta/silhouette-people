@@ -5,7 +5,7 @@ import { PointerService } from "../pointer/PointerService";
 import { lookup, Lookup } from "../../Lookup";
 import { BikeParenter } from "./BikeParenter";
 import { MeshStore } from "../../../store/MeshStore";
-import { HumanoidObj } from "../../../model/object/character/CharacterObj";
+import { PersonItem } from "../../../model/item/character/CharacterItem";
 import { ToolService } from "../../edit/ToolService";
 import { KeyboardService } from "../keyboard/KeyboardService";
 import { StageSetup } from "../../ui/stage/StageSetup";
@@ -119,7 +119,7 @@ export class SetupService {
         
         this.toolService.setSelectedTool(this.toolService.path, true);
 
-        this.bikeParenter.parentToBike(<HumanoidObj> this.meshStore.getById('player1'), this.meshStore.getBikes()[0], this.keyboardService);
+        this.bikeParenter.parentToBike(<PersonItem> this.meshStore.getById('player1'), this.meshStore.getBikes()[0], this.keyboardService);
 
         this.stageController.stages.forEach(stage => stage.resetStage());
         this.stageController.getActiveStage().enterStage();

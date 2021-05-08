@@ -1,12 +1,12 @@
-import { CharacterObj } from "../model/object/character/CharacterObj";
-import { RouteObj } from "../model/object/route/RouteObj";
+import { CharacterItem } from "../model/item/character/CharacterItem";
+import { RouteItem } from "../model/item/route/RouteItem";
 
 
 export class RouteStore {
 
-    private routes: RouteObj[] = [];
+    private routes: RouteItem[] = [];
 
-    addRoute(route: RouteObj) {
+    addRoute(route: RouteItem) {
         this.routes.push(route);
     }
 
@@ -14,11 +14,11 @@ export class RouteStore {
         return this.getRoutes().filter(route => route.walker.isFinished());
     }
 
-    getRoutes(): RouteObj[] {
+    getRoutes(): RouteItem[] {
         return this.routes;
     }
 
-    getRouteForCharacter(character: CharacterObj): RouteObj {
+    getRouteForCharacter(character: CharacterItem): RouteItem {
         return this.routes.find(route => route.character === character);
     }
 
@@ -26,7 +26,7 @@ export class RouteStore {
         this.routes = this.getRoutes().filter(route => !route.walker.isFinished());
     }
 
-    deleteRoute(route: RouteObj) {
+    deleteRoute(route: RouteItem) {
         route.dispose();
         this.routes = this.getRoutes().filter(r => r !== route);
     }

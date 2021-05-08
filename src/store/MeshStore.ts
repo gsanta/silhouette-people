@@ -1,11 +1,11 @@
 import { InjectProperty } from "../di/diDecorators";
-import { BikeObj, HumanoidObj } from "../model/object/character/CharacterObj";
-import { MeshObj, MeshObjTag, MeshObjType } from "../model/object/mesh/MeshObj";
+import { BikeItem, PersonItem } from "../model/item/character/CharacterItem";
+import { MeshItem, MeshObjTag, MeshObjType } from "../model/item/mesh/MeshItem";
 import { lookup } from "../service/Lookup";
 import { QuarterStore } from "./QuarterStore";
 
 export class MeshStore {
-    private objs: MeshObj[] = [];
+    private objs: MeshItem[] = [];
 
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;
@@ -14,42 +14,38 @@ export class MeshStore {
         this.quarterStore = lookup.quarterStore;
     }
 
-    addObj(gameObject: MeshObj) {
+    addObj(gameObject: MeshItem) {
         this.objs.push(gameObject);
 
         const quarterIndex = this.calcQuarterIndex(gameObject);
         gameObject.quarterIndex = quarterIndex;
     }
 
-    getActivePlayer(): HumanoidObj {
-        return <HumanoidObj> this.getPlayers().find(player => player.isActivePlayer); 
+    getActivePlayer(): PersonItem {
+        return <PersonItem> this.getPlayers().find(player => player.isActivePlayer); 
     }
 
-    getPlayers(): HumanoidObj[] {
-        return <HumanoidObj[]> this.getObjsByTag(MeshObjTag.Player)
+    getPlayers(): PersonItem[] {
+        return <PersonItem[]> this.getObjsByTag(MeshObjTag.Player)
     }
 
-    getBikes(): BikeObj[] {
-        return <BikeObj[]> this.getObjsByTag(MeshObjTag.Bicycle);
+    getBikes(): BikeItem[] {
+        return <BikeItem[]> this.getObjsByTag(MeshObjTag.Bicycle);
     }
 
-    getEnemies(): HumanoidObj[] {
-        return <HumanoidObj[]> this.getObjsByTag(MeshObjTag.Enemy);
+    getEnemies(): PersonItem[] {
+        return <PersonItem[]> this.getObjsByTag(MeshObjTag.Enemy);
     }
 
-    getObjsByTag(tag: MeshObjTag): MeshObj[] {
+    getObjsByTag(tag: MeshObjTag): MeshItem[] {
         return this.objs.filter(gameObj => gameObj.tag.has(tag));
-    }
-
-    getObjsByType(...type: MeshObjType[]): MeshObj[] {
-        return this.objs.filter(obj => type.includes(obj.type)); 
     }
 
     getById(id: string) {
         return this.objs.find(obj => obj.id === id);
     }
 
-    getAll(): MeshObj[] {
+    getAll(): MeshItem[] {
         return this.objs;
     }
 
@@ -57,7 +53,7 @@ export class MeshStore {
         this.objs.forEach(obj => obj.dispose());
     }
 
-    private calcQuarterIndex(obj: MeshObj): number {
+    private calcQuarterIndex(obj: MeshItem): number {
         const pos = obj.instance.getPosition2D();
 
         const quarterIndex = this.quarterStore.getAllQuarters().findIndex(quarter => quarter.containsPoint2D(pos));

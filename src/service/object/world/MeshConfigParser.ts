@@ -1,4 +1,4 @@
-import { MeshConfig, MeshObjType } from "../../../model/object/mesh/MeshObj";
+import { MeshConfig, MeshObjType } from "../../../model/item/mesh/MeshItem";
 import { toStrVector } from "../../base/import/AbstractPropertyParser";
 import { MapParser, ParsedItem } from "./MapParser";
 import { WorldMap } from "./WorldMap";

@@ -1,11 +1,11 @@
 import { Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { CharacterObj } from "../../../model/object/character/CharacterObj";
-import { PathObj } from "../../../model/object/PathObj";
-import { LockedDirection } from "../../../model/object/route/features/LockedDirection";
-import { LockedSpeed } from "../../../model/object/route/features/LockedSpeed";
-import { RouteObj } from "../../../model/object/route/RouteObj";
-import { RouteWalker } from "../../../model/object/route/RouteWalker";
+import { CharacterItem } from "../../../model/item/character/CharacterItem";
+import { PathItem } from "../../../model/item/PathItem";
+import { LockedDirection } from "../../../model/item/route/features/LockedDirection";
+import { LockedSpeed } from "../../../model/item/route/features/LockedSpeed";
+import { RouteItem } from "../../../model/item/route/RouteItem";
+import { RouteWalker } from "../../../model/item/route/RouteWalker";
 import { RouteStore } from "../../../store/RouteStore";
 import { IPathFinder } from "../path/path_finder/IPathFinder";
 import { MasterPathFinder } from "../path/path_finder/MasterPathFinder";
@@ -28,7 +28,7 @@ export class RouteFactory {
         this.pathFinder = new MasterPathFinder();
     }
     
-    createRandomRoute(character: CharacterObj): RouteObj {
+    createRandomRoute(character: CharacterItem): RouteItem {
         const quarterMap = character.getQuarter().getMap();
         const pos = character.instance.getPosition2D();
         const maxIndex = quarterMap.len();
@@ -47,21 +47,21 @@ export class RouteFactory {
 
         if (path.length < 2) { return undefined; }
         
-        const route = new RouteObj([new PathObj(path)], character);
+        const route = new RouteItem([new PathItem(path)], character);
         // route.walker = new RealTimeRouteWalker(route);
         
         this.routeStore.addRoute(route);
     }
 
-    createRoute(pathes: PathObj[], config: RouteConfig, character?: CharacterObj): RouteObj {
-        const route = new RouteObj(pathes, character);
+    createRoute(pathes: PathItem[], config: RouteConfig, character?: CharacterItem): RouteItem {
+        const route = new RouteItem(pathes, character);
         route.walker = this.createRouteWalker(route, config);
 
         this.routeStore.addRoute(route);
         return route;
     }
 
-    private createRouteWalker(route: RouteObj, config: RouteConfig): RouteWalker {
+    private createRouteWalker(route: RouteItem, config: RouteConfig): RouteWalker {
         const routeWalker = new RouteWalker(route);
 
         if (config.lockSpeed) {

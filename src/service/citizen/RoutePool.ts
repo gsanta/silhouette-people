@@ -1,15 +1,15 @@
-import { RouteObj } from "../../model/object/route/RouteObj";
+import { RouteItem } from "../../model/item/route/RouteItem";
 
 
 export class RoutePool {
     
-    private routes: RouteObj[] = [];
+    private routes: RouteItem[] = [];
 
-    addRoute(route: RouteObj) {
+    addRoute(route: RouteItem) {
         this.routes.push(route);
     }
 
-    getRoute(): RouteObj {
+    getRoute(): RouteItem {
         return this.routes[0];
     }
 }

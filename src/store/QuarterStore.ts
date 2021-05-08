@@ -1,18 +1,18 @@
-import { QuarterObj } from "../model/object/quarter/QuarterObj";
+import { QuarterItem } from "../model/item/quarter/QuarterItem";
 
 export class QuarterStore {
-    private quarters: QuarterObj[] = [];
+    private quarters: QuarterItem[] = [];
 
-    addQuarter(quarterObj: QuarterObj) {
+    addQuarter(quarterObj: QuarterItem) {
         quarterObj.index = this.quarters.length;
         this.quarters.push(quarterObj);
     }
 
-    getQuarter(index: number): QuarterObj {
+    getQuarter(index: number): QuarterItem {
         return this.quarters[index];
     }
 
-    getAllQuarters(): QuarterObj[] {
+    getAllQuarters(): QuarterItem[] {
         return this.quarters;
     }
 

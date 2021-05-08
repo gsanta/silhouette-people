@@ -1,6 +1,6 @@
 import { Scene } from "babylonjs";
 import { Vector2 } from "babylonjs/Maths/math.vector";
-import { WorldObj } from "../../../model/object/WorldObj";
+import { WorldObj } from "../../../model/item/WorldObj";
 import { WorldMap } from "./WorldMap";
 
 export class WorldProvider {

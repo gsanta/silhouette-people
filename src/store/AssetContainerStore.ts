@@ -13,10 +13,12 @@ export class AssetContainerStore {
 
     private instances: Map<string, AssetContainer> = new Map();
     private instantiated: Map<string, boolean> = new Map();
+    private indexes: Map<string, number> = new Map();
 
     addInstance(name: string, result: AssetContainer) {
         this.instances.set(name, result);
         this.instantiated.set(name, false);
+        this.indexes.set(name, 1);
     }
 
     hasInstance(name: string): boolean {
@@ -41,7 +43,9 @@ export class AssetContainerStore {
 
         } 
 
-        const entries = this.instances.get(name).instantiateModelsToScene();
+        const index = this.indexes.get(name);
+        const entries = this.instances.get(name).instantiateModelsToScene(() => `${name}-${index}`);
+        this.indexes.set(name, index + 1);
 
         return this.createInstantiatedAssetsFromEntries(entries);
     }

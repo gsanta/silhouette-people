@@ -1,5 +1,5 @@
 import { InjectProperty } from "../../../di/diDecorators";
-import { MeshConfig, MeshObj, MeshObjType } from "../../../model/object/mesh/MeshObj";
+import { MeshConfig, MeshItem, MeshObjType } from "../../../model/item/mesh/MeshItem";
 import { AbstractPropertyParser } from "../../base/import/AbstractPropertyParser";
 import { lookup } from "../../Lookup";
 import { WorldProvider } from "../world/WorldProvider";
@@ -20,12 +20,9 @@ export class MeshFactory {
         this.propertyParsers = propertyParsers;
     }
 
-    async create(gameObjectJson: MeshConfig): Promise<MeshObj> {
+    async create(gameObjectJson: MeshConfig): Promise<MeshItem> {
         const id = this.generateId(gameObjectJson.type);
-        const gameObject = new MeshObj(id, this.worldProvider.world);
-
-        gameObject.type = gameObjectJson.type;
-        gameObject.ch = gameObjectJson.ch;
+        const gameObject = new MeshItem(id, this.worldProvider.world);
 
         if (gameObjectJson.props) {
             await this.applyProperties(gameObject, gameObjectJson);
@@ -35,7 +32,7 @@ export class MeshFactory {
     }
 
     
-    private async applyProperties(gameObj: MeshObj, meshConfig: MeshConfig) {
+    private async applyProperties(gameObj: MeshItem, meshConfig: MeshConfig) {
         const { props } = meshConfig;
 
         for (let propertyParser of this.propertyParsers) {

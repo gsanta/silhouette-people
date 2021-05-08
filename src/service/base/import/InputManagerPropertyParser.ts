@@ -1,9 +1,9 @@
 
 
-import { BikeInputManager } from "../../../model/object/bike/BikeInputManager";
-import { BikeWalker } from "../../../model/object/bike/states/BikeWalker";
-import { CharacterInputManager } from "../../../model/object/character/CharacterInputManager";
-import { CharacterObj } from "../../../model/object/character/CharacterObj";
+import { BikeInputManager } from "../../../model/item/bike/BikeInputManager";
+import { BikeWalker } from "../../../model/item/bike/states/BikeWalker";
+import { CharacterInputManager } from "../../../model/item/character/CharacterInputManager";
+import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { KeyboardService } from "../keyboard/KeyboardService";
 import { AbstractPropertyParser } from "./AbstractPropertyParser";
 
@@ -26,7 +26,7 @@ export class InputManagerPropertyParser extends AbstractPropertyParser<string> {
         return false;
     }
 
-    processProperty(character: CharacterObj, inputManager: string): void {
+    processProperty(character: CharacterItem, inputManager: string): void {
         switch(inputManager) {
             case InputManagerType.CharacterInputManager:
                 character.inputManager = new CharacterInputManager(character, this.keyboardService);

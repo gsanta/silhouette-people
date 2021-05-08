@@ -1,6 +1,6 @@
 import { Axis, MeshBuilder, Space, StandardMaterial } from "babylonjs";
-import { MeshObj } from "../../../model/object/mesh/MeshObj";
-import { WorldObj } from "../../../model/object/WorldObj";
+import { MeshItem } from "../../../model/item/mesh/MeshItem";
+import { WorldObj } from "../../../model/item/WorldObj";
 import { Lookup } from "../../Lookup";
 import { WorldProvider } from "../../object/world/WorldProvider";
 import { AbstractPropertyParser, parseStrVector } from "./AbstractPropertyParser";
@@ -25,7 +25,7 @@ export class CollisionPropertyParser extends AbstractPropertyParser<CollisionPro
         return false;
     }
 
-    processProperty(gameObj: MeshObj, props: CollisionPropertyConfig) {
+    processProperty(gameObj: MeshItem, props: CollisionPropertyConfig) {
         const dimensions = parseStrVector(props.dimension);
         const position = gameObj.getPosition().clone();
 

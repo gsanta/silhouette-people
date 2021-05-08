@@ -1,13 +1,13 @@
 import { DebugService } from "../service/base/debug/DebugService";
-import { CharacterObj } from "./object/character/CharacterObj";
-import { RouteObj } from "./object/route/RouteObj";
+import { CharacterItem } from "./item/character/CharacterItem";
+import { RouteItem } from "./item/route/RouteItem";
 
 export class RouteDebuggerComponent {
-    private currRoute: RouteObj;
-    private character: CharacterObj;
+    private currRoute: RouteItem;
+    private character: CharacterItem;
     private debugService: DebugService;
 
-    constructor(character: CharacterObj, debugService: DebugService) {
+    constructor(character: CharacterItem, debugService: DebugService) {
         this.character = character;
 
         this.debugService = debugService;

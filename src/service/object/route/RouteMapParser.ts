@@ -1,6 +1,6 @@
 import { Vector3 } from "babylonjs";
-import { PathObj } from "../../../model/object/PathObj";
-import { RouteObj } from "../../../model/object/route/RouteObj";
+import { PathItem } from "../../../model/item/PathItem";
+import { RouteItem } from "../../../model/item/route/RouteItem";
 import { MapParser, ParsedItem } from "../world/MapParser";
 import { WorldMap } from "../world/WorldMap";
 import { RouteFactory } from "./RouteFactory";
@@ -19,14 +19,14 @@ export class RouteMapParser {
     private readonly mapParser: MapParser;
     private readonly charRegexp = /(?<char>[^\d]+)(?<num>\d+)/;
     
-    private routes: RouteObj[] = [];
+    private routes: RouteItem[] = [];
 
     constructor(routeFactory: RouteFactory) {
         this.routeFactory = routeFactory;
         this.mapParser = new MapParser();
     }
 
-    getRoutes(): RouteObj[] {
+    getRoutes(): RouteItem[] {
         return this.routes;
     }
     
@@ -36,7 +36,7 @@ export class RouteMapParser {
         this.routes = this.createRoutes(parsedRoutes);
     }
 
-    private createRoutes(parsedRoutes: ParsedRoute[]): RouteObj[] {
+    private createRoutes(parsedRoutes: ParsedRoute[]): RouteItem[] {
         return parsedRoutes.map(parsedRoute => {
             const path = this.createPath(parsedRoute)
             
@@ -44,10 +44,10 @@ export class RouteMapParser {
         });
     }
 
-    private createPath(parsedRoute: ParsedRoute): PathObj {
+    private createPath(parsedRoute: ParsedRoute): PathItem {
         const positions = parsedRoute.positions.map(position => position.pos);
 
-        return new PathObj(positions);
+        return new PathItem(positions);
     }
 
     private parseRoutes(items: ParsedItem[]): ParsedRoute[] {

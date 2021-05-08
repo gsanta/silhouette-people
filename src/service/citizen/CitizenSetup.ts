@@ -1,5 +1,5 @@
 import { InjectProperty } from "../../di/diDecorators";
-import { CharacterObj } from "../../model/object/character/CharacterObj";
+import { CharacterItem } from "../../model/item/character/CharacterItem";
 import { CitizenStore } from "../../store/CitizenStore";
 import { MaterialStore } from "../../store/MaterialStore";
 import { RouteStore } from "../../store/RouteStore";
@@ -59,7 +59,7 @@ export class CitizenSetup {
         routeParser.getRoutes().forEach(route => this.routePool.addRoute(route));
 
         const citizen = await this.citizenFactory.create();
-        this.citizenStore.addObj(<CharacterObj> citizen);
+        this.citizenStore.addObj(<CharacterItem> citizen);
 
         this.toolService.execute.addRouteExecutor(this.citizenExecutor);
 

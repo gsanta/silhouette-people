@@ -1,10 +1,10 @@
-import { MeshObj } from "../../../model/object/mesh/MeshObj";
+import { MeshItem } from "../../../model/item/mesh/MeshItem";
 import { AbstractPropertyParser } from "./AbstractPropertyParser";
 
 export class IdPropertyParser extends AbstractPropertyParser<string> {
     propName = 'id';
 
-    processProperty(gameObj: MeshObj, id: string) {
+    processProperty(gameObj: MeshItem, id: string) {
         gameObj.id = id;
     }
 }

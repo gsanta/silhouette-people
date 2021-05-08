@@ -3,7 +3,7 @@ import { WorldProvider } from "../../object/world/WorldProvider";
 import { MeshStore } from "../../../store/MeshStore";
 import { RouteStore } from "../../../store/RouteStore";
 import { Tool, ToolType } from "../Tool";
-import { CharacterObj } from "../../../model/object/character/CharacterObj";
+import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { CitizenExecutor } from "../../citizen/CitizenExecutor";
 import { RouteExecutor } from "./RouteExecutor";
 
@@ -16,7 +16,7 @@ export class ExecutionTool extends Tool {
 
     private isStarted: boolean = false;
     private readyListeners: ((wasCanceled: boolean) => void)[] = [];
-    private activePlayer: CharacterObj;
+    private activePlayer: CharacterItem;
 
     private routeExecutors: RouteExecutor[] = [];
 
@@ -92,7 +92,7 @@ export class ExecutionTool extends Tool {
         activePlayer.inputManager.keyboard(e, isDown);
     }
 
-    private startRoutes(characters: CharacterObj[]) {
+    private startRoutes(characters: CharacterItem[]) {
         characters.forEach(player => {
             const route = this.routeStore.getRouteForCharacter(player);
             if (route) {
@@ -101,7 +101,7 @@ export class ExecutionTool extends Tool {
         });
     }
 
-    private updateRoutes(deltaTime: number, characters: CharacterObj[]) {
+    private updateRoutes(deltaTime: number, characters: CharacterItem[]) {
         characters.forEach(player => {
             const route = this.routeStore.getRouteForCharacter(player);
 
@@ -111,7 +111,7 @@ export class ExecutionTool extends Tool {
         });
     }
 
-    private updateWalkers(deltaTime: number, characters: CharacterObj[]) {
+    private updateWalkers(deltaTime: number, characters: CharacterItem[]) {
         characters.forEach(player => player.walker.walk(deltaTime));
         characters.forEach(player => player.animationState.update());
     }
