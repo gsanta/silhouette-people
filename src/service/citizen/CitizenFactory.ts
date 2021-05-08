@@ -17,7 +17,7 @@ export class CitizenFactory {
     }
 
     async create(): Promise<CharacterObj> {
-        const character = await this.meshFactory.create(this.createConfig(), this.worldProvider.world);
+        const character = await this.meshFactory.create(this.createConfig());
 
         return <CharacterObj> character;
     }

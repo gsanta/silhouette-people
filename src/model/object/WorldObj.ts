@@ -6,9 +6,6 @@ export class WorldObj {
 
     cameraLocation: number;
 
-    readonly size: Vector2;
-    readonly quarterNum: Vector2;
-
     scene: Scene;
     engine: Engine;
 
@@ -16,9 +13,7 @@ export class WorldObj {
     ground: Mesh;
     camera: CameraObj;
 
-    constructor(worldSize: Vector2, cameraLocation: number, quarterNum: Vector2) {
-        this.size = worldSize;
+    constructor(cameraLocation: number) {
         this.cameraLocation = cameraLocation;
-        this.quarterNum = quarterNum;
     }
 }

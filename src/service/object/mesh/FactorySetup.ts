@@ -1,5 +1,6 @@
 import { InjectProperty } from "../../../di/diDecorators";
 import { AssetContainerStore } from "../../../store/AssetContainerStore";
+import { MeshStore } from "../../../store/MeshStore";
 import { ActivePlayerService } from "../../ActivePlayerService";
 import { AbstractPropertyParser } from "../../base/import/AbstractPropertyParser";
 import { ActivePlayerPropertyParser } from "../../base/import/ActivePlayerPropertyParser";
@@ -17,13 +18,13 @@ import { TexturePropertyParser } from "../../base/import/TexturePropertyParser";
 import { WalkerPropertyParser } from "../../base/import/WalkerPropertyParser";
 import { KeyboardService } from "../../base/keyboard/KeyboardService";
 import { lookup } from "../../Lookup";
+import { Backlog } from "../../story/Backlog";
 import { WorldProvider } from "../world/WorldProvider";
 import { MeshFactory } from "./MeshFactory";
+import { MeshItemLoader } from "./MeshItemLoader";
 
 
 export class FactorySetup {
-
-    private propertyParsers: AbstractPropertyParser<any>[] = [];
 
     @InjectProperty('WorldProvider')
     private worldProvider: WorldProvider;
@@ -40,16 +41,30 @@ export class FactorySetup {
     @InjectProperty('MeshFactory')
     private meshFactory: MeshFactory;
 
+    @InjectProperty('MeshFactory')
+    private meshStore: MeshStore;
+
+    @InjectProperty('Backlog')
+    private backlog: Backlog;
+
+    private meshItemLoader: MeshItemLoader;
+
     constructor() {
         this.worldProvider = lookup.worldProvider;
         this.assetContainerStore = lookup.assetContainerStore;
         this.keyboardService = lookup.keyboard;
         this.activePlayerService = lookup.activePlayerService;
         this.meshFactory = lookup.meshFactory;
+        this.backlog = lookup.backlog;
+        this.meshStore = lookup.meshStore;
     }
 
     setup() {
         this.meshFactory.setPropertyParsers(this.setupPropertyParsers());
+
+        this.meshItemLoader = new MeshItemLoader(this.backlog, this.meshStore, this.meshFactory);
+
+        this.backlog.processor.registerLoader(this.meshItemLoader);
     }
 
     private setupPropertyParsers() {

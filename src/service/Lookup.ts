@@ -22,6 +22,7 @@ import { StageController } from "./ui/stage/StageController";
 import { RoutePool } from "./citizen/RoutePool";
 import { EventService } from "./base/EventService";
 import { CitizenStore } from "../store/CitizenStore";
+import { Backlog } from "./story/Backlog";
 
 export class Lookup {
     eventService: EventService;
@@ -31,6 +32,8 @@ export class Lookup {
     scene: Scene;
     engine: Engine;
     canvas: HTMLCanvasElement;
+
+    backlog: Backlog;
 
     debugService: DebugService;
     activePlayerService: ActivePlayerService;
@@ -72,6 +75,9 @@ export class Lookup {
 
         this.keyboard = new KeyboardService();
         lookup.keyboard = this.keyboard;
+
+        this.backlog = new Backlog();
+        lookup.backlog = this.backlog;
 
         this.routeStore = new RouteStore();
         lookup.routeStore = this.routeStore;

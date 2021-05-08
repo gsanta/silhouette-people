@@ -8,6 +8,13 @@ export interface ParsedItem {
     str: string;
 }
 
+export interface MapResult {
+    size: Vector2;
+    quarterNum: Vector2;
+
+    items: ParsedItem[];
+}
+
 export class MapParser {
     private mapRows: number;
     private mapCols: number;
@@ -20,22 +27,16 @@ export class MapParser {
     private mapCenter: Vector2;
     
     private parsedItems: ParsedItem[] = [];
-    
-    getWorldSize(): Vector2 {
-        return this.size;
-    }
 
-    getQuarterNum(): Vector2 {
-        return new Vector2(this.quartersX, this.quartersY);
-    }
-
-    getParsedItems(): ParsedItem[] {
-        return this.parsedItems;
-    }
-
-    parse(json: WorldMap, map: string): void {
+    parse(json: WorldMap, map: string): MapResult {
         this.parseMap(json, map);
         this.parseItems();
+
+        return {
+            size: this.size,
+            quarterNum: new Vector2(this.quartersX, this.quartersY),
+            items: this.parsedItems
+        }
     }
 
     private parseMap(json: WorldMap, map: string) {

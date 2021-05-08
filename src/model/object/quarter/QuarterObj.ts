@@ -56,7 +56,7 @@ export class QuarterObj  {
     }
 
     getQuarterPosition(): Vector2 {
-        const quarterCols = this.worldProvider.world.quarterNum.x;
+        const quarterCols = this.worldProvider.quarterNum.x;
         const y = Math.floor(this.index / quarterCols);
         const x = this.index % quarterCols;
         return new Vector2(x, y);

@@ -30,9 +30,9 @@ export class RouteMapParser {
         return this.routes;
     }
     
-    parse(json: WorldMap): void {
-        this.mapParser.parse(json, json.routeMap);
-        const parsedRoutes = this.parseRoutes(this.mapParser.getParsedItems());
+    parse(json: WorldMap, map: string): void {
+        const mapResult = this.mapParser.parse(json, map);
+        const parsedRoutes = this.parseRoutes(mapResult.items);
         this.routes = this.createRoutes(parsedRoutes);
     }
 

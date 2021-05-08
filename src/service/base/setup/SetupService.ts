@@ -21,6 +21,7 @@ import { RoutePool } from "../../citizen/RoutePool";
 import { MeshFactory } from "../../object/mesh/MeshFactory";
 import { CitizenStore } from "../../../store/CitizenStore";
 import { FactorySetup } from "../../object/mesh/FactorySetup";
+import { Backlog } from "../../story/Backlog";
 
 export class SetupService {
 
@@ -57,6 +58,9 @@ export class SetupService {
     @InjectProperty("CitizenStore")
     private citizenStore: CitizenStore;
 
+    @InjectProperty("Backlog")
+    private backlog: Backlog;
+
     private readonly worldFactory: WorldFactory;
 
     private worldMapParser: WorldMapParser;
@@ -81,9 +85,10 @@ export class SetupService {
         this.routeFactory = lookup.routeFactory;
         this.meshFactory = lookup.meshFactory;
         this.citizenStore = lookup.citizenStore;
+        this.backlog = lookup.backlog;
         
-        this.worldMapParser = new WorldMapParser(this.worldProvider, this.routeFactory);
-        this.worldFactory = new WorldFactory(this.worldMapParser, this.meshFactory);
+        this.worldMapParser = new WorldMapParser(this.worldProvider, this.routeFactory, this.backlog);
+        this.worldFactory = new WorldFactory(this.meshFactory);
         this.citizenSetup = new CitizenSetup(this.worldMapParser);
 
         this.factorySetup = new FactorySetup();
@@ -97,11 +102,13 @@ export class SetupService {
 
     async setup(scene: Scene) {
         await this.worldMapParser.parse();
-
         this.factorySetup.setup();
         this.stageSetup.setup();
-        // this.controllerService.setMasterController(new NormalModeController(this.controllerService.getCameraController()));
+
         this.worldProvider.world = await this.worldFactory.createWorldObj(scene);
+        await this.backlog.processor.process();
+
+        // this.controllerService.setMasterController(new NormalModeController(this.controllerService.getCameraController()));
         this.debugService.addGuiComponent(new DebugPanel());
         this.debugService.render();
         this.pointerService.listen();
