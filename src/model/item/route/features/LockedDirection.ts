@@ -27,15 +27,15 @@ export class LockedDirection implements LockedFeature {
 
     enableFeature() {
         const character = this.routeWalker.route.character;
-        if (character.inputManager) {
+        if (character && character.inputManager) {
             character.inputManager.disableDirection();
         }
     }
 
     disableFeature() {
         const character = this.routeWalker.route.character;
-        if (character.inputManager) {
-            this.character.inputManager.enableDirection();
+        if (character && character.inputManager) {
+            character.inputManager.enableDirection();
         }
     }
 }

@@ -18,7 +18,8 @@ export class LockedSpeed implements LockedFeature {
 
     enableFeature() {
         const character = this.routeWalker.route.character;
-        if (character.inputManager) {
+        
+        if (character &&character.inputManager) {
             character.inputManager.disableSpeed();
         }
     }
@@ -26,7 +27,7 @@ export class LockedSpeed implements LockedFeature {
     disableFeature() {
         const character = this.routeWalker.route.character;
 
-        if (character.inputManager) {
+        if (character && character.inputManager) {
             character.inputManager.enableSpeed();
         }
     }

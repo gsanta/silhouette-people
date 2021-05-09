@@ -18,6 +18,10 @@ export class RouteStore {
         return this.routes;
     }
 
+    getByName(name: string) {
+        return this.routes.find(route => route.name === name);
+    }
+
     getRouteForCharacter(character: CharacterItem): RouteItem {
         return this.routes.find(route => route.character === character);
     }

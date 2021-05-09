@@ -1,26 +1,43 @@
 import { AdvancedDynamicTexture } from "babylonjs-gui";
+import { InjectProperty } from "../../../di/diDecorators";
+import { CitizenStore } from "../../../store/CitizenStore";
+import { MaterialStore } from "../../../store/MaterialStore";
+import { MeshStore } from "../../../store/MeshStore";
+import { lookup } from "../../Lookup";
+import { WorldProvider } from "../../object/world/WorldProvider";
+import { CitizenRouteDebugger } from "./CitizenRouteDebugger";
+import { IGUIComponent } from "./IGUIComponent";
 import { QuarterMapDebugger } from "./QuarterMapDebugger";
 import { RouteDebugger } from "./RouteDebugger";
 import { WorldAxisHelper } from "./WorldAxisHelper";
-import { InjectProperty } from "../../../di/diDecorators";
-import { MeshStore } from "../../../store/MeshStore";
-import { WorldProvider } from "../../object/world/WorldProvider";
-import { IGUIComponent } from "./IGUIComponent";
-import { lookup } from "../../Lookup";
 
 export class DebugService {
     private worldAxisHelper: WorldAxisHelper;
     private enemyPathDebugger: RouteDebugger;
     private texture: AdvancedDynamicTexture;
+    private readonly citizenRouteDebugger: CitizenRouteDebugger;
     areaMapDebugger: QuarterMapDebugger;
     
     @InjectProperty("MeshStore")
     private meshStore: MeshStore;
 
+    @InjectProperty("WorldProvider")
+    private worldProvider: WorldProvider;
+
+    @InjectProperty("MaterialStore")
+    private materialStore: MaterialStore;
+
+    @InjectProperty("CitizenStore")
+    private citizenStore: CitizenStore;
+
     private guiComponents: IGUIComponent[] = [];
 
     constructor() {
         this.meshStore = lookup.meshStore;
+        this.worldProvider = lookup.worldProvider;
+        this.materialStore = lookup.materialStore;
+        this.citizenStore = lookup.citizenStore;
+        this.citizenRouteDebugger = new CitizenRouteDebugger(this.worldProvider, this.materialStore, this.citizenStore);
         this.worldAxisHelper = new WorldAxisHelper();
         this.enemyPathDebugger = new RouteDebugger(this);
         this.areaMapDebugger = new QuarterMapDebugger();
@@ -43,10 +60,8 @@ export class DebugService {
 
     setRouteDebuggerVisibility(isVisible: boolean) {
         if (isVisible) {
-            this.areaMapDebugger.show();
-            this.enemyPathDebugger.show();
+            this.citizenRouteDebugger.visualize();
         } else {
-            this.areaMapDebugger.hide();
         }
     }
 

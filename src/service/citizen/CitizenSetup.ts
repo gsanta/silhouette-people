@@ -59,10 +59,8 @@ export class CitizenSetup {
     async setup() {
         const { routeParser } = this.worldMapParser;
 
-        routeParser.getRoutes().forEach(route => this.routePool.addRoute(route));
+        // routeParser.getRoutes().forEach(route => this.routePool.addRoute(route));
 
         this.toolService.execute.addRouteExecutor(this.citizenExecutor);
-
-        this.routePool.getRoute();
     }
 }

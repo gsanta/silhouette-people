@@ -1,3 +1,4 @@
+import { RouteStore } from "../../../store/RouteStore";
 import { Backlog } from "../../story/Backlog";
 import { RouteFactory } from "../route/RouteFactory";
 import { RouteMapParser } from "../route/RouteMapParser";
@@ -7,6 +8,8 @@ import { WorldMap } from "./WorldMap";
 import { WorldProvider } from "./WorldProvider";
 
 export class WorldMapParser {
+    private readonly routeStore: RouteStore;
+
     readonly routeParser: RouteMapParser;
     readonly meshConfigParser: MeshConfigParser;
     
@@ -16,9 +19,10 @@ export class WorldMapParser {
     private readonly assetsPath = 'assets/levels';
     private readonly worldProvider: WorldProvider;
 
-    constructor(worldProvider: WorldProvider, routeFactory: RouteFactory, backlog: Backlog) {
+    constructor(worldProvider: WorldProvider, routeFactory: RouteFactory, routeStore: RouteStore, backlog: Backlog) {
         this.worldProvider = worldProvider;
         this.backlog = backlog;
+        this.routeStore = routeStore;
         this.mapParser = new MapParser();
         this.routeParser = new RouteMapParser(routeFactory);
         this.meshConfigParser = new MeshConfigParser(this.mapParser);
@@ -31,16 +35,16 @@ export class WorldMapParser {
         const map = await this.loadWorldMap(`${levelName}-map-1.txt`);
         const routeMap = await this.loadWorldMap(`${levelName}-routes.txt`);
 
-        this.routeParser.parse(json, routeMap);   
-
         const mapResult = this.mapParser.parse(json, map);
 
         this.worldProvider.worldMap = json;
         this.worldProvider.worldSize = mapResult.size;
         this.worldProvider.quarterNum = mapResult.quarterNum;
 
-        const meshConfigs = this.meshConfigParser.parse(json, map);
+        const routes = this.routeParser.parse(json, routeMap);
+        routes.forEach(route => this.routeStore.addRoute(route));
 
+        const meshConfigs = this.meshConfigParser.parse(json, map);
         meshConfigs.forEach(meshConfig => this.backlog.producer.createMeshStory(meshConfig));
     }
 

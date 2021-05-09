@@ -4,7 +4,7 @@ import { Vector3 } from "babylonjs/Maths/math.vector";
 
 export class PathItem {
     private points: Vector3[] = [];
-    private mesh: Mesh;
+    private meshes: Mesh[] = [];
     private arrowHead: Mesh;
 
     constructor(points: Vector3[]) {
@@ -12,11 +12,11 @@ export class PathItem {
     }
 
     addMesh(mesh: Mesh) {
-        this.mesh = mesh;
+        this.meshes.push(mesh);
     }
 
-    getMesh() {
-        return this.mesh;
+    getMesh(name: string) {
+        return this.meshes.find(mesh => mesh.name === name);
     }
 
     addArrowHead(mesh: Mesh) {
@@ -56,7 +56,7 @@ export class PathItem {
     }
 
     dispose() {
-        this.mesh && this.mesh.dispose();
+        this.meshes.forEach(mesh => mesh.dispose());
         this.arrowHead && this.arrowHead.dispose();
     }
 }

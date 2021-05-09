@@ -14,6 +14,7 @@ import { lookup } from "../../Lookup";
 export interface RouteConfig {
     lockSpeed?: boolean;
     lockDirection?: boolean;
+    name?: string;
 }
 
 export class RouteFactory {
@@ -47,14 +48,14 @@ export class RouteFactory {
 
         if (path.length < 2) { return undefined; }
         
-        const route = new RouteItem([new PathItem(path)], character);
+        const route = new RouteItem([new PathItem(path)], undefined, character);
         // route.walker = new RealTimeRouteWalker(route);
         
         this.routeStore.addRoute(route);
     }
 
     createRoute(pathes: PathItem[], config: RouteConfig, character?: CharacterItem): RouteItem {
-        const route = new RouteItem(pathes, character);
+        const route = new RouteItem(pathes, config.name, character);
         route.walker = this.createRouteWalker(route, config);
 
         this.routeStore.addRoute(route);

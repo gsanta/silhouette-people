@@ -3,7 +3,6 @@ import { PathItem } from "../../../model/item/PathItem";
 import { WorldProvider } from "../../object/world/WorldProvider";
 import { MaterialStore } from "../../../store/MaterialStore";
 
-
 export class PathVisualizer {
 
     private worldProvider: WorldProvider;
@@ -52,24 +51,33 @@ export class PathVisualizer {
         return [path1, path2];
     }
 
-    private visualizeArrow(path: PathItem) {
-        const pathes = this.createRibbonPathes(path);
-        const ribbon = path.getMesh();
-        const updatedRibbon = MeshBuilder.CreateRibbon("ribbon", {pathArray: pathes, updatable: true, instance: ribbon}, this.worldProvider.scene);
-
-        if (!ribbon) {
-            updatedRibbon.material = this.materialStore.getRibbonMaterial();
-            path.addMesh(updatedRibbon);
+    private visualizeArrow(pathItem: PathItem) {
+        const points = pathItem.getPoints();
+        for (let i = 0; i < points.length - 1; i++) {
+            const existingMesh = pathItem.getMesh(`arrow-line-${i}`);
+            this.createArrow(pathItem, i, points[i], points[i + 1], existingMesh);
         }
     }
 
-    private createRibbonPathes(path: PathItem) {
-        const angle = this.getAngle(path.getStartPoint(), path.getEndPoint());
+    private createArrow(pathItem: PathItem, index: number, p1: Vector3, p2: Vector3, mesh?: Mesh): Mesh {
+        const pathes = this.createArrowPathes(p1, p2);
+        const updatedMesh = MeshBuilder.CreateRibbon(`arrow-line-${index}`, {pathArray: pathes, updatable: true, instance: mesh}, this.worldProvider.scene);
+
+        if (!mesh) {
+            updatedMesh.material = this.materialStore.getRibbonMaterial();
+            pathItem.addMesh(updatedMesh);
+        }
+
+        return updatedMesh;
+    }
+
+    private createArrowPathes(p1: Vector3, p2: Vector3) {
+        const angle = this.getAngle(p1, p2);
         const angelPlus = angle + Math.PI / 2;
         const angelMinus = angle - Math.PI / 2;
         const radius = 0.2;
         
-        const [start, end] = [path.getStartPoint(), path.getEndPoint()];
+        const [start, end] = [p1, p2];
 
         const path1 = [
             start.add(new Vector3(radius * Math.cos(angelPlus), 0.5, radius * Math.sin(angelPlus))),

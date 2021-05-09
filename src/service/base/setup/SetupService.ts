@@ -23,6 +23,7 @@ import { CitizenStore } from "../../../store/CitizenStore";
 import { FactorySetup } from "../../object/mesh/FactorySetup";
 import { Backlog } from "../../story/Backlog";
 import { PlayerStore } from "../../player/PlayerStore";
+import { RouteStore } from "../../../store/RouteStore";
 
 export class SetupService {
 
@@ -62,6 +63,9 @@ export class SetupService {
     @InjectProperty("Backlog")
     private backlog: Backlog;
 
+    @InjectProperty("RouteStore")
+    private routeStore: RouteStore;
+
     private readonly worldFactory: WorldFactory;
 
     private worldMapParser: WorldMapParser;
@@ -87,8 +91,9 @@ export class SetupService {
         this.meshFactory = lookup.meshFactory;
         this.citizenStore = lookup.citizenStore;
         this.backlog = lookup.backlog;
+        this.routeStore = lookup.routeStore;
         
-        this.worldMapParser = new WorldMapParser(this.worldProvider, this.routeFactory, this.backlog);
+        this.worldMapParser = new WorldMapParser(this.worldProvider, this.routeFactory, this.routeStore, this.backlog);
         this.worldFactory = new WorldFactory(this.meshFactory);
         this.citizenSetup = new CitizenSetup(this.worldMapParser);
 

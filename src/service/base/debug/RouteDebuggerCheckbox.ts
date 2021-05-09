@@ -1,7 +1,7 @@
-import { Control, Container, StackPanel, Checkbox, TextBlock } from "babylonjs-gui";
+import { Checkbox, Container, Control, StackPanel, TextBlock } from "babylonjs-gui";
 import { InjectProperty } from "../../../di/diDecorators";
+import { lookup } from "../../Lookup";
 import { DebugService } from "./DebugService";
-import { lookup, Lookup } from "../../Lookup";
 import { IGUIComponent } from "./IGUIComponent";
 
 export class RouteDebuggerCheckbox implements IGUIComponent {
@@ -33,7 +33,7 @@ export class RouteDebuggerCheckbox implements IGUIComponent {
         
         const header = new TextBlock();
         header.paddingLeft = '10px';
-        header.text = "debug routes";
+        header.text = "Show citizen routes";
         header.width = "180px";
         header.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         header.color = "white";

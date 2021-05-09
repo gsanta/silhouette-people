@@ -18,29 +18,23 @@ export class RouteMapParser {
     
     private readonly mapParser: MapParser;
     private readonly charRegexp = /(?<char>[^\d]+)(?<num>\d+)/;
-    
-    private routes: RouteItem[] = [];
 
     constructor(routeFactory: RouteFactory) {
         this.routeFactory = routeFactory;
         this.mapParser = new MapParser();
     }
-
-    getRoutes(): RouteItem[] {
-        return this.routes;
-    }
     
-    parse(json: WorldMap, map: string): void {
+    parse(json: WorldMap, map: string): RouteItem[] {
         const mapResult = this.mapParser.parse(json, map);
         const parsedRoutes = this.parseRoutes(mapResult.items);
-        this.routes = this.createRoutes(parsedRoutes);
+        return this.createRoutes(parsedRoutes);
     }
 
     private createRoutes(parsedRoutes: ParsedRoute[]): RouteItem[] {
         return parsedRoutes.map(parsedRoute => {
             const path = this.createPath(parsedRoute)
             
-            return this.routeFactory.createRoute([path], { lockDirection: true, lockSpeed: true });
+            return this.routeFactory.createRoute([path], { lockDirection: true, lockSpeed: true, name: `pre-defined-route-${parsedRoute.char}` });
         });
     }
 

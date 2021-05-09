@@ -14,11 +14,11 @@ export class MeshStore {
         this.quarterStore = lookup.quarterStore;
     }
 
-    addItem(gameObject: MeshItem) {
-        this.items.push(gameObject);
+    addItem(meshItem: MeshItem) {
+        this.items.push(meshItem);
 
-        const quarterIndex = this.calcQuarterIndex(gameObject);
-        gameObject.quarterIndex = quarterIndex;
+        const quarterIndex = this.calcQuarterIndex(meshItem);
+        meshItem.quarterIndex = quarterIndex;
     }
 
     removeItem(item: MeshItem, disposeMesh = false) {

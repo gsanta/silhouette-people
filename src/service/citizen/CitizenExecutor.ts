@@ -32,15 +32,8 @@ export class CitizenExecutor implements RouteExecutor {
         const citizens =  this.citizenStore.getAll();
 
         citizens.forEach(citizen => {
-            const route = this.routeStore.getRouteForCharacter(citizen);
-
-            if (!route) {
-                const route = this.routePool.getRoute();
-                route.character = citizen;
-                route.walker.setStarted()
-
-                this.routeStore.addRoute(route);
-                this.pathVisualizer.visualize(route.pathes[0]);
+            if (citizen.route && !citizen.route.walker.isStarted()) {
+                citizen.route.walker.setStarted()
             }
         });
     }

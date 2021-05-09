@@ -1,6 +1,7 @@
 import { InjectProperty } from "../../../di/diDecorators";
 import { AssetContainerStore } from "../../../store/AssetContainerStore";
 import { MeshStore } from "../../../store/MeshStore";
+import { RouteStore } from "../../../store/RouteStore";
 import { ActivePlayerService } from "../../ActivePlayerService";
 import { AbstractPropertyParser } from "../../base/import/AbstractPropertyParser";
 import { ActivePlayerPropertyParser } from "../../base/import/ActivePlayerPropertyParser";
@@ -12,6 +13,7 @@ import { ModelPropertyParser } from "../../base/import/ModelPropertyParser";
 import { PhysicsPropertyParser } from "../../base/import/PhysicsPropertyParser";
 import { PositionPropertyParser } from "../../base/import/PositionPropertyParser";
 import { RotatePropertyParser } from "../../base/import/RotatePropertyParser";
+import { RoutePropertyParser } from "../../base/import/RoutePropertyParser";
 import { StatePropertyParser } from "../../base/import/StatePropertyParser";
 import { TagPropertyParser } from "../../base/import/TagPropertyParser";
 import { TexturePropertyParser } from "../../base/import/TexturePropertyParser";
@@ -47,6 +49,9 @@ export class FactorySetup {
     @InjectProperty('Backlog')
     private backlog: Backlog;
 
+    @InjectProperty('RouteStore')
+    private routeStore: RouteStore;
+
     private meshItemLoader: MeshItemLoader;
 
     constructor() {
@@ -57,6 +62,7 @@ export class FactorySetup {
         this.meshFactory = lookup.meshFactory;
         this.backlog = lookup.backlog;
         this.meshStore = lookup.meshStore;
+        this.routeStore = lookup.routeStore;
     }
 
     setup() {
@@ -82,6 +88,7 @@ export class FactorySetup {
             new RotatePropertyParser(),
             new IdPropertyParser(),
             new ActivePlayerPropertyParser(this.activePlayerService),
+            new RoutePropertyParser(this.routeStore)
         ]
     }
 }

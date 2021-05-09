@@ -4,14 +4,17 @@ import { PathItem } from "../PathItem";
 import { RouteWalker } from "./RouteWalker";
 
 export class RouteItem {
+    readonly name: string;
     character: CharacterItem;
     walker: RouteWalker;
 
     pathes: PathItem[] = [];
 
-    constructor(pathes: PathItem[], character?: CharacterItem) {
+    constructor(pathes: PathItem[], name?: string, character?: CharacterItem) {
         this.character = character;
         this.pathes = pathes;
+
+        this.name = name;
     }
 
     addPath(path: PathItem) {
@@ -25,10 +28,11 @@ export class RouteItem {
     getCheckpoints() {
         const points: Vector3[] = [];
 
-        points.push(this.pathes[0].getStartPoint(), this.pathes[0].getEndPoint());
+        points.push(...this.pathes[0].getPoints());
 
         for (let i = 1; i < this.pathes.length; i++) {
-            points.push(this.pathes[i].getEndPoint());
+            const [first, ...rest] = this.pathes[i].getPoints();
+            points.push(...rest);
         }
 
         return points;

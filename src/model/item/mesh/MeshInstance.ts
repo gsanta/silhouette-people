@@ -2,6 +2,9 @@ import { Axis, Quaternion, Vector2, Vector3 } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/index";
 import { MeshItem } from "./MeshItem";
 
+export function toVector2(vec: Vector3) {
+    return new Vector2(vec.x, vec.z);
+}
 
 export class MeshInstance {
 

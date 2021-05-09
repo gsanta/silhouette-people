@@ -74,6 +74,7 @@
         "P1": "character",
         "P": "character",
         "C": "character",
+        "C2": "character",
         "E": "enemy",
         "H": "house1",
         "H1": "house1",
@@ -346,7 +347,19 @@
         "C": {
             "properties": {
                 "tags": ["Citizen"],
-                "walker": "CharacterWalker"
+                "walker": "CharacterWalker",
+                "route": {
+                    "name": "A"
+                }
+            }
+        },
+        "C2": {
+            "properties": {
+                "tags": ["Citizen"],
+                "walker": "CharacterWalker",
+                "route": {
+                    "name": "B"
+                }
             }
         }
     }
