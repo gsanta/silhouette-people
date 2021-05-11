@@ -1,23 +1,25 @@
 import { MeshConfig } from "../../../model/item/mesh/MeshItem";
 import { MeshStore } from "../../../store/MeshStore";
-import { Backlog } from "../../story/Backlog";
+import { StoryTracker } from "../../story/StoryTracker";
 import { StoryItem, StoryType } from "../../story/StoryItem";
 import { StoryLoader } from "../../story/StoryLoader";
 import { MeshFactory } from "./MeshFactory";
 
 export class MeshItemLoader implements StoryLoader {
 
-    private readonly backlog: Backlog;
+    private readonly backlog: StoryTracker;
     private readonly meshStore: MeshStore;
     private readonly meshFactory: MeshFactory;
 
-    constructor(backlog: Backlog, meshStore: MeshStore, meshFactory: MeshFactory) {
+    isAsync = true;
+
+    constructor(backlog: StoryTracker, meshStore: MeshStore, meshFactory: MeshFactory) {
         this.backlog = backlog;
         this.meshStore = meshStore;
         this.meshFactory = meshFactory;
     }
 
-    async checkBacklog() {
+    async checkBacklogAsync() {
         const stories = <StoryItem<MeshConfig>[]> this.backlog.getStories().filter(story => story.type === StoryType.CREATE_MESH);
 
         for (let story of stories) {

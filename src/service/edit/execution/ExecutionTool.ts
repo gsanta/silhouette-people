@@ -5,6 +5,7 @@ import { Tool, ToolType } from "../Tool";
 import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { RouteExecutor } from "./RouteExecutor";
 import { PlayerStore } from "../../player/PlayerStore";
+import { RouteItem } from "../../../model/item/route/RouteItem";
 
 export class ExecutionTool extends Tool {
     private worldProvider: WorldProvider;
@@ -41,20 +42,27 @@ export class ExecutionTool extends Tool {
             
             this.updateRoutes(deltaTime, [this.activePlayer]);
             this.updateWalkers(deltaTime, [this.activePlayer]);
-
-            const route = this.routeStore.getRouteForCharacter(this.activePlayer);
-            if (route && route.walker.isFinished()) {
-                this.isStarted = false;
-                this.readyListeners.forEach(listener => listener(false));
-                this.routeStore.deleteRoute(route);
-            }
         }
     }
 
     select(isCanceled: boolean) {
         this.activePlayer = this.playerStore.getActivePlayer();
+        const route = this.routeStore.getRouteForCharacter(this.activePlayer);
+        if (route) {
+            route.walker.onFinished(() => this.onPlayerFinished(route));
+        }
+
         this._isCanceled = isCanceled;
         this.startRoutes([this.activePlayer]);
+    }
+
+    private onPlayerFinished(route: RouteItem) {
+        this.isStarted = false;
+        this.readyListeners.forEach(listener => listener(false));
+        this.routeStore.deleteRoute(route);
+        if (route.character) {
+            route.character.route = undefined;
+        }
     }
 
     isReset(): boolean {

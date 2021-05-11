@@ -12,7 +12,8 @@ export class RouteWalker {
     protected _isStarted = false;
 
     private checkpointHanlder: CheckpointUpdater;
-    private lockedFeatures: LockedFeature[] = [];    
+    private lockedFeatures: LockedFeature[] = [];
+    private onFinishedFuncs: (() => void)[] = [];    
 
     constructor(public route: RouteItem) {
         this.checkpointHanlder = new CheckpointUpdater(this);
@@ -44,6 +45,10 @@ export class RouteWalker {
         return this._isStarted;
     }
 
+    onFinished(func: () => void) {
+        this.onFinishedFuncs.push(func);
+    }
+
     setStarted() {
         this._isStarted = true;
 
@@ -63,6 +68,7 @@ export class RouteWalker {
         }
 
         this.lockedFeatures.forEach(feature => feature.disableFeature());
+        this.onFinishedFuncs.forEach(func => func());
     }
 }
 

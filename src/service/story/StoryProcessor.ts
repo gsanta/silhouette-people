@@ -1,7 +1,7 @@
 import { StoryLoader } from "./StoryLoader";
 
 
-export class BacklogProcessor {
+export class StoryProcessor {
     private loaders: StoryLoader[] = [];
 
     registerLoader(loader: StoryLoader) {
@@ -10,7 +10,11 @@ export class BacklogProcessor {
 
     async process() {
         for (let loader of this.loaders) {
-            await loader.checkBacklog();
+            if (loader.isAsync) {
+                await loader.checkBacklogAsync();
+            } else {
+                loader.checkBacklog();
+            }
         }
     }
 }

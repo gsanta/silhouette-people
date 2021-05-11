@@ -1,29 +1,28 @@
 import { Scene } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { DebugPanel } from "../debug/DebugPanel";
-import { PointerService } from "../pointer/PointerService";
-import { lookup, Lookup } from "../../Lookup";
-import { BikeParenter } from "./BikeParenter";
-import { MeshStore } from "../../../store/MeshStore";
 import { PersonItem } from "../../../model/item/character/CharacterItem";
+import { CitizenStore } from "../../../store/CitizenStore";
+import { RouteStore } from "../../../store/RouteStore";
+import { CitizenSetup } from "../../citizen/CitizenSetup";
 import { ToolService } from "../../edit/ToolService";
-import { KeyboardService } from "../keyboard/KeyboardService";
-import { StageSetup } from "../../ui/stage/StageSetup";
-import { RenderGuiService } from "../../ui/RenderGuiService";
-import { StageController } from "../../ui/stage/StageController";
-import { WorldMapParser } from "../../object/world/WorldMapParser";
+import { lookup } from "../../Lookup";
+import { FactorySetup } from "../../object/mesh/FactorySetup";
+import { MeshFactory } from "../../object/mesh/MeshFactory";
 import { RouteFactory } from "../../object/route/RouteFactory";
 import { WorldFactory } from "../../object/world/WorldFactory";
+import { WorldMapParser } from "../../object/world/WorldMapParser";
 import { WorldProvider } from "../../object/world/WorldProvider";
-import { DebugService } from "../debug/DebugService";
-import { CitizenSetup } from "../../citizen/CitizenSetup";
-import { RoutePool } from "../../citizen/RoutePool";
-import { MeshFactory } from "../../object/mesh/MeshFactory";
-import { CitizenStore } from "../../../store/CitizenStore";
-import { FactorySetup } from "../../object/mesh/FactorySetup";
-import { Backlog } from "../../story/Backlog";
 import { PlayerStore } from "../../player/PlayerStore";
-import { RouteStore } from "../../../store/RouteStore";
+import { StorySetup } from "../../story/StorySetup";
+import { StoryTracker } from "../../story/StoryTracker";
+import { RenderGuiService } from "../../ui/RenderGuiService";
+import { StageController } from "../../ui/stage/StageController";
+import { StageSetup } from "../../ui/stage/StageSetup";
+import { DebugPanel } from "../debug/DebugPanel";
+import { DebugService } from "../debug/DebugService";
+import { KeyboardService } from "../keyboard/KeyboardService";
+import { PointerService } from "../pointer/PointerService";
+import { BikeParenter } from "./BikeParenter";
 
 export class SetupService {
 
@@ -61,7 +60,7 @@ export class SetupService {
     private citizenStore: CitizenStore;
 
     @InjectProperty("Backlog")
-    private backlog: Backlog;
+    private backlog: StoryTracker;
 
     @InjectProperty("RouteStore")
     private routeStore: RouteStore;
@@ -75,6 +74,7 @@ export class SetupService {
     private bikeParenter: BikeParenter;
 
     private factorySetup: FactorySetup;
+    private storySetup: StorySetup;
     private citizenSetup: CitizenSetup;
     private stageSetup: StageSetup;
 
@@ -98,6 +98,7 @@ export class SetupService {
         this.citizenSetup = new CitizenSetup(this.worldMapParser);
 
         this.factorySetup = new FactorySetup();
+        this.storySetup = new StorySetup();
         this.stageSetup = new StageSetup();
         this.bikeParenter = new BikeParenter();
     }
@@ -109,6 +110,7 @@ export class SetupService {
     async setup(scene: Scene) {
         await this.worldMapParser.parse();
         this.factorySetup.setup();
+        this.storySetup.setup();
         this.stageSetup.setup();
 
         this.worldProvider.world = await this.worldFactory.createWorldObj(scene);

@@ -1,4 +1,6 @@
 
 export interface StoryLoader {
-    checkBacklog(): Promise<void>;
+    isAsync: boolean;
+    checkBacklogAsync?(): Promise<void>;
+    checkBacklog?(): void;
 }

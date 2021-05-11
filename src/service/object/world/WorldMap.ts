@@ -1,3 +1,5 @@
+import { RouteStoryConfig } from "../../../model/item/route/RouteItem";
+
 export interface GroundJson {
     color: string;
 }
@@ -19,6 +21,7 @@ export interface WorldMap {
     collider: { [key: string]: string | boolean },
     tags: { [key: string]: string },
     objects: { [key: string]: {properties: {[key: string]: any} }},
+    routes: RouteStoryConfig[],
     map: string;
     routeMap: string;
     rotationMap: string;

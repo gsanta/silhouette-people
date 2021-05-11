@@ -61,7 +61,7 @@ export class CitizenExecutor implements RouteExecutor {
 
         citizens.forEach(citizen => {
             const route = this.routeStore.getRouteForCharacter(citizen);
-            if (route.walker.isFinished()) {
+            if (route && route.walker.isFinished()) {
                 this.citizenStore.removeItem(citizen);
 
             }

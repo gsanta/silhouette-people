@@ -54,7 +54,6 @@ export class WorldFactory {
         this.createGround(worldObj);
         this.createQuarters(json.grounds);
         await this.loadModels(json.models);
-        // await this.createGameObjs(itemParser.getGameObjJsons(), worldObj);
 
         return worldObj;
     }

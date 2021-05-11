@@ -346,21 +346,27 @@
         },
         "C": {
             "properties": {
+                "id": "C",
                 "tags": ["Citizen"],
-                "walker": "CharacterWalker",
-                "route": {
-                    "name": "A"
-                }
+                "walker": "CharacterWalker"
             }
         },
         "C2": {
             "properties": {
+                "id": "C2",
                 "tags": ["Citizen"],
-                "walker": "CharacterWalker",
-                "route": {
-                    "name": "B"
-                }
+                "walker": "CharacterWalker"
             }
         }
-    }
+    },
+    "routes": [
+        {
+            "routeId": "A",
+            "characterId": "C"
+        },
+        {
+            "routeId": "B",
+            "characterId": "C2"
+        }
+    ]
 }

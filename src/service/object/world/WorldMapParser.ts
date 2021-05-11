@@ -1,9 +1,10 @@
 import { RouteStore } from "../../../store/RouteStore";
-import { Backlog } from "../../story/Backlog";
+import { StoryTracker } from "../../story/StoryTracker";
 import { RouteFactory } from "../route/RouteFactory";
 import { RouteMapParser } from "../route/RouteMapParser";
 import { MapParser } from "./MapParser";
 import { MeshConfigParser } from "./MeshConfigParser";
+import { RouteStoryParser } from "./RouteStoryParser";
 import { WorldMap } from "./WorldMap";
 import { WorldProvider } from "./WorldProvider";
 
@@ -12,20 +13,22 @@ export class WorldMapParser {
 
     readonly routeParser: RouteMapParser;
     readonly meshConfigParser: MeshConfigParser;
+    readonly routeStoryParser: RouteStoryParser;
     
     private readonly mapParser: MapParser;
-    private readonly backlog: Backlog;
+    private readonly storyTracker: StoryTracker;
 
     private readonly assetsPath = 'assets/levels';
     private readonly worldProvider: WorldProvider;
 
-    constructor(worldProvider: WorldProvider, routeFactory: RouteFactory, routeStore: RouteStore, backlog: Backlog) {
+    constructor(worldProvider: WorldProvider, routeFactory: RouteFactory, routeStore: RouteStore, storyTracker: StoryTracker) {
         this.worldProvider = worldProvider;
-        this.backlog = backlog;
+        this.storyTracker = storyTracker;
         this.routeStore = routeStore;
         this.mapParser = new MapParser();
         this.routeParser = new RouteMapParser(routeFactory);
         this.meshConfigParser = new MeshConfigParser(this.mapParser);
+        this.routeStoryParser = new RouteStoryParser(storyTracker);
     }
 
     async parse() {
@@ -45,7 +48,8 @@ export class WorldMapParser {
         routes.forEach(route => this.routeStore.addRoute(route));
 
         const meshConfigs = this.meshConfigParser.parse(json, map);
-        meshConfigs.forEach(meshConfig => this.backlog.producer.createMeshStory(meshConfig));
+        meshConfigs.forEach(meshConfig => this.storyTracker.producer.createMeshStory(meshConfig));
+        this.routeStoryParser.parse(json);
     }
 
     private async loadWorldJson(name: string): Promise<WorldMap> {

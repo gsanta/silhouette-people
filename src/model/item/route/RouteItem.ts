@@ -3,6 +3,12 @@ import { CharacterItem } from "../character/CharacterItem";
 import { PathItem } from "../PathItem";
 import { RouteWalker } from "./RouteWalker";
 
+export interface RouteStoryConfig {
+    routeId: string;
+    characterId: string;
+}
+
+
 export class RouteItem {
     readonly name: string;
     character: CharacterItem;

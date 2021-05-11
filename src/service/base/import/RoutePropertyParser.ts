@@ -12,7 +12,7 @@ export class RoutePropertyParser extends AbstractPropertyParser<RoutePropertyCon
 
     private readonly routeStore: RouteStore;
 
-    constructor(routeStore: RouteStore) {
+    constructor(routeStore: RouteStore, ) {
         super();
         this.routeStore = routeStore;
     }

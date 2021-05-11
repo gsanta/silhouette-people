@@ -1,16 +1,16 @@
-import { BacklogProcessor } from "./BacklogProcessor";
+import { StoryProcessor } from "./StoryProcessor";
 import { StoryItem } from "./StoryItem";
 import { StoryProducer } from "./StoryProducer";
 
-export class Backlog {
+export class StoryTracker {
     private stories: StoryItem<any>[] = [];
 
     readonly producer: StoryProducer;
-    readonly processor: BacklogProcessor;
+    readonly processor: StoryProcessor;
 
     constructor() {
         this.producer = new StoryProducer(this);
-        this.processor = new BacklogProcessor();
+        this.processor = new StoryProcessor();
     }
 
     addStory(...story: StoryItem<any>[]) {
