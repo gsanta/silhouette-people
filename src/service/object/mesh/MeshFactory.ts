@@ -20,12 +20,12 @@ export class MeshFactory {
         this.propertyParsers = propertyParsers;
     }
 
-    async create(gameObjectJson: MeshConfig): Promise<MeshItem> {
-        const id = this.generateId(gameObjectJson.type);
+    async createFromConfig(meshConfig: MeshConfig): Promise<MeshItem> {
+        const id = this.generateId(meshConfig.type);
         const gameObject = new MeshItem(id, this.worldProvider.world);
 
-        if (gameObjectJson.props) {
-            await this.applyProperties(gameObject, gameObjectJson);
+        if (meshConfig.props) {
+            await this.applyProperties(gameObject, meshConfig);
         }
 
         return gameObject;

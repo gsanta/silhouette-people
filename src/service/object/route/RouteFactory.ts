@@ -4,7 +4,7 @@ import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { PathItem } from "../../../model/item/PathItem";
 import { LockedDirection } from "../../../model/item/route/features/LockedDirection";
 import { LockedSpeed } from "../../../model/item/route/features/LockedSpeed";
-import { RouteItem } from "../../../model/item/route/RouteItem";
+import { RouteItem, RouteStoryConfig } from "../../../model/item/route/RouteItem";
 import { RouteWalker } from "../../../model/item/route/RouteWalker";
 import { RouteStore } from "../../../store/RouteStore";
 import { IPathFinder } from "../path/path_finder/IPathFinder";
@@ -52,6 +52,10 @@ export class RouteFactory {
         // route.walker = new RealTimeRouteWalker(route);
         
         this.routeStore.addRoute(route);
+    }
+
+    createFromConfig(routeConfig: RouteStoryConfig) {
+        
     }
 
     createRoute(pathes: PathItem[], config: RouteConfig, character?: CharacterItem): RouteItem {

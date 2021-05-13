@@ -22,7 +22,10 @@ export interface WorldMap {
     tags: { [key: string]: string },
     objects: { [key: string]: {properties: {[key: string]: any} }},
     routes: RouteStoryConfig[],
+
+    mapUrl: string;
+    routeMapUrl: string;
+
     map: string;
     routeMap: string;
-    rotationMap: string;
 }

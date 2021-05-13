@@ -38,16 +38,19 @@ export class WorldMapParser {
         const map = await this.loadWorldMap(`${levelName}-map-1.txt`);
         const routeMap = await this.loadWorldMap(`${levelName}-routes.txt`);
 
+        json.map = map;
+        json.routeMap = routeMap;
+
         const mapResult = this.mapParser.parse(json, map);
 
         this.worldProvider.worldMap = json;
         this.worldProvider.worldSize = mapResult.size;
         this.worldProvider.quarterNum = mapResult.quarterNum;
 
-        const routes = this.routeParser.parse(json, routeMap);
+        const routes = this.routeParser.parse(json);
         routes.forEach(route => this.routeStore.addRoute(route));
 
-        const meshConfigs = this.meshConfigParser.parse(json, map);
+        const meshConfigs = this.meshConfigParser.parse(json);
         meshConfigs.forEach(meshConfig => this.storyTracker.producer.createMeshStory(meshConfig));
         this.routeStoryParser.parse(json);
     }

@@ -16,6 +16,7 @@ export interface MapResult {
 }
 
 export class MapParser {
+    private readonly skipCharacters: string[] = [];
     private mapRows: number;
     private mapCols: number;
     
@@ -27,6 +28,10 @@ export class MapParser {
     private mapCenter: Vector2;
     
     private parsedItems: ParsedItem[] = [];
+
+    constructor(skipCharacters: string[] = []) {
+        this.skipCharacters = skipCharacters;
+    }
 
     parse(json: WorldMap, map: string): MapResult {
         this.parseMap(json, map);
@@ -48,9 +53,7 @@ export class MapParser {
         this.quartersX = firstLineMatch[0].split(' ').length;
         this.quartersY = map.split('\n').filter(line => line.trim() === '').length + 1;
         
-        map = map.split(' ').join('')
-        
-        this.mapLines = map.split("\n").map(line => line.trim()).filter(line => line !== '');
+        this.mapLines = this.normalizeMap(map);
 
         this.mapRows = this.mapLines.length;
         this.mapCols = this.mapLines[0].length;
@@ -61,6 +64,16 @@ export class MapParser {
 
         json.size = `${this.mapCols * 2}:${this.mapRows * 2}`;
         this.size = new Vector2(this.mapCols * 2, this.mapRows * 2);
+    }
+
+    private normalizeMap(map: string): string[] {
+        map = map.split(' ').join('')
+        
+        this.skipCharacters.forEach(skipChar => map = map.replace(new RegExp(skipChar, 'g'), '.'));
+
+        const lines = map.split("\n").map(line => line.trim()).filter(line => line !== '');
+
+        return lines;
     }
 
     private parseItems() {

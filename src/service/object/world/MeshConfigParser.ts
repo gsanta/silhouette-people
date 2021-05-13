@@ -10,8 +10,8 @@ export class MeshConfigParser {
         this.mapParser = mapParser;
     }
 
-    parse(json: WorldMap, map: string): MeshConfig[] {
-        const mapResult = this.mapParser.parse(json, map);
+    parse(json: WorldMap): MeshConfig[] {
+        const mapResult = this.mapParser.parse(json, json.map);
 
         return mapResult.items.map(item => this.createMeshConfig(item, json));
     }

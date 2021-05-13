@@ -1,8 +1,7 @@
 {
     "id": "level-1",
-    "map": null,
-    "routeMap": null,
-    "rotationMap": null,
+    "mapUrl": null,
+    "routeMapUrl": null,
     "relativePos": "0:0",
     "cameraLocation": 2,
     "grounds": [
@@ -363,10 +362,6 @@
         {
             "routeId": "A",
             "characterId": "C"
-        },
-        {
-            "routeId": "B",
-            "characterId": "C2"
         }
     ]
 }

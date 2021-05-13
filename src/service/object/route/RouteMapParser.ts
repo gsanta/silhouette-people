@@ -21,11 +21,11 @@ export class RouteMapParser {
 
     constructor(routeFactory: RouteFactory) {
         this.routeFactory = routeFactory;
-        this.mapParser = new MapParser();
+        this.mapParser = new MapParser(['#']);
     }
     
-    parse(json: WorldMap, map: string): RouteItem[] {
-        const mapResult = this.mapParser.parse(json, map);
+    parse(json: WorldMap): RouteItem[] {
+        const mapResult = this.mapParser.parse(json, json.routeMap);
         const parsedRoutes = this.parseRoutes(mapResult.items);
         return this.createRoutes(parsedRoutes);
     }
