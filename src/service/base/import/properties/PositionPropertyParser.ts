@@ -1,6 +1,6 @@
 import { Axis, Space } from "babylonjs";
-import { MeshItem } from "../../../model/item/mesh/MeshItem";
-import { AbstractPropertyParser, parseStrVector } from "./AbstractPropertyParser";
+import { MeshItem } from "../../../../model/item/mesh/MeshItem";
+import { AbstractPropertyParser, parseStrVector } from "../AbstractPropertyParser";
 
 export class PositionPropertyParser extends AbstractPropertyParser<string> {
     propName = 'position';

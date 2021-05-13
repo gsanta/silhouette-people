@@ -10,8 +10,8 @@ import { lookup } from "../Lookup";
 import { MeshFactory } from "../object/mesh/MeshFactory";
 import { RouteFactory } from "../object/route/RouteFactory";
 import { RouteMapParser } from "../object/route/RouteMapParser";
-import { WorldMapParser } from "../object/world/WorldMapParser";
-import { WorldProvider } from "../object/world/WorldProvider";
+import { WorldImporter } from "../base/import/WorldImporter";
+import { WorldProvider } from "../WorldProvider";
 import { CitizenExecutor } from "./CitizenExecutor";
 import { CitizenFactory } from "./CitizenFactory";
 import { RoutePool } from "./RoutePool";
@@ -36,13 +36,13 @@ export class CitizenSetup {
     @InjectProperty('CitizenStore')
     private citizenStore: CitizenStore;
 
-    private readonly worldMapParser: WorldMapParser;
+    private readonly worldMapParser: WorldImporter;
 
     private readonly routePool: RoutePool;
     private readonly citizenFactory: CitizenFactory;
     private readonly citizenExecutor: CitizenExecutor;
 
-    constructor(worldMapParser: WorldMapParser) {
+    constructor(worldMapParser: WorldImporter) {
         this.worldProvider = lookup.worldProvider;
         this.toolService = lookup.toolService;
         this.meshFactory = lookup.meshFactory;

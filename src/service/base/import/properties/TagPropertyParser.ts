@@ -1,5 +1,5 @@
-import { MeshItem, MeshItemTag } from "../../../model/item/mesh/MeshItem";
-import { AbstractPropertyParser } from "./AbstractPropertyParser";
+import { MeshItem, MeshItemTag } from "../../../../model/item/mesh/MeshItem";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export class TagPropertyParser extends AbstractPropertyParser<string[]> {
     propName = 'tags';

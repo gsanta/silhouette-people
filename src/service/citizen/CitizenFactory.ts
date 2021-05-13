@@ -2,7 +2,7 @@ import { Axis, Quaternion, Vector3 } from "babylonjs";
 import { CharacterItem } from "../../model/item/character/CharacterItem";
 import { MeshConfig, MeshObjType } from "../../model/item/mesh/MeshItem";
 import { MeshFactory } from "../object/mesh/MeshFactory";
-import { WorldProvider } from "../object/world/WorldProvider";
+import { WorldProvider } from "../WorldProvider";
 
 
 export class CitizenFactory {

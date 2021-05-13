@@ -2,7 +2,7 @@ import { NodeMaterial, SpotLight, Tools, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { LightItem } from "../../../model/item/LightItem";
 import { lookup } from "../../Lookup";
-import { WorldProvider } from "../world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 
 
 export class LightFactory {

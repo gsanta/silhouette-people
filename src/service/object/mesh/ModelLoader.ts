@@ -2,7 +2,7 @@ import { SceneLoader } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { AssetContainerStore } from "../../../store/AssetContainerStore";
 import { lookup } from "../../Lookup";
-import { WorldProvider } from "../world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 
 export class ModelLoader {
 

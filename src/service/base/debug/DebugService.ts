@@ -4,7 +4,7 @@ import { CitizenStore } from "../../../store/CitizenStore";
 import { MaterialStore } from "../../../store/MaterialStore";
 import { MeshStore } from "../../../store/MeshStore";
 import { lookup } from "../../Lookup";
-import { WorldProvider } from "../../object/world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 import { CitizenRouteDebugger } from "./CitizenRouteDebugger";
 import { IGUIComponent } from "./IGUIComponent";
 import { QuarterMapDebugger } from "./QuarterMapDebugger";

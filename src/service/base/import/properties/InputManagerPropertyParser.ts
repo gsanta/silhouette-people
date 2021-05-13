@@ -1,11 +1,11 @@
 
 
-import { BikeInputManager } from "../../../model/item/bike/BikeInputManager";
-import { BikeWalker } from "../../../model/item/bike/states/BikeWalker";
-import { CharacterInputManager } from "../../../model/item/character/CharacterInputManager";
-import { CharacterItem } from "../../../model/item/character/CharacterItem";
-import { KeyboardService } from "../keyboard/KeyboardService";
-import { AbstractPropertyParser } from "./AbstractPropertyParser";
+import { BikeInputManager } from "../../../../model/item/bike/BikeInputManager";
+import { BikeWalker } from "../../../../model/item/bike/states/BikeWalker";
+import { CharacterInputManager } from "../../../../model/item/character/CharacterInputManager";
+import { CharacterItem } from "../../../../model/item/character/CharacterItem";
+import { KeyboardService } from "../../keyboard/KeyboardService";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 enum InputManagerType {
     CharacterInputManager = 'CharacterInputManager',

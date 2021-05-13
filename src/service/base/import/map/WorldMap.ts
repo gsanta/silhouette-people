@@ -1,4 +1,4 @@
-import { RouteStoryConfig } from "../../../model/item/route/RouteItem";
+import { RouteStoryConfig } from "../../../../model/item/route/RouteItem";
 
 export interface GroundJson {
     color: string;
@@ -10,7 +10,6 @@ export interface QuarterJson {
 
 export interface WorldMap {
     id: string;
-    size: string;
     relativePos: string;
     cameraLocation: number;
     grounds: QuarterJson[][];

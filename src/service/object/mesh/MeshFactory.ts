@@ -2,7 +2,7 @@ import { InjectProperty } from "../../../di/diDecorators";
 import { MeshConfig, MeshItem, MeshObjType } from "../../../model/item/mesh/MeshItem";
 import { AbstractPropertyParser } from "../../base/import/AbstractPropertyParser";
 import { lookup } from "../../Lookup";
-import { WorldProvider } from "../world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 
 export class MeshFactory {
 

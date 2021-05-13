@@ -1,8 +1,8 @@
-import { BikeWalker } from "../../../model/item/bike/states/BikeWalker";
-import { CharacterWalker } from "../../../model/item/character/states/CharacterWalker";
-import { BikeItem, CharacterItem } from "../../../model/item/character/CharacterItem";
-import { MeshWalker } from "../../../model/item/mesh/MeshWalker";
-import { AbstractPropertyParser } from "./AbstractPropertyParser";
+import { BikeWalker } from "../../../../model/item/bike/states/BikeWalker";
+import { CharacterWalker } from "../../../../model/item/character/states/CharacterWalker";
+import { BikeItem, CharacterItem } from "../../../../model/item/character/CharacterItem";
+import { MeshWalker } from "../../../../model/item/mesh/MeshWalker";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 enum WalkerName {
     BikeWalker = 'BikeWalker',

@@ -4,7 +4,7 @@ import { MeshStore } from "../../../store/MeshStore";
 import { KeyboardListener, KeyboardService } from "../keyboard/KeyboardService";
 import { lookup } from "../../Lookup";
 import { ToolService } from "../../edit/ToolService";
-import { WorldProvider } from "../../object/world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 import { QuarterUpdater } from "../../object/quarter/QuarterUpdater";
 import { StageController } from "../../ui/stage/StageController";
 

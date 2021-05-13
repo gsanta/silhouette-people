@@ -6,7 +6,7 @@ import { MeshStore } from "../../../store/MeshStore";
 import { RouteStore } from "../../../store/RouteStore";
 import { PointerData } from "../../base/pointer/PointerService";
 import { RouteConfig, RouteFactory } from "../../object/route/RouteFactory";
-import { WorldProvider } from "../../object/world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 import { PlayerStore } from "../../player/PlayerStore";
 import { RenderGuiService } from "../../ui/RenderGuiService";
 import { Tool, ToolType } from "../Tool";

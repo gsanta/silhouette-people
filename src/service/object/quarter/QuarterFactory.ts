@@ -3,7 +3,7 @@ import { InjectProperty } from "../../../di/diDecorators";
 import { QuarterItem } from "../../../model/item/quarter/QuarterItem";
 import { QuarterStore } from "../../../store/QuarterStore";
 import { lookup } from "../../Lookup";
-import { WorldProvider } from "../world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 
 export interface QuarterObjConfig {
     color: string;

@@ -1,8 +1,8 @@
 import { PhysicsImpostor } from "babylonjs";
-import { MeshItem } from "../../../model/item/mesh/MeshItem";
-import { Lookup } from "../../Lookup";
-import { WorldProvider } from "../../object/world/WorldProvider";
-import { AbstractPropertyParser } from "./AbstractPropertyParser";
+import { MeshItem } from "../../../../model/item/mesh/MeshItem";
+import { Lookup } from "../../../Lookup";
+import { WorldProvider } from "../../../WorldProvider";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export interface PhysicsPropertyConfig {
     mass: number;

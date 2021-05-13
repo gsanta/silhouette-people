@@ -10,8 +10,8 @@ import { FactorySetup } from "../../object/mesh/FactorySetup";
 import { MeshFactory } from "../../object/mesh/MeshFactory";
 import { RouteFactory } from "../../object/route/RouteFactory";
 import { WorldFactory } from "../../object/world/WorldFactory";
-import { WorldMapParser } from "../../object/world/WorldMapParser";
-import { WorldProvider } from "../../object/world/WorldProvider";
+import { WorldImporter } from "../import/WorldImporter";
+import { WorldProvider } from "../../WorldProvider";
 import { PlayerStore } from "../../player/PlayerStore";
 import { StorySetup } from "../../story/StorySetup";
 import { StoryTracker } from "../../story/StoryTracker";
@@ -67,7 +67,7 @@ export class SetupService {
 
     private readonly worldFactory: WorldFactory;
 
-    private worldMapParser: WorldMapParser;
+    private worldMapParser: WorldImporter;
 
     private _isReady = false;
 
@@ -93,7 +93,7 @@ export class SetupService {
         this.backlog = lookup.backlog;
         this.routeStore = lookup.routeStore;
         
-        this.worldMapParser = new WorldMapParser(this.worldProvider, this.routeFactory, this.routeStore, this.backlog);
+        this.worldMapParser = new WorldImporter(this.worldProvider, this.routeFactory, this.routeStore, this.backlog);
         this.worldFactory = new WorldFactory(this.meshFactory);
         this.citizenSetup = new CitizenSetup(this.worldMapParser);
 

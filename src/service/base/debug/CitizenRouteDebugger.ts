@@ -1,7 +1,7 @@
 import { CitizenStore } from "../../../store/CitizenStore";
 import { MaterialStore } from "../../../store/MaterialStore";
 import { PathVisualizer } from "../../edit/route/PathVisualizer";
-import { WorldProvider } from "../../object/world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 
 export class CitizenRouteDebugger {
 

@@ -3,7 +3,7 @@ import { DebugService } from "./base/debug/DebugService";
 import { KeyboardService } from "./base/keyboard/KeyboardService";
 import { RenderGuiService } from "./ui/RenderGuiService";
 import { SetupService } from "./base/setup/SetupService";
-import { WorldProvider } from "./object/world/WorldProvider";
+import { WorldProvider } from "./WorldProvider";
 import { UpdateService } from "./base/update/UpdateService";
 import { MeshFactory } from "./object/mesh/MeshFactory";
 import { PointerService } from "./base/pointer/PointerService";

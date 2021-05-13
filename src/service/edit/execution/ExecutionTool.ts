@@ -1,5 +1,5 @@
 import { RenderGuiService } from "../../ui/RenderGuiService";
-import { WorldProvider } from "../../object/world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 import { RouteStore } from "../../../store/RouteStore";
 import { Tool, ToolType } from "../Tool";
 import { CharacterItem } from "../../../model/item/character/CharacterItem";

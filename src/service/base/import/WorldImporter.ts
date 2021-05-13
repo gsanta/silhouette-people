@@ -1,14 +1,14 @@
 import { RouteStore } from "../../../store/RouteStore";
 import { StoryTracker } from "../../story/StoryTracker";
-import { RouteFactory } from "../route/RouteFactory";
-import { RouteMapParser } from "../route/RouteMapParser";
-import { MapParser } from "./MapParser";
-import { MeshConfigParser } from "./MeshConfigParser";
-import { RouteStoryParser } from "./RouteStoryParser";
-import { WorldMap } from "./WorldMap";
-import { WorldProvider } from "./WorldProvider";
+import { RouteFactory } from "../../object/route/RouteFactory";
+import { RouteMapParser } from "../../object/route/RouteMapParser";
+import { MeshConfigParser } from "./map/MeshConfigParser";
+import { RouteStoryParser } from "./map/RouteStoryParser";
+import { WorldMap } from "./map/WorldMap";
+import { WorldProvider } from "../../WorldProvider";
+import { MapParser } from "./map/parse/MapParser";
 
-export class WorldMapParser {
+export class WorldImporter {
     private readonly routeStore: RouteStore;
 
     readonly routeParser: RouteMapParser;
@@ -41,7 +41,7 @@ export class WorldMapParser {
         json.map = map;
         json.routeMap = routeMap;
 
-        const mapResult = this.mapParser.parse(json, map);
+        const mapResult = this.mapParser.parse(map);
 
         this.worldProvider.worldMap = json;
         this.worldProvider.worldSize = mapResult.size;

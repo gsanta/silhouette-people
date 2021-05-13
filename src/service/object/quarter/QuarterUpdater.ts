@@ -1,7 +1,7 @@
 import { InjectProperty } from "../../../di/diDecorators";
 import { MeshItem } from "../../../model/item/mesh/MeshItem";
 import { QuarterStore } from "../../../store/QuarterStore";
-import { WorldProvider } from "../world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 import { lookup } from "../../Lookup";
 import { PlayerStore } from "../../player/PlayerStore";
 

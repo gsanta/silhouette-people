@@ -1,7 +1,7 @@
-import { CharacterItem } from "../../../model/item/character/CharacterItem";
-import { toVector2 } from "../../../model/item/mesh/MeshInstance";
-import { RouteStore } from "../../../store/RouteStore";
-import { AbstractPropertyParser } from "./AbstractPropertyParser";
+import { CharacterItem } from "../../../../model/item/character/CharacterItem";
+import { toVector2 } from "../../../../model/item/mesh/MeshInstance";
+import { RouteStore } from "../../../../store/RouteStore";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export interface RoutePropertyConfig {
     name: string;

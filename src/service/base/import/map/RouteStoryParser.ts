@@ -1,4 +1,4 @@
-import { StoryTracker } from "../../story/StoryTracker";
+import { StoryTracker } from "../../../story/StoryTracker";
 import { WorldMap } from "./WorldMap";
 
 

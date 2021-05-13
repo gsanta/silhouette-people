@@ -10,8 +10,8 @@ import { lookup } from "../../Lookup";
 import { MeshFactory } from "../mesh/MeshFactory";
 import { ModelLoader } from "../mesh/ModelLoader";
 import { QuarterFactory, QuarterObjConfig } from "../quarter/QuarterFactory";
-import { GroundJson } from "./WorldMap";
-import { WorldProvider } from "./WorldProvider";
+import { GroundJson } from "../../base/import/map/WorldMap";
+import { WorldProvider } from "../../WorldProvider";
 
 export class WorldFactory {
 

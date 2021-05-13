@@ -1,7 +1,7 @@
 import { Container, Control, StackPanel, TextBlock } from "babylonjs-gui";
 import { InjectProperty } from "../../../di/diDecorators";
 import { lookup } from "../../Lookup";
-import { WorldProvider } from "../../object/world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 import { IGUIComponent } from "./IGUIComponent";
 
 export class FPSComponent implements IGUIComponent {

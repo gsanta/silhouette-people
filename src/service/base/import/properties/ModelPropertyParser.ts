@@ -1,9 +1,9 @@
 import { AbstractMesh, Axis, Mesh, Space } from "babylonjs";
-import { MeshInstance } from "../../../model/item/mesh/MeshInstance";
-import { MeshItem } from "../../../model/item/mesh/MeshItem";
-import { AssetContainerStore } from "../../../store/AssetContainerStore";
-import { WorldProvider } from "../../object/world/WorldProvider";
-import { AbstractPropertyParser } from "./AbstractPropertyParser";
+import { MeshInstance } from "../../../../model/item/mesh/MeshInstance";
+import { MeshItem } from "../../../../model/item/mesh/MeshItem";
+import { AssetContainerStore } from "../../../../store/AssetContainerStore";
+import { WorldProvider } from "../../../WorldProvider";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export interface ModelPropertyConfig {
     path: string;

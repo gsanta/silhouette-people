@@ -3,7 +3,7 @@ import { MaterialStore } from "../../store/MaterialStore";
 import { RouteStore } from "../../store/RouteStore";
 import { RouteExecutor } from "../edit/execution/RouteExecutor";
 import { PathVisualizer } from "../edit/route/PathVisualizer";
-import { WorldProvider } from "../object/world/WorldProvider";
+import { WorldProvider } from "../WorldProvider";
 import { RoutePool } from "./RoutePool";
 
 export class CitizenExecutor implements RouteExecutor {

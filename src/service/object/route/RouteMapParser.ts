@@ -1,8 +1,8 @@
 import { Vector3 } from "babylonjs";
 import { PathItem } from "../../../model/item/PathItem";
 import { RouteItem } from "../../../model/item/route/RouteItem";
-import { MapParser, ParsedItem } from "../world/MapParser";
-import { WorldMap } from "../world/WorldMap";
+import { MapParser, ParsedItem } from "../../base/import/map/parse/MapParser";
+import { WorldMap } from "../../base/import/map/WorldMap";
 import { RouteFactory } from "./RouteFactory";
 
 export interface ParsedRoute {
@@ -25,7 +25,7 @@ export class RouteMapParser {
     }
     
     parse(json: WorldMap): RouteItem[] {
-        const mapResult = this.mapParser.parse(json, json.routeMap);
+        const mapResult = this.mapParser.parse(json.routeMap);
         const parsedRoutes = this.parseRoutes(mapResult.items);
         return this.createRoutes(parsedRoutes);
     }

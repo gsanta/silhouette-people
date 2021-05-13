@@ -2,7 +2,7 @@ import { StandardMaterial, Axis, Mesh, MeshBuilder, Space, Vector3, InstancedMes
 import { InjectProperty } from "../../../di/diDecorators";
 import { lookup, Lookup } from "../../Lookup";
 import { QuarterStore } from "../../../store/QuarterStore";
-import { WorldProvider } from "../../object/world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 
 export interface AreaVisualizerConfig {
     height: number;

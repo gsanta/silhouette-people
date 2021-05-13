@@ -9,7 +9,7 @@ import { RouteFactory } from "../object/route/RouteFactory";
 import { KeyboardListener, KeyboardService } from "../base/keyboard/KeyboardService";
 import { lookup } from "../Lookup";
 import { RenderGuiService } from "../ui/RenderGuiService";
-import { WorldProvider } from "../object/world/WorldProvider";
+import { WorldProvider } from "../WorldProvider";
 import { CitizenExecutor } from "../citizen/CitizenExecutor";
 import { PlayerStore } from "../player/PlayerStore";
 

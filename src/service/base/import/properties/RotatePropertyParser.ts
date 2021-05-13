@@ -1,6 +1,6 @@
 import { Axis, Space, Tools } from "babylonjs";
-import { MeshItem } from "../../../model/item/mesh/MeshItem";
-import { AbstractPropertyParser } from "./AbstractPropertyParser";
+import { MeshItem } from "../../../../model/item/mesh/MeshItem";
+import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export class RotatePropertyParser extends AbstractPropertyParser<number> {
     propName = 'rotate';

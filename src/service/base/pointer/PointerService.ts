@@ -1,7 +1,7 @@
 import { Vector2, Vector3 } from "babylonjs";
 import { PointerInfo } from "babylonjs/Events/pointerEvents";
 import { InjectProperty } from "../../../di/diDecorators";
-import { WorldProvider } from "../../object/world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 import { lookup } from "../../Lookup";
 import { ToolService } from "../../edit/ToolService";
 

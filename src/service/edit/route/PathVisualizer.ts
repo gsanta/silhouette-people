@@ -1,6 +1,6 @@
 import { Mesh, MeshBuilder, StandardMaterial, Vector3 } from "babylonjs";
 import { PathItem } from "../../../model/item/PathItem";
-import { WorldProvider } from "../../object/world/WorldProvider";
+import { WorldProvider } from "../../WorldProvider";
 import { MaterialStore } from "../../../store/MaterialStore";
 
 export class PathVisualizer {

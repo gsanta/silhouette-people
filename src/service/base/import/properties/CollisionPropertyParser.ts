@@ -1,9 +1,7 @@
 import { Axis, MeshBuilder, Space, StandardMaterial } from "babylonjs";
-import { MeshItem } from "../../../model/item/mesh/MeshItem";
-import { WorldObj } from "../../../model/item/WorldObj";
-import { Lookup } from "../../Lookup";
-import { WorldProvider } from "../../object/world/WorldProvider";
-import { AbstractPropertyParser, parseStrVector } from "./AbstractPropertyParser";
+import { MeshItem } from "../../../../model/item/mesh/MeshItem";
+import { WorldProvider } from "../../../WorldProvider";
+import { AbstractPropertyParser, parseStrVector } from "../AbstractPropertyParser";
 
 export interface CollisionPropertyConfig {
     dimension: string;
