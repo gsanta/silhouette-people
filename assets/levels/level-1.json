@@ -286,9 +286,6 @@
                 "texture": {
                     "path": "palette.jpg",
                     "meshIndex": 0
-                },
-                "collider": {
-                    "dimension": "1:1:1"
                 }
             }
         },

@@ -8,7 +8,6 @@ export interface RouteStoryConfig {
     characterId: string;
 }
 
-
 export class RouteItem {
     readonly name: string;
     character: CharacterItem;
@@ -21,10 +20,6 @@ export class RouteItem {
         this.path = path;
 
         this.name = name;
-    }
-
-    addPath(path: PathItem) {
-        // this.pathes.push(path);
     }
 
     addPoint(point: Vector3) {

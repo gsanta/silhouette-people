@@ -1,31 +1,31 @@
-import { CharacterItem } from "../../character/CharacterItem";
+import { RouteItem } from "../RouteItem";
 import { RouteWalker } from "../RouteWalker";
 import { LockedFeature } from "./LockedFeature";
 
 export class LockedSpeed implements LockedFeature {
-    private character: CharacterItem;
-    private routeWalker: RouteWalker;
+    private readonly routeWalker: RouteWalker;
+    private readonly route: RouteItem;
 
-    constructor(routeWalker: RouteWalker, character: CharacterItem) {
-        this.character = character;
+    constructor(routeWalker: RouteWalker, route: RouteItem) {
         this.routeWalker = routeWalker;
+        this.route = route;
     }
     
     update(deltaTime: number) {
-        const character = this.routeWalker.route.character;
+        const character = this.route.character;
         character.walker.setSpeed(0.04);
     }
 
     enableFeature() {
-        const character = this.routeWalker.route.character;
+        const character = this.route.character;
         
-        if (character &&character.inputManager) {
+        if (character && character.inputManager) {
             character.inputManager.disableSpeed();
         }
     }
 
     disableFeature() {
-        const character = this.routeWalker.route.character;
+        const character = this.route.character;
 
         if (character && character.inputManager) {
             character.inputManager.enableSpeed();

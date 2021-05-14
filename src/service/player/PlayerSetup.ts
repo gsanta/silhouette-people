@@ -1,7 +1,8 @@
 import { CharacterItem } from "../../model/item/character/CharacterItem";
 import { DynamicRoutePointProvider } from "../../model/item/route/DynamicRoutePointProvider";
 import { LockedDirection } from "../../model/item/route/features/LockedDirection";
-import { RouteWalker } from "../../model/item/route/RouteWalker";
+import { RouteWalkerImpl } from "../../model/item/route/RouteWalkerImpl";
+import { RouteWalkerListenerDecorator } from "../../model/item/route/RouteWalkerListenerDecorator";
 import { GraphService } from "../graph/GraphService";
 import { WorldProvider } from "../WorldProvider";
 import { PlayerParser } from "./PlayerParser";
@@ -28,7 +29,11 @@ export class PlayerSetup {
 
         route.character = <CharacterItem> player.getParent();
         player.route = route;
-        player.route.walker = new RouteWalker(route, new DynamicRoutePointProvider(this.graphService.getGraph()));
-        route.walker.addFeature(new LockedDirection(route.walker, route.character));
+
+        const walker = new RouteWalkerImpl(route, new DynamicRoutePointProvider(this.graphService.getGraph()));
+        const walkerDecorator = new RouteWalkerListenerDecorator(walker);
+
+        route.walker = walkerDecorator;
+        route.walker.addFeature(new LockedDirection(route.walker, route));
     }
 }

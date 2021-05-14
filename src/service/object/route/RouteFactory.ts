@@ -5,7 +5,7 @@ import { PathItem } from "../../../model/item/PathItem";
 import { LockedDirection } from "../../../model/item/route/features/LockedDirection";
 import { LockedSpeed } from "../../../model/item/route/features/LockedSpeed";
 import { RouteItem, RouteStoryConfig } from "../../../model/item/route/RouteItem";
-import { RouteWalker } from "../../../model/item/route/RouteWalker";
+import { RouteWalkerImpl } from "../../../model/item/route/RouteWalkerImpl";
 import { RouteStore } from "../../../store/RouteStore";
 import { IPathFinder } from "../path/path_finder/IPathFinder";
 import { MasterPathFinder } from "../path/path_finder/MasterPathFinder";
@@ -49,7 +49,6 @@ export class RouteFactory {
         if (path.length < 2) { return undefined; }
         
         const route = new RouteItem(new PathItem(path), undefined, character);
-        // route.walker = new RealTimeRouteWalker(route);
         
         this.routeStore.addRoute(route);
     }
@@ -66,15 +65,15 @@ export class RouteFactory {
         return route;
     }
 
-    private createRouteWalker(route: RouteItem, config: RouteFactoryConfig): RouteWalker {
-        const routeWalker = new RouteWalker(route);
+    private createRouteWalker(route: RouteItem, config: RouteFactoryConfig): RouteWalkerImpl {
+        const routeWalker = new RouteWalkerImpl(route);
 
         if (config.lockSpeed) {
-            routeWalker.addFeature(new LockedSpeed(routeWalker, route.character));
+            routeWalker.addFeature(new LockedSpeed(routeWalker, route));
         }
 
         if (config.lockDirection) {
-            routeWalker.addFeature(new LockedDirection(routeWalker, route.character));
+            routeWalker.addFeature(new LockedDirection(routeWalker, route));
         }
 
         return routeWalker;
