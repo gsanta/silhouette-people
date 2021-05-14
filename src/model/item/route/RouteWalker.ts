@@ -129,8 +129,19 @@ class CheckpointUpdater {
         const curr = character.getPosition();
     
         const isWithinDestRadius = toCheckPoint.subtract(curr).length() < 0.2;
-        const isLeavingDest = prevPos && prevPos.subtract(toCheckPoint).length() < currPos.subtract(toCheckPoint).length();
+        const isLeavingDest = this.isLeavingDest();
     
         return isWithinDestRadius || isLeavingDest;
+    }
+
+    private isLeavingDest() {
+        const { toCheckPoint, prevPos, currPos } = this.routeWalker;
+
+        if (prevPos) {
+            const checkDist = prevPos.subtract(toCheckPoint).length() < 2;
+            const checkDir = prevPos.subtract(toCheckPoint).length() < currPos.subtract(toCheckPoint).length();
+            return checkDist && checkDir;
+        }
+        return false;
     }
 }

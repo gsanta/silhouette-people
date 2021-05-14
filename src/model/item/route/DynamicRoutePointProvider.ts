@@ -25,15 +25,17 @@ export class DynamicRoutePointProvider implements RoutePointProvider {
     }
 
     getNextRoutePoint(currPoint: Vector3, prevPoint: Vector3) {
-        this.createNextRoutePoint(currPoint, prevPoint);
 
         const routePoints = this.route.getRoutePoints();
+        let nextRoutePoint: Vector3;
 
         if (currPoint === routePoints[routePoints.length - 1]) {
-            return undefined;
+            nextRoutePoint = undefined;
         } else {
-            return routePoints[routePoints.indexOf(currPoint) + 1];
+            nextRoutePoint = routePoints[routePoints.indexOf(currPoint) + 1];
+            this.createNextRoutePoint(nextRoutePoint, currPoint);
         }
+        return nextRoutePoint;
     }
 
     private createNextRoutePoint(currPoint: Vector3, prevPoint: Vector3): void {
@@ -51,7 +53,7 @@ export class DynamicRoutePointProvider implements RoutePointProvider {
         let edges = this.graph.getEdges(currVertex);
 
         if (prevPoint) {
-            const prevVertex = this.graph.getByPos(currPoint);
+            const prevVertex = this.graph.getByPos(prevPoint);
             const edge = this.graph.edgeBetween(currVertex, prevVertex);
             edges = edges.filter(e => e !== edge);
         }

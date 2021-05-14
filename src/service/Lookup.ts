@@ -83,9 +83,6 @@ export class Lookup {
         this.backlog = new StoryTracker();
         lookup.backlog = this.backlog;
 
-        this.graphService = new GraphService();
-        lookup.graphService = this.graphService;
-
         this.routeStore = new RouteStore();
         lookup.routeStore = this.routeStore;
 
@@ -108,6 +105,9 @@ export class Lookup {
         lookup.assetContainerStore = this.assetContainerStore;
         this.lightStore = new LightStore();
         lookup.lightStore = this.lightStore;
+
+        this.graphService = new GraphService();
+        lookup.graphService = this.graphService;
         
         this.renderGui = new RenderGuiService();
         lookup.renderGui = this.renderGui;

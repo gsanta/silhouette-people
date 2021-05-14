@@ -127,6 +127,7 @@ export class SetupService {
         this.worldProvider.world = await this.worldFactory.createWorldObj(scene);
         await this.backlog.processor.process();
         this.routeSetup.setup();
+        this.bikeParenter.parentToBike(<PersonItem> this.playerStore.getPlayerById('player1'), this.playerStore.getBikes()[0], this.keyboardService);
         this.playerSetup.setup();
 
 
@@ -140,8 +141,6 @@ export class SetupService {
         this._isReady = true;
         
         this.toolService.setSelectedTool(this.toolService.path, true);
-
-        this.bikeParenter.parentToBike(<PersonItem> this.playerStore.getPlayerById('player1'), this.playerStore.getBikes()[0], this.keyboardService);
 
         this.stageController.stages.forEach(stage => stage.resetStage());
         this.stageController.getActiveStage().enterStage();

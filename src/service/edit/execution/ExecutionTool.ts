@@ -47,7 +47,7 @@ export class ExecutionTool extends Tool {
 
     select(isCanceled: boolean) {
         this.activePlayer = this.playerStore.getActivePlayer();
-        const route = this.routeStore.getRouteForCharacter(this.activePlayer);
+        const route = this.activePlayer.route;
         if (route) {
             route.walker.onFinished(() => this.onPlayerFinished(route));
         }
@@ -101,19 +101,16 @@ export class ExecutionTool extends Tool {
 
     private startRoutes(characters: CharacterItem[]) {
         characters.forEach(player => {
-            const route = this.routeStore.getRouteForCharacter(player);
-            if (route) {
-                route.walker.setStarted();
+            if (player.route) {
+                player.route.walker.setStarted();
             }
         });
     }
 
     private updateRoutes(deltaTime: number, characters: CharacterItem[]) {
         characters.forEach(player => {
-            const route = this.routeStore.getRouteForCharacter(player);
-
-            if (route) {
-                route.walker.walk(deltaTime);        
+            if (player.route) {
+                player.route.walker.walk(deltaTime);        
             } 
         });
     }

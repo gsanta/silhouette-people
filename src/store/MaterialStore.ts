@@ -52,7 +52,7 @@ export class MaterialStore {
         if (!this.ribbonMaterial) {
             var mat = new StandardMaterial("mat1", this.worldProvider.scene);
             mat.alpha = 1;
-            mat.diffuseColor = new Color3(0.5, 0.5, 1.0);
+            mat.diffuseColor = Color3.Green();
             mat.emissiveColor = Color3.Black();
             mat.backFaceCulling = false;
             this.ribbonMaterial = mat;
