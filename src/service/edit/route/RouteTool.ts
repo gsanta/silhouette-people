@@ -41,7 +41,7 @@ export class RouteTool extends Tool {
         if (this.isReset()) { return; }
 
         if (this.currentPath) {
-            this.currentPath = this.pathBuilder.updatePath(this.currentPath, pointer.curr2D);
+            this.currentPath = this.pathBuilder.updatePath(this.currentPath, pointer.curr);
 
             this.pathVisualizer.visualize(this.currentPath);
         } else {
@@ -52,9 +52,9 @@ export class RouteTool extends Tool {
     pointerDown(pointer: PointerData) {
         if (this.isReset()) { return; }
 
-        this.currentPath = this.pathBuilder.closePath(this.currentPath, pointer.curr2D);;
-        this.currentPath = this.pathBuilder.startPath(pointer.curr2D);
-        this.route.addPath(this.currentPath);
+        this.currentPath = this.pathBuilder.closePath(this.currentPath, pointer.curr);
+        this.currentPath = this.pathBuilder.startPath(pointer.curr);
+        this.route.addPoint(pointer.curr);
     }
 
     isReset() {
@@ -110,7 +110,7 @@ export class RouteTool extends Tool {
 
     private finishRoute() {
         if (this.currentPath) {
-            this.route.removePath(this.currentPath);
+            // this.route.removeLastPoint();
             this.currentPath.dispose();
         }
         this.currentPath = undefined;
@@ -126,7 +126,8 @@ export class RouteTool extends Tool {
 
     private initRoute() {
         let config: RouteConfig = { lockDirection: true };
-        this.currentPath = this.pathBuilder.startPath(this.character.instance.getPosition2D());
-        this.route = this.routeFactory.createRoute([this.currentPath], config, this.character);
+        const pos = this.character.instance.getPosition();
+        this.currentPath = this.pathBuilder.startPath(pos);
+        this.route = this.routeFactory.createRoute(new PathItem([pos]), config, this.character);
     }
 }

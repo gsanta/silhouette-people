@@ -34,7 +34,7 @@ export class RouteMapParser {
         return parsedRoutes.map(parsedRoute => {
             const path = this.createPath(parsedRoute)
             
-            return this.routeFactory.createRoute([path], { lockDirection: true, lockSpeed: true, name: `pre-defined-route-${parsedRoute.char}` });
+            return this.routeFactory.createRoute(path, { lockDirection: true, lockSpeed: true, name: `pre-defined-route-${parsedRoute.char}` });
         });
     }
 

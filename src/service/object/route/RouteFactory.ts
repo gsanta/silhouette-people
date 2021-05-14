@@ -48,7 +48,7 @@ export class RouteFactory {
 
         if (path.length < 2) { return undefined; }
         
-        const route = new RouteItem([new PathItem(path)], undefined, character);
+        const route = new RouteItem(new PathItem(path), undefined, character);
         // route.walker = new RealTimeRouteWalker(route);
         
         this.routeStore.addRoute(route);
@@ -58,8 +58,8 @@ export class RouteFactory {
         
     }
 
-    createRoute(pathes: PathItem[], config: RouteConfig, character?: CharacterItem): RouteItem {
-        const route = new RouteItem(pathes, config.name, character);
+    createRoute(path: PathItem, config: RouteConfig, character?: CharacterItem): RouteItem {
+        const route = new RouteItem(path, config.name, character);
         route.walker = this.createRouteWalker(route, config);
 
         this.routeStore.addRoute(route);

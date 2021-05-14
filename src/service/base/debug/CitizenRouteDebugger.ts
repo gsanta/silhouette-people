@@ -21,7 +21,7 @@ export class CitizenRouteDebugger {
             if (citizen.route) {
                 const visualizer = new PathVisualizer(this.worldProvider, this.materialStore);
                 this.visualizers.push(visualizer);
-                visualizer.visualize(citizen.route.pathes[0]);
+                visualizer.visualize(citizen.route.path);
             }
         });
     }

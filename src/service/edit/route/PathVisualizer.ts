@@ -32,11 +32,11 @@ export class PathVisualizer {
     }
 
     private createArrowHeadPathes(path: PathItem) {
-        const angle = this.getAngle(path.getStartPoint(), path.getEndPoint());
+        const angle = this.getAngle(path.getFirstPoint(), path.getLastPoint());
         const angelPlus = angle + Math.PI / 2;
         const angelMinus = angle - Math.PI / 2;
         const radius = 0.4;
-        const end = path.getEndPoint();
+        const end = path.getLastPoint();
 
         const path1 = [
             end.add(new Vector3(radius * Math.cos(angelPlus), 0.5, radius * Math.sin(angelPlus))),

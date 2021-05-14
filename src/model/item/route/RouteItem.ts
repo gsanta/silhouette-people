@@ -14,41 +14,33 @@ export class RouteItem {
     character: CharacterItem;
     walker: RouteWalker;
 
-    pathes: PathItem[] = [];
+    path: PathItem;
 
-    constructor(pathes: PathItem[], name?: string, character?: CharacterItem) {
+    constructor(path: PathItem, name?: string, character?: CharacterItem) {
         this.character = character;
-        this.pathes = pathes;
+        this.path = path;
 
         this.name = name;
     }
 
     addPath(path: PathItem) {
-        this.pathes.push(path);
+        // this.pathes.push(path);
     }
 
-    removePath(path: PathItem) {
-        this.pathes = this.pathes.filter(p => p !== path);
+    addPoint(point: Vector3) {
+        this.path.addPoint(point);
     }
 
-    getCheckpoints() {
-        const points: Vector3[] = [];
+    removeLastPoint() {
+        const numPoints = this.path.getPoints().length;
+        this.path.removePointAtIndex(numPoints - 1);
+    }
 
-        points.push(...this.pathes[0].getPoints());
-
-        for (let i = 1; i < this.pathes.length; i++) {
-            const [first, ...rest] = this.pathes[i].getPoints();
-            points.push(...rest);
-        }
-
-        return points;
+    getRoutePoints() {
+        return this.path.getPoints();
     }
     
-    getPathes(): PathItem[] {
-        return this.pathes;
-    }
-
     dispose() {
-        this.pathes.forEach(path => path.dispose());
+        this.path.dispose();
     }
 }

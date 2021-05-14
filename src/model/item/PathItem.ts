@@ -43,12 +43,16 @@ export class PathItem {
         return this.points;
     }
 
-    getStartPoint(): Vector3 {
+    getFirstPoint(): Vector3 {
         return this.points[0];
     }
 
-    getEndPoint(): Vector3 {
+    getLastPoint(): Vector3 {
         return this.points[this.points.length - 1];
+    }
+
+    removePointAtIndex(index: number) {
+        this.points.splice(index, 1);
     }
 
     size(): number {

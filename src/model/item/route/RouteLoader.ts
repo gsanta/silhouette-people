@@ -34,7 +34,7 @@ export class RouteLoader implements StoryLoader {
         const route = this.routeStore.getByName(`pre-defined-route-${story.data.routeId}`);
         const character = <CharacterItem> this.meshStore.getById(story.data.characterId);
         character.route = route;
-        character.instance.setPosition2D(toVector2(route.getCheckpoints()[0]))
+        character.instance.setPosition2D(toVector2(route.getRoutePoints()[0]))
         route.character = character;
         this.routeStore.addRoute(route);
     }

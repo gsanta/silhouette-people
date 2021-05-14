@@ -2,21 +2,30 @@ import { Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
 import { LockedFeature } from "./features/LockedFeature";
 import { RouteItem } from "./RouteItem";
+import { RoutePointProvider } from "./RoutepointProvider";
+import { StaticRoutePointProvider } from "./StaticRoutePointProvider";
 
 export class RouteWalker {
-    protected _isFinished: boolean = false;
+    readonly route: RouteItem;
+    
     fromCheckPoint: Vector3;
     toCheckPoint: Vector3;
     prevPos: Vector3;
     currPos: Vector3;
     protected _isStarted = false;
+    protected _isFinished: boolean = false;
+    
+    private checkpointUpdater: CheckpointUpdater;
+    private readonly routePointProvider: RoutePointProvider;
 
-    private checkpointHanlder: CheckpointUpdater;
     private lockedFeatures: LockedFeature[] = [];
     private onFinishedFuncs: (() => void)[] = [];    
 
-    constructor(public route: RouteItem) {
-        this.checkpointHanlder = new CheckpointUpdater(this);
+    constructor(route: RouteItem, routePointProvider: RoutePointProvider = new StaticRoutePointProvider()) {
+        this.route = route;
+        this.routePointProvider = routePointProvider;
+        this.routePointProvider.setRoute(this.route);
+        this.checkpointUpdater = new CheckpointUpdater(this, this.routePointProvider);
     }
 
     walk(deltaTime: number): void {
@@ -24,7 +33,7 @@ export class RouteWalker {
 
         const character = this.route.character;
     
-        this.checkpointHanlder.updateCheckPointsIfNeeded()
+        this.checkpointUpdater.updateCheckPointsIfNeeded()
 
         if (!this.isFinished()) {
             this.lockedFeatures.forEach(lockedFeature => lockedFeature.update(deltaTime));
@@ -52,7 +61,7 @@ export class RouteWalker {
     setStarted() {
         this._isStarted = true;
 
-        this.checkpointHanlder.initCheckPoints();
+        this.checkpointUpdater.initCheckPoints();
         const character = this.route.character;
         character.setPosition2D(new Vector2(this.fromCheckPoint.x, this.fromCheckPoint.z));
 
@@ -73,12 +82,18 @@ export class RouteWalker {
 }
 
 class CheckpointUpdater {
-    constructor(private routeWalker: RouteWalker) {}
+    private readonly routeWalker: RouteWalker;
+    private readonly routePointProvider: RoutePointProvider;
+    
+    constructor(routeWalker: RouteWalker, routePointProvider: RoutePointProvider) {
+        this.routeWalker = routeWalker;
+        this.routePointProvider = routePointProvider;
+    }
 
     initCheckPoints() {
-        const route = this.routeWalker.route
+        const route = this.routeWalker.route;
 
-        const checkPoints = route.getCheckpoints();
+        const checkPoints = route.getRoutePoints();
         this.routeWalker.fromCheckPoint = checkPoints[0];
         this.routeWalker.toCheckPoint = checkPoints[1];
     }
@@ -93,14 +108,16 @@ class CheckpointUpdater {
     private setNextCheckPoint() {
         const route = this.routeWalker.route
         const character = route.character;
-        const checkPoints = route.getCheckpoints();
+        const checkPoints = route.getRoutePoints();
         const { toCheckPoint } = this.routeWalker;
-    
-        if (toCheckPoint === checkPoints[checkPoints.length - 1]) {
+
+        const nextRoutePoint = this.routePointProvider.getNextRoutePoint(toCheckPoint);
+
+        if (nextRoutePoint === undefined) {
             this.routeWalker.setFinished(true);
         } else {
             this.routeWalker.fromCheckPoint = character.getPosition();
-            this.routeWalker.toCheckPoint = checkPoints[checkPoints.indexOf(toCheckPoint) + 1];
+            this.routeWalker.toCheckPoint = nextRoutePoint;
         }
     }
 
