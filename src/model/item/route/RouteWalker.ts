@@ -109,9 +109,9 @@ class CheckpointUpdater {
         const route = this.routeWalker.route
         const character = route.character;
         const checkPoints = route.getRoutePoints();
-        const { toCheckPoint } = this.routeWalker;
+        const { toCheckPoint, fromCheckPoint } = this.routeWalker;
 
-        const nextRoutePoint = this.routePointProvider.getNextRoutePoint(toCheckPoint);
+        const nextRoutePoint = this.routePointProvider.getNextRoutePoint(toCheckPoint, fromCheckPoint);
 
         if (nextRoutePoint === undefined) {
             this.routeWalker.setFinished(true);

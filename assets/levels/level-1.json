@@ -358,6 +358,9 @@
             }
         }
     },
+    "routeEdges": [
+        ["A2", "B1"]
+    ],
     "routes": [
         {
             "routeId": "A",

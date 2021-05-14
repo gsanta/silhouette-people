@@ -11,7 +11,7 @@ import { IPathFinder } from "../path/path_finder/IPathFinder";
 import { MasterPathFinder } from "../path/path_finder/MasterPathFinder";
 import { lookup } from "../../Lookup";
 
-export interface RouteConfig {
+export interface RouteFactoryConfig {
     lockSpeed?: boolean;
     lockDirection?: boolean;
     name?: string;
@@ -58,7 +58,7 @@ export class RouteFactory {
         
     }
 
-    createRoute(path: PathItem, config: RouteConfig, character?: CharacterItem): RouteItem {
+    createRoute(path: PathItem, config: RouteFactoryConfig, character?: CharacterItem): RouteItem {
         const route = new RouteItem(path, config.name, character);
         route.walker = this.createRouteWalker(route, config);
 
@@ -66,7 +66,7 @@ export class RouteFactory {
         return route;
     }
 
-    private createRouteWalker(route: RouteItem, config: RouteConfig): RouteWalker {
+    private createRouteWalker(route: RouteItem, config: RouteFactoryConfig): RouteWalker {
         const routeWalker = new RouteWalker(route);
 
         if (config.lockSpeed) {

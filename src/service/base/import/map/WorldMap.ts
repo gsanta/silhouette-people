@@ -21,6 +21,7 @@ export interface WorldMap {
     tags: { [key: string]: string },
     objects: { [key: string]: {properties: {[key: string]: any} }},
     routes: RouteStoryConfig[],
+    routeEdges: string[][];
 
     mapUrl: string;
     routeMapUrl: string;

@@ -1,5 +1,6 @@
 import { MeshConfig, MeshObjType } from "../../../../model/item/mesh/MeshItem";
 import { toStrVector } from "../AbstractPropertyParser";
+import { IndexPosition } from "./parse/ItemParser";
 import { MapParser, ParsedItem } from "./parse/MapParser";
 import { WorldMap } from "./WorldMap";
 
@@ -11,7 +12,7 @@ export class MeshConfigParser {
     }
 
     parse(json: WorldMap): MeshConfig[] {
-        const mapResult = this.mapParser.parse(json.map);
+        const mapResult = this.mapParser.parse(json.map, new Set([IndexPosition.RIGHT]));
 
         return mapResult.items.map(item => this.createMeshConfig(item, json));
     }

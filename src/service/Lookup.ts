@@ -24,6 +24,7 @@ import { EventService } from "./base/EventService";
 import { CitizenStore } from "../store/CitizenStore";
 import { StoryTracker } from "./story/StoryTracker";
 import { PlayerStore } from "./player/PlayerStore";
+import { GraphService } from "./graph/GraphService";
 
 export class Lookup {
     eventService: EventService;
@@ -36,6 +37,7 @@ export class Lookup {
 
     backlog: StoryTracker;
 
+    graphService: GraphService;
     debugService: DebugService;
     activePlayerService: ActivePlayerService;
 
@@ -80,6 +82,9 @@ export class Lookup {
 
         this.backlog = new StoryTracker();
         lookup.backlog = this.backlog;
+
+        this.graphService = new GraphService();
+        lookup.graphService = this.graphService;
 
         this.routeStore = new RouteStore();
         lookup.routeStore = this.routeStore;

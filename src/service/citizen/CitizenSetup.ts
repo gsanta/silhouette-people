@@ -9,7 +9,7 @@ import { ToolService } from "../edit/ToolService";
 import { lookup } from "../Lookup";
 import { MeshFactory } from "../object/mesh/MeshFactory";
 import { RouteFactory } from "../object/route/RouteFactory";
-import { RouteMapParser } from "../object/route/RouteMapParser";
+import { RouteParser } from "../base/import/map/RouteParser";
 import { WorldImporter } from "../base/import/WorldImporter";
 import { WorldProvider } from "../WorldProvider";
 import { CitizenExecutor } from "./CitizenExecutor";

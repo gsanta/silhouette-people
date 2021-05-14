@@ -3,5 +3,5 @@ import { RouteItem } from "./RouteItem";
 
 export interface RoutePointProvider {
     setRoute(route: RouteItem);
-    getNextRoutePoint(currPoint: Vector3);
+    getNextRoutePoint(currPoint: Vector3, prevPoint: Vector3);
 }

@@ -1,17 +1,19 @@
 import { RouteStore } from "../../../store/RouteStore";
 import { StoryTracker } from "../../story/StoryTracker";
 import { RouteFactory } from "../../object/route/RouteFactory";
-import { RouteMapParser } from "../../object/route/RouteMapParser";
+import { RouteParser } from "./map/RouteParser";
 import { MeshConfigParser } from "./map/MeshConfigParser";
 import { RouteStoryParser } from "./map/RouteStoryParser";
 import { WorldMap } from "./map/WorldMap";
 import { WorldProvider } from "../../WorldProvider";
 import { MapParser } from "./map/parse/MapParser";
+import { IndexPosition } from "./map/parse/ItemParser";
+import { GraphParser } from "./map/GraphParser";
 
 export class WorldImporter {
     private readonly routeStore: RouteStore;
 
-    readonly routeParser: RouteMapParser;
+    readonly routeParser: RouteParser;
     readonly meshConfigParser: MeshConfigParser;
     readonly routeStoryParser: RouteStoryParser;
     
@@ -26,7 +28,7 @@ export class WorldImporter {
         this.storyTracker = storyTracker;
         this.routeStore = routeStore;
         this.mapParser = new MapParser();
-        this.routeParser = new RouteMapParser(routeFactory);
+        this.routeParser = new RouteParser();
         this.meshConfigParser = new MeshConfigParser(this.mapParser);
         this.routeStoryParser = new RouteStoryParser(storyTracker);
     }
@@ -41,14 +43,15 @@ export class WorldImporter {
         json.map = map;
         json.routeMap = routeMap;
 
-        const mapResult = this.mapParser.parse(map);
+        const mapResult = this.mapParser.parse(map, new Set([IndexPosition.RIGHT]));
 
         this.worldProvider.worldMap = json;
         this.worldProvider.worldSize = mapResult.size;
         this.worldProvider.quarterNum = mapResult.quarterNum;
 
-        const routes = this.routeParser.parse(json);
-        routes.forEach(route => this.routeStore.addRoute(route));
+        const routeConfigs = this.routeParser.parse(json);
+        new GraphParser().parse(json);
+        // routes.forEach(route => this.routeStore.addRoute(route));
 
         const meshConfigs = this.meshConfigParser.parse(json);
         meshConfigs.forEach(meshConfig => this.storyTracker.producer.createMeshStory(meshConfig));

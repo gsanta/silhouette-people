@@ -2,11 +2,20 @@ import { Vector3 } from "babylonjs";
 import { MapData } from "./MapData";
 import { ParsedItem, MAP_CONVERSION_RATIO } from "./MapParser";
 
+export enum IndexPosition {
+    LEFT = 'LEFT',
+    RIGHT = 'RIGHT',
+    TOP = 'TOP',
+    BOTTOM = 'BOTTOM'
+}
+
 export class ItemParser {
     private mapData: MapData;
+    private indexPositions: Set<IndexPosition>;
 
-    getItems(mapData: MapData): ParsedItem[] {
+    getItems(mapData: MapData, indexPositions: Set<IndexPosition>): ParsedItem[] {
         this.mapData = mapData;
+        this.indexPositions = indexPositions;
 
         return this.parseItems();
     }
@@ -45,17 +54,15 @@ export class ItemParser {
     private parseChar(x: number, y: number): string {
         let char = this.mapData.getChar(x, y);
 
-        if (isNumeric(this.mapData.getRightChar(x, y))) {
+        if (this.indexPositions.has(IndexPosition.RIGHT) && isNumeric(this.mapData.getRightChar(x, y))) {
             char += this.getIndex(x, y, (x, y) => [x + 1, y]);
-        } 
-        
-        // else if (isNumeric(this.mapData.getLeftChar(x, y))) {
-        //     char += this.getIndex(x, y, (x, y) => [x - 1, y]);
-        // } else if (isNumeric(this.mapData.getBottomChar(x, y))) {
-        //     char += this.getIndex(x, y, (x, y) => [x, y - 1]);
-        // } else if (isNumeric(this.mapData.getTopChar(x, y))) {
-        //     char += this.getIndex(x, y, (x, y) => [x, y + 1]);
-        // }
+        } else if (this.indexPositions.has(IndexPosition.LEFT) && isNumeric(this.mapData.getLeftChar(x, y))) {
+            char += this.getIndex(x, y, (x, y) => [x - 1, y]);
+        } else if (this.indexPositions.has(IndexPosition.BOTTOM) &&  isNumeric(this.mapData.getBottomChar(x, y))) {
+            char += this.getIndex(x, y, (x, y) => [x, y - 1]);
+        } else if (this.indexPositions.has(IndexPosition.TOP) && isNumeric(this.mapData.getTopChar(x, y))) {
+            char += this.getIndex(x, y, (x, y) => [x, y + 1]);
+        }
 
         return char;
     }

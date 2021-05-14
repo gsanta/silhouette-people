@@ -5,7 +5,7 @@ import { MaterialStore } from "../../../store/MaterialStore";
 import { MeshStore } from "../../../store/MeshStore";
 import { RouteStore } from "../../../store/RouteStore";
 import { PointerData } from "../../base/pointer/PointerService";
-import { RouteConfig, RouteFactory } from "../../object/route/RouteFactory";
+import { RouteFactoryConfig, RouteFactory } from "../../object/route/RouteFactory";
 import { WorldProvider } from "../../WorldProvider";
 import { PlayerStore } from "../../player/PlayerStore";
 import { RenderGuiService } from "../../ui/RenderGuiService";
@@ -125,7 +125,7 @@ export class RouteTool extends Tool {
     }
 
     private initRoute() {
-        let config: RouteConfig = { lockDirection: true };
+        let config: RouteFactoryConfig = { lockDirection: true };
         const pos = this.character.instance.getPosition();
         this.currentPath = this.pathBuilder.startPath(pos);
         this.route = this.routeFactory.createRoute(new PathItem([pos]), config, this.character);

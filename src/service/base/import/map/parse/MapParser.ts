@@ -1,6 +1,6 @@
 import { Vector2, Vector3 } from "babylonjs";
-import { MapSplitter } from "../MapSplitter";
-import { ItemParser } from "./ItemParser";
+import { MapSplitter } from "./MapSplitter";
+import { IndexPosition, ItemParser } from "./ItemParser";
 import { MapData } from "./MapData";
 
 export const MAP_CONVERSION_RATIO = 2;
@@ -32,11 +32,11 @@ export class MapParser {
         this.itemParser = new ItemParser();
     }
 
-    parse(mapStr: string): MapResult {
+    parse(mapStr: string, indexPositions: Set<IndexPosition>): MapResult {
         this.map = this.mapSplitter.split(mapStr);
         this.mapData.setMap(this.map);
 
-        const parsedItems = this.itemParser.getItems(this.mapData);
+        const parsedItems = this.itemParser.getItems(this.mapData, indexPositions);
         const [cols, rows] = this.mapData.getMapSize()
 
         return {
