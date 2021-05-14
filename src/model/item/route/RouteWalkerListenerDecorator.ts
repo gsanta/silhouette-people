@@ -46,6 +46,7 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
     isFinished(): boolean { return this.delegate.isFinished(); }
     isStarted(): boolean { return this.delegate.isStarted(); }
     onFinished(func: () => void): void { this.delegate.onFinished(func); }
+    getRoute() { return this.delegate.getRoute() }
 
     addListener(routeWalkerListener: RouteWalkerListener) {
         this.listeners.push(routeWalkerListener);

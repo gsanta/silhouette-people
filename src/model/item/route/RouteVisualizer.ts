@@ -1,21 +1,30 @@
 import { Mesh, MeshBuilder, StandardMaterial, Vector3 } from "babylonjs";
-import { PathItem } from "../../../model/item/PathItem";
-import { WorldProvider } from "../../WorldProvider";
+import { PathItem } from "../PathItem";
+import { WorldProvider } from "../../../service/WorldProvider";
 import { MaterialStore } from "../../../store/MaterialStore";
+import { RouteItem } from "./RouteItem";
 
-export class PathVisualizer {
+export class RouteVisualizer {
 
     private worldProvider: WorldProvider;
     private materialStore: MaterialStore;
+
+    private meshes: Mesh[] = [];
 
     constructor(worldProvider: WorldProvider, materialStore: MaterialStore) {
         this.worldProvider = worldProvider;
         this.materialStore = materialStore;
     }
 
-    visualize(path: PathItem): void {
+    visualize(route: RouteItem): void {
+        const path = route.path;
         this.visualizeArrowHead(path);
         this.visualizeArrow(path);
+    }
+
+    dispose() {
+        this.meshes.forEach(mesh => mesh.dispose());
+        this.meshes = [];
     }
 
     private visualizeArrowHead(path: PathItem) {
@@ -28,6 +37,7 @@ export class PathVisualizer {
                 updatedArrowHead.material = new StandardMaterial('abcd', this.worldProvider.scene);
                 updatedArrowHead.material.wireframe = true;
                 path.addArrowHead(updatedArrowHead);
+                this.meshes.push(updatedArrowHead);
             }
     }
 
@@ -66,6 +76,7 @@ export class PathVisualizer {
         if (!mesh) {
             updatedMesh.material = this.materialStore.getRibbonMaterial();
             pathItem.addMesh(updatedMesh);
+            this.meshes.push(mesh);
         }
 
         return updatedMesh;

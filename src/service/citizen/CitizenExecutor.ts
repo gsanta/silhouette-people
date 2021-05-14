@@ -2,7 +2,7 @@ import { CitizenStore } from "../../store/CitizenStore";
 import { MaterialStore } from "../../store/MaterialStore";
 import { RouteStore } from "../../store/RouteStore";
 import { RouteExecutor } from "../edit/execution/RouteExecutor";
-import { PathVisualizer } from "../edit/route/PathVisualizer";
+import { RouteVisualizer } from "../../model/item/route/RouteVisualizer";
 import { WorldProvider } from "../WorldProvider";
 import { RoutePool } from "./RoutePool";
 
@@ -11,13 +11,13 @@ export class CitizenExecutor implements RouteExecutor {
     private routeStore: RouteStore;
     private citizenStore: CitizenStore;
     private routePool: RoutePool;
-    private pathVisualizer: PathVisualizer;
+    private pathVisualizer: RouteVisualizer;
 
     constructor(citizenStore: CitizenStore, routePool: RoutePool, routeStore: RouteStore, worldProvider: WorldProvider, materialStore: MaterialStore) {
         this.routeStore = routeStore;
         this.routePool = routePool;
         this.citizenStore = citizenStore;
-        this.pathVisualizer = new PathVisualizer(worldProvider, materialStore);
+        this.pathVisualizer = new RouteVisualizer(worldProvider, materialStore);
     }
 
     updateRoutes(deltaTime: number) {

@@ -11,12 +11,12 @@ import { PlayerStore } from "../../player/PlayerStore";
 import { RenderGuiService } from "../../ui/RenderGuiService";
 import { Tool, ToolType } from "../Tool";
 import { PathBuilder } from "./PathBuilder";
-import { PathVisualizer } from "./PathVisualizer";
+import { RouteVisualizer } from "../../../model/item/route/RouteVisualizer";
 
 export class RouteTool extends Tool {
     private playerStore: PlayerStore;
     private renderService: RenderGuiService;
-    private pathVisualizer: PathVisualizer;
+    private pathVisualizer: RouteVisualizer;
     private pathBuilder: PathBuilder;
     private routeFactory: RouteFactory;
     private routeStore: RouteStore;
@@ -33,7 +33,7 @@ export class RouteTool extends Tool {
         this.renderService = renderService;
         this.routeFactory = routeFactory;
         this.routeStore = routeStore;
-        this.pathVisualizer = new PathVisualizer(worldProvider, materialStore);
+        this.pathVisualizer = new RouteVisualizer(worldProvider, materialStore);
         this.pathBuilder = new PathBuilder();
     }
 
@@ -43,7 +43,7 @@ export class RouteTool extends Tool {
         if (this.currentPath) {
             this.currentPath = this.pathBuilder.updatePath(this.currentPath, pointer.curr);
 
-            this.pathVisualizer.visualize(this.currentPath);
+            this.pathVisualizer.visualize(this.route);
         } else {
             this.initRoute();
         }

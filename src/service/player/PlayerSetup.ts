@@ -1,8 +1,11 @@
 import { CharacterItem } from "../../model/item/character/CharacterItem";
+import { DestinationPointUpdaterAdapter } from "../../model/item/route/DestinationPointUpdaterAdapter";
 import { DynamicRoutePointProvider } from "../../model/item/route/DynamicRoutePointProvider";
 import { LockedDirection } from "../../model/item/route/features/LockedDirection";
+import { RouteVisualizerAdapter } from "../../model/item/route/RouteVisualizerAdapter";
 import { RouteWalkerImpl } from "../../model/item/route/RouteWalkerImpl";
 import { RouteWalkerListenerDecorator } from "../../model/item/route/RouteWalkerListenerDecorator";
+import { MaterialStore } from "../../store/MaterialStore";
 import { GraphService } from "../graph/GraphService";
 import { WorldProvider } from "../WorldProvider";
 import { PlayerParser } from "./PlayerParser";
@@ -13,13 +16,15 @@ export class PlayerSetup {
     private readonly worldProvider: WorldProvider;
     private readonly playerStore: PlayerStore;
     private readonly graphService: GraphService;
+    private readonly materialStore: MaterialStore;
 
     private readonly playerParser: PlayerParser;
 
-    constructor(worldProvider: WorldProvider, playerStore: PlayerStore, graphService: GraphService) {
+    constructor(worldProvider: WorldProvider, playerStore: PlayerStore, graphService: GraphService, materialStore: MaterialStore) {
         this.worldProvider = worldProvider;
         this.playerStore = playerStore;
         this.graphService = graphService;
+        this.materialStore = materialStore;
         this.playerParser = new PlayerParser(this.graphService);
     }
 
@@ -30,10 +35,14 @@ export class PlayerSetup {
         route.character = <CharacterItem> player.getParent();
         player.route = route;
 
-        const walker = new RouteWalkerImpl(route, new DynamicRoutePointProvider(this.graphService.getGraph()));
+        const graph = this.graphService.getGraph();
+        const walker = new RouteWalkerImpl(route);
         const walkerDecorator = new RouteWalkerListenerDecorator(walker);
 
         route.walker = walkerDecorator;
         route.walker.addFeature(new LockedDirection(route.walker, route));
+
+        walkerDecorator.addListener(new RouteVisualizerAdapter(walkerDecorator, this.worldProvider, this.materialStore));
+        walkerDecorator.addListener(new DestinationPointUpdaterAdapter(walkerDecorator, new DynamicRoutePointProvider(walkerDecorator, graph)))
     }
 }

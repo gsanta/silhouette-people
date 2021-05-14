@@ -26,6 +26,7 @@ import { BikeParenter } from "./BikeParenter";
 import { RouteSetup } from "../../object/route/RouteSetup";
 import { GraphService } from "../../graph/GraphService";
 import { PlayerSetup } from "../../player/PlayerSetup";
+import { MaterialStore } from "../../../store/MaterialStore";
 
 export class SetupService {
 
@@ -71,6 +72,9 @@ export class SetupService {
     @InjectProperty("GraphService")
     private graphService: GraphService;
 
+    @InjectProperty("MaterialStore")
+    private materialStore: MaterialStore;
+
     private readonly worldFactory: WorldFactory;
 
     private worldMapParser: WorldImporter;
@@ -101,6 +105,7 @@ export class SetupService {
         this.backlog = lookup.backlog;
         this.routeStore = lookup.routeStore;
         this.graphService = lookup.graphService;
+        this.materialStore = lookup.materialStore;
         
         this.worldMapParser = new WorldImporter(this.worldProvider, this.routeFactory, this.routeStore, this.backlog);
         this.worldFactory = new WorldFactory(this.meshFactory);
@@ -108,7 +113,7 @@ export class SetupService {
 
         this.factorySetup = new FactorySetup();
         this.routeSetup = new RouteSetup(this.worldProvider, this.graphService);
-        this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService);
+        this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.materialStore);
         this.storySetup = new StorySetup();
         this.stageSetup = new StageSetup();
         this.bikeParenter = new BikeParenter();

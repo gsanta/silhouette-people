@@ -2,31 +2,22 @@
 import { Vector3 } from "babylonjs";
 import { Graph } from "../../../service/graph/Graph";
 import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
-import { RouteItem } from "./RouteItem";
 import { RoutePointProvider } from "./RoutepointProvider";
+import { RouteWalker } from "./RouteWalker";
 
 export class DynamicRoutePointProvider implements RoutePointProvider {
-    private route: RouteItem;
+    private readonly routeWalker: RouteWalker;
     private readonly graph: Graph<GraphVertex, GraphEdge>;
 
-    constructor(graph: Graph<GraphVertex, GraphEdge>) {
+    constructor(routeWalker: RouteWalker, graph: Graph<GraphVertex, GraphEdge>) {
         this.graph = graph;
-    }
-
-    setRoute(route: RouteItem) {
-        this.route = route;
-
-        const points = this.route.getRoutePoints();
-        if (points.length !== 2) {
-            throw new Error(`Dynamic route can be initialized only with a route with 2 route points, it contains ${points.length}`);
-        }
-
-        this.createNextRoutePoint(points[1], points[0]);
+        this.routeWalker = routeWalker;
+        this.initRoute();
     }
 
     getNextRoutePoint(currPoint: Vector3, prevPoint: Vector3) {
 
-        const routePoints = this.route.getRoutePoints();
+        const routePoints = this.routeWalker.getRoute().getRoutePoints();
         let nextRoutePoint: Vector3;
 
         if (currPoint === routePoints[routePoints.length - 1]) {
@@ -44,7 +35,7 @@ export class DynamicRoutePointProvider implements RoutePointProvider {
 
         if (validEdges.length > 0) {
             const nextVertex = validEdges[0].getOtherVertex(currVertex);
-            this.route.addPoint(nextVertex.p);
+            this.routeWalker.getRoute().addPoint(nextVertex.p);
         }
     }
 
@@ -59,5 +50,14 @@ export class DynamicRoutePointProvider implements RoutePointProvider {
         }
 
         return edges;
+    }
+
+    private initRoute() {
+        const points = this.routeWalker.getRoute().getRoutePoints();
+        if (points.length !== 2) {
+            throw new Error(`Dynamic route can be initialized only with a route with 2 route points, it contains ${points.length}`);
+        }
+
+        this.createNextRoutePoint(points[1], points[0]);
     }
 }

@@ -1,7 +1,9 @@
 import { Vector3 } from "babylonjs";
 import { LockedFeature } from "./features/LockedFeature";
+import { RouteItem } from "./RouteItem";
 
 export interface RouteWalker {
+    getRoute(): RouteItem;
     getCurrPos(): Vector3;
     getPrevPos(): Vector3;
     setDestPoint(currDestPoint: Vector3, prevDestPoint?: Vector3);

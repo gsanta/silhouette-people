@@ -1,5 +1,6 @@
 import { Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
+import { DestinationPointUpdater } from "./DestinationPointUpdater";
 import { LockedFeature } from "./features/LockedFeature";
 import { RouteItem } from "./RouteItem";
 import { RoutePointProvider } from "./RoutepointProvider";
@@ -17,17 +18,17 @@ export class RouteWalkerImpl implements RouteWalker {
     private _isStarted = false;
     private _isFinished: boolean = false;
     
-    private checkpointUpdater: CheckpointUpdater;
-    private readonly routePointProvider: RoutePointProvider;
+    private checkpointUpdater: DestinationPointUpdater;
 
     private lockedFeatures: LockedFeature[] = [];
     private onFinishedFuncs: (() => void)[] = [];    
 
-    constructor(route: RouteItem, routePointProvider: RoutePointProvider = new StaticRoutePointProvider()) {
+    constructor(route: RouteItem) {
         this.route = route;
-        this.routePointProvider = routePointProvider;
-        this.routePointProvider.setRoute(this.route);
-        this.checkpointUpdater = new CheckpointUpdater(this, this.route, this.routePointProvider);
+    }
+
+    getRoute(): RouteItem {
+        return this.route;
     }
 
     getCurrPos(): Vector3 {
@@ -98,72 +99,5 @@ export class RouteWalkerImpl implements RouteWalker {
 
         this.lockedFeatures.forEach(feature => feature.disableFeature());
         this.onFinishedFuncs.forEach(func => func());
-    }
-}
-
-class CheckpointUpdater {
-    private readonly routeWalker: RouteWalkerImpl;
-    private readonly route: RouteItem;
-    private readonly routePointProvider: RoutePointProvider;
-    
-    constructor(routeWalker: RouteWalkerImpl, route: RouteItem, routePointProvider: RoutePointProvider) {
-        this.routeWalker = routeWalker;
-        this.route = route;
-        this.routePointProvider = routePointProvider;
-    }
-
-    initCheckPoints() {
-        const route = this.route;
-
-        const routePoints = route.getRoutePoints();
-        this.routeWalker.setDestPoint(routePoints[1], routePoints[0]);
-    }
-    
-    updateCheckPointsIfNeeded() {
-        if (this.isCheckPointReached()) {
-            this.setNextCheckPoint();
-            return true;
-        }
-    }
-
-    private setNextCheckPoint() {
-        const route = this.route
-        const character = route.character;
-        const destPoint = this.routeWalker.getDestPoint();
-        const prevDestPoint = this.routeWalker.getPrevDestPoint();
-
-        const nextDestPoint = this.routePointProvider.getNextRoutePoint(destPoint, prevDestPoint);
-
-        if (nextDestPoint === undefined) {
-            this.routeWalker.setFinished(true);
-        } else {
-            this.routeWalker.setDestPoint(nextDestPoint, character.getPosition());
-        }
-    }
-
-    private isCheckPointReached() {
-        const destPoint = this.routeWalker.getDestPoint();
-        const route = this.route
-        const character = route.character;
-        
-        const curr = character.getPosition();
-    
-        const isWithinDestRadius = destPoint.subtract(curr).length() < 0.2;
-        const isLeavingDest = this.isLeavingDest();
-    
-        return isWithinDestRadius || isLeavingDest;
-    }
-
-    private isLeavingDest() {
-        const currPos = this.routeWalker.getCurrPos();
-        const prevPos = this.routeWalker.getPrevPos();
-        const destPoint = this.routeWalker.getDestPoint();
-
-        if (prevPos) {
-            const checkDist = prevPos.subtract(destPoint).length() < 2;
-            const checkDir = prevPos.subtract(destPoint).length() < currPos.subtract(destPoint).length();
-            return checkDist && checkDir;
-        }
-        return false;
     }
 }
