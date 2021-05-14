@@ -54,9 +54,9 @@ export class StageSetup {
             this.nextTurnStage = new NextTurnStage(this.stageController, this.renderGuiService, this.playerStore, this.activePlayerService);
         }
 
-        this.stageController.addStage(this.routeDefinitionStage);
+        // this.stageController.addStage(this.routeDefinitionStage);
         this.stageController.addStage(this.executionStage);
-        this.stageController.addStage(this.nextTurnStage);
+        // this.stageController.addStage(this.nextTurnStage);
         // this.stageController.addStage()
     }
 }

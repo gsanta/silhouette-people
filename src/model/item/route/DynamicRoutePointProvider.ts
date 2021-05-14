@@ -16,9 +16,9 @@ export class DynamicRoutePointProvider implements RoutePointProvider {
     setRoute(route: RouteItem) {
         this.route = route;
 
-        const points = this.route.getRoutePoints().length;
-        if (points !== 2) {
-            throw new Error(`Dynamic route can be initialized only with a route with 2 route points, it contains ${points}`);
+        const points = this.route.getRoutePoints();
+        if (points.length !== 2) {
+            throw new Error(`Dynamic route can be initialized only with a route with 2 route points, it contains ${points.length}`);
         }
 
         this.createNextRoutePoint(points[1], points[0]);
@@ -37,7 +37,7 @@ export class DynamicRoutePointProvider implements RoutePointProvider {
     }
 
     private createNextRoutePoint(currPoint: Vector3, prevPoint: Vector3): void {
-        const validEdges = this.findValidEdges(currPoint, prevPoint);
+        const validEdges = this.findValidEdges(currPoint, prevPoint) || [];
         const currVertex = this.graph.getByPos(currPoint);
 
         if (validEdges.length > 0) {

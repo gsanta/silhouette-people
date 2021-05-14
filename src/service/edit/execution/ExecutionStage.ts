@@ -41,7 +41,8 @@ export class ExecutionStage implements GameStage {
     }
 
     nextStep() {
-        const activePlayer = this.playerChooserHelper.determineNextActivePlayer();
+        // const activePlayer = this.playerChooserHelper.determineNextActivePlayer();
+        const activePlayer = this.playerStore.getActivePlayer();
 
         if (activePlayer) {
             this.activePlayerService.activate(activePlayer);

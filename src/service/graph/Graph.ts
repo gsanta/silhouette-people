@@ -7,4 +7,5 @@ export interface Graph<V, E> {
     edgeBetween(v1: V, v2: V): E;
     getEdges(vertex: V): E[];
     getByPos(pos: Vector3): V;
+    getById(id: string): V;
 }

@@ -60,9 +60,9 @@ export class ExecutionTool extends Tool {
         this.isStarted = false;
         this.readyListeners.forEach(listener => listener(false));
         this.routeStore.deleteRoute(route);
-        if (route.character) {
-            route.character.route = undefined;
-        }
+        // if (route.character) {
+        //     route.character.route = undefined;
+        // }
     }
 
     isReset(): boolean {

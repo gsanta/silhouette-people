@@ -23,6 +23,9 @@ import { DebugService } from "../debug/DebugService";
 import { KeyboardService } from "../keyboard/KeyboardService";
 import { PointerService } from "../pointer/PointerService";
 import { BikeParenter } from "./BikeParenter";
+import { RouteSetup } from "../../object/route/RouteSetup";
+import { GraphService } from "../../graph/GraphService";
+import { PlayerSetup } from "../../player/PlayerSetup";
 
 export class SetupService {
 
@@ -65,6 +68,9 @@ export class SetupService {
     @InjectProperty("RouteStore")
     private routeStore: RouteStore;
 
+    @InjectProperty("GraphService")
+    private graphService: GraphService;
+
     private readonly worldFactory: WorldFactory;
 
     private worldMapParser: WorldImporter;
@@ -74,6 +80,8 @@ export class SetupService {
     private bikeParenter: BikeParenter;
 
     private factorySetup: FactorySetup;
+    private routeSetup: RouteSetup;
+    private playerSetup: PlayerSetup;
     private storySetup: StorySetup;
     private citizenSetup: CitizenSetup;
     private stageSetup: StageSetup;
@@ -92,12 +100,15 @@ export class SetupService {
         this.citizenStore = lookup.citizenStore;
         this.backlog = lookup.backlog;
         this.routeStore = lookup.routeStore;
+        this.graphService = lookup.graphService;
         
         this.worldMapParser = new WorldImporter(this.worldProvider, this.routeFactory, this.routeStore, this.backlog);
         this.worldFactory = new WorldFactory(this.meshFactory);
         this.citizenSetup = new CitizenSetup(this.worldMapParser);
 
         this.factorySetup = new FactorySetup();
+        this.routeSetup = new RouteSetup(this.worldProvider, this.graphService);
+        this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService);
         this.storySetup = new StorySetup();
         this.stageSetup = new StageSetup();
         this.bikeParenter = new BikeParenter();
@@ -115,6 +126,9 @@ export class SetupService {
 
         this.worldProvider.world = await this.worldFactory.createWorldObj(scene);
         await this.backlog.processor.process();
+        this.routeSetup.setup();
+        this.playerSetup.setup();
+
 
         // this.controllerService.setMasterController(new NormalModeController(this.controllerService.getCameraController()));
         this.debugService.addGuiComponent(new DebugPanel());

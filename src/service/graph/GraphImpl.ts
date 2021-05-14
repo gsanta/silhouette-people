@@ -23,8 +23,10 @@ export class GraphEdge {
 
 export class GraphVertex {
     readonly p: Vector3;
+    readonly id: string;
 
-    constructor(p: Vector3) {
+    constructor(id: string, p: Vector3) {
+        this.id = id;
         this.p = p;
     }
 }
@@ -52,6 +54,10 @@ export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
 
     getByPos(pos: Vector3): GraphVertex {
         return this.vertices.find(vertex => vertex.p === pos);
+    }
+
+    getById(id: string): GraphVertex {
+        return this.vertices.find(vertex => vertex.id === id);
     }
 
     getEdges(vertex: GraphVertex): GraphEdge[] {

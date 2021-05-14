@@ -30,8 +30,9 @@ export class GraphParser {
 
     private parseRouteConfig(routeConfig: RouteConfig) {
         const vertices = routeConfig.positions.map(pos => {
-            const vertex = new GraphVertex(pos.pos); 
-            this.charToVertex.set(routeConfig.char + pos.index, vertex);
+            const vertexId = routeConfig.char + pos.index;
+            const vertex = new GraphVertex(vertexId, pos.pos); 
+            this.charToVertex.set(vertexId, vertex);
 
             return vertex;
         });

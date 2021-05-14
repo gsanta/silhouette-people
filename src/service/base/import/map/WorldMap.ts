@@ -28,4 +28,6 @@ export interface WorldMap {
 
     map: string;
     routeMap: string;
+
+    playerRoute: [string, string];
 }

@@ -366,5 +366,6 @@
             "routeId": "A",
             "characterId": "C"
         }
-    ]
+    ],
+    "playerRoute": ["A1", "A2"]
 }

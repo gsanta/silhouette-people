@@ -3,7 +3,7 @@ import { CharacterItem } from "../../../../model/item/character/CharacterItem";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export class ActivePlayerPropertyParser extends AbstractPropertyParser<boolean> {
-    propName = 'ActivePlayer';
+    propName = 'activePlayer';
 
     private highlightService: ActivePlayerService;
 
