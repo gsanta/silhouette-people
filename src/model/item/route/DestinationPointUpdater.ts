@@ -32,9 +32,7 @@ export class DestinationPointUpdater {
 
         const nextDestPoint = this.routePointProvider.getNextRoutePoint(destPoint, prevDestPoint);
 
-        if (nextDestPoint === undefined) {
-            this.routeWalker.setFinished(true);
-        } else {
+        if (nextDestPoint !== undefined) {
             this.routeWalker.setDestPoint(nextDestPoint, character.getPosition());
         }
     }

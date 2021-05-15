@@ -1,11 +1,7 @@
 import { Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
-import { DestinationPointUpdater } from "./DestinationPointUpdater";
-import { LockedFeature } from "./features/LockedFeature";
 import { RouteItem } from "./RouteItem";
-import { RoutePointProvider } from "./RoutepointProvider";
-import { RouteWalker } from "./RouteWalker";
-import { StaticRoutePointProvider } from "./StaticRoutePointProvider";
+import { RouteWalker, RouteWalkerDirection, RouteWalkerState } from "./RouteWalker";
 
 export class RouteWalkerImpl implements RouteWalker {
     private readonly route: RouteItem;
@@ -15,13 +11,9 @@ export class RouteWalkerImpl implements RouteWalker {
     
     private prevPos: Vector3;
     private currPos: Vector3;
-    private _isStarted = false;
-    private _isFinished: boolean = false;
     
-    private checkpointUpdater: DestinationPointUpdater;
-
-    private lockedFeatures: LockedFeature[] = [];
-    private onFinishedFuncs: (() => void)[] = [];    
+    private direction: RouteWalkerDirection;
+    private state: RouteWalkerState;
 
     constructor(route: RouteItem) {
         this.route = route;
@@ -52,52 +44,62 @@ export class RouteWalkerImpl implements RouteWalker {
         return this.prevDestPoint;
     }
 
-    walk(deltaTime: number): boolean {
-        if (!this._isStarted || this._isFinished) { return false; }
-
-        const character = this.route.character;
-    
-        this.prevPos = this.currPos;
-        this.currPos = character.getPosition();    
-        this.lockedFeatures.forEach(lockedFeature => lockedFeature.update(deltaTime));
-        this.checkpointUpdater.updateCheckPointsIfNeeded();
-    }
-
-    addFeature(lockedFeature: LockedFeature) {
-        this.lockedFeatures.push(lockedFeature);
-    }
-
-    isFinished(): boolean {
-        return this._isFinished;
-    }
-
-    isStarted(): boolean {
-        return this._isStarted;
-    }
-
-    onFinished(func: () => void) {
-        this.onFinishedFuncs.push(func);
-    }
-
-    setStarted() {
-        this._isStarted = true;
-
-        this.checkpointUpdater.initCheckPoints();
-        const character = this.route.character;
-        character.setPosition2D(new Vector2(this.prevDestPoint.x, this.prevDestPoint.z));
-
-        this.lockedFeatures.forEach(feature => feature.enableFeature());
-    }
-
-    setFinished(isFinished) {
-        this._isFinished = isFinished;
+    walk(): boolean {
+        if (this.state === RouteWalkerState.STARTED) {
+            const character = this.route.character;
         
-        if (isFinished) {
+            this.prevPos = this.currPos;
+            this.currPos = character.getPosition();
+            return true;
+        }
+        return false;
+    }
+
+    setDirection(direction: RouteWalkerDirection): void {
+        this.direction = direction;
+    }
+    
+    getDirection(): RouteWalkerDirection {
+        return this.direction;
+    }
+
+    setState(state: RouteWalkerState): void {
+        this.state = state;
+
+        if (this.state === RouteWalkerState.STARTED) {
+            const character = this.route.character;
+            character.setPosition2D(new Vector2(this.prevDestPoint.x, this.prevDestPoint.z));
+        } else {
             const { character } = this.route;
             character.walker.setSpeed(0);
         }
-
-        this.lockedFeatures.forEach(feature => feature.disableFeature());
-        this.onFinishedFuncs.forEach(func => func());
     }
+
+    getState(): RouteWalkerState {
+        return this.state;
+    }
+
+    // isFinished(): boolean {
+    //     return this._isFinished;
+    // }
+
+    // isStarted(): boolean {
+    //     return this._isStarted;
+    // }
+
+    // setStarted() {
+    //     this._isStarted = true;
+
+    //     const character = this.route.character;
+    //     character.setPosition2D(new Vector2(this.prevDestPoint.x, this.prevDestPoint.z));
+    // }
+
+    // setFinished(isFinished) {
+    //     this._isFinished = isFinished;
+        
+    //     if (isFinished) {
+    //         const { character } = this.route;
+    //         character.walker.setSpeed(0);
+    //     }
+    // }
 }

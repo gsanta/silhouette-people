@@ -5,6 +5,7 @@ import { RouteExecutor } from "../edit/execution/RouteExecutor";
 import { RouteVisualizer } from "../../model/item/route/RouteVisualizer";
 import { WorldProvider } from "../WorldProvider";
 import { RoutePool } from "./RoutePool";
+import { RouteWalkerState } from "../../model/item/route/RouteWalker";
 
 export class CitizenExecutor implements RouteExecutor {
 
@@ -32,8 +33,8 @@ export class CitizenExecutor implements RouteExecutor {
         const citizens =  this.citizenStore.getAll();
 
         citizens.forEach(citizen => {
-            if (citizen.route && !citizen.route.walker.isStarted()) {
-                citizen.route.walker.setStarted()
+            if (citizen.route && citizen.route.walker.getState() !== RouteWalkerState.STARTED) {
+                citizen.route.walker.setState(RouteWalkerState.STARTED)
             }
         });
     }
@@ -61,7 +62,7 @@ export class CitizenExecutor implements RouteExecutor {
 
         citizens.forEach(citizen => {
             const route = this.routeStore.getRouteForCharacter(citizen);
-            if (route && route.walker.isFinished()) {
+            if (route && route.walker.getState() === RouteWalkerState.FINISHED) {
                 this.citizenStore.removeItem(citizen);
 
             }

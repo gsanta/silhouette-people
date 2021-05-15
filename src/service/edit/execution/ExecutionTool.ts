@@ -6,6 +6,7 @@ import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { RouteExecutor } from "./RouteExecutor";
 import { PlayerStore } from "../../player/PlayerStore";
 import { RouteItem } from "../../../model/item/route/RouteItem";
+import { RouteWalkerState } from "../../../model/item/route/RouteWalker";
 
 export class ExecutionTool extends Tool {
     private worldProvider: WorldProvider;
@@ -47,11 +48,6 @@ export class ExecutionTool extends Tool {
 
     select(isCanceled: boolean) {
         this.activePlayer = this.playerStore.getActivePlayer();
-        const route = this.activePlayer.route;
-        if (route) {
-            route.walker.onFinished(() => this.onPlayerFinished(route));
-        }
-
         this._isCanceled = isCanceled;
         this.startRoutes([this.activePlayer]);
     }
@@ -102,7 +98,7 @@ export class ExecutionTool extends Tool {
     private startRoutes(characters: CharacterItem[]) {
         characters.forEach(player => {
             if (player.route) {
-                player.route.walker.setStarted();
+                player.route.walker.setState(RouteWalkerState.STARTED);
             }
         });
     }

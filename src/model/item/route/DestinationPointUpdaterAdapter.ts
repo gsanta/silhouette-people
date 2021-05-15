@@ -16,4 +16,8 @@ export class DestinationPointUpdaterAdapter extends RouteWalkerListener {
     onWalk() {
         this.updater.updateCheckPointsIfNeeded();
     }
+
+    onStarted() {
+        this.updater.initCheckPoints();
+    }
 }

@@ -1,6 +1,7 @@
 import { DebugService } from "../service/base/debug/DebugService";
 import { CharacterItem } from "./item/character/CharacterItem";
 import { RouteItem } from "./item/route/RouteItem";
+import { RouteWalkerState } from "./item/route/RouteWalker";
 
 export class RouteDebuggerComponent {
     private currRoute: RouteItem;
@@ -17,7 +18,7 @@ export class RouteDebuggerComponent {
         const character = this.character;
         const quarterMap = character.getQuarter().getMap();
 
-        if (!character.route || character.route.walker.isFinished()) {
+        if (!character.route || character.route.walker.getState() === RouteWalkerState.FINISHED) {
             if (this.currRoute) {
                 quarterMap.fillPath(this.currRoute.getRoutePoints(), 0);
                 this.currRoute = undefined;

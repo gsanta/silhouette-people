@@ -10,10 +10,6 @@ export class RouteStore {
         this.routes.push(route);
     }
 
-    getFinishedRoutes() {
-        return this.getRoutes().filter(route => route.walker.isFinished());
-    }
-
     getRoutes(): RouteItem[] {
         return this.routes;
     }
@@ -25,11 +21,7 @@ export class RouteStore {
     getRouteForCharacter(character: CharacterItem): RouteItem {
         return this.routes.find(route => route.character === character);
     }
-
-    clearFinishedRoutes() {
-        this.routes = this.getRoutes().filter(route => !route.walker.isFinished());
-    }
-
+    
     deleteRoute(route: RouteItem) {
         route.dispose();
         this.routes = this.getRoutes().filter(r => r !== route);

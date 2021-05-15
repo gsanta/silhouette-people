@@ -1,21 +1,14 @@
-import { CharacterItem } from "../../character/CharacterItem";
-import { RouteItem } from "../RouteItem";
-import { RouteWalker } from "../RouteWalker";
-import { RouteWalkerImpl } from "../RouteWalkerImpl";
-import { LockedFeature } from "./LockedFeature";
+import { RouteWalker } from "./RouteWalker";
 
-
-export class LockedDirection implements LockedFeature {
+export class DirectionRestrictor {
     private routeWalker: RouteWalker;
-    private route: RouteItem;
 
-    constructor(routeWalker: RouteWalker, route: RouteItem) {
+    constructor(routeWalker: RouteWalker) {
         this.routeWalker = routeWalker;
-        this.route = route;
     }
 
     update(deltaTime: number) {
-        const character = this.route.character;
+        const character = this.routeWalker.getRoute().character;
         character.walker.character.instance.setRotation(this.getDirection());
     }
 
@@ -28,15 +21,15 @@ export class LockedDirection implements LockedFeature {
         return Math.PI / 2 - dirAngle;
     }
 
-    enableFeature() {
-        const character = this.route.character;
+    on() {
+        const character = this.routeWalker.getRoute().character;
         if (character && character.inputManager) {
             character.inputManager.disableDirection();
         }
     }
 
-    disableFeature() {
-        const character = this.route.character;
+    off() {
+        const character = this.routeWalker.getRoute().character;
         if (character && character.inputManager) {
             character.inputManager.enableDirection();
         }
