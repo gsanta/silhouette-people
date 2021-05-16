@@ -3,6 +3,7 @@ import { PathItem } from "../PathItem";
 import { WorldProvider } from "../../../service/WorldProvider";
 import { MaterialStore } from "../../../store/MaterialStore";
 import { RouteItem } from "./RouteItem";
+import { GraphVertex } from "../../../service/graph/GraphImpl";
 
 export class RouteVisualizer {
 
@@ -17,9 +18,8 @@ export class RouteVisualizer {
     }
 
     visualize(route: RouteItem): void {
-        const path = route.path;
         this.visualizeArrowHead(route);
-        this.visualizeArrow(path);
+        this.visualizeArrow(route);
     }
 
     dispose() {
@@ -39,7 +39,7 @@ export class RouteVisualizer {
     }
 
     private createArrowHeadPathes(route: RouteItem) {
-        const points = route.path.getPoints();
+        const points = route.points.map(point => point.p);
         const prevPos = points[points.length - 2].clone();
         const lastPos = points[points.length - 1].clone();
         const angle = this.getAngle(prevPos, lastPos);
@@ -61,29 +61,28 @@ export class RouteVisualizer {
         return [path1, path2];
     }
 
-    private visualizeArrow(pathItem: PathItem) {
-        const points = pathItem.getPoints();
+    private visualizeArrow(route: RouteItem) {
+        const points = route.points;
         for (let i = 0; i < points.length - 1; i++) {
-            this.createArrow(pathItem, i, points[i], points[i + 1]);
+            this.createArrow(i, points[i], points[i + 1]);
         }
     }
 
-    private createArrow(pathItem: PathItem, index: number, p1: Vector3, p2: Vector3): void {
+    private createArrow(index: number, p1: GraphVertex, p2: GraphVertex): void {
         const pathes = this.createArrowPathes(p1, p2);
         const mesh = MeshBuilder.CreateRibbon(`arrow-line-${index}`, { pathArray: pathes, updatable: true }, this.worldProvider.scene);
 
         mesh.material = this.materialStore.getActivePathMaterial();
-        pathItem.addMesh(mesh);
         this.meshes.push(mesh);
     }
 
-    private createArrowPathes(p1: Vector3, p2: Vector3) {
-        const angle = this.getAngle(p1, p2);
+    private createArrowPathes(v1: GraphVertex, v2: GraphVertex) {
+        const angle = this.getAngle(v1.p, v2.p);
         const angelPlus = angle + Math.PI / 2;
         const angelMinus = angle - Math.PI / 2;
         const radius = 0.2;
         
-        const [start, end] = [p1, p2];
+        const [start, end] = [v1.p, v2.p];
 
         const path1 = [
             start.add(new Vector3(radius * Math.cos(angelPlus), 0.8, radius * Math.sin(angelPlus))),

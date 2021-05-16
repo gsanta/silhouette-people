@@ -1,5 +1,4 @@
 
-import { Vector3 } from "babylonjs";
 import { Graph } from "../../../service/graph/Graph";
 import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
 import { RoutePointProvider } from "./RoutepointProvider";
@@ -15,10 +14,9 @@ export class DynamicRoutePointProvider implements RoutePointProvider {
         this.initRoute();
     }
 
-    getNextRoutePoint(currPoint: Vector3, prevPoint: Vector3) {
-
+    getNextRoutePoint(currPoint: GraphVertex) {
         const routePoints = this.routeWalker.getRoute().getRoutePoints();
-        let nextRoutePoint: Vector3;
+        let nextRoutePoint: GraphVertex;
 
         if (currPoint === routePoints[routePoints.length - 1]) {
             nextRoutePoint = undefined;
@@ -29,26 +27,30 @@ export class DynamicRoutePointProvider implements RoutePointProvider {
         return nextRoutePoint;
     }
 
-    private createNextRoutePoint(currPoint: Vector3, prevPoint: Vector3): void {
+    routeDirectionChanged() {
+        const currPoint = this.routeWalker.getDestPoint();
+        const prevPoint = this.routeWalker.getPrevDestPoint();
+        this.createNextRoutePoint(currPoint, prevPoint);
+    }
+
+    private createNextRoutePoint(currPoint: GraphVertex, prevPoint: GraphVertex): void {
         const validEdges = this.findValidEdges(currPoint, prevPoint) || [];
-        const currVertex = this.graph.getByPos(currPoint);
 
         if (validEdges.length > 0) {
-            const nextVertex = validEdges[0].getOtherVertex(currVertex);
+            const nextVertex = validEdges[0].getOtherVertex(currPoint);
+            
             if (this.routeWalker.getRoute().getRoutePoints().length >= 3) {
                 this.routeWalker.getRoute().removeFirstPoint();
             }
-            this.routeWalker.getRoute().addPoint(nextVertex.p);
+            this.routeWalker.getRoute().addPoint(nextVertex);
         }
     }
 
-    private findValidEdges(currPoint: Vector3, prevPoint: Vector3): GraphEdge[] {
-        const currVertex = this.graph.getByPos(currPoint);
-        let edges = this.graph.getEdges(currVertex);
+    private findValidEdges(currPoint: GraphVertex, prevPoint: GraphVertex): GraphEdge[] {
+        let edges = this.graph.getEdges(currPoint);
 
         if (prevPoint) {
-            const prevVertex = this.graph.getByPos(prevPoint);
-            const edge = this.graph.edgeBetween(currVertex, prevVertex);
+            const edge = this.graph.edgeBetween(currPoint, prevPoint);
             edges = edges.filter(e => e !== edge);
         }
 

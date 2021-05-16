@@ -54,7 +54,7 @@ export class RouteTool extends Tool {
 
         this.currentPath = this.pathBuilder.closePath(this.currentPath, pointer.curr);
         this.currentPath = this.pathBuilder.startPath(pointer.curr);
-        this.route.addPoint(pointer.curr);
+        // this.route.addPoint(pointer.curr);
     }
 
     isReset() {
@@ -111,7 +111,6 @@ export class RouteTool extends Tool {
     private finishRoute() {
         if (this.currentPath) {
             // this.route.removeLastPoint();
-            this.currentPath.dispose();
         }
         this.currentPath = undefined;
     }

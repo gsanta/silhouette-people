@@ -11,26 +11,6 @@ export class PathItem {
         this.points = points;
     }
 
-    addMesh(mesh: Mesh) {
-        this.meshes.push(mesh);
-    }
-
-    getMesh(name: string) {
-        return this.meshes.find(mesh => mesh.name === name);
-    }
-
-    addArrowHead(mesh: Mesh) {
-        this.arrowHead = mesh;
-    }
-
-    getArrowHead(): Mesh {
-        return this.arrowHead;
-    }
-
-    removeArrowHead(): void {
-        this.arrowHead = undefined;
-    }
-
     addPointLast(point: Vector3) {
         this.points.push(point);
     }
@@ -69,10 +49,5 @@ export class PathItem {
 
     size(): number {
         return this.points.length;
-    }
-
-    dispose() {
-        this.meshes.forEach(mesh => mesh.dispose());
-        this.arrowHead && this.arrowHead.dispose();
     }
 }

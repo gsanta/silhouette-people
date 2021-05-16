@@ -1,6 +1,5 @@
-import { Vector3 } from "babylonjs/Maths/math.vector";
+import { GraphVertex } from "../../../service/graph/GraphImpl";
 import { CharacterItem } from "../character/CharacterItem";
-import { PathItem } from "../PathItem";
 import { RouteWalker, RouteWalkerDirection } from "./RouteWalker";
 
 export interface RouteStoryConfig {
@@ -13,40 +12,39 @@ export class RouteItem {
     character: CharacterItem;
     walker: RouteWalker;
 
-    path: PathItem;
-    private reverseDirection: Vector3[];
+    // path: PathItem;
+    points: GraphVertex[];
+    private reversePoints: GraphVertex[];
 
-    constructor(path: PathItem, name?: string, character?: CharacterItem) {
+    constructor(points: GraphVertex[], name?: string, character?: CharacterItem) {
         this.character = character;
-        this.path = path;
+        this.points = points;
 
         this.name = name;
-        this.reverseDirection = [...this.path.getPoints()].reverse();
+        this.reversePoints = [...this.points].reverse();
     }
 
-    addPoint(point: Vector3) {
+    addPoint(point: GraphVertex) {
         if (this.walker.getDirection() === RouteWalkerDirection.FORWARD) {
-            this.path.addPointLast(point);
+            this.points.push(point);
         } else {
-            this.path.addPointFirst(point);
+            this.points.unshift(point);
         }
-
+        this.reversePoints = [...this.points].reverse();
     }
 
     removeFirstPoint() {
         if (this.walker.getDirection() === RouteWalkerDirection.FORWARD) {
-            this.path.removePointFirst();
+            this.points.shift();
         } else {
-            this.path.removePointLast();
+            this.points.pop();
         }
-        this.reverseDirection = [...this.path.getPoints()].reverse();
+        this.reversePoints = [...this.points].reverse();
     }
 
-    getRoutePoints(): Vector3[] {
-        return this.walker.getDirection() === RouteWalkerDirection.FORWARD ? this.path.getPoints() : this.reverseDirection;
+    getRoutePoints(): GraphVertex[] {
+        return this.walker.getDirection() === RouteWalkerDirection.FORWARD ? this.points : this.reversePoints;
     }
     
-    dispose() {
-        this.path.dispose();
-    }
+    dispose() {}
 }

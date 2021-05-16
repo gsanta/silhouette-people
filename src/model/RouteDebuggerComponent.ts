@@ -20,7 +20,7 @@ export class RouteDebuggerComponent {
 
         if (!character.route || character.route.walker.getState() === RouteWalkerState.FINISHED) {
             if (this.currRoute) {
-                quarterMap.fillPath(this.currRoute.getRoutePoints(), 0);
+                quarterMap.fillPath(this.currRoute.getRoutePoints().map(point => point.p), 0);
                 this.currRoute = undefined;
             }
 
@@ -28,11 +28,11 @@ export class RouteDebuggerComponent {
         }
         
         if (this.currRoute && character.route !== this.currRoute) {
-            quarterMap.fillPath(this.currRoute.getRoutePoints(), 0);
+            quarterMap.fillPath(this.currRoute.getRoutePoints().map(point => point.p), 0);
         }
 
         this.currRoute = character.route;
-        quarterMap.fillPath(character.route.getRoutePoints(), 2);
+        quarterMap.fillPath(character.route.getRoutePoints().map(point => point.p), 2);
 
         if (this.debugService.areaMapDebugger.isVisible()) {
             this.debugService.areaMapDebugger.update();

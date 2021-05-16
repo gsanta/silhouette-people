@@ -48,9 +48,9 @@ export class RouteFactory {
 
         if (path.length < 2) { return undefined; }
         
-        const route = new RouteItem(new PathItem(path), undefined, character);
+        // const route = new RouteItem(new PathItem(path), undefined, character);
         
-        this.routeStore.addRoute(route);
+        // this.routeStore.addRoute(route);
     }
 
     createFromConfig(routeConfig: RouteStoryConfig) {
@@ -58,11 +58,12 @@ export class RouteFactory {
     }
 
     createRoute(path: PathItem, config: RouteFactoryConfig, character?: CharacterItem): RouteItem {
-        const route = new RouteItem(path, config.name, character);
-        route.walker = this.createRouteWalker(route, config);
+        // const route = new RouteItem(path, config.name, character);
+        // route.walker = this.createRouteWalker(route, config);
 
-        this.routeStore.addRoute(route);
-        return route;
+        // this.routeStore.addRoute(route);
+        // return route;
+        return undefined;
     }
 
     private createRouteWalker(route: RouteItem, config: RouteFactoryConfig): RouteWalkerImpl {

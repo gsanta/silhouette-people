@@ -1,4 +1,5 @@
 import { Vector3 } from "babylonjs";
+import { GraphVertex } from "../../../service/graph/GraphImpl";
 import { RouteWalker, RouteWalkerDirection, RouteWalkerState } from "./RouteWalker";
 import { RouteWalkerImpl } from "./RouteWalkerImpl";
 import { RouteWalkerListener } from "./RouteWalkerListener";
@@ -12,7 +13,7 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
         this.delegate = delegate;
     }
 
-    setDestPoint(currDestPoint: Vector3, prevDestPoint?: Vector3): void {
+    setDestPoint(currDestPoint: GraphVertex, prevDestPoint?: GraphVertex): void {
         this.delegate.setDestPoint(currDestPoint, prevDestPoint);
         this.listeners.forEach(listener => listener.onDestinationPointChanged());
     }
@@ -29,20 +30,24 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
         if (state === RouteWalkerState.STARTED) {
             this.listeners.forEach(listener => listener.onStarted());
         } else if (state === RouteWalkerState.FINISHED) {
-            this.listeners.forEach(listener => listener.onStarted());
+            this.listeners.forEach(listener => listener.onFinished());
         }
 
         this.delegate.setState(state);
 
     }
 
-    setDirection(direction: RouteWalkerDirection): void { this.delegate.setDirection(direction); }
+    setDirection(direction: RouteWalkerDirection): void { 
+        this.delegate.setDirection(direction);
+
+        this.listeners.forEach(listener => listener.onDirectionChanged());
+    }
     getDirection(): RouteWalkerDirection { return this.delegate.getDirection(); }
     getState(): RouteWalkerState { return this.delegate.getState(); }
     getCurrPos(): Vector3 { return this.delegate.getCurrPos(); }
     getPrevPos(): Vector3 { return this.delegate.getPrevPos(); }
-    getDestPoint(): Vector3 { return this.delegate.getDestPoint(); }
-    getPrevDestPoint(): Vector3 { return this.delegate.getPrevDestPoint(); }
+    getDestPoint(): GraphVertex { return this.delegate.getDestPoint(); }
+    getPrevDestPoint(): GraphVertex { return this.delegate.getPrevDestPoint(); }
     getRoute() { return this.delegate.getRoute() }
 
     addListener(routeWalkerListener: RouteWalkerListener) {

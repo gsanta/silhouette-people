@@ -33,7 +33,7 @@ export class DestinationPointUpdater {
         const nextDestPoint = this.routePointProvider.getNextRoutePoint(destPoint, prevDestPoint);
 
         if (nextDestPoint !== undefined) {
-            this.routeWalker.setDestPoint(nextDestPoint, character.getPosition());
+            this.routeWalker.setDestPoint(nextDestPoint, destPoint);
         }
     }
 
@@ -44,7 +44,7 @@ export class DestinationPointUpdater {
         
         const curr = character.getPosition();
     
-        const isWithinDestRadius = destPoint.subtract(curr).length() < 0.2;
+        const isWithinDestRadius = destPoint.p.subtract(curr).length() < 0.2;
         const isLeavingDest = this.isLeavingDest();
     
         return isWithinDestRadius || isLeavingDest;
@@ -56,8 +56,8 @@ export class DestinationPointUpdater {
         const destPoint = this.routeWalker.getDestPoint();
 
         if (prevPos) {
-            const checkDist = prevPos.subtract(destPoint).length() < 2;
-            const checkDir = prevPos.subtract(destPoint).length() < currPos.subtract(destPoint).length();
+            const checkDist = prevPos.subtract(destPoint.p).length() < 2;
+            const checkDir = prevPos.subtract(destPoint.p).length() < currPos.subtract(destPoint.p).length();
             return checkDist && checkDir;
         }
         return false;

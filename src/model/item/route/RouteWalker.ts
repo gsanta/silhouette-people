@@ -1,4 +1,5 @@
 import { Vector3 } from "babylonjs";
+import { GraphVertex } from "../../../service/graph/GraphImpl";
 import { RouteItem } from "./RouteItem";
 
 export enum RouteWalkerDirection {
@@ -17,9 +18,9 @@ export interface RouteWalker {
     getCurrPos(): Vector3;
     getPrevPos(): Vector3;
     
-    setDestPoint(currDestPoint: Vector3, prevDestPoint?: Vector3);
-    getDestPoint(): Vector3;
-    getPrevDestPoint(): Vector3;
+    setDestPoint(currDestPoint: GraphVertex, prevDestPoint?: GraphVertex);
+    getDestPoint(): GraphVertex;
+    getPrevDestPoint(): GraphVertex;
     
     walk(deltaTime: number): boolean;
 

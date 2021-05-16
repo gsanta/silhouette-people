@@ -15,7 +15,7 @@ export class DirectionRestrictor {
     private getDirection(): number {
         const destPoint = this.routeWalker.getDestPoint();
         const prevDestPoint = this.routeWalker.getPrevDestPoint();
-        const dirVector = destPoint.subtract(prevDestPoint);
+        const dirVector = destPoint.p.subtract(prevDestPoint.p);
         const dirAngle = Math.atan2(dirVector.z, dirVector.x);
 
         return Math.PI / 2 - dirAngle;

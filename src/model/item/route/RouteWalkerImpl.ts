@@ -1,13 +1,14 @@
 import { Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
+import { GraphVertex } from "../../../service/graph/GraphImpl";
 import { RouteItem } from "./RouteItem";
 import { RouteWalker, RouteWalkerDirection, RouteWalkerState } from "./RouteWalker";
 
 export class RouteWalkerImpl implements RouteWalker {
     private readonly route: RouteItem;
     
-    private prevDestPoint: Vector3;
-    private currDestPoint: Vector3;
+    private prevDestPoint: GraphVertex;
+    private currDestPoint: GraphVertex;
     
     private prevPos: Vector3;
     private currPos: Vector3;
@@ -31,16 +32,16 @@ export class RouteWalkerImpl implements RouteWalker {
         return this.prevPos;
     }
 
-    setDestPoint(currDestPoint: Vector3, prevDestPoint?: Vector3) {
+    setDestPoint(currDestPoint: GraphVertex, prevDestPoint?: GraphVertex) {
         this.prevDestPoint = prevDestPoint ? prevDestPoint : this.currDestPoint;
         this.currDestPoint = currDestPoint;
     }
 
-    getDestPoint(): Vector3 {
+    getDestPoint(): GraphVertex {
         return this.currDestPoint;
     }
 
-    getPrevDestPoint(): Vector3 {
+    getPrevDestPoint(): GraphVertex {
         return this.prevDestPoint;
     }
 
@@ -72,7 +73,7 @@ export class RouteWalkerImpl implements RouteWalker {
 
         if (this.state === RouteWalkerState.STARTED) {
             const character = this.route.character;
-            character.setPosition2D(new Vector2(this.prevDestPoint.x, this.prevDestPoint.z));
+            character.setPosition2D(new Vector2(this.prevDestPoint.p.x, this.prevDestPoint.p.z));
         } else {
             const { character } = this.route;
             character.walker.setSpeed(0);

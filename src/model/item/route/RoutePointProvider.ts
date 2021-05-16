@@ -1,6 +1,6 @@
-import { Vector3 } from "babylonjs/Maths/math.vector";
-import { RouteItem } from "./RouteItem";
+import { GraphVertex } from "../../../service/graph/GraphImpl";
 
 export interface RoutePointProvider {
-    getNextRoutePoint(currPoint: Vector3, prevPoint: Vector3);
+    getNextRoutePoint(currPoint: GraphVertex, prevPoint?: GraphVertex);
+    routeDirectionChanged(): void;
 }

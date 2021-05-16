@@ -15,6 +15,6 @@ export class PlayerParser {
         const vertex1 = this.graphService.getGraph().getById(vertex1Id);
         const vertex2 = this.graphService.getGraph().getById(vertex2Id);
 
-        return new RouteItem(new PathItem([vertex1.p, vertex2.p]));    
+        return new RouteItem([vertex1, vertex2]);    
     }
 }
