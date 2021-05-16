@@ -14,7 +14,7 @@ export class BikeParenter {
         player.setParent(bike);
         const bikeWalker = new BikeWalker(bike);
         player.walker = bikeWalker;
-        player.inputManager = new BikeInputManager(bikeWalker, keyboardService);
+        player.inputManager = new BikeInputManager(bikeWalker, player, keyboardService);
         bike.instance.addPositionChangeListener(() => {
             player.instance.emitPositionChange();
         });

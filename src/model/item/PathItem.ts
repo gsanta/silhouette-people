@@ -31,8 +31,20 @@ export class PathItem {
         this.arrowHead = undefined;
     }
 
-    addPoint(point: Vector3) {
+    addPointLast(point: Vector3) {
         this.points.push(point);
+    }
+
+    addPointFirst(point: Vector3) {
+        this.points.unshift(point);
+    }
+
+    removePointLast() {
+        this.points.pop()
+    }
+
+    removePointFirst() {
+        this.points.shift();
     }
 
     setPoint(index: number, point: Vector3) {

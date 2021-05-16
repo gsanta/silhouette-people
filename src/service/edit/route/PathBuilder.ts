@@ -13,7 +13,7 @@ export class PathBuilder {
     }
 
     closePath(path: PathItem, pos: Vector3): PathItem {
-        path.addPoint(new Vector3(pos.x, 0.5, pos.z));
+        path.addPointLast(new Vector3(pos.x, 0.5, pos.z));
         return path;
     }    
 }

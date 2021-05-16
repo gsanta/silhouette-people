@@ -1,21 +1,37 @@
 import { KeyboardService } from "../../../service/base/keyboard/KeyboardService";
 import { MeshInputManager } from "../../MeshInputManager";
+import { CharacterItem } from "../character/CharacterItem";
+import { RouteWalkerDirection } from "../route/RouteWalker";
 import { BikeWalker } from "./states/BikeWalker";
 
 export class BikeInputManager extends MeshInputManager {
     private keyboardService: KeyboardService;
     private bikeWalker: BikeWalker;
+    private readonly character: CharacterItem;
 
-    constructor(bikeWalker: BikeWalker, keyboardService: KeyboardService) {
+    constructor(bikeWalker: BikeWalker, character: CharacterItem,  keyboardService: KeyboardService) {
         super();
         this.bikeWalker = bikeWalker;
         this.keyboardService = keyboardService;
+        this.character = character;
     }
 
     keyboard(e: KeyboardEvent, isKeyDown: boolean) {
         if (!this.isSpeedDisabled) {
             this.handleSpeed(e, isKeyDown);
         }
+
+        if (this.keyboardService.activeKeys.has('q')) {
+            if (isKeyDown) {
+                const currDir = this.character.route.walker.getDirection();
+
+                if (currDir === RouteWalkerDirection.BACKWARD) {
+                    this.character.route.walker.setDirection(RouteWalkerDirection.FORWARD);
+                } else {
+                    this.character.route.walker.setDirection(RouteWalkerDirection.BACKWARD);
+                }
+            }
+        } 
 
         if (!this.isDirectionDisabled) {
             this.handleDirection();

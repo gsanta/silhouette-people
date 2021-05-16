@@ -32,7 +32,7 @@ export class InputManagerPropertyParser extends AbstractPropertyParser<string> {
                 character.inputManager = new CharacterInputManager(character, this.keyboardService);
             break;
             case InputManagerType.BikeInputManager:
-                character.inputManager = new BikeInputManager(<BikeWalker> character.walker, this.keyboardService);
+                character.inputManager = new BikeInputManager(<BikeWalker> character.walker, character, this.keyboardService);
             break;
         }
     }

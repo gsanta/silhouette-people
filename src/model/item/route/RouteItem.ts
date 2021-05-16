@@ -1,7 +1,7 @@
 import { Vector3 } from "babylonjs/Maths/math.vector";
 import { CharacterItem } from "../character/CharacterItem";
 import { PathItem } from "../PathItem";
-import { RouteWalker } from "./RouteWalker";
+import { RouteWalker, RouteWalkerDirection } from "./RouteWalker";
 
 export interface RouteStoryConfig {
     routeId: string;
@@ -14,25 +14,36 @@ export class RouteItem {
     walker: RouteWalker;
 
     path: PathItem;
+    private reverseDirection: Vector3[];
 
     constructor(path: PathItem, name?: string, character?: CharacterItem) {
         this.character = character;
         this.path = path;
 
         this.name = name;
+        this.reverseDirection = [...this.path.getPoints()].reverse();
     }
 
     addPoint(point: Vector3) {
-        this.path.addPoint(point);
+        if (this.walker.getDirection() === RouteWalkerDirection.FORWARD) {
+            this.path.addPointLast(point);
+        } else {
+            this.path.addPointFirst(point);
+        }
+
     }
 
-    removeLastPoint() {
-        const numPoints = this.path.getPoints().length;
-        this.path.removePointAtIndex(numPoints - 1);
+    removeFirstPoint() {
+        if (this.walker.getDirection() === RouteWalkerDirection.FORWARD) {
+            this.path.removePointFirst();
+        } else {
+            this.path.removePointLast();
+        }
+        this.reverseDirection = [...this.path.getPoints()].reverse();
     }
 
-    getRoutePoints() {
-        return this.path.getPoints();
+    getRoutePoints(): Vector3[] {
+        return this.walker.getDirection() === RouteWalkerDirection.FORWARD ? this.path.getPoints() : this.reverseDirection;
     }
     
     dispose() {

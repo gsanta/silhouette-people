@@ -11,8 +11,8 @@ export class RouteWalkerImpl implements RouteWalker {
     
     private prevPos: Vector3;
     private currPos: Vector3;
-    
-    private direction: RouteWalkerDirection;
+
+    private direction: RouteWalkerDirection = RouteWalkerDirection.FORWARD;
     private state: RouteWalkerState;
 
     constructor(route: RouteItem) {
@@ -57,6 +57,10 @@ export class RouteWalkerImpl implements RouteWalker {
 
     setDirection(direction: RouteWalkerDirection): void {
         this.direction = direction;
+        this.setDestPoint(this.prevDestPoint, this.currDestPoint)
+        // const currDestPoint = this.currDestPoint;
+        // this.currDestPoint = this.prevDestPoint;
+        // this.prevDestPoint = currDestPoint;
     }
     
     getDirection(): RouteWalkerDirection {
@@ -78,28 +82,4 @@ export class RouteWalkerImpl implements RouteWalker {
     getState(): RouteWalkerState {
         return this.state;
     }
-
-    // isFinished(): boolean {
-    //     return this._isFinished;
-    // }
-
-    // isStarted(): boolean {
-    //     return this._isStarted;
-    // }
-
-    // setStarted() {
-    //     this._isStarted = true;
-
-    //     const character = this.route.character;
-    //     character.setPosition2D(new Vector2(this.prevDestPoint.x, this.prevDestPoint.z));
-    // }
-
-    // setFinished(isFinished) {
-    //     this._isFinished = isFinished;
-        
-    //     if (isFinished) {
-    //         const { character } = this.route;
-    //         character.walker.setSpeed(0);
-    //     }
-    // }
 }
