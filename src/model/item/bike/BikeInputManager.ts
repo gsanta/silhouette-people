@@ -1,7 +1,7 @@
 import { KeyboardService } from "../../../service/base/keyboard/KeyboardService";
 import { MeshInputManager } from "../../MeshInputManager";
 import { CharacterItem } from "../character/CharacterItem";
-import { RouteWalkerDirection } from "../route/RouteWalker";
+import { RouteWalkerDirection, RouteWalkerState } from "../route/RouteWalker";
 import { BikeWalker } from "./states/BikeWalker";
 
 export class BikeInputManager extends MeshInputManager {
@@ -17,6 +17,7 @@ export class BikeInputManager extends MeshInputManager {
     }
 
     keyboard(e: KeyboardEvent, isKeyDown: boolean) {
+
         if (!this.isSpeedDisabled) {
             this.handleSpeed(e, isKeyDown);
         }
@@ -54,6 +55,9 @@ export class BikeInputManager extends MeshInputManager {
         const walker = this.bikeWalker;
 
         if (isKeyDown) {
+            if (this.character.route.walker.getState() === RouteWalkerState.FINISHED) {
+                return;
+            }
             switch(e.key) {
                 case '1':
                     walker.setGear(0);

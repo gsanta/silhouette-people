@@ -1,13 +1,11 @@
-import { RoutePointProvider } from "./RoutepointProvider";
+import { GraphVertex } from "../../../service/graph/GraphImpl";
 import { RouteWalker } from "./RouteWalker";
 
 export class DestinationPointUpdater {
     private readonly routeWalker: RouteWalker;
-    private readonly routePointProvider: RoutePointProvider;
     
-    constructor(routeWalker: RouteWalker, routePointProvider: RoutePointProvider) {
+    constructor(routeWalker: RouteWalker) {
         this.routeWalker = routeWalker;
-        this.routePointProvider = routePointProvider;
     }
 
     initCheckPoints() {
@@ -25,16 +23,28 @@ export class DestinationPointUpdater {
     }
 
     private setNextCheckPoint() {
-        const route = this.routeWalker.getRoute();
-        const character = route.character;
         const destPoint = this.routeWalker.getDestPoint();
-        const prevDestPoint = this.routeWalker.getPrevDestPoint();
 
-        const nextDestPoint = this.routePointProvider.getNextRoutePoint(destPoint, prevDestPoint);
+        const nextDestPoint = this.getNextRoutePoint(destPoint); //this.routePointProvider.getNextRoutePoint(destPoint, prevDestPoint);
 
         if (nextDestPoint !== undefined) {
             this.routeWalker.setDestPoint(nextDestPoint, destPoint);
+        } else {
+            this.routeWalker.setDestPoint(undefined, destPoint);
         }
+    }
+
+    private getNextRoutePoint(currDestPoint: GraphVertex): GraphVertex {
+        const routePoints = this.routeWalker.getRoute().getRoutePoints();
+        let nextRoutePoint: GraphVertex;
+
+        if (currDestPoint === routePoints[routePoints.length - 1]) {
+            nextRoutePoint = undefined;
+        } else {
+            nextRoutePoint = routePoints[routePoints.indexOf(currDestPoint) + 1];
+        }
+
+        return nextRoutePoint;
     }
 
     private isCheckPointReached() {

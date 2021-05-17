@@ -35,6 +35,13 @@ export class RouteWalkerImpl implements RouteWalker {
     setDestPoint(currDestPoint: GraphVertex, prevDestPoint?: GraphVertex) {
         this.prevDestPoint = prevDestPoint ? prevDestPoint : this.currDestPoint;
         this.currDestPoint = currDestPoint;
+        if (currDestPoint === undefined) {
+            this.setState(RouteWalkerState.FINISHED);
+        } else {
+            if (this.state === RouteWalkerState.FINISHED) {
+                this.setState(RouteWalkerState.STARTED);
+            }
+        }
     }
 
     getDestPoint(): GraphVertex {
@@ -58,7 +65,13 @@ export class RouteWalkerImpl implements RouteWalker {
 
     setDirection(direction: RouteWalkerDirection): void {
         this.direction = direction;
-        this.setDestPoint(this.prevDestPoint, this.currDestPoint)
+
+        if (!this.currDestPoint) {
+            const points = this.route.getRoutePoints();
+            this.setDestPoint(points[1], points[0]);
+        } else {
+            this.setDestPoint(this.prevDestPoint, this.currDestPoint)
+        }
         // const currDestPoint = this.currDestPoint;
         // this.currDestPoint = this.prevDestPoint;
         // this.prevDestPoint = currDestPoint;

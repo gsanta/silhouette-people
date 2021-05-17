@@ -1,4 +1,5 @@
 import { CharacterItem } from "../character/CharacterItem";
+import { RouteWalkerState } from "../route/RouteWalker";
 
 
 export abstract class MeshWalker {

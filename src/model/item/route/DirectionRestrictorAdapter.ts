@@ -1,6 +1,4 @@
-import { DestinationPointUpdater } from "./DestinationPointUpdater";
 import { DirectionRestrictor } from "./DirectionRestrictor";
-import { RoutePointProvider } from "./RoutepointProvider";
 import { RouteWalker } from "./RouteWalker";
 import { RouteWalkerListener } from "./RouteWalkerListener";
 
@@ -14,8 +12,8 @@ export class DirectionRestrictorAdapter extends RouteWalkerListener {
         this.restrictor = new DirectionRestrictor(routeWalker);
     }
 
-    onWalk(deltaTime: number) {
-        this.restrictor.update(deltaTime);
+    onWalk() {
+        this.restrictor.update();
     }
 
     onStarted() {

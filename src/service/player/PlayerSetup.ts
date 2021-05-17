@@ -2,7 +2,6 @@ import { CharacterItem } from "../../model/item/character/CharacterItem";
 import { DestinationPointUpdaterAdapter } from "../../model/item/route/DestinationPointUpdaterAdapter";
 import { DirectionRestrictorAdapter } from "../../model/item/route/DirectionRestrictorAdapter";
 import { DynamicRoutePointProvider } from "../../model/item/route/DynamicRoutePointProvider";
-import { DirectionRestrictor } from "../../model/item/route/DirectionRestrictor";
 import { RouteVisualizerAdapter } from "../../model/item/route/RouteVisualizerAdapter";
 import { RouteWalkerImpl } from "../../model/item/route/RouteWalkerImpl";
 import { RouteWalkerListenerDecorator } from "../../model/item/route/RouteWalkerListenerDecorator";
@@ -11,6 +10,7 @@ import { GraphService } from "../graph/GraphService";
 import { WorldProvider } from "../WorldProvider";
 import { PlayerParser } from "./PlayerParser";
 import { PlayerStore } from "./PlayerStore";
+import { DynamicRoutePointProviderAdapter } from "../../model/item/route/DynamicRoutePointProviderAdapter";
 
 export class PlayerSetup {
 
@@ -41,10 +41,10 @@ export class PlayerSetup {
         const walkerDecorator = new RouteWalkerListenerDecorator(walker);
 
         route.walker = walkerDecorator;
-        // route.walker.addFeature(new DirectionRestrictor(route.walker, route));
 
-        walkerDecorator.addListener(new DestinationPointUpdaterAdapter(walkerDecorator, new DynamicRoutePointProvider(walkerDecorator, graph)))
+        walkerDecorator.addListener(new DestinationPointUpdaterAdapter(walkerDecorator));
         walkerDecorator.addListener(new DirectionRestrictorAdapter(route.walker));
+        walkerDecorator.addListener(new DynamicRoutePointProviderAdapter(route.walker, graph));
         walkerDecorator.addListener(new RouteVisualizerAdapter(walkerDecorator, this.worldProvider, this.materialStore));
     }
 }

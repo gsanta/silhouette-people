@@ -20,7 +20,7 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
 
     walk(deltaTime: number): boolean {
         const ret = this.delegate.walk();
-        if (ret) {
+        if (ret && this.getState() !== RouteWalkerState.FINISHED) {
             this.listeners.forEach(listener => listener.onWalk(deltaTime));
         }
         return ret;

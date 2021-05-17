@@ -1,4 +1,4 @@
-import { RouteWalker } from "./RouteWalker";
+import { RouteWalker, RouteWalkerState } from "./RouteWalker";
 
 export class DirectionRestrictor {
     private routeWalker: RouteWalker;
@@ -7,9 +7,11 @@ export class DirectionRestrictor {
         this.routeWalker = routeWalker;
     }
 
-    update(deltaTime: number) {
-        const character = this.routeWalker.getRoute().character;
-        character.walker.character.instance.setRotation(this.getDirection());
+    update() {
+        if (this.routeWalker.getState() !== RouteWalkerState.FINISHED) {
+            const character = this.routeWalker.getRoute().character;
+            character.walker.character.instance.setRotation(this.getDirection());
+        }
     }
 
     private getDirection(): number {
