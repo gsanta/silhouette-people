@@ -41,6 +41,7 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
         this.delegate.setDirection(direction);
 
         this.listeners.forEach(listener => listener.onDirectionChanged());
+        this.listeners.forEach(listener => listener.onDestinationPointChanged());
     }
     getDirection(): RouteWalkerDirection { return this.delegate.getDirection(); }
     getState(): RouteWalkerState { return this.delegate.getState(); }

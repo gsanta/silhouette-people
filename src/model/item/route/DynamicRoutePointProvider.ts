@@ -37,12 +37,11 @@ export class DynamicRoutePointProvider implements RoutePointProvider {
         const validEdges = this.findValidEdges(currPoint, prevPoint) || [];
 
         if (validEdges.length > 0) {
-            const nextVertex = validEdges[0].getOtherVertex(currPoint);
-            
-            if (this.routeWalker.getRoute().getRoutePoints().length >= 3) {
-                this.routeWalker.getRoute().removeFirstPoint();
-            }
+            const nextVertex = validEdges[0].getOtherVertex(currPoint);            
             this.routeWalker.getRoute().addPoint(nextVertex);
+        }
+        if (this.routeWalker.getRoute().getRoutePoints()[0] !== prevPoint) {
+            this.routeWalker.getRoute().removeFirstPoint();
         }
     }
 
