@@ -1,4 +1,4 @@
-import { GraphParser } from "../../base/import/map/GraphParser";
+import { GraphParser } from "../../base/import/map/parse/GraphParser";
 import { GraphService } from "../../graph/GraphService";
 import { WorldProvider } from "../../WorldProvider";
 

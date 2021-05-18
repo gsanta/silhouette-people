@@ -28,7 +28,11 @@ export class GraphService {
 
         this.graph = graph;
         this.visualizer = new GraphVisualizer(graph, this.worldProvider, this.materialStore);
-        this.visualizer.show();
+        this.visualizer.visualizeEdge(...graph.edges);
+    }
+
+    getVisualizer(): GraphVisualizer {
+        return this.visualizer;
     }
 
     getGraph(): Graph<GraphVertex, GraphEdge> {

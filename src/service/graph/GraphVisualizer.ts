@@ -1,4 +1,5 @@
 import { Mesh, MeshBuilder, Vector3 } from "babylonjs";
+import { RouteItem } from "../../model/item/route/RouteItem";
 import { MaterialStore } from "../../store/MaterialStore";
 import { WorldProvider } from "../WorldProvider";
 import { Graph } from "./Graph";
@@ -8,7 +9,6 @@ export class GraphVisualizer {
     private readonly graph: Graph<GraphVertex, GraphEdge>;
     private readonly worldProvider: WorldProvider;
     private readonly materialStore: MaterialStore;
-    private meshes: Mesh[] = [];
 
     constructor(graph: Graph<GraphVertex, GraphEdge>, worldProvider: WorldProvider, materialStore: MaterialStore) {
         this.graph = graph;
@@ -16,42 +16,70 @@ export class GraphVisualizer {
         this.materialStore = materialStore;
     }
 
-    show() {
-        const meshes = this.graph.edges.map(edge => this.createArrow(edge));
-        this.meshes = meshes;
+    visualizeRoute(route: RouteItem) {
+        const meshes: Mesh[] = [];
+        meshes.push(this.visualizeRouteArrow(route));
+        meshes.push(...this.visualizeRoutePath(route));
+        route.meshes = meshes;
+    }
+
+    visualizeEdge(...graphEdge: GraphEdge[]) {
+        graphEdge.forEach(edge => this.createArrow(edge));
+    }
+
+    private visualizeRoutePath(route: RouteItem): Mesh[] {
+        const meshes: Mesh[] = [];
+        const points = route.points;
+        for (let i = 0; i < points.length - 1; i++) {
+            const edge = this.graph.edgeBetween(points[i], points[i + 1]);
+            meshes.push(this.createArrow(edge));
+        }
+        return meshes;
+    }
+
+    private visualizeRouteArrow(route: RouteItem): Mesh {
+        const pathes = this.createArrowHeadPathes(route);
+
+        const mesh = MeshBuilder.CreateRibbon("arrow-head", {pathArray: pathes}, this.worldProvider.scene);
+
+        mesh.material = this.materialStore.getActivePathMaterial();
+        return mesh;
     }
 
     private createArrow(edge: GraphEdge): Mesh {
         const [v1, v2] = [edge.v1, edge.v2]
-        const pathes = this.createArrowPathes(v1.p, v2.p);
-        const mesh = MeshBuilder.CreateRibbon(`path-${v1.id}-${v2.id}`, {pathArray: pathes, updatable: false}, this.worldProvider.scene);
+        const path1 = [edge.dimensions.p1, edge.dimensions.p2];
+        const path2 = [edge.dimensions.p4, edge.dimensions.p3];
+        const mesh = MeshBuilder.CreateRibbon(`path-${v1.id}-${v2.id}`, {pathArray: [path1, path2], updatable: false}, this.worldProvider.scene);
         mesh.material = this.materialStore.getRibbonMaterial();
 
         return mesh;
     }
 
-    private createArrowPathes(p1: Vector3, p2: Vector3) {
-        const angle = this.getAngle(p1, p2);
+
+    private createArrowHeadPathes(route: RouteItem) {
+        const points = route.getRoutePoints().map(point => point.p);
+        const prevPos = points[points.length - 2].clone();
+        const lastPos = points[points.length - 1].clone();
+        const angle = this.getAngle(prevPos, lastPos);
         const angelPlus = angle + Math.PI / 2;
         const angelMinus = angle - Math.PI / 2;
-        const radius = 0.2;
-        
-        const [start, end] = [p1, p2];
+        const radius = 0.4;
+        const end = lastPos;
 
         const path1 = [
-            start.add(new Vector3(radius * Math.cos(angelPlus), 0.5, radius * Math.sin(angelPlus))),
-            end.add(new Vector3(radius * Math.cos(angelPlus), 0.5, radius * Math.sin(angelPlus))),
+            end.add(new Vector3(radius * Math.cos(angelPlus), 0.8, radius * Math.sin(angelPlus))),
+            end.add(new Vector3(radius * Math.cos(angelMinus), 0.8, radius * Math.sin(angelMinus))),
         ];
 
         const path2 = [
-            start.add(new Vector3(radius * Math.cos(angelMinus), 0.5, radius * Math.sin(angelMinus))),
-            end.add(new Vector3(radius * Math.cos(angelMinus), 0.5, radius * Math.sin(angelMinus))),
+            end.add(new Vector3(radius * Math.cos(angle), 0.8, radius * Math.sin(angle))),
+            end.add(new Vector3(radius * Math.cos(angle), 0.8, radius * Math.sin(angle))),
         ];
 
         return [path1, path2];
     }
 
-    
     private getAngle(startPoint: Vector3, endPoint) {
         const vector = endPoint.subtract(startPoint);
         return Math.atan2(vector.z, vector.x);

@@ -365,5 +365,11 @@
             "characterId": "C"
         }
     ],
+    "edgeThickness": [
+        {
+            "edgeRef": "A2-B1",
+            "thickness": 2
+        }
+    ],
     "playerRoute": ["A1", "A2"]
 }

@@ -13,15 +13,16 @@ export interface WorldMap {
     relativePos: string;
     cameraLocation: number;
     grounds: QuarterJson[][];
-    charToType: { [key: string]: string },
-    models: string[],
-    textures: { [key: string]: string },
-    textureMeshIndex: { [key: string]: number },
-    collider: { [key: string]: string | boolean },
-    tags: { [key: string]: string },
-    objects: { [key: string]: {properties: {[key: string]: any} }},
-    routes: RouteStoryConfig[],
+    charToType: { [key: string]: string };
+    models: string[];
+    textures: { [key: string]: string };
+    textureMeshIndex: { [key: string]: number };
+    collider: { [key: string]: string | boolean };
+    tags: { [key: string]: string };
+    objects: { [key: string]: {properties: {[key: string]: any} }};
+    routes: RouteStoryConfig[];
     routeEdges: string[][];
+    edgeThickness: { edgeRef: string, thickness: number }[];
 
     mapUrl: string;
     routeMapUrl: string;

@@ -45,6 +45,6 @@ export class PlayerSetup {
         walkerDecorator.addListener(new DestinationPointUpdaterAdapter(walkerDecorator));
         walkerDecorator.addListener(new DirectionRestrictorAdapter(route.walker));
         walkerDecorator.addListener(new DynamicRoutePointProviderAdapter(route.walker, graph));
-        walkerDecorator.addListener(new RouteVisualizerAdapter(walkerDecorator, this.worldProvider, this.materialStore));
+        walkerDecorator.addListener(new RouteVisualizerAdapter(walkerDecorator, this.graphService));
     }
 }

@@ -33,8 +33,6 @@ export class RouteVisualizer {
             const mesh = MeshBuilder.CreateRibbon("arrow-head", {pathArray: pathes}, this.worldProvider.scene);
 
             mesh.material = this.materialStore.getActivePathMaterial();
-            // mesh.material.wireframe = true;
-            // path.addArrowHead(mesh);
             this.meshes.push(mesh);
     }
 

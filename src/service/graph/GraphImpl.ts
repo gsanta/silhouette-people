@@ -1,9 +1,12 @@
 import { Vector3 } from "babylonjs/Maths/math.vector";
+import { Quad } from "../../model/shape/Quad";
 import { Graph } from "./Graph";
 
 export class GraphEdge {
     readonly v1: GraphVertex;
     readonly v2: GraphVertex;
+    thickness: number = 0;
+    dimensions: Quad;
 
     constructor(v1: GraphVertex, v2: GraphVertex) {
         this.v1 = v1;

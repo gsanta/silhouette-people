@@ -8,7 +8,7 @@ import { WorldMap } from "./map/WorldMap";
 import { WorldProvider } from "../../WorldProvider";
 import { MapParser } from "./map/parse/MapParser";
 import { IndexPosition } from "./map/parse/ItemParser";
-import { GraphParser } from "./map/GraphParser";
+import { GraphParser } from "./map/parse/GraphParser";
 
 export class WorldImporter {
     private readonly routeStore: RouteStore;

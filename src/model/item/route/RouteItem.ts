@@ -1,3 +1,4 @@
+import { Mesh } from "babylonjs";
 import { GraphVertex } from "../../../service/graph/GraphImpl";
 import { CharacterItem } from "../character/CharacterItem";
 import { RouteWalker, RouteWalkerDirection } from "./RouteWalker";
@@ -14,6 +15,7 @@ export class RouteItem {
 
     // path: PathItem;
     points: GraphVertex[];
+    meshes: Mesh[] = [];
     private reversePoints: GraphVertex[];
 
     constructor(points: GraphVertex[], name?: string, character?: CharacterItem) {

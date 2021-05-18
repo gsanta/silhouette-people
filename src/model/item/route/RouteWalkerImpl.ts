@@ -72,9 +72,6 @@ export class RouteWalkerImpl implements RouteWalker {
         } else {
             this.setDestPoint(this.prevDestPoint, this.currDestPoint)
         }
-        // const currDestPoint = this.currDestPoint;
-        // this.currDestPoint = this.prevDestPoint;
-        // this.prevDestPoint = currDestPoint;
     }
     
     getDirection(): RouteWalkerDirection {

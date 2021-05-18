@@ -1,16 +1,19 @@
-import { GraphEdge, GraphImpl, GraphVertex } from "../../../graph/GraphImpl";
-import { RouteConfig, RouteParser } from "./RouteParser";
-import { WorldMap } from "./WorldMap";
+import { GraphEdge, GraphImpl, GraphVertex } from "../../../../graph/GraphImpl";
+import { RouteConfig, RouteParser } from "../RouteParser";
+import { WorldMap } from "../WorldMap";
+import { EdgeDimensionCalc } from "./EdgeDimensionCalc";
 
 export class GraphParser {
 
     private readonly routeParser: RouteParser;
+    private readonly edgeDimensionCalc: EdgeDimensionCalc;
     private edges: GraphEdge[] = [];
     private vertices: GraphVertex[] = [];
     private charToVertex: Map<string, GraphVertex> = new Map();
 
     constructor() {
         this.routeParser = new RouteParser();
+        this.edgeDimensionCalc = new EdgeDimensionCalc();
     }
 
     parse(json: WorldMap): GraphImpl {
@@ -21,7 +24,22 @@ export class GraphParser {
         this.parseRouteConfigs(routeConfigs);
         this.parseAdditionalRouteEdges(json);
 
-        return new GraphImpl(this.vertices, this.edges);
+        const graph = new GraphImpl(this.vertices, this.edges);
+        this.parseEdgeThickness(json, graph);
+        return graph;
+    }
+
+    private parseEdgeThickness(worldMap: WorldMap, graph: GraphImpl) {
+        const edgeThicknesses = worldMap.edgeThickness;
+
+        edgeThicknesses.forEach(edgeThickness => {
+            const [vertex1Id, vertex2Id] = edgeThickness.edgeRef.split('-');
+
+            const edge = graph.edgeBetween(graph.getById(vertex1Id), graph.getById(vertex2Id));
+            edge.thickness = edgeThickness.thickness;
+        });
+
+        graph.edges.forEach(edge => edge.dimensions = this.edgeDimensionCalc.calc(edge));
     }
 
     private parseRouteConfigs(routeConfigs: RouteConfig[]) {
