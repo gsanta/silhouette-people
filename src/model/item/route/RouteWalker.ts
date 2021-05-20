@@ -10,13 +10,13 @@ export enum RouteWalkerState {
 export interface RouteWalker {
     getRoute(): RouteItem;
 
-    getCurrPos(): Vector3;
+    getPos(): Vector3;
     getPrevPos(): Vector3;
     
-    setDestPoint(currDestPoint: GraphVertex, prevDestPoint?: GraphVertex);
-    getDestPoint(): GraphVertex;
-    getPrevDestPoint(): GraphVertex;
-    getCurrEdge(): GraphEdge;
+    getEdge(): GraphEdge;
+    setEdge(edge: GraphEdge): void;
+    getTarget(): GraphVertex;
+    getSource(): GraphVertex;
     
     walk(deltaTime: number): boolean;
 

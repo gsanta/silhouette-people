@@ -1,4 +1,5 @@
 
+import { KeyboardService } from "../../../service/base/keyboard/KeyboardService";
 import { Graph } from "../../../service/graph/Graph";
 import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
 import { RouteWalker } from "./RouteWalker";
@@ -6,26 +7,42 @@ import { RouteWalker } from "./RouteWalker";
 export class DynamicRoutePointProvider {
     private readonly routeWalker: RouteWalker;
     private readonly graph: Graph<GraphVertex, GraphEdge>;
+    private readonly keyboardService: KeyboardService;
 
-    constructor(routeWalker: RouteWalker, graph: Graph<GraphVertex, GraphEdge>) {
+    constructor(routeWalker: RouteWalker, graph: Graph<GraphVertex, GraphEdge>, keyboardService: KeyboardService) {
         this.graph = graph;
         this.routeWalker = routeWalker;
+        this.keyboardService = keyboardService;
+    
+
+        // this.keyboardService.onKeydown()
     }
 
-    createNextRoutePoint(): void {
-        const currPoint = this.routeWalker.getDestPoint();
-        const prevPoint = this.routeWalker.getPrevDestPoint();
+    // private chooseNextEdge(edge: GraphEdge) {
+    //     const anchorVertex = this.routeWalker.isReversed() ? edge.v2 : edge.v1;
 
-        if (currPoint !== undefined) {
-            const validEdges = this.findValidEdges(currPoint, prevPoint) || [];
+    //     const edges = this.graph.getEdges(anchorVertex);
+    //     const nextIndex = edges.indexOf(edge);
+
+    //     if (nextIndex < edges.length) {
+    //         this.routeWalker.getRoute().removeLastPoint();
+    //     }
+    // }
+
+    progress(): void {
+        const target = this.routeWalker.getTarget();
+        const source = this.routeWalker.getSource();
+
+        if (target !== undefined) {
+            const validEdges = this.findValidEdges(source, source) || [];
     
             if (validEdges.length > 0) {
                 const edgeIndex = Math.floor(Math.random() * validEdges.length);
-                const nextVertex = validEdges[edgeIndex].getOtherVertex(currPoint);            
-                this.routeWalker.getRoute().addPoint(nextVertex);
+                this.routeWalker.getRoute().addEdge(validEdges[edgeIndex]);
             }
-            if (this.routeWalker.getRoute().getRoutePoints()[0] !== prevPoint) {
-                this.routeWalker.getRoute().removeFirstPoint();
+
+            if (this.routeWalker.getRoute().getEdges()[0] !== this.routeWalker.getEdge()) {
+                this.routeWalker.getRoute().removeFirstEdge();
             }
         }
     }

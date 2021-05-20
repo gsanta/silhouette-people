@@ -1,4 +1,3 @@
-import { MeshConfig } from "../../../model/item/mesh/MeshItem";
 import { StoryItem, StoryType } from "../../../service/story/StoryItem";
 import { StoryLoader } from "../../../service/story/StoryLoader";
 import { StoryTracker } from "../../../service/story/StoryTracker";
@@ -34,7 +33,7 @@ export class RouteLoader implements StoryLoader {
         const route = this.routeStore.getByName(`pre-defined-route-${story.data.routeId}`);
         const character = <CharacterItem> this.meshStore.getById(story.data.characterId);
         character.route = route;
-        character.instance.setPosition2D(toVector2(route.getRoutePoints()[0].p))
+        character.instance.setPosition2D(toVector2(route.getEdges()[0].p))
         route.character = character;
         this.routeStore.addRoute(route);
     }

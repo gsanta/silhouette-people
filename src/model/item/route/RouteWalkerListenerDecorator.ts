@@ -45,11 +45,11 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
     }
     isReversed(): boolean { return this.delegate.isReversed(); }
     getState(): RouteWalkerState { return this.delegate.getState(); }
-    getCurrPos(): Vector3 { return this.delegate.getCurrPos(); }
+    getPos(): Vector3 { return this.delegate.getPos(); }
     getPrevPos(): Vector3 { return this.delegate.getPrevPos(); }
     getDestPoint(): GraphVertex { return this.delegate.getDestPoint(); }
     getPrevDestPoint(): GraphVertex { return this.delegate.getPrevDestPoint(); }
-    getCurrEdge(): GraphEdge { return this.delegate.getCurrEdge(); }
+    getEdge(): GraphEdge { return this.delegate.getEdge(); }
     getRoute() { return this.delegate.getRoute() }
 
     addListener(routeWalkerListener: RouteWalkerListener) {

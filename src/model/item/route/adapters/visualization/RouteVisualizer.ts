@@ -37,7 +37,7 @@ export class RouteVisualizer {
     }
 
     private createArrowHeadPathes(route: RouteItem) {
-        const points = route.getRoutePoints().map(point => point.p);
+        const points = route.getEdges().map(point => point.p);
         const prevPos = points[points.length - 2].clone();
         const lastPos = points[points.length - 1].clone();
         const angle = this.getAngle(prevPos, lastPos);

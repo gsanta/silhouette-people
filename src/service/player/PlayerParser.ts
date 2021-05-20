@@ -1,4 +1,3 @@
-import { PathItem } from "../../model/item/PathItem";
 import { RouteItem } from "../../model/item/route/RouteItem";
 import { WorldMap } from "../base/import/map/WorldMap";
 import { GraphService } from "../graph/GraphService";
@@ -15,6 +14,8 @@ export class PlayerParser {
         const vertex1 = this.graphService.getGraph().getById(vertex1Id);
         const vertex2 = this.graphService.getGraph().getById(vertex2Id);
 
-        return new RouteItem([vertex1, vertex2]);    
+        const edge = this.graphService.getGraph().edgeBetween(vertex1, vertex2);
+
+        return new RouteItem([edge]);    
     }
 }

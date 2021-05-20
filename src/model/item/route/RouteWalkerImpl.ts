@@ -14,6 +14,8 @@ export class RouteWalkerImpl implements RouteWalker {
     private prevPos: Vector3;
     private currPos: Vector3;
 
+    private edge: GraphEdge;
+
     private state: RouteWalkerState;
     private reversed: boolean = false;
 
@@ -26,12 +28,26 @@ export class RouteWalkerImpl implements RouteWalker {
         return this.route;
     }
 
-    getCurrPos(): Vector3 {
+    getPos(): Vector3 {
         return this.currPos;
     }
 
     getPrevPos(): Vector3 {
         return this.prevPos;
+    }
+
+    getEdge(): GraphEdge {
+        if (this.currDestPoint && this.prevDestPoint) {
+            return this.graph.edgeBetween(this.currDestPoint, this.prevDestPoint);
+        }
+    }
+
+    getTarget() {
+        return this.edge.getTraget(this.isReversed());
+    }
+
+    getSource() {
+        return this.edge.getSource(this.isReversed());
     }
 
     setDestPoint(currDestPoint: GraphVertex, prevDestPoint?: GraphVertex) {
@@ -43,20 +59,6 @@ export class RouteWalkerImpl implements RouteWalker {
             if (this.state === RouteWalkerState.FINISHED) {
                 this.setState(RouteWalkerState.STARTED);
             }
-        }
-    }
-
-    getDestPoint(): GraphVertex {
-        return this.currDestPoint;
-    }
-
-    getPrevDestPoint(): GraphVertex {
-        return this.prevDestPoint;
-    }
-
-    getCurrEdge(): GraphEdge {
-        if (this.currDestPoint && this.prevDestPoint) {
-            return this.graph.edgeBetween(this.currDestPoint, this.prevDestPoint);
         }
     }
 
@@ -72,16 +74,7 @@ export class RouteWalkerImpl implements RouteWalker {
     }
 
     setReversed(isReversed: boolean) {
-        if (this.reversed !== isReversed) {
-            this.reversed = isReversed;
-    
-            if (!this.currDestPoint) {
-                const points = this.route.getRoutePoints();
-                this.setDestPoint(points[1], points[0]);
-            } else {
-                this.setDestPoint(this.prevDestPoint, this.currDestPoint)
-            }
-        }
+        this.reversed = isReversed;
     }
 
     isReversed(): boolean {

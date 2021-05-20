@@ -26,12 +26,12 @@ export class DirectionRestrictor {
 
     edgeChanged() {
         const character = this.routeWalker.getRoute().character;
-        const initialDirection = this.routeWalker.getCurrEdge().direction;
+        const initialDirection = this.routeWalker.getEdge().direction;
         character.walker.character.instance.setRotation(initialDirection);
     }
 
     private getDirectionIfRestricted(): number | null {
-        const edge = this.routeWalker.getCurrEdge();
+        const edge = this.routeWalker.getEdge();
         return edge.thickness ? this.insidePolygonRestrictor.restrict(edge) : this.exactDirectionRestrictor.restrict(edge);
     }
 

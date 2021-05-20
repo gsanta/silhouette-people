@@ -1,5 +1,5 @@
 import { Mesh } from "babylonjs";
-import { GraphVertex } from "../../../service/graph/GraphImpl";
+import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
 import { CharacterItem } from "../character/CharacterItem";
 import { RouteWalker } from "./RouteWalker";
 
@@ -12,40 +12,48 @@ export class RouteItem {
     readonly name: string;
     character: CharacterItem;
     walker: RouteWalker;
-
-    // path: PathItem;
-    points: GraphVertex[];
     meshes: Mesh[] = [];
-    private reversePoints: GraphVertex[];
 
-    constructor(points: GraphVertex[], name?: string, character?: CharacterItem) {
+    private edges: GraphEdge[];
+    private reverseEdges: GraphEdge[];
+
+    constructor(edges: GraphEdge[], name?: string, character?: CharacterItem) {
         this.character = character;
-        this.points = points;
+        this.edges = edges;
 
         this.name = name;
-        this.reversePoints = [...this.points].reverse();
+        this.reverseEdges = [...this.edges].reverse();
     }
 
-    addPoint(point: GraphVertex) {
+    addEdge(edge: GraphEdge) {
         if (this.walker.isReversed()) {
-            this.points.unshift(point);
+            this.edges.unshift(edge);
         } else {
-            this.points.push(point);
+            this.edges.push(edge);
         }
-        this.reversePoints = [...this.points].reverse();
+        this.reverseEdges = [...this.edges].reverse();
     }
 
-    removeFirstPoint() {
+    removeLastEdge() {
         if (this.walker.isReversed()) {
-            this.points.pop();
+            this.edges.shift();
         } else {
-            this.points.shift();
+            this.edges.pop();
         }
-        this.reversePoints = [...this.points].reverse();
+        this.reverseEdges = [...this.edges].reverse();
     }
 
-    getRoutePoints(): GraphVertex[] {
-        return this.walker.isReversed() ? this.reversePoints : this.points;
+    removeFirstEdge() {
+        if (this.walker.isReversed()) {
+            this.edges.pop();
+        } else {
+            this.edges.shift();
+        }
+        this.reverseEdges = [...this.edges].reverse();
+    }
+
+    getEdges(): GraphEdge[] {
+        return this.walker.isReversed() ? this.reverseEdges : this.edges;
     }
     
     dispose() {}

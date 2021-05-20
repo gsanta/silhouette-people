@@ -10,9 +10,7 @@ export class DestinationPointUpdater {
 
     initCheckPoints() {
         const route = this.routeWalker.getRoute();
-
-        const routePoints = route.getRoutePoints();
-        this.routeWalker.setDestPoint(routePoints[1], routePoints[0]);
+        this.routeWalker.setEdge(route.getEdges()[0]);
     }
     
     updateCheckPointsIfNeeded() {
@@ -25,7 +23,7 @@ export class DestinationPointUpdater {
     private setNextCheckPoint() {
         const destPoint = this.routeWalker.getDestPoint();
 
-        const nextDestPoint = this.getNextRoutePoint(destPoint); //this.routePointProvider.getNextRoutePoint(destPoint, prevDestPoint);
+        const nextDestPoint = this.getNextRoutePoint(destPoint);
 
         if (nextDestPoint !== undefined) {
             this.routeWalker.setDestPoint(nextDestPoint, destPoint);
@@ -35,7 +33,7 @@ export class DestinationPointUpdater {
     }
 
     private getNextRoutePoint(currDestPoint: GraphVertex): GraphVertex {
-        const routePoints = this.routeWalker.getRoute().getRoutePoints();
+        const routePoints = this.routeWalker.getRoute().getEdges();
         let nextRoutePoint: GraphVertex;
 
         if (currDestPoint === routePoints[routePoints.length - 1]) {
@@ -61,7 +59,7 @@ export class DestinationPointUpdater {
     }
 
     private isLeavingDest() {
-        const currPos = this.routeWalker.getCurrPos();
+        const currPos = this.routeWalker.getPos();
         const prevPos = this.routeWalker.getPrevPos();
         const destPoint = this.routeWalker.getDestPoint();
 

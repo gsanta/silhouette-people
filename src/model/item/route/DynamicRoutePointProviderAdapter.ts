@@ -15,6 +15,6 @@ export class DynamicRoutePointProviderAdapter extends RouteWalkerListener {
     }
 
     onEnterEdge() {
-        this.pointProvider.createNextRoutePoint();
+        this.pointProvider.progress();
     }
 }

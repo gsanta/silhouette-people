@@ -35,6 +35,14 @@ export class GraphEdge {
         return this._direction + Math.PI;
     }
 
+    getSource(isReversed = false): GraphVertex {
+        return isReversed ? this.v2 : this.v1;
+    }
+
+    getTraget(isReversed = false): GraphVertex {
+        return isReversed ? this.v1 : this.v2;
+    }
+
     private setDirection(): void {
         const vector = this.v2.p.subtract(this.v1.p);
         const dirAngle = Math.atan2(vector.z, vector.x);
