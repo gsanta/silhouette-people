@@ -8,9 +8,13 @@ export class GraphEdge {
     thickness: number = 0;
     dimensions: Quad;
 
+    private _direction: number;
+
     constructor(v1: GraphVertex, v2: GraphVertex) {
         this.v1 = v1;
         this.v2 = v2;
+
+        this.setDirection();
     }
 
     getOtherVertex(v: GraphVertex) {
@@ -21,6 +25,21 @@ export class GraphEdge {
         }
 
         return undefined;
+    }
+
+    get direction(): number {
+        return this._direction;
+    }
+
+    get oppositeDirection(): number {
+        return this._direction + Math.PI;
+    }
+
+    private setDirection(): void {
+        const vector = this.v2.p.subtract(this.v1.p);
+        const dirAngle = Math.atan2(vector.z, vector.x);
+
+        this._direction = Math.PI / 2 - dirAngle;
     }
 }
 

@@ -1,8 +1,8 @@
 import { CharacterItem } from "../../model/item/character/CharacterItem";
-import { DestinationPointUpdaterAdapter } from "../../model/item/route/DestinationPointUpdaterAdapter";
-import { DirectionRestrictorAdapter } from "../../model/item/route/DirectionRestrictorAdapter";
+import { DestinationPointUpdaterAdapter } from "../../model/item/route/adapters/destination/DestinationPointUpdaterAdapter";
+import { DirectionRestrictorAdapter } from "../../model/item/route/adapters/rotation/RotationRestrictorAdapter";
 import { DynamicRoutePointProvider } from "../../model/item/route/DynamicRoutePointProvider";
-import { RouteVisualizerAdapter } from "../../model/item/route/RouteVisualizerAdapter";
+import { RouteVisualizerAdapter } from "../../model/item/route/adapters/visualization/RouteVisualizerAdapter";
 import { RouteWalkerImpl } from "../../model/item/route/RouteWalkerImpl";
 import { RouteWalkerListenerDecorator } from "../../model/item/route/RouteWalkerListenerDecorator";
 import { MaterialStore } from "../../store/MaterialStore";
@@ -11,6 +11,7 @@ import { WorldProvider } from "../WorldProvider";
 import { PlayerParser } from "./PlayerParser";
 import { PlayerStore } from "./PlayerStore";
 import { DynamicRoutePointProviderAdapter } from "../../model/item/route/DynamicRoutePointProviderAdapter";
+import { GraphImpl } from "../graph/GraphImpl";
 
 export class PlayerSetup {
 
@@ -37,7 +38,7 @@ export class PlayerSetup {
         player.route = route;
 
         const graph = this.graphService.getGraph();
-        const walker = new RouteWalkerImpl(route);
+        const walker = new RouteWalkerImpl(route, <GraphImpl> graph);
         const walkerDecorator = new RouteWalkerListenerDecorator(walker);
 
         route.walker = walkerDecorator;

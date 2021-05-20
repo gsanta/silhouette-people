@@ -11,7 +11,7 @@ import { PlayerStore } from "../../player/PlayerStore";
 import { RenderGuiService } from "../../ui/RenderGuiService";
 import { Tool, ToolType } from "../Tool";
 import { PathBuilder } from "./PathBuilder";
-import { RouteVisualizer } from "../../../model/item/route/RouteVisualizer";
+import { RouteVisualizer } from "../../../model/item/route/adapters/visualization/RouteVisualizer";
 
 export class RouteTool extends Tool {
     private playerStore: PlayerStore;

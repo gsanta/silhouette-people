@@ -1,23 +1,25 @@
 import { Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
-import { GraphVertex } from "../../../service/graph/GraphImpl";
+import { GraphEdge, GraphImpl, GraphVertex } from "../../../service/graph/GraphImpl";
 import { RouteItem } from "./RouteItem";
-import { RouteWalker, RouteWalkerDirection, RouteWalkerState } from "./RouteWalker";
+import { RouteWalker, RouteWalkerState } from "./RouteWalker";
 
 export class RouteWalkerImpl implements RouteWalker {
     private readonly route: RouteItem;
-    
+    private readonly graph: GraphImpl;
+
     private prevDestPoint: GraphVertex;
     private currDestPoint: GraphVertex;
     
     private prevPos: Vector3;
     private currPos: Vector3;
 
-    private direction: RouteWalkerDirection = RouteWalkerDirection.FORWARD;
     private state: RouteWalkerState;
+    private reversed: boolean = false;
 
-    constructor(route: RouteItem) {
+    constructor(route: RouteItem, graph: GraphImpl) {
         this.route = route;
+        this.graph = graph;
     }
 
     getRoute(): RouteItem {
@@ -52,6 +54,12 @@ export class RouteWalkerImpl implements RouteWalker {
         return this.prevDestPoint;
     }
 
+    getCurrEdge(): GraphEdge {
+        if (this.currDestPoint && this.prevDestPoint) {
+            return this.graph.edgeBetween(this.currDestPoint, this.prevDestPoint);
+        }
+    }
+
     walk(): boolean {
         if (this.state === RouteWalkerState.STARTED) {
             const character = this.route.character;
@@ -63,19 +71,21 @@ export class RouteWalkerImpl implements RouteWalker {
         return false;
     }
 
-    setDirection(direction: RouteWalkerDirection): void {
-        this.direction = direction;
-
-        if (!this.currDestPoint) {
-            const points = this.route.getRoutePoints();
-            this.setDestPoint(points[1], points[0]);
-        } else {
-            this.setDestPoint(this.prevDestPoint, this.currDestPoint)
+    setReversed(isReversed: boolean) {
+        if (this.reversed !== isReversed) {
+            this.reversed = isReversed;
+    
+            if (!this.currDestPoint) {
+                const points = this.route.getRoutePoints();
+                this.setDestPoint(points[1], points[0]);
+            } else {
+                this.setDestPoint(this.prevDestPoint, this.currDestPoint)
+            }
         }
     }
-    
-    getDirection(): RouteWalkerDirection {
-        return this.direction;
+
+    isReversed(): boolean {
+        return this.reversed;
     }
 
     setState(state: RouteWalkerState): void {

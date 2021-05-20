@@ -2,7 +2,7 @@ import { CitizenStore } from "../../store/CitizenStore";
 import { MaterialStore } from "../../store/MaterialStore";
 import { RouteStore } from "../../store/RouteStore";
 import { RouteExecutor } from "../edit/execution/RouteExecutor";
-import { RouteVisualizer } from "../../model/item/route/RouteVisualizer";
+import { RouteVisualizer } from "../../model/item/route/adapters/visualization/RouteVisualizer";
 import { WorldProvider } from "../WorldProvider";
 import { RoutePool } from "./RoutePool";
 import { RouteWalkerState } from "../../model/item/route/RouteWalker";

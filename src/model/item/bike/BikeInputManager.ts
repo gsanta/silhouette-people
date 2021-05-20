@@ -1,7 +1,7 @@
 import { KeyboardService } from "../../../service/base/keyboard/KeyboardService";
 import { MeshInputManager } from "../../MeshInputManager";
 import { CharacterItem } from "../character/CharacterItem";
-import { RouteWalkerDirection, RouteWalkerState } from "../route/RouteWalker";
+import { RouteWalkerState } from "../route/RouteWalker";
 import { BikeWalker } from "./states/BikeWalker";
 
 export class BikeInputManager extends MeshInputManager {
@@ -24,12 +24,12 @@ export class BikeInputManager extends MeshInputManager {
 
         if (this.keyboardService.activeKeys.has('q')) {
             if (isKeyDown) {
-                const currDir = this.character.route.walker.getDirection();
+                const isReversed = this.character.route.walker.isReversed();
 
-                if (currDir === RouteWalkerDirection.BACKWARD) {
-                    this.character.route.walker.setDirection(RouteWalkerDirection.FORWARD);
+                if (isReversed) {
+                    this.character.route.walker.setReversed(false);
                 } else {
-                    this.character.route.walker.setDirection(RouteWalkerDirection.BACKWARD);
+                    this.character.route.walker.setReversed(true);
                 }
             }
         } 

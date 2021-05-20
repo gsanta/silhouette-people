@@ -1,6 +1,6 @@
 import { CitizenStore } from "../../../store/CitizenStore";
 import { MaterialStore } from "../../../store/MaterialStore";
-import { RouteVisualizer } from "../../../model/item/route/RouteVisualizer";
+import { RouteVisualizer } from "../../../model/item/route/adapters/visualization/RouteVisualizer";
 import { WorldProvider } from "../../WorldProvider";
 
 export class CitizenRouteDebugger {

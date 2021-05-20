@@ -1,6 +1,6 @@
 import { Vector3 } from "babylonjs";
-import { GraphVertex } from "../../../service/graph/GraphImpl";
-import { RouteWalker, RouteWalkerDirection, RouteWalkerState } from "./RouteWalker";
+import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
+import { RouteWalker, RouteWalkerState } from "./RouteWalker";
 import { RouteWalkerImpl } from "./RouteWalkerImpl";
 import { RouteWalkerListener } from "./RouteWalkerListener";
 
@@ -15,7 +15,7 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
 
     setDestPoint(currDestPoint: GraphVertex, prevDestPoint?: GraphVertex): void {
         this.delegate.setDestPoint(currDestPoint, prevDestPoint);
-        this.listeners.forEach(listener => listener.onDestinationPointChanged());
+        this.listeners.forEach(listener => listener.onEnterEdge());
     }
 
     walk(deltaTime: number): boolean {
@@ -37,18 +37,19 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
 
     }
 
-    setDirection(direction: RouteWalkerDirection): void { 
-        this.delegate.setDirection(direction);
+    setReversed(isReversed: boolean): void { 
+        this.delegate.setReversed(isReversed);
 
         this.listeners.forEach(listener => listener.onDirectionChanged());
-        this.listeners.forEach(listener => listener.onDestinationPointChanged());
+        this.listeners.forEach(listener => listener.onEnterEdge());
     }
-    getDirection(): RouteWalkerDirection { return this.delegate.getDirection(); }
+    isReversed(): boolean { return this.delegate.isReversed(); }
     getState(): RouteWalkerState { return this.delegate.getState(); }
     getCurrPos(): Vector3 { return this.delegate.getCurrPos(); }
     getPrevPos(): Vector3 { return this.delegate.getPrevPos(); }
     getDestPoint(): GraphVertex { return this.delegate.getDestPoint(); }
     getPrevDestPoint(): GraphVertex { return this.delegate.getPrevDestPoint(); }
+    getCurrEdge(): GraphEdge { return this.delegate.getCurrEdge(); }
     getRoute() { return this.delegate.getRoute() }
 
     addListener(routeWalkerListener: RouteWalkerListener) {

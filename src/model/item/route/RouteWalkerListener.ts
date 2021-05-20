@@ -5,5 +5,5 @@ export abstract class RouteWalkerListener {
     onFinished() {}
     onStarted() {}
     onDirectionChanged() {}
-    onDestinationPointChanged() {}
+    onEnterEdge() {}
 }

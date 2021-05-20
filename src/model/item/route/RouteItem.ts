@@ -1,7 +1,7 @@
 import { Mesh } from "babylonjs";
 import { GraphVertex } from "../../../service/graph/GraphImpl";
 import { CharacterItem } from "../character/CharacterItem";
-import { RouteWalker, RouteWalkerDirection } from "./RouteWalker";
+import { RouteWalker } from "./RouteWalker";
 
 export interface RouteStoryConfig {
     routeId: string;
@@ -27,25 +27,25 @@ export class RouteItem {
     }
 
     addPoint(point: GraphVertex) {
-        if (this.walker.getDirection() === RouteWalkerDirection.FORWARD) {
-            this.points.push(point);
-        } else {
+        if (this.walker.isReversed()) {
             this.points.unshift(point);
+        } else {
+            this.points.push(point);
         }
         this.reversePoints = [...this.points].reverse();
     }
 
     removeFirstPoint() {
-        if (this.walker.getDirection() === RouteWalkerDirection.FORWARD) {
-            this.points.shift();
-        } else {
+        if (this.walker.isReversed()) {
             this.points.pop();
+        } else {
+            this.points.shift();
         }
         this.reversePoints = [...this.points].reverse();
     }
 
     getRoutePoints(): GraphVertex[] {
-        return this.walker.getDirection() === RouteWalkerDirection.FORWARD ? this.points : this.reversePoints;
+        return this.walker.isReversed() ? this.reversePoints : this.points;
     }
     
     dispose() {}

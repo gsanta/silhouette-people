@@ -1,11 +1,6 @@
 import { Vector3 } from "babylonjs";
-import { GraphVertex } from "../../../service/graph/GraphImpl";
+import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
 import { RouteItem } from "./RouteItem";
-
-export enum RouteWalkerDirection {
-    FORWARD = 'FORWARD',
-    BACKWARD = 'BACKWARD'
-}
 
 export enum RouteWalkerState {
     FINISHED = 'FINISHED',
@@ -21,11 +16,12 @@ export interface RouteWalker {
     setDestPoint(currDestPoint: GraphVertex, prevDestPoint?: GraphVertex);
     getDestPoint(): GraphVertex;
     getPrevDestPoint(): GraphVertex;
+    getCurrEdge(): GraphEdge;
     
     walk(deltaTime: number): boolean;
 
-    setDirection(direction: RouteWalkerDirection): void;
-    getDirection(): RouteWalkerDirection;
+    setReversed(isReversed: boolean): void;
+    isReversed(): boolean;
 
     setState(state: RouteWalkerState): void;
     getState(): RouteWalkerState;

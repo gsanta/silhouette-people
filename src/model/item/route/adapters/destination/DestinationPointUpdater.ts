@@ -1,5 +1,5 @@
-import { GraphVertex } from "../../../service/graph/GraphImpl";
-import { RouteWalker } from "./RouteWalker";
+import { GraphVertex } from "../../../../../service/graph/GraphImpl";
+import { RouteWalker } from "../../RouteWalker";
 
 export class DestinationPointUpdater {
     private readonly routeWalker: RouteWalker;

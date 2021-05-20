@@ -1,6 +1,6 @@
-import { GraphService } from "../../../service/graph/GraphService";
-import { RouteWalker } from "./RouteWalker";
-import { RouteWalkerListener } from "./RouteWalkerListener";
+import { GraphService } from "../../../../../service/graph/GraphService";
+import { RouteWalker } from "../../RouteWalker";
+import { RouteWalkerListener } from "../../RouteWalkerListener";
 
 export class RouteVisualizerAdapter extends RouteWalkerListener {
 
@@ -14,7 +14,7 @@ export class RouteVisualizerAdapter extends RouteWalkerListener {
         this.graphService = graphService;
     }
 
-    onDestinationPointChanged() {
+    onEnterEdge() {
         this.routeWalker.getRoute().meshes.forEach(mesh => mesh.dispose());
         this.graphService.getVisualizer().visualizeRoute(this.routeWalker.getRoute());
     }

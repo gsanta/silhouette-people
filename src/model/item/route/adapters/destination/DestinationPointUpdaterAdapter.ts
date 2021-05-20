@@ -1,6 +1,6 @@
 import { DestinationPointUpdater } from "./DestinationPointUpdater";
-import { RouteWalker } from "./RouteWalker";
-import { RouteWalkerListener } from "./RouteWalkerListener";
+import { RouteWalker } from "../../RouteWalker";
+import { RouteWalkerListener } from "../../RouteWalkerListener";
 
 export class DestinationPointUpdaterAdapter extends RouteWalkerListener {
 
