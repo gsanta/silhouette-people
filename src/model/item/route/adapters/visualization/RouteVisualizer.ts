@@ -18,8 +18,7 @@ export class RouteVisualizer {
     }
 
     visualize(route: RouteItem): void {
-        this.visualizeArrowHead(route);
-        this.visualizeArrow(route);
+
     }
 
     dispose() {
@@ -27,44 +26,7 @@ export class RouteVisualizer {
         this.meshes = [];
     }
 
-    private visualizeArrowHead(route: RouteItem) {
-            const pathes = this.createArrowHeadPathes(route);
 
-            const mesh = MeshBuilder.CreateRibbon("arrow-head", {pathArray: pathes}, this.worldProvider.scene);
-
-            mesh.material = this.materialStore.getActivePathMaterial();
-            this.meshes.push(mesh);
-    }
-
-    private createArrowHeadPathes(route: RouteItem) {
-        const points = route.getEdges().map(point => point.p);
-        const prevPos = points[points.length - 2].clone();
-        const lastPos = points[points.length - 1].clone();
-        const angle = this.getAngle(prevPos, lastPos);
-        const angelPlus = angle + Math.PI / 2;
-        const angelMinus = angle - Math.PI / 2;
-        const radius = 0.4;
-        const end = lastPos;
-
-        const path1 = [
-            end.add(new Vector3(radius * Math.cos(angelPlus), 0.8, radius * Math.sin(angelPlus))),
-            end.add(new Vector3(radius * Math.cos(angelMinus), 0.8, radius * Math.sin(angelMinus))),
-        ];
-
-        const path2 = [
-            end.add(new Vector3(radius * Math.cos(angle), 0.8, radius * Math.sin(angle))),
-            end.add(new Vector3(radius * Math.cos(angle), 0.8, radius * Math.sin(angle))),
-        ];
-
-        return [path1, path2];
-    }
-
-    private visualizeArrow(route: RouteItem) {
-        const points = route.points;
-        for (let i = 0; i < points.length - 1; i++) {
-            this.createArrow(i, points[i], points[i + 1]);
-        }
-    }
 
     private createArrow(index: number, p1: GraphVertex, p2: GraphVertex): void {
         const pathes = this.createArrowPathes(p1, p2);

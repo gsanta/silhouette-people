@@ -28,12 +28,7 @@ export class GraphVisualizer {
     }
 
     private visualizeRoutePath(route: RouteItem): Mesh[] {
-        const meshes: Mesh[] = [];
-        const points = route.points;
-        for (let i = 0; i < points.length - 1; i++) {
-            const edge = this.graph.edgeBetween(points[i], points[i + 1]);
-            meshes.push(this.createArrow(edge));
-        }
+        const meshes: Mesh[] = route.getEdges().map(edge => this.createArrow(edge));
         return meshes;
     }
 
@@ -58,14 +53,15 @@ export class GraphVisualizer {
 
 
     private createArrowHeadPathes(route: RouteItem) {
-        const points = route.getEdges().map(point => point.p);
-        const prevPos = points[points.length - 2].clone();
-        const lastPos = points[points.length - 1].clone();
-        const angle = this.getAngle(prevPos, lastPos);
+        const walker = route.walker;
+        const lastEdge = route.getEdges()[route.getEdges().length - 1];
+        const source = lastEdge.getSource(walker.isReversed()).p.clone();
+        const target = lastEdge.getTraget(walker.isReversed()).p.clone();
+        const angle = this.getAngle(source, target);
         const angelPlus = angle + Math.PI / 2;
         const angelMinus = angle - Math.PI / 2;
         const radius = 0.4;
-        const end = lastPos;
+        const end = target;
 
         const path1 = [
             end.add(new Vector3(radius * Math.cos(angelPlus), 0.8, radius * Math.sin(angelPlus))),

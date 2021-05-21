@@ -20,7 +20,6 @@ export class RoutePropertyParser extends AbstractPropertyParser<RoutePropertyCon
     processProperty(character: CharacterItem, config: RoutePropertyConfig) {
         const route = this.routeStore.getByName(`pre-defined-route-${config.name}`);
         character.route = route;
-        character.instance.setPosition2D(toVector2(route.getEdges()[0].p))
         route.character = character;
     }
 }

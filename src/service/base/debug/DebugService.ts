@@ -8,12 +8,10 @@ import { WorldProvider } from "../../WorldProvider";
 import { CitizenRouteDebugger } from "./CitizenRouteDebugger";
 import { IGUIComponent } from "./IGUIComponent";
 import { QuarterMapDebugger } from "./QuarterMapDebugger";
-import { RouteDebugger } from "./RouteDebugger";
 import { WorldAxisHelper } from "./WorldAxisHelper";
 
 export class DebugService {
     private worldAxisHelper: WorldAxisHelper;
-    private enemyPathDebugger: RouteDebugger;
     private texture: AdvancedDynamicTexture;
     private readonly citizenRouteDebugger: CitizenRouteDebugger;
     areaMapDebugger: QuarterMapDebugger;
@@ -39,7 +37,6 @@ export class DebugService {
         this.citizenStore = lookup.citizenStore;
         this.citizenRouteDebugger = new CitizenRouteDebugger(this.worldProvider, this.materialStore, this.citizenStore);
         this.worldAxisHelper = new WorldAxisHelper();
-        this.enemyPathDebugger = new RouteDebugger(this);
         this.areaMapDebugger = new QuarterMapDebugger();
     }
 

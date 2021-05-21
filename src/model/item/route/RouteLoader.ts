@@ -30,11 +30,10 @@ export class RouteLoader implements StoryLoader {
     }
 
     private async processStory(story: StoryItem<RouteStoryConfig>) {
-        const route = this.routeStore.getByName(`pre-defined-route-${story.data.routeId}`);
-        const character = <CharacterItem> this.meshStore.getById(story.data.characterId);
-        character.route = route;
-        character.instance.setPosition2D(toVector2(route.getEdges()[0].p))
-        route.character = character;
-        this.routeStore.addRoute(route);
+        // const route = this.routeStore.getByName(`pre-defined-route-${story.data.routeId}`);
+        // const character = <CharacterItem> this.meshStore.getById(story.data.characterId);
+        // character.route = route;
+        // route.character = character;
+        // this.routeStore.addRoute(route);
     }
 }

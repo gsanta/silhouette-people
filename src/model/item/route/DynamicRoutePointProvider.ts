@@ -34,7 +34,7 @@ export class DynamicRoutePointProvider {
         const source = this.routeWalker.getSource();
 
         if (target !== undefined) {
-            const validEdges = this.findValidEdges(source, source) || [];
+            const validEdges = this.findValidEdges(target, source) || [];
     
             if (validEdges.length > 0) {
                 const edgeIndex = Math.floor(Math.random() * validEdges.length);

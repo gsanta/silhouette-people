@@ -25,9 +25,12 @@ export class DirectionRestrictor {
     }
 
     edgeChanged() {
-        const character = this.routeWalker.getRoute().character;
-        const initialDirection = this.routeWalker.getEdge().direction;
-        character.walker.character.instance.setRotation(initialDirection);
+        const edge = this.routeWalker.getEdge();
+        if (edge) {
+            const character = this.routeWalker.getRoute().character;
+            const initialDirection = this.routeWalker.getEdge().direction;
+            character.walker.character.instance.setRotation(initialDirection);
+        }
     }
 
     private getDirectionIfRestricted(): number | null {

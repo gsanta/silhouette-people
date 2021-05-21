@@ -38,7 +38,7 @@ export class PlayerSetup {
         player.route = route;
 
         const graph = this.graphService.getGraph();
-        const walker = new RouteWalkerImpl(route, <GraphImpl> graph);
+        const walker = new RouteWalkerImpl(route);
         const walkerDecorator = new RouteWalkerListenerDecorator(walker);
 
         route.walker = walkerDecorator;

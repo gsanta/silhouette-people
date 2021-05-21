@@ -11,7 +11,7 @@ export class DynamicRoutePointProviderAdapter extends RouteWalkerListener {
     constructor(routeWalker: RouteWalker, graph: Graph<GraphVertex, GraphEdge>) {
         super();
 
-        this.pointProvider = new DynamicRoutePointProvider(routeWalker, graph);
+        this.pointProvider = new DynamicRoutePointProvider(routeWalker, graph, null);
     }
 
     onEnterEdge() {

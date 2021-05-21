@@ -13,11 +13,6 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
         this.delegate = delegate;
     }
 
-    setDestPoint(currDestPoint: GraphVertex, prevDestPoint?: GraphVertex): void {
-        this.delegate.setDestPoint(currDestPoint, prevDestPoint);
-        this.listeners.forEach(listener => listener.onEnterEdge());
-    }
-
     walk(deltaTime: number): boolean {
         const ret = this.delegate.walk();
         if (ret && this.getState() !== RouteWalkerState.FINISHED) {
@@ -47,9 +42,13 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
     getState(): RouteWalkerState { return this.delegate.getState(); }
     getPos(): Vector3 { return this.delegate.getPos(); }
     getPrevPos(): Vector3 { return this.delegate.getPrevPos(); }
-    getDestPoint(): GraphVertex { return this.delegate.getDestPoint(); }
-    getPrevDestPoint(): GraphVertex { return this.delegate.getPrevDestPoint(); }
     getEdge(): GraphEdge { return this.delegate.getEdge(); }
+    setEdge(edge: GraphEdge): void { 
+        this.delegate.setEdge(edge);
+        this.listeners.forEach(listener => listener.onEnterEdge());
+    }
+    getTarget(): GraphVertex { return this.delegate.getTarget(); }
+    getSource(): GraphVertex { return this.delegate.getSource(); }
     getRoute() { return this.delegate.getRoute() }
 
     addListener(routeWalkerListener: RouteWalkerListener) {

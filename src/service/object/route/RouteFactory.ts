@@ -67,7 +67,7 @@ export class RouteFactory {
     }
 
     private createRouteWalker(route: RouteItem, config: RouteFactoryConfig): RouteWalkerImpl {
-        const routeWalker = new RouteWalkerImpl(route, null);
+        const routeWalker = new RouteWalkerImpl(route);
 
         if (config.lockDirection) {
             // routeWalker.addFeature(new DirectionRestrictor(routeWalker, route));
