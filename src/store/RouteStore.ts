@@ -23,7 +23,6 @@ export class RouteStore {
     }
     
     deleteRoute(route: RouteItem) {
-        route.dispose();
         this.routes = this.getRoutes().filter(r => r !== route);
     }
 }

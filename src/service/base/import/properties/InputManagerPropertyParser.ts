@@ -4,6 +4,7 @@ import { BikeInputManager } from "../../../../model/item/bike/BikeInputManager";
 import { BikeWalker } from "../../../../model/item/bike/states/BikeWalker";
 import { CharacterInputManager } from "../../../../model/item/character/CharacterInputManager";
 import { CharacterItem } from "../../../../model/item/character/CharacterItem";
+import { GraphService } from "../../../graph/GraphService";
 import { KeyboardService } from "../../keyboard/KeyboardService";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
@@ -15,11 +16,13 @@ enum InputManagerType {
 export class InputManagerPropertyParser extends AbstractPropertyParser<string> {
     propName = 'inputManager';
 
-    private keyboardService: KeyboardService;
+    private readonly keyboardService: KeyboardService;
+    private readonly graphService: GraphService;
 
-    constructor(keyboardService: KeyboardService) {
+    constructor(keyboardService: KeyboardService, graphService: GraphService) {
         super();
         this.keyboardService = keyboardService;
+        this.graphService = graphService;
     }
 
     isAsync(): boolean {
@@ -31,9 +34,9 @@ export class InputManagerPropertyParser extends AbstractPropertyParser<string> {
             case InputManagerType.CharacterInputManager:
                 character.inputManager = new CharacterInputManager(character, this.keyboardService);
             break;
-            case InputManagerType.BikeInputManager:
-                character.inputManager = new BikeInputManager(<BikeWalker> character.walker, character, this.keyboardService);
-            break;
+            // case InputManagerType.BikeInputManager:
+            //     character.inputManager = new BikeInputManager(<BikeWalker> character.walker, character, this.keyboardService, this.graphService);
+            // break;
         }
     }
 }

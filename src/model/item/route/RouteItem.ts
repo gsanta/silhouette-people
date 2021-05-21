@@ -16,6 +16,7 @@ export class RouteItem {
 
     private edges: GraphEdge[];
     private reverseEdges: GraphEdge[];
+    private routeChangeHandlers: (() => void)[] = [];
 
     constructor(edges: GraphEdge[], name?: string, character?: CharacterItem) {
         this.character = character;
@@ -32,6 +33,7 @@ export class RouteItem {
             this.edges.push(edge);
         }
         this.reverseEdges = [...this.edges].reverse();
+        this.routeChangeHandlers.forEach(handler => handler());
     }
 
     removeLastEdge() {
@@ -41,6 +43,7 @@ export class RouteItem {
             this.edges.pop();
         }
         this.reverseEdges = [...this.edges].reverse();
+        this.routeChangeHandlers.forEach(handler => handler());
     }
 
     removeFirstEdge() {
@@ -50,11 +53,18 @@ export class RouteItem {
             this.edges.shift();
         }
         this.reverseEdges = [...this.edges].reverse();
+        this.routeChangeHandlers.forEach(handler => handler());
     }
 
     getEdges(): GraphEdge[] {
         return this.walker.isReversed() ? this.reverseEdges : this.edges;
     }
-    
-    dispose() {}
+
+    onRouteChange(func: () => void) {
+        this.routeChangeHandlers.push(func);
+    }
+
+    unsubscribeRouteChange(func: () => void) {
+        this.routeChangeHandlers = this.routeChangeHandlers.filter(handler => handler !== func);
+    }
 }

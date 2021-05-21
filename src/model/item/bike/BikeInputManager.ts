@@ -1,19 +1,36 @@
 import { KeyboardService } from "../../../service/base/keyboard/KeyboardService";
+import { GraphImpl } from "../../../service/graph/GraphImpl";
+import { GraphService } from "../../../service/graph/GraphService";
 import { MeshInputManager } from "../../MeshInputManager";
 import { CharacterItem } from "../character/CharacterItem";
-import { RouteWalkerState } from "../route/RouteWalker";
+import { NextEdgeSelector } from "../route/adapters/routing/NextEdgeSelector";
 import { BikeWalker } from "./states/BikeWalker";
 
 export class BikeInputManager extends MeshInputManager {
     private keyboardService: KeyboardService;
     private bikeWalker: BikeWalker;
     private readonly character: CharacterItem;
+    private readonly nextEdgeSelector: NextEdgeSelector;
 
-    constructor(bikeWalker: BikeWalker, character: CharacterItem,  keyboardService: KeyboardService) {
+    constructor(bikeWalker: BikeWalker, character: CharacterItem,  keyboardService: KeyboardService, graphService: GraphService) {
         super();
         this.bikeWalker = bikeWalker;
         this.keyboardService = keyboardService;
         this.character = character;
+        this.nextEdgeSelector = new NextEdgeSelector(character.route.walker, <GraphImpl> graphService.getGraph());
+        this.keyboardService.onKeydown(e => this.onKeyDown(e));
+    }
+
+    onKeyDown(e: KeyboardEvent) {
+        switch(e.key) {
+        
+            case 'e':
+                this.nextEdgeSelector.choosePrevEdge();
+            break;
+            case 'r':
+                this.nextEdgeSelector.chooseNextEdge();
+            break;
+        }
     }
 
     keyboard(e: KeyboardEvent, isKeyDown: boolean) {
@@ -75,10 +92,10 @@ export class BikeInputManager extends MeshInputManager {
                 case 's':
                     walker.setBraking(true);
                 break;
-                case 'r':
-                    walker.setPedalling(true);
-                    walker.setPedalDirection('backward');
-                break;
+                // case 'r':
+                //     walker.setPedalling(true);
+                //     walker.setPedalDirection('backward');
+                // break;
             }
         } else {
             switch(e.key) {
@@ -88,9 +105,9 @@ export class BikeInputManager extends MeshInputManager {
                 case 's':
                     walker.setBraking(false);
                 break;
-                case 'r':
-                    walker.setPedalling(false);
-                break;
+                // case 'r':
+                //     walker.setPedalling(false);
+                // break;
             }
         }
     }

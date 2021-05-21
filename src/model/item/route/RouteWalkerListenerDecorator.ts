@@ -52,6 +52,10 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
     getSource(): GraphVertex { return this.delegate.getSource(); }
     getRoute() { return this.delegate.getRoute() }
 
+    routeChanged() {
+        
+    }
+
     addListener(routeWalkerListener: RouteWalkerListener) {
         this.listeners.push(routeWalkerListener);
     }

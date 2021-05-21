@@ -22,11 +22,9 @@ import { DebugPanel } from "../debug/DebugPanel";
 import { DebugService } from "../debug/DebugService";
 import { KeyboardService } from "../keyboard/KeyboardService";
 import { PointerService } from "../pointer/PointerService";
-import { BikeParenter } from "./BikeParenter";
 import { RouteSetup } from "../../object/route/RouteSetup";
 import { GraphService } from "../../graph/GraphService";
 import { PlayerSetup } from "../../player/PlayerSetup";
-import { MaterialStore } from "../../../store/MaterialStore";
 
 export class SetupService {
 
@@ -60,9 +58,6 @@ export class SetupService {
     @InjectProperty("MeshFactory")
     private meshFactory: MeshFactory;
 
-    @InjectProperty("CitizenStore")
-    private citizenStore: CitizenStore;
-
     @InjectProperty("Backlog")
     private backlog: StoryTracker;
 
@@ -72,16 +67,11 @@ export class SetupService {
     @InjectProperty("GraphService")
     private graphService: GraphService;
 
-    @InjectProperty("MaterialStore")
-    private materialStore: MaterialStore;
-
     private readonly worldFactory: WorldFactory;
 
     private worldMapParser: WorldImporter;
 
     private _isReady = false;
-
-    private bikeParenter: BikeParenter;
 
     private factorySetup: FactorySetup;
     private routeSetup: RouteSetup;
@@ -101,11 +91,9 @@ export class SetupService {
         this.stageController = lookup.stageController;
         this.routeFactory = lookup.routeFactory;
         this.meshFactory = lookup.meshFactory;
-        this.citizenStore = lookup.citizenStore;
         this.backlog = lookup.backlog;
         this.routeStore = lookup.routeStore;
         this.graphService = lookup.graphService;
-        this.materialStore = lookup.materialStore;
         
         this.worldMapParser = new WorldImporter(this.worldProvider, this.routeFactory, this.routeStore, this.backlog);
         this.worldFactory = new WorldFactory(this.meshFactory);
@@ -113,10 +101,9 @@ export class SetupService {
 
         this.factorySetup = new FactorySetup();
         this.routeSetup = new RouteSetup(this.worldProvider, this.graphService);
-        this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.materialStore);
+        this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.keyboardService);
         this.storySetup = new StorySetup();
         this.stageSetup = new StageSetup();
-        this.bikeParenter = new BikeParenter();
     }
 
     isReady() {
@@ -132,11 +119,8 @@ export class SetupService {
         this.worldProvider.world = await this.worldFactory.createWorldObj(scene);
         await this.backlog.processor.process();
         this.routeSetup.setup();
-        this.bikeParenter.parentToBike(<PersonItem> this.playerStore.getPlayerById('player1'), this.playerStore.getBikes()[0], this.keyboardService);
         this.playerSetup.setup();
 
-
-        // this.controllerService.setMasterController(new NormalModeController(this.controllerService.getCameraController()));
         this.debugService.addGuiComponent(new DebugPanel());
         this.debugService.render();
         this.pointerService.listen();

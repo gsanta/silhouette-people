@@ -69,9 +69,6 @@ export class RouteTool extends Tool {
     }
 
     cancel() {
-        if (this.route) {
-            this.route.dispose();
-        }
 
         this._isReset = true;
 

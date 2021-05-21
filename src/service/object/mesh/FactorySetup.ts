@@ -17,6 +17,7 @@ import { TagPropertyParser } from "../../base/import/properties/TagPropertyParse
 import { TexturePropertyParser } from "../../base/import/properties/TexturePropertyParser";
 import { WalkerPropertyParser } from "../../base/import/properties/WalkerPropertyParser";
 import { KeyboardService } from "../../base/keyboard/KeyboardService";
+import { GraphService } from "../../graph/GraphService";
 import { lookup } from "../../Lookup";
 import { WorldProvider } from "../../WorldProvider";
 import { MeshFactory } from "./MeshFactory";
@@ -41,6 +42,9 @@ export class FactorySetup {
     @InjectProperty('RouteStore')
     private routeStore: RouteStore;
 
+    @InjectProperty('GraphService')
+    private graphService: GraphService;
+
     constructor() {
         this.worldProvider = lookup.worldProvider;
         this.assetContainerStore = lookup.assetContainerStore;
@@ -48,6 +52,7 @@ export class FactorySetup {
         this.activePlayerService = lookup.activePlayerService;
         this.meshFactory = lookup.meshFactory;
         this.routeStore = lookup.routeStore;
+        this.graphService = lookup.graphService;
     }
 
     setup() {
@@ -63,7 +68,7 @@ export class FactorySetup {
             new PhysicsPropertyParser(this.worldProvider),
             new StatePropertyParser(),
             new WalkerPropertyParser(),
-            new InputManagerPropertyParser(this.keyboardService),
+            new InputManagerPropertyParser(this.keyboardService, this.graphService),
             new TagPropertyParser(),
             new HiddenPropertyParser(),
             new RotatePropertyParser(),

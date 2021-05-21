@@ -20,6 +20,8 @@ export class RotationRestrictor {
 
             if (direction !== null) {
                 this.restrictToDirection(direction)
+            } else {
+                this.routeWalker.getRoute().character.inputManager.enableDirection();
             }
         }
     }
