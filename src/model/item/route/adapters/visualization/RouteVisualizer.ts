@@ -27,7 +27,6 @@ export class RouteVisualizer {
     }
 
 
-
     private createArrow(index: number, p1: GraphVertex, p2: GraphVertex): void {
         const pathes = this.createArrowPathes(p1, p2);
         const mesh = MeshBuilder.CreateRibbon(`arrow-line-${index}`, { pathArray: pathes, updatable: true }, this.worldProvider.scene);

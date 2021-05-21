@@ -1,7 +1,6 @@
 import { Axis, Space, Vector3 } from "babylonjs";
-import { BikeItem } from "../../character/CharacterItem";
+import { BikeItem, CharacterItem } from "../../character/CharacterItem";
 import { MeshWalker } from "../../mesh/MeshWalker";
-import { RouteWalkerState } from "../../route/RouteWalker";
 import { BikeMasterPhysics } from "../physics/BikeMasterPhysics";
 
 export type PedalDirection = 'forward' | 'backward';
@@ -67,8 +66,8 @@ export class BikeWalker extends MeshWalker {
     }
 
     walk(deltaTime: number) {
-        const character = this.character.children[0];
-        if (character.route && !character.route.walker.isRunning()) {
+        const character = <CharacterItem> this.character.children[0];
+        if (character.routeWalker && !character.routeWalker.isRunning()) {
             return;
         }
 

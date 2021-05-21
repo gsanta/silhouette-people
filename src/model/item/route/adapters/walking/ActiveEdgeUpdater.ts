@@ -13,7 +13,7 @@ export class ActiveEdgeUpdater {
         const route = this.routeWalker.getRoute();
         this.routeWalker.setEdge(route.getEdges()[0]);
         const source = this.routeWalker.getSource().p;
-        route.character.setPosition2D(new Vector2(source.x, source.z));
+        this.routeWalker.getCharacter().setPosition2D(new Vector2(source.x, source.z));
     }
     
     updateActiveEdge() {
@@ -44,8 +44,7 @@ export class ActiveEdgeUpdater {
 
     private isEdgeFinished() {
         const target = this.routeWalker.getTarget();
-        const route = this.routeWalker.getRoute();
-        const character = route.character;
+        const character = this.routeWalker.getCharacter();
         
         const curr = character.getPosition();
     

@@ -6,7 +6,6 @@ import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { RouteExecutor } from "./RouteExecutor";
 import { PlayerStore } from "../../player/PlayerStore";
 import { RouteItem } from "../../../model/item/route/RouteItem";
-import { RouteWalkerState } from "../../../model/item/route/RouteWalker";
 
 export class ExecutionTool extends Tool {
     private worldProvider: WorldProvider;
@@ -97,16 +96,16 @@ export class ExecutionTool extends Tool {
 
     private startRoutes(characters: CharacterItem[]) {
         characters.forEach(player => {
-            if (player.route) {
-                player.route.walker.setStarted(true);
+            if (player.routeWalker) {
+                player.routeWalker.setStarted(true);
             }
         });
     }
 
     private updateRoutes(deltaTime: number, characters: CharacterItem[]) {
         characters.forEach(player => {
-            if (player.route) {
-                player.route.walker.walk(deltaTime);        
+            if (player.routeWalker) {
+                player.routeWalker.walk(deltaTime);        
             } 
         });
     }

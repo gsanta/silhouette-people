@@ -17,7 +17,7 @@ export class BikeInputManager extends MeshInputManager {
         this.bikeWalker = bikeWalker;
         this.keyboardService = keyboardService;
         this.character = character;
-        this.nextEdgeSelector = new NextEdgeSelector(character.route.walker, <GraphImpl> graphService.getGraph());
+        this.nextEdgeSelector = new NextEdgeSelector(character.routeWalker, <GraphImpl> graphService.getGraph());
         this.keyboardService.onKeydown(e => this.onKeyDown(e));
     }
 
@@ -41,12 +41,12 @@ export class BikeInputManager extends MeshInputManager {
 
         if (this.keyboardService.activeKeys.has('q')) {
             if (isKeyDown) {
-                const isReversed = this.character.route.walker.isReversed();
+                const isReversed = this.character.routeWalker.isReversed();
 
                 if (isReversed) {
-                    this.character.route.walker.setReversed(false);
+                    this.character.routeWalker.setReversed(false);
                 } else {
-                    this.character.route.walker.setReversed(true);
+                    this.character.routeWalker.setReversed(true);
                 }
             }
         } 
@@ -72,7 +72,7 @@ export class BikeInputManager extends MeshInputManager {
         const walker = this.bikeWalker;
 
         if (isKeyDown) {
-            if (!this.character.route.walker.isRunning()) {
+            if (!this.character.routeWalker.isRunning()) {
                 return;
             }
             switch(e.key) {

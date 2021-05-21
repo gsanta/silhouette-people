@@ -1,4 +1,3 @@
-import { CharacterItem } from "../model/item/character/CharacterItem";
 import { RouteItem } from "../model/item/route/RouteItem";
 
 
@@ -16,10 +15,6 @@ export class RouteStore {
 
     getByName(name: string) {
         return this.routes.find(route => route.name === name);
-    }
-
-    getRouteForCharacter(character: CharacterItem): RouteItem {
-        return this.routes.find(route => route.character === character);
     }
     
     deleteRoute(route: RouteItem) {

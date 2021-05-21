@@ -1,4 +1,4 @@
-import { RouteWalker, RouteWalkerState } from "../../RouteWalker";
+import { RouteWalker } from "../../RouteWalker";
 import { ExactDirectionRestrictor } from "./ExactDirectionRestrictor";
 import { InsidePolygonRestrictor } from "./InsidePolygonRestrictor";
 
@@ -21,7 +21,7 @@ export class RotationRestrictor {
             if (direction !== null) {
                 this.restrictToDirection(direction)
             } else {
-                this.routeWalker.getRoute().character.inputManager.enableDirection();
+                this.routeWalker.getCharacter().inputManager.enableDirection();
             }
         }
     }
@@ -29,7 +29,7 @@ export class RotationRestrictor {
     edgeChanged() {
         const edge = this.routeWalker.getEdge();
         if (edge) {
-            const character = this.routeWalker.getRoute().character;
+            const character = this.routeWalker.getCharacter();
             const initialDirection = this.routeWalker.getEdge().direction;
             character.walker.character.instance.setRotation(initialDirection);
         }
@@ -41,20 +41,20 @@ export class RotationRestrictor {
     }
 
     private restrictToDirection(direction: number) {
-        const character = this.routeWalker.getRoute().character;
+        const character = this.routeWalker.getCharacter();
         character.walker.character.instance.setRotation(direction);
         character.inputManager.disableDirection();
     }
 
     on() {
-        const character = this.routeWalker.getRoute().character;
+        const character = this.routeWalker.getCharacter();
         if (character && character.inputManager) {
             character.inputManager.disableDirection();
         }
     }
 
     off() {
-        const character = this.routeWalker.getRoute().character;
+        const character = this.routeWalker.getCharacter();
         if (character && character.inputManager) {
             character.inputManager.enableDirection();
         }

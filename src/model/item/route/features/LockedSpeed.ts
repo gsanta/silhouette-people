@@ -12,12 +12,12 @@ export class LockedSpeed implements LockedFeature {
     }
     
     update(deltaTime: number) {
-        const character = this.route.character;
+        const character = this.routeWalker.getCharacter();
         character.walker.setSpeed(0.04);
     }
 
     enableFeature() {
-        const character = this.route.character;
+        const character = this.routeWalker.getCharacter();
         
         if (character && character.inputManager) {
             character.inputManager.disableSpeed();
@@ -25,7 +25,7 @@ export class LockedSpeed implements LockedFeature {
     }
 
     disableFeature() {
-        const character = this.route.character;
+        const character = this.routeWalker.getCharacter();
 
         if (character && character.inputManager) {
             character.inputManager.enableSpeed();

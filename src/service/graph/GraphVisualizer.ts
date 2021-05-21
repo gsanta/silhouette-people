@@ -1,5 +1,6 @@
 import { Mesh, MeshBuilder, Vector3 } from "babylonjs";
 import { RouteItem } from "../../model/item/route/RouteItem";
+import { RouteWalker } from "../../model/item/route/RouteWalker";
 import { MaterialStore } from "../../store/MaterialStore";
 import { WorldProvider } from "../WorldProvider";
 import { Graph } from "./Graph";
@@ -16,11 +17,11 @@ export class GraphVisualizer {
         this.materialStore = materialStore;
     }
 
-    visualizeRoute(route: RouteItem) {
+    visualizeRoute(route: RouteItem, routeWalker: RouteWalker): Mesh[] {
         const meshes: Mesh[] = [];
-        meshes.push(this.visualizeRouteArrow(route));
+        meshes.push(this.visualizeRouteArrow(route, routeWalker));
         meshes.push(...this.visualizeRoutePath(route));
-        route.meshes = meshes;
+        return meshes;
     }
 
     visualizeEdge(...graphEdge: GraphEdge[]) {
@@ -32,8 +33,8 @@ export class GraphVisualizer {
         return meshes;
     }
 
-    private visualizeRouteArrow(route: RouteItem): Mesh {
-        const pathes = this.createArrowHeadPathes(route);
+    private visualizeRouteArrow(route: RouteItem, routeWalker: RouteWalker): Mesh {
+        const pathes = this.createArrowHeadPathes(route, routeWalker);
 
         const mesh = MeshBuilder.CreateRibbon("arrow-head", {pathArray: pathes}, this.worldProvider.scene);
 
@@ -52,11 +53,10 @@ export class GraphVisualizer {
     }
 
 
-    private createArrowHeadPathes(route: RouteItem) {
-        const walker = route.walker;
+    private createArrowHeadPathes(route: RouteItem, routeWalker: RouteWalker) {
         const lastEdge = route.getEdges()[route.getEdges().length - 1];
-        const source = lastEdge.getSource(walker.isReversed()).p.clone();
-        const target = lastEdge.getTraget(walker.isReversed()).p.clone();
+        const source = lastEdge.getSource(routeWalker.isReversed()).p.clone();
+        const target = lastEdge.getTraget(routeWalker.isReversed()).p.clone();
         const angle = this.getAngle(source, target);
         const angelPlus = angle + Math.PI / 2;
         const angelMinus = angle - Math.PI / 2;

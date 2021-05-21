@@ -1,4 +1,4 @@
-import { CharacterItem, PersonItem } from "../../model/item/character/CharacterItem";
+import { CharacterItem } from "../../model/item/character/CharacterItem";
 import { ActiveEdgeUpdaterAdapter } from "../../model/item/route/adapters/walking/ActiveEdgeUpdaterAdapter";
 import { DirectionRestrictorAdapter } from "../../model/item/route/adapters/rotation/RotationRestrictorAdapter";
 import { RouteVisualizerAdapter } from "../../model/item/route/adapters/visualization/RouteVisualizerAdapter";
@@ -39,21 +39,17 @@ export class PlayerSetup {
 
         this.bikeParenter.parentToBike(player, this.playerStore.getBikes()[0], this.keyboardService, this.graphService);
 
-        route.character = <CharacterItem> player.getParent();
-        player.route = route;
-
         const graph = this.graphService.getGraph();
-        const walker = new RouteWalkerImpl(route);
-        const walkerDecorator = new RouteWalkerListenerDecorator(walker);
-        route.walker = walkerDecorator;
+        const walker = new RouteWalkerListenerDecorator(new RouteWalkerImpl(route, <CharacterItem> player.getParent()));
 
-        walkerDecorator.addListener(new ActiveEdgeUpdaterAdapter(walkerDecorator));
-        walkerDecorator.addListener(new DirectionRestrictorAdapter(route.walker));
-        walkerDecorator.addListener(new DynamicRouterAdapter(route.walker, graph));
-        walkerDecorator.addListener(new RouteVisualizerAdapter(walkerDecorator, this.graphService));
+        player.routeWalker = walker;
+        
+        walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
+        walker.addListener(new DirectionRestrictorAdapter(walker));
+        walker.addListener(new DynamicRouterAdapter(walker, graph));
+        walker.addListener(new RouteVisualizerAdapter(walker, this.graphService));
 
         player.inputManager = new BikeInputManager(<BikeWalker> player.walker, player, this.keyboardService, this.graphService);
         (<CharacterItem> player.getParent()).inputManager = player.inputManager;
-    
     }
 }

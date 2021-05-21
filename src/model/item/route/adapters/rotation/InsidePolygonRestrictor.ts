@@ -12,7 +12,7 @@ export class InsidePolygonRestrictor {
     }
 
     restrict(edge: GraphEdge): number | null {
-        const character = this.routeWalker.getRoute().character;
+        const character = this.routeWalker.getCharacter();
         const inPolygon = this.testPointInPolyon(character.instance.getPosition(), edge.dimensions);
 
         if (!inPolygon) {

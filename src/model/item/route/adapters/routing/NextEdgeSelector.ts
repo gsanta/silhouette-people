@@ -23,8 +23,10 @@ export class NextEdgeSelector {
             const nextIndex = edges.indexOf(lastEdge);
     
             if (edges.length > 0) {
-                this.routeWalker.getRoute().removeLastEdge();
-                this.routeWalker.getRoute().addEdge(edges[0]);
+                let route = this.routeWalker.getRoute();
+                route = route.removeLastEdge();
+                route = route.addEdge(edges[0]);
+                this.routeWalker.setRoute(route);
             }
         }
     }
@@ -44,8 +46,9 @@ export class NextEdgeSelector {
             const nextIndex = edges.indexOf(edge);
     
             if (nextIndex > 0) {
-                this.routeWalker.getRoute().removeLastEdge();
-                this.routeWalker.getRoute().addEdge(edges[nextIndex]);
+                let route = this.routeWalker.getRoute();
+                route = route.removeLastEdge();
+                route = route.addEdge(edges[nextIndex]);
             }
         }
     }

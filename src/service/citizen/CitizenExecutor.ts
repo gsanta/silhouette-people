@@ -5,7 +5,6 @@ import { RouteExecutor } from "../edit/execution/RouteExecutor";
 import { RouteVisualizer } from "../../model/item/route/adapters/visualization/RouteVisualizer";
 import { WorldProvider } from "../WorldProvider";
 import { RoutePool } from "./RoutePool";
-import { RouteWalkerState } from "../../model/item/route/RouteWalker";
 
 export class CitizenExecutor implements RouteExecutor {
 
@@ -40,14 +39,14 @@ export class CitizenExecutor implements RouteExecutor {
     }
 
     private updateRouteWalkers(deltaTime: number) {
-        const citizens =  this.citizenStore.getAll();
-        citizens.forEach(citizen => {
-            const route = this.routeStore.getRouteForCharacter(citizen);
+        // const citizens =  this.citizenStore.getAll();
+        // citizens.forEach(citizen => {
+        //     const route = this.routeStore.getRouteForCharacter(citizen);
 
-            if (route) {
-                route.walker.walk(deltaTime);        
-            } 
-        });
+        //     if (route) {
+        //         route.walker.walk(deltaTime);        
+        //     } 
+        // });
     }
 
     private updateWalkers(deltaTime: number) {
@@ -61,7 +60,7 @@ export class CitizenExecutor implements RouteExecutor {
         const citizens =  this.citizenStore.getAll();
 
         citizens.forEach(citizen => {
-            const route = this.routeStore.getRouteForCharacter(citizen);
+            // const route = this.routeStore.getRouteForCharacter(citizen);
             // if (route && route.walker.getState() === RouteWalkerState.FINISHED) {
             //     this.citizenStore.removeItem(citizen);
 

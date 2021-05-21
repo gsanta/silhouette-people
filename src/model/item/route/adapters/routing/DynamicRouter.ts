@@ -35,15 +35,18 @@ export class DynamicRouter {
 
         if (target !== undefined) {
             const validEdges = this.findValidEdges(target, source) || [];
+            let route = this.routeWalker.getRoute();
     
             if (validEdges.length > 0) {
                 const edgeIndex = Math.floor(Math.random() * validEdges.length);
-                this.routeWalker.getRoute().addEdge(validEdges[edgeIndex]);
+                route = route.addEdge(validEdges[edgeIndex]);
             }
 
-            if (this.routeWalker.getRoute().getEdges()[0] !== this.routeWalker.getEdge()) {
-                this.routeWalker.getRoute().removeFirstEdge();
+            if (route.getEdges()[0] !== this.routeWalker.getEdge()) {
+                route = route.removeFirstEdge();
             }
+
+            this.routeWalker.setRoute(route);
         }
     }
 

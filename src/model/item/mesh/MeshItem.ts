@@ -1,14 +1,13 @@
-import { Mesh, Skeleton, Vector2, Vector3 } from "babylonjs";
+import { Skeleton, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { lookup } from "../../../service/Lookup";
 import { QuarterStore } from "../../../store/QuarterStore";
 import { AnimationHandler } from "../../AnimationHandler";
 import { TagHandler } from "../../TagHandler";
 import { GameItem } from "../GameItem";
-import { MeshInstance } from "./MeshInstance";
 import { QuarterItem } from "../quarter/QuarterItem";
-import { RouteItem } from "../route/RouteItem";
 import { WorldObj } from "../WorldObj";
+import { MeshInstance } from "./MeshInstance";
 
 export enum MeshObjType {
     Player = 'player',
@@ -52,8 +51,6 @@ export class MeshItem extends GameItem {
     children: MeshItem[] = [];
     // TODO create tag from it
     isActivePlayer: boolean = false;
-
-    route: RouteItem;
 
     readonly worldObj: WorldObj;
     quarterIndex: number;

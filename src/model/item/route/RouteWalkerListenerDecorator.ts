@@ -1,20 +1,21 @@
 import { Vector3 } from "babylonjs";
 import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
+import { CharacterItem } from "../character/CharacterItem";
+import { RouteItem } from "./RouteItem";
 import { RouteWalker } from "./RouteWalker";
-import { RouteWalkerImpl } from "./RouteWalkerImpl";
 import { RouteWalkerListener } from "./RouteWalkerListener";
 
 export class RouteWalkerListenerDecorator implements RouteWalker {
 
-    private delegate: RouteWalkerImpl;
+    private delegate: RouteWalker;
     private listeners: RouteWalkerListener[] = [];
 
-    constructor(delegate: RouteWalkerImpl) {
+    constructor(delegate: RouteWalker) {
         this.delegate = delegate;
     }
 
     walk(deltaTime: number): boolean {
-        const ret = this.delegate.walk();
+        const ret = this.delegate.walk(deltaTime);
         if (ret) {
             this.listeners.forEach(listener => listener.onWalk(deltaTime));
         }
@@ -51,10 +52,11 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
     getTarget(): GraphVertex { return this.delegate.getTarget(); }
     getSource(): GraphVertex { return this.delegate.getSource(); }
     getRoute() { return this.delegate.getRoute() }
-
-    routeChanged() {
-        
+    setRoute(route: RouteItem): void { 
+        this.delegate.setRoute(route); 
+        this.listeners.forEach(listener => listener.onRouteChanged());
     }
+    getCharacter(): CharacterItem { return this.delegate.getCharacter() };
 
     addListener(routeWalkerListener: RouteWalkerListener) {
         this.listeners.push(routeWalkerListener);

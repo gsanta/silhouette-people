@@ -1,7 +1,4 @@
-import { Mesh } from "babylonjs";
 import { GraphEdge } from "../../../service/graph/GraphImpl";
-import { CharacterItem } from "../character/CharacterItem";
-import { RouteWalker } from "./RouteWalker";
 
 export interface RouteStoryConfig {
     routeId: string;
@@ -10,61 +7,35 @@ export interface RouteStoryConfig {
 
 export class RouteItem {
     readonly name: string;
-    character: CharacterItem;
-    walker: RouteWalker;
-    meshes: Mesh[] = [];
-
     private edges: GraphEdge[];
-    private reverseEdges: GraphEdge[];
-    private routeChangeHandlers: (() => void)[] = [];
 
-    constructor(edges: GraphEdge[], name?: string, character?: CharacterItem) {
-        this.character = character;
+    constructor(edges: GraphEdge[], name?: string) {
         this.edges = edges;
 
         this.name = name;
-        this.reverseEdges = [...this.edges].reverse();
     }
 
-    addEdge(edge: GraphEdge) {
-        if (this.walker.isReversed()) {
-            this.edges.unshift(edge);
-        } else {
-            this.edges.push(edge);
-        }
-        this.reverseEdges = [...this.edges].reverse();
-        this.routeChangeHandlers.forEach(handler => handler());
+    reverse(): RouteItem {
+        return new RouteItem([...this.edges].reverse());
     }
 
-    removeLastEdge() {
-        if (this.walker.isReversed()) {
-            this.edges.shift();
-        } else {
-            this.edges.pop();
-        }
-        this.reverseEdges = [...this.edges].reverse();
-        this.routeChangeHandlers.forEach(handler => handler());
+    addEdge(edge: GraphEdge): RouteItem {
+        return new RouteItem([...this.edges, edge], this.name);
+    }
+
+    removeLastEdge(): RouteItem {
+        const clone = [...this.edges];
+        clone.pop();
+        return new RouteItem(clone, this.name);
     }
 
     removeFirstEdge() {
-        if (this.walker.isReversed()) {
-            this.edges.pop();
-        } else {
-            this.edges.shift();
-        }
-        this.reverseEdges = [...this.edges].reverse();
-        this.routeChangeHandlers.forEach(handler => handler());
+        const clone = [...this.edges];
+        clone.shift();
+        return new RouteItem(clone, this.name);
     }
 
     getEdges(): GraphEdge[] {
-        return this.walker.isReversed() ? this.reverseEdges : this.edges;
-    }
-
-    onRouteChange(func: () => void) {
-        this.routeChangeHandlers.push(func);
-    }
-
-    unsubscribeRouteChange(func: () => void) {
-        this.routeChangeHandlers = this.routeChangeHandlers.filter(handler => handler !== func);
+        return this.edges;
     }
 }

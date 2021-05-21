@@ -18,8 +18,8 @@ export class RoutePropertyParser extends AbstractPropertyParser<RoutePropertyCon
     }
 
     processProperty(character: CharacterItem, config: RoutePropertyConfig) {
-        const route = this.routeStore.getByName(`pre-defined-route-${config.name}`);
-        character.route = route;
-        route.character = character;
+        // const route = this.routeStore.getByName(`pre-defined-route-${config.name}`);
+        // character.route = route;
+        // route.character = character;
     }
 }

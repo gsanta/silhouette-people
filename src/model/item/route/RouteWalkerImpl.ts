@@ -1,10 +1,13 @@
 import { Vector3 } from "babylonjs/Maths/math.vector";
 import { GraphEdge } from "../../../service/graph/GraphImpl";
+import { CharacterItem } from "../character/CharacterItem";
 import { RouteItem } from "./RouteItem";
 import { RouteWalker } from "./RouteWalker";
 
 export class RouteWalkerImpl implements RouteWalker {
-    private readonly route: RouteItem;
+    private readonly character: CharacterItem;
+    private route: RouteItem;
+    private routeReversed: RouteItem;
 
     private prevPos: Vector3;
     private currPos: Vector3;
@@ -14,12 +17,28 @@ export class RouteWalkerImpl implements RouteWalker {
     private started = false;
     private reversed = false;
 
-    constructor(route: RouteItem) {
+    constructor(route: RouteItem, character: CharacterItem) {
         this.route = route;
+        this.routeReversed = route.reverse();
+        this.character = character;
     }
 
     getRoute(): RouteItem {
-        return this.route;
+        return this.isReversed() ? this.routeReversed : this.route;
+    }
+
+    setRoute(route: RouteItem): void {
+        if (this.isReversed()) {
+            this.routeReversed = route;
+            this.route = route.reverse();
+        } else {
+            this.route = route;
+            this.routeReversed = route.reverse();
+        }
+    }
+
+    getCharacter(): CharacterItem {
+        return this.character;
     }
 
     getPos(): Vector3 {
@@ -48,10 +67,8 @@ export class RouteWalkerImpl implements RouteWalker {
 
     walk(): boolean {
         if (this.started && this.edge) {
-            const character = this.route.character;
-        
             this.prevPos = this.currPos;
-            this.currPos = character.getPosition();
+            this.currPos = this.character.getPosition();
             return true;
         }
         return false;
