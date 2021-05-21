@@ -1,7 +1,7 @@
 import { CharacterItem } from "../../model/item/character/CharacterItem";
-import { DestinationPointUpdaterAdapter } from "../../model/item/route/adapters/destination/DestinationPointUpdaterAdapter";
+import { ActiveEdgeUpdaterAdapter } from "../../model/item/route/adapters/walking/ActiveEdgeUpdaterAdapter";
 import { DirectionRestrictorAdapter } from "../../model/item/route/adapters/rotation/RotationRestrictorAdapter";
-import { DynamicRoutePointProvider } from "../../model/item/route/DynamicRoutePointProvider";
+import { DynamicRouter } from "../../model/item/route/adapters/routing/DynamicRouter";
 import { RouteVisualizerAdapter } from "../../model/item/route/adapters/visualization/RouteVisualizerAdapter";
 import { RouteWalkerImpl } from "../../model/item/route/RouteWalkerImpl";
 import { RouteWalkerListenerDecorator } from "../../model/item/route/RouteWalkerListenerDecorator";
@@ -10,7 +10,7 @@ import { GraphService } from "../graph/GraphService";
 import { WorldProvider } from "../WorldProvider";
 import { PlayerParser } from "./PlayerParser";
 import { PlayerStore } from "./PlayerStore";
-import { DynamicRoutePointProviderAdapter } from "../../model/item/route/DynamicRoutePointProviderAdapter";
+import { DynamicRouterAdapter } from "../../model/item/route/adapters/routing/DynamicRouterAdapter";
 import { GraphImpl } from "../graph/GraphImpl";
 
 export class PlayerSetup {
@@ -43,9 +43,9 @@ export class PlayerSetup {
 
         route.walker = walkerDecorator;
 
-        walkerDecorator.addListener(new DestinationPointUpdaterAdapter(walkerDecorator));
+        walkerDecorator.addListener(new ActiveEdgeUpdaterAdapter(walkerDecorator));
         walkerDecorator.addListener(new DirectionRestrictorAdapter(route.walker));
-        walkerDecorator.addListener(new DynamicRoutePointProviderAdapter(route.walker, graph));
+        walkerDecorator.addListener(new DynamicRouterAdapter(route.walker, graph));
         walkerDecorator.addListener(new RouteVisualizerAdapter(walkerDecorator, this.graphService));
     }
 }

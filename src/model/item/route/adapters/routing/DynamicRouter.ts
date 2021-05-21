@@ -1,10 +1,10 @@
 
-import { KeyboardService } from "../../../service/base/keyboard/KeyboardService";
-import { Graph } from "../../../service/graph/Graph";
-import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
-import { RouteWalker } from "./RouteWalker";
+import { KeyboardService } from "../../../../../service/base/keyboard/KeyboardService";
+import { Graph } from "../../../../../service/graph/Graph";
+import { GraphEdge, GraphVertex } from "../../../../../service/graph/GraphImpl";
+import { RouteWalker } from "../../RouteWalker";
 
-export class DynamicRoutePointProvider {
+export class DynamicRouter {
     private readonly routeWalker: RouteWalker;
     private readonly graph: Graph<GraphVertex, GraphEdge>;
     private readonly keyboardService: KeyboardService;

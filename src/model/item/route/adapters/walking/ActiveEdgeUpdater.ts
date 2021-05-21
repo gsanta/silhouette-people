@@ -2,22 +2,22 @@ import { Vector2 } from "babylonjs";
 import { GraphEdge } from "../../../../../service/graph/GraphImpl";
 import { RouteWalker } from "../../RouteWalker";
 
-export class DestinationPointUpdater {
+export class ActiveEdgeUpdater {
     private readonly routeWalker: RouteWalker;
     
     constructor(routeWalker: RouteWalker) {
         this.routeWalker = routeWalker;
     }
 
-    initCheckPoints() {
+    initActiveEdge() {
         const route = this.routeWalker.getRoute();
         this.routeWalker.setEdge(route.getEdges()[0]);
         const source = this.routeWalker.getSource().p;
         route.character.setPosition2D(new Vector2(source.x, source.z));
     }
     
-    updateCheckPointsIfNeeded() {
-        if (this.isCheckPointReached()) {
+    updateActiveEdge() {
+        if (this.isEdgeFinished()) {
             this.setNextCheckPoint();
             return true;
         }
@@ -42,7 +42,7 @@ export class DestinationPointUpdater {
         return nextEdge;
     }
 
-    private isCheckPointReached() {
+    private isEdgeFinished() {
         const target = this.routeWalker.getTarget();
         const route = this.routeWalker.getRoute();
         const character = route.character;

@@ -1,5 +1,5 @@
 import { Mesh } from "babylonjs";
-import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
+import { GraphEdge } from "../../../service/graph/GraphImpl";
 import { CharacterItem } from "../character/CharacterItem";
 import { RouteWalker } from "./RouteWalker";
 
