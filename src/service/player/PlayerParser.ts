@@ -16,6 +16,6 @@ export class PlayerParser {
 
         const edge = this.graphService.getGraph().edgeBetween(vertex1, vertex2);
 
-        return new RouteItem([edge]);    
+        return new RouteItem([edge], {});    
     }
 }

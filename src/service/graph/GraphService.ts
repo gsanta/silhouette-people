@@ -27,7 +27,7 @@ export class GraphService {
         }
 
         this.graph = graph;
-        this.visualizer = new GraphVisualizer(graph, this.worldProvider, this.materialStore);
+        this.visualizer = new GraphVisualizer(this.worldProvider, this.materialStore);
         this.visualizer.visualizeEdge(...graph.edges);
     }
 

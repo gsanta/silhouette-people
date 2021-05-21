@@ -13,10 +13,11 @@ export class InsidePolygonRestrictor {
 
     restrict(edge: GraphEdge): number | null {
         const character = this.routeWalker.getCharacter();
+        const route = this.routeWalker.getRoute();
         const inPolygon = this.testPointInPolyon(character.instance.getPosition(), edge.dimensions);
 
         if (!inPolygon) {
-            return this.routeWalker.isReversed() ? edge.oppositeDirection : edge.direction;
+            return route.isReversed(edge) ? edge.oppositeDirection : edge.direction;
         }
 
         return null;

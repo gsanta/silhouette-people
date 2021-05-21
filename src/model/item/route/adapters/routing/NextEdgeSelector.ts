@@ -14,12 +14,13 @@ export class NextEdgeSelector {
     }
 
     chooseNextEdge() {
+        const route = this.routeWalker.getRoute();
         const currentEdge = this.routeWalker.getEdge();
         const routeEdges = this.routeWalker.getRoute().getEdges();
         const lastEdge = routeEdges[routeEdges.length - 1];
 
         if (currentEdge && lastEdge !== currentEdge) {
-            const anchorVertex = this.routeWalker.isReversed() ? lastEdge.v2 : lastEdge.v1;
+            const anchorVertex = route.isReversed(lastEdge) ? lastEdge.v2 : lastEdge.v1;
     
             let edges = this.getValidEdges(anchorVertex, [currentEdge, lastEdge]);
     
@@ -34,12 +35,13 @@ export class NextEdgeSelector {
     }
 
     choosePrevEdge() {
+        const route = this.routeWalker.getRoute();
         const currentEdge = this.routeWalker.getEdge();
         const routeEdges = this.routeWalker.getRoute().getEdges();
         const lastEdge = routeEdges[routeEdges.length - 1];
 
         if (currentEdge && lastEdge !== currentEdge) {
-            const anchorVertex = this.routeWalker.isReversed() ? lastEdge.v2 : lastEdge.v1;
+            const anchorVertex = route.isReversed(lastEdge) ? lastEdge.v2 : lastEdge.v1;
     
             let edges = this.getValidEdges(anchorVertex, [currentEdge, lastEdge]);
     

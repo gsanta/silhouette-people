@@ -5,19 +5,25 @@ export interface RouteStoryConfig {
     characterId: string;
 }
 
+export interface RouteItemConfig {
+    name?: string,
+    isReversedIfSingleEdge?: boolean
+}
+
 export class RouteItem {
     readonly name: string;
     private edges: GraphEdge[];
     private isReversedList: boolean[];
 
-    constructor(edges: GraphEdge[], name?: string) {
+    constructor(edges: GraphEdge[], config: RouteItemConfig) {
         this.edges = edges;
-        this.isReversedList = this.getIsReversedList();
-        this.name = name;
+        this.isReversedList = this.getIsReversedList(config.isReversedIfSingleEdge);
+        this.name = config.name;
     }
 
     reverse(): RouteItem {
-        return new RouteItem([...this.edges].reverse());
+        const isReversedIfSingleEdge = this.edges.length > 0 ? !this.isReversed(this.edges[0]) : false;
+        return new RouteItem([...this.edges].reverse(), { name: this.name, isReversedIfSingleEdge });
     }
 
     isReversed(edge: GraphEdge): boolean {
@@ -25,30 +31,34 @@ export class RouteItem {
     }
 
     addEdge(edge: GraphEdge): RouteItem {
-        return new RouteItem([...this.edges, edge], this.name);
+        return new RouteItem([...this.edges, edge], { name: this.name });
     }
 
     removeLastEdge(): RouteItem {
+        if (this.edges.length === 0) { throw new Error('No edge to remove.'); }
         const clone = [...this.edges];
         clone.pop();
-        return new RouteItem(clone, this.name);
+        const isReversedIfSingleEdge = this.edges.length > 0 ? this.isReversed(this.edges[0]) : false;
+        return new RouteItem(clone, { name: this.name, isReversedIfSingleEdge });
     }
 
     removeFirstEdge() {
+        if (this.edges.length === 0) { throw new Error('No edge to remove.'); }
         const clone = [...this.edges];
         clone.shift();
-        return new RouteItem(clone, this.name);
+        const isReversedIfSingleEdge = this.edges.length > 0 ? this.isReversed(this.edges[0]) : false;
+        return new RouteItem(clone, { name: this.name, isReversedIfSingleEdge });
     }
 
     getEdges(): GraphEdge[] {
         return this.edges;
     }
 
-    private getIsReversedList(): boolean[] {
+    private getIsReversedList(isReversedIfSingleEdge: boolean = false): boolean[] {
         const edges = this.edges;
 
         if (edges.length === 0) { return []; }
-        if (edges.length === 1) { return [false]; }
+        if (edges.length === 1) { return [isReversedIfSingleEdge]; }
 
         const isFirstReversed = edges[1].hasVertex(edges[0].v1) ? true : false;
         const isReversedList: boolean[] = [ isFirstReversed ];

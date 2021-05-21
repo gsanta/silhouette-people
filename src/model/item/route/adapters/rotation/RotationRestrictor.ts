@@ -28,9 +28,10 @@ export class RotationRestrictor {
 
     edgeChanged() {
         const edge = this.routeWalker.getEdge();
+        const route = this.routeWalker.getRoute();
         if (edge) {
             const character = this.routeWalker.getCharacter();
-            const initialDirection = this.routeWalker.isReversed() ? edge.oppositeDirection : edge.direction;
+            const initialDirection = route.isReversed(edge) ? edge.oppositeDirection : edge.direction;
             character.walker.character.instance.setRotation(initialDirection);
         }
     }

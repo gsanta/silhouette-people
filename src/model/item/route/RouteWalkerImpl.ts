@@ -7,7 +7,7 @@ import { RouteWalker } from "./RouteWalker";
 export class RouteWalkerImpl implements RouteWalker {
     private readonly character: CharacterItem;
     private route: RouteItem;
-    private routeReversed: RouteItem;
+    // private routeReversed: RouteItem;
 
     private prevPos: Vector3;
     private currPos: Vector3;
@@ -19,22 +19,15 @@ export class RouteWalkerImpl implements RouteWalker {
 
     constructor(route: RouteItem, character: CharacterItem) {
         this.route = route;
-        this.routeReversed = route.reverse();
         this.character = character;
     }
 
     getRoute(): RouteItem {
-        return this.isReversed() ? this.routeReversed : this.route;
+        return this.route;
     }
 
     setRoute(route: RouteItem): void {
-        if (this.isReversed()) {
-            this.routeReversed = route;
-            this.route = route.reverse();
-        } else {
-            this.route = route;
-            this.routeReversed = route.reverse();
-        }
+        this.route = route;
     }
 
     getCharacter(): CharacterItem {
@@ -58,11 +51,11 @@ export class RouteWalkerImpl implements RouteWalker {
     }
 
     getTarget() {
-        return this.edge && this.edge.getTraget(this.isReversed());
+        return this.edge && this.edge.getTraget(this.route.isReversed(this.edge));
     }
 
     getSource() {
-        return this.edge && this.edge.getSource(this.isReversed());
+        return this.edge && this.edge.getSource(this.route.isReversed(this.edge));
     }
 
     walk(): boolean {
@@ -74,16 +67,12 @@ export class RouteWalkerImpl implements RouteWalker {
         return false;
     }
 
-    setReversed(isReversed: boolean) {
-        this.reversed = isReversed;
+    reverseRoute() {
+        this.route = this.route.reverse();
 
         if (!this.edge) {
             this.edge = this.route.getEdges()[0];
         }
-    }
-
-    isReversed(): boolean {
-        return this.reversed;
     }
 
     setStarted(isStarted: boolean): void {

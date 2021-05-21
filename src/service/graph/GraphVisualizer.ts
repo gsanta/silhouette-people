@@ -3,46 +3,29 @@ import { RouteItem } from "../../model/item/route/RouteItem";
 import { RouteWalker } from "../../model/item/route/RouteWalker";
 import { MaterialStore } from "../../store/MaterialStore";
 import { WorldProvider } from "../WorldProvider";
-import { Graph } from "./Graph";
-import { GraphEdge, GraphVertex } from "./GraphImpl";
+import { GraphEdge } from "./GraphImpl";
 
 export class GraphVisualizer {
-    private readonly graph: Graph<GraphVertex, GraphEdge>;
     private readonly worldProvider: WorldProvider;
     private readonly materialStore: MaterialStore;
 
-    constructor(graph: Graph<GraphVertex, GraphEdge>, worldProvider: WorldProvider, materialStore: MaterialStore) {
-        this.graph = graph;
+    constructor(worldProvider: WorldProvider, materialStore: MaterialStore) {
         this.worldProvider = worldProvider;
         this.materialStore = materialStore;
     }
 
     visualizeRoute(route: RouteItem, routeWalker: RouteWalker): Mesh[] {
         const meshes: Mesh[] = [];
-        meshes.push(this.visualizeRouteArrow(route, routeWalker));
-        meshes.push(...this.visualizeRoutePath(route));
+        meshes.push(this.createArrow(route, routeWalker));
+        meshes.push(...route.getEdges().map(edge => this.createPathEdge(edge)));
         return meshes;
     }
 
     visualizeEdge(...graphEdge: GraphEdge[]) {
-        graphEdge.forEach(edge => this.createArrow(edge));
+        graphEdge.forEach(edge => this.createPathEdge(edge));
     }
 
-    private visualizeRoutePath(route: RouteItem): Mesh[] {
-        const meshes: Mesh[] = route.getEdges().map(edge => this.createArrow(edge));
-        return meshes;
-    }
-
-    private visualizeRouteArrow(route: RouteItem, routeWalker: RouteWalker): Mesh {
-        const pathes = this.createArrowHeadPathes(route, routeWalker);
-
-        const mesh = MeshBuilder.CreateRibbon("arrow-head", {pathArray: pathes}, this.worldProvider.scene);
-
-        mesh.material = this.materialStore.getActivePathMaterial();
-        return mesh;
-    }
-
-private createArrow(edge: GraphEdge): Mesh {
+    private createPathEdge(edge: GraphEdge): Mesh {
         const [v1, v2] = [edge.v1, edge.v2]
         const path1 = [edge.dimensions.p1, edge.dimensions.p2];
         const path2 = [edge.dimensions.p4, edge.dimensions.p3];
@@ -52,11 +35,20 @@ private createArrow(edge: GraphEdge): Mesh {
         return mesh;
     }
 
+    private createArrow(route: RouteItem, routeWalker: RouteWalker): Mesh {
+        const pathes = this.getArrowPathes(route, routeWalker);
 
-    private createArrowHeadPathes(route: RouteItem, routeWalker: RouteWalker) {
+        const mesh = MeshBuilder.CreateRibbon("arrow-head", {pathArray: pathes}, this.worldProvider.scene);
+
+        mesh.material = this.materialStore.getActivePathMaterial();
+        return mesh;
+    }
+
+    private getArrowPathes(route: RouteItem, routeWalker: RouteWalker) {
         const lastEdge = route.getEdges()[route.getEdges().length - 1];
-        const source = lastEdge.getSource(routeWalker.isReversed()).p.clone();
-        const target = lastEdge.getTraget(routeWalker.isReversed()).p.clone();
+        const isReversed = route.isReversed(lastEdge);
+        const source = lastEdge.getSource(isReversed).p.clone();
+        const target = lastEdge.getTraget(isReversed).p.clone();
         const angle = this.getAngle(source, target);
         const angelPlus = angle + Math.PI / 2;
         const angelMinus = angle - Math.PI / 2;

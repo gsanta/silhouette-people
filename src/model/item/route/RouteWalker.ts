@@ -18,8 +18,7 @@ export interface RouteWalker {
     getTarget(): GraphVertex;
     getSource(): GraphVertex;
     
-    setReversed(isReversed: boolean): void;
-    isReversed(): boolean;
+    reverseRoute(): void;
 
     setStarted(isStarted: boolean): void;
     isStarted(): boolean;

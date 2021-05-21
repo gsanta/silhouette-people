@@ -40,15 +40,7 @@ export class BikeInputManager extends MeshInputManager {
         }
 
         if (this.keyboardService.activeKeys.has('q')) {
-            if (isKeyDown) {
-                const isReversed = this.character.routeWalker.isReversed();
-
-                if (isReversed) {
-                    this.character.routeWalker.setReversed(false);
-                } else {
-                    this.character.routeWalker.setReversed(true);
-                }
-            }
+            if (isKeyDown) { this.character.routeWalker.reverseRoute(); }
         } 
 
         if (!this.isDirectionDisabled) {

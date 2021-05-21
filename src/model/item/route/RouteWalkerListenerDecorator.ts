@@ -35,13 +35,12 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
     isStarted(): boolean { return this.delegate.isStarted(); }
     isRunning(): boolean { return this.delegate.isRunning(); }
 
-    setReversed(isReversed: boolean): void { 
-        this.delegate.setReversed(isReversed);
+    reverseRoute(): void { 
+        this.delegate.reverseRoute();
 
         this.listeners.forEach(listener => listener.onDirectionChanged());
         this.listeners.forEach(listener => listener.onEnterEdge());
     }
-    isReversed(): boolean { return this.delegate.isReversed(); }
     getPos(): Vector3 { return this.delegate.getPos(); }
     getPrevPos(): Vector3 { return this.delegate.getPrevPos(); }
     getEdge(): GraphEdge { return this.delegate.getEdge(); }
