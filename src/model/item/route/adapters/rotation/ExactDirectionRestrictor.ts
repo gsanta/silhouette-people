@@ -11,6 +11,4 @@ export class ExactDirectionRestrictor {
     restrict(edge: GraphEdge): number | null {
         return this.routeWalker.isReversed() ? edge.oppositeDirection : edge.direction;
     }
-
-    
 }

@@ -42,7 +42,7 @@ export class GraphVisualizer {
         return mesh;
     }
 
-    private createArrow(edge: GraphEdge): Mesh {
+private createArrow(edge: GraphEdge): Mesh {
         const [v1, v2] = [edge.v1, edge.v2]
         const path1 = [edge.dimensions.p1, edge.dimensions.p2];
         const path2 = [edge.dimensions.p4, edge.dimensions.p3];

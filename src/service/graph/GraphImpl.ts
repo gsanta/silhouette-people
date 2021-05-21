@@ -17,6 +17,10 @@ export class GraphEdge {
         this.setDirection();
     }
 
+    hasVertex(v: GraphVertex) {
+        return this.v1 === v || this.v2 === v;
+    }
+
     getOtherVertex(v: GraphVertex) {
         if (v === this.v1) {
             return this.v2;

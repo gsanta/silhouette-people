@@ -55,7 +55,11 @@ export class NextEdgeSelector {
 
     private orderEdgesByAngle(sourceEdge: GraphEdge, targetEdges: GraphEdge[], ascending = true): GraphEdge[] {
         const angles: Map<GraphEdge, number> = new Map();
-        targetEdges.forEach(targetEdge => Direction.angleBetween(sourceEdge.direction, targetEdge.direction));
+        targetEdges.forEach(targetEdge => {
+            const angle = Direction.angleBetween(sourceEdge.direction, targetEdge.direction);
+            angles.set(targetEdge, angle);
+        });
+        
         targetEdges = [...targetEdges];
         
         if (ascending) {

@@ -20,6 +20,10 @@ export class DirectionRestrictorAdapter extends RouteWalkerListener {
         this.restrictor.edgeChanged();
     }
 
+    onDirectionChanged() {
+        this.restrictor.edgeChanged();
+    }
+
     onStarted() {
         this.restrictor.on();
     }
