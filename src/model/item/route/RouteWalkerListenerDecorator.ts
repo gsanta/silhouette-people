@@ -1,6 +1,6 @@
 import { Vector3 } from "babylonjs";
 import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
-import { RouteWalker, RouteWalkerState } from "./RouteWalker";
+import { RouteWalker } from "./RouteWalker";
 import { RouteWalkerImpl } from "./RouteWalkerImpl";
 import { RouteWalkerListener } from "./RouteWalkerListener";
 
@@ -15,22 +15,24 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
 
     walk(deltaTime: number): boolean {
         const ret = this.delegate.walk();
-        if (ret && this.getState() !== RouteWalkerState.FINISHED) {
+        if (ret) {
             this.listeners.forEach(listener => listener.onWalk(deltaTime));
         }
         return ret;
     }
 
-    setState(state: RouteWalkerState): void {
-        if (state === RouteWalkerState.STARTED) {
+    setStarted(isStarted: boolean): void {
+        if (isStarted) {
             this.listeners.forEach(listener => listener.onStarted());
-        } else if (state === RouteWalkerState.FINISHED) {
+        } else {
             this.listeners.forEach(listener => listener.onFinished());
         }
 
-        this.delegate.setState(state);
+        this.delegate.setStarted(isStarted);
 
     }
+    isStarted(): boolean { return this.delegate.isStarted(); }
+    isRunning(): boolean { return this.delegate.isRunning(); }
 
     setReversed(isReversed: boolean): void { 
         this.delegate.setReversed(isReversed);
@@ -39,7 +41,6 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
         this.listeners.forEach(listener => listener.onEnterEdge());
     }
     isReversed(): boolean { return this.delegate.isReversed(); }
-    getState(): RouteWalkerState { return this.delegate.getState(); }
     getPos(): Vector3 { return this.delegate.getPos(); }
     getPrevPos(): Vector3 { return this.delegate.getPrevPos(); }
     getEdge(): GraphEdge { return this.delegate.getEdge(); }

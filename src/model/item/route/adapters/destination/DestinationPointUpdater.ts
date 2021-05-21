@@ -1,4 +1,5 @@
-import { GraphEdge, GraphVertex } from "../../../../../service/graph/GraphImpl";
+import { Vector2 } from "babylonjs";
+import { GraphEdge } from "../../../../../service/graph/GraphImpl";
 import { RouteWalker } from "../../RouteWalker";
 
 export class DestinationPointUpdater {
@@ -11,6 +12,8 @@ export class DestinationPointUpdater {
     initCheckPoints() {
         const route = this.routeWalker.getRoute();
         this.routeWalker.setEdge(route.getEdges()[0]);
+        const source = this.routeWalker.getSource().p;
+        route.character.setPosition2D(new Vector2(source.x, source.z));
     }
     
     updateCheckPointsIfNeeded() {

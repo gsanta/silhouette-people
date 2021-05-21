@@ -2,7 +2,7 @@ import { RouteWalker, RouteWalkerState } from "../../RouteWalker";
 import { ExactDirectionRestrictor } from "./ExactDirectionRestrictor";
 import { InsidePolygonRestrictor } from "./InsidePolygonRestrictor";
 
-export class DirectionRestrictor {
+export class RotationRestrictor {
     private routeWalker: RouteWalker;
     private exactDirectionRestrictor: ExactDirectionRestrictor;
     private insidePolygonRestrictor: InsidePolygonRestrictor;
@@ -14,7 +14,7 @@ export class DirectionRestrictor {
     }
 
     positionChanged() {
-        if (this.routeWalker.getState() !== RouteWalkerState.FINISHED) {
+        if (this.routeWalker.isRunning()) {
 
             const direction = this.getDirectionIfRestricted();
 

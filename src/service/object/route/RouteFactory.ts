@@ -2,7 +2,7 @@ import { Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { PathItem } from "../../../model/item/PathItem";
-import { DirectionRestrictor } from "../../../model/item/route/adapters/rotation/RotationRestrictor";
+import { RotationRestrictor } from "../../../model/item/route/adapters/rotation/RotationRestrictor";
 import { LockedSpeed } from "../../../model/item/route/features/LockedSpeed";
 import { RouteItem, RouteStoryConfig } from "../../../model/item/route/RouteItem";
 import { RouteWalkerImpl } from "../../../model/item/route/RouteWalkerImpl";

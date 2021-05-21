@@ -33,9 +33,9 @@ export class CitizenExecutor implements RouteExecutor {
         const citizens =  this.citizenStore.getAll();
 
         citizens.forEach(citizen => {
-            if (citizen.route && citizen.route.walker.getState() !== RouteWalkerState.STARTED) {
-                citizen.route.walker.setState(RouteWalkerState.STARTED)
-            }
+            // if (citizen.route && citizen.route.walker.getState() !== RouteWalkerState.STARTED) {
+            //     citizen.route.walker.setState(RouteWalkerState.STARTED)
+            // }
         });
     }
 
@@ -62,10 +62,10 @@ export class CitizenExecutor implements RouteExecutor {
 
         citizens.forEach(citizen => {
             const route = this.routeStore.getRouteForCharacter(citizen);
-            if (route && route.walker.getState() === RouteWalkerState.FINISHED) {
-                this.citizenStore.removeItem(citizen);
+            // if (route && route.walker.getState() === RouteWalkerState.FINISHED) {
+            //     this.citizenStore.removeItem(citizen);
 
-            }
+            // }
         });
     }
 }

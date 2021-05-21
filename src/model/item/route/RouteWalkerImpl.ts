@@ -1,8 +1,7 @@
-import { Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
 import { GraphEdge } from "../../../service/graph/GraphImpl";
 import { RouteItem } from "./RouteItem";
-import { RouteWalker, RouteWalkerState } from "./RouteWalker";
+import { RouteWalker } from "./RouteWalker";
 
 export class RouteWalkerImpl implements RouteWalker {
     private readonly route: RouteItem;
@@ -12,8 +11,8 @@ export class RouteWalkerImpl implements RouteWalker {
 
     private edge: GraphEdge;
 
-    private state: RouteWalkerState;
-    private reversed: boolean = false;
+    private started = false;
+    private reversed = false;
 
     constructor(route: RouteItem) {
         this.route = route;
@@ -37,14 +36,6 @@ export class RouteWalkerImpl implements RouteWalker {
 
     setEdge(edge: GraphEdge): void {
         this.edge = edge;
-
-        if (this.edge === undefined) {
-            this.setState(RouteWalkerState.FINISHED);
-        } else {
-            if (this.state === RouteWalkerState.FINISHED) {
-                this.setState(RouteWalkerState.STARTED);
-            }
-        }
     }
 
     getTarget() {
@@ -56,7 +47,7 @@ export class RouteWalkerImpl implements RouteWalker {
     }
 
     walk(): boolean {
-        if (this.state === RouteWalkerState.STARTED) {
+        if (this.started && this.edge) {
             const character = this.route.character;
         
             this.prevPos = this.currPos;
@@ -71,7 +62,6 @@ export class RouteWalkerImpl implements RouteWalker {
 
         if (!this.edge) {
             this.edge = this.route.getEdges()[0];
-            this.state = RouteWalkerState.STARTED;
         }
     }
 
@@ -79,20 +69,15 @@ export class RouteWalkerImpl implements RouteWalker {
         return this.reversed;
     }
 
-    setState(state: RouteWalkerState): void {
-        this.state = state;
-
-        if (this.state === RouteWalkerState.STARTED) {
-            const character = this.route.character;
-            const source = this.getSource().p;
-            character.setPosition2D(new Vector2(source.x, source.z));
-        } else {
-            const { character } = this.route;
-            character.walker.setSpeed(0);
-        }
+    setStarted(isStarted: boolean): void {
+        this.started = isStarted;
     }
 
-    getState(): RouteWalkerState {
-        return this.state;
+    isStarted(): boolean {
+        return this.started;
+    }
+
+    isRunning(): boolean {
+        return this.isStarted() && this.edge !== undefined;
     }
 }

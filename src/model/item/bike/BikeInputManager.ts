@@ -55,7 +55,7 @@ export class BikeInputManager extends MeshInputManager {
         const walker = this.bikeWalker;
 
         if (isKeyDown) {
-            if (this.character.route.walker.getState() === RouteWalkerState.FINISHED) {
+            if (!this.character.route.walker.isRunning()) {
                 return;
             }
             switch(e.key) {

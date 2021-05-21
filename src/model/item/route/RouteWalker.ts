@@ -8,6 +8,8 @@ export enum RouteWalkerState {
 }
 
 export interface RouteWalker {
+    walk(deltaTime: number): boolean;
+
     getRoute(): RouteItem;
 
     getPos(): Vector3;
@@ -18,11 +20,10 @@ export interface RouteWalker {
     getTarget(): GraphVertex;
     getSource(): GraphVertex;
     
-    walk(deltaTime: number): boolean;
-
     setReversed(isReversed: boolean): void;
     isReversed(): boolean;
 
-    setState(state: RouteWalkerState): void;
-    getState(): RouteWalkerState;
+    setStarted(isStarted: boolean): void;
+    isStarted(): boolean;
+    isRunning(): boolean;
 }

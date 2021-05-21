@@ -68,7 +68,7 @@ export class BikeWalker extends MeshWalker {
 
     walk(deltaTime: number) {
         const character = this.character.children[0];
-        if (character.route && character.route.walker.getState() === RouteWalkerState.FINISHED) {
+        if (character.route && !character.route.walker.isRunning()) {
             return;
         }
 

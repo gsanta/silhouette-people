@@ -98,7 +98,7 @@ export class ExecutionTool extends Tool {
     private startRoutes(characters: CharacterItem[]) {
         characters.forEach(player => {
             if (player.route) {
-                player.route.walker.setState(RouteWalkerState.STARTED);
+                player.route.walker.setStarted(true);
             }
         });
     }
