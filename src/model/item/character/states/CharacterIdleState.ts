@@ -18,7 +18,7 @@ export class CharacterIdleState extends MeshState {
     }
 
     private changeStateIfNeeded() {
-        const { walker } = this.character;
+        const { mover: walker } = this.character;
 
         if (!walker) { return; }
 

@@ -1,17 +1,16 @@
-import { BikeWalker } from "../bike/states/BikeWalker";
 import { MeshInputManager } from "../../MeshInputManager";
 import { MeshState } from "../mesh/MeshState";
-import { MeshWalker } from "../mesh/MeshWalker";
+import { MeshMover } from "../mesh/MeshMover";
 import { MeshItem } from "../mesh/MeshItem";
 import { RouteWalker } from "../route/RouteWalker";
 import { BikeState } from "../bike/BikeState";
 
-export type PersonItem = CharacterItem<MeshWalker>;
-export type BikeItem = CharacterItem<BikeWalker, BikeState>
+export type PersonItem = CharacterItem;
+export type BikeItem = CharacterItem<BikeState>
 
-export class CharacterItem<W extends MeshWalker = MeshWalker, S extends MeshState = MeshState> extends MeshItem {
+export class CharacterItem<S extends MeshState = MeshState> extends MeshItem {
     animationState: S;
-    walker: W;
+    mover: MeshMover;
     inputManager: MeshInputManager;
     routeWalker: RouteWalker;
 

@@ -4,6 +4,7 @@ export interface BikeStateInfo {
     isPedalling: boolean;
     isBreaking: boolean;
     gear: number;
+    isPowerBrakeOn: boolean;
 }
 
 export abstract class BikeState extends MeshState {

@@ -1,24 +1,28 @@
 import { BikeItem } from "../../character/CharacterItem";
 import { BikeState, BikeStateInfo } from "../BikeState";
-import { BikeSlowdownPhysics } from "../physics/BikeSlowdownPhysics";
+import { RollingSystem } from "../physics/RollingSystem";
 import { BikeBrakingState } from "./BikeBrakingState";
 import { BikeSpeedUpState } from "./BikeSpeedupState";
+import { BikeMover } from "./BikeMover";
+import { MeshMover } from "../../mesh/MeshMover";
 
 export class BikeIdleState extends BikeState {
-    private bike: BikeItem;
-    private rollingSystem: BikeSlowdownPhysics;
+    private readonly bike: BikeItem;
+    private readonly mover: MeshMover;
+    private readonly rollingSystem: RollingSystem;
 
-    constructor(bike: BikeItem) {
+    constructor(bike: BikeItem, mover: MeshMover) {
         super(bike);
         this.bike = bike;
-        this.rollingSystem = new BikeSlowdownPhysics(this.bike.walker, 1)
+        this.mover = mover;
+        this.rollingSystem = new RollingSystem(this.bike.mover, 1)
     }
 
     updateInfo(bikeStateInfo: BikeStateInfo): void {
         if (bikeStateInfo.isBreaking) {
-            this.bike.setState(new BikeBrakingState(this.bike));
+            this.bike.setState(new BikeBrakingState(this.bike, this.mover));
         } else if (bikeStateInfo.isPedalling) {
-            this.bike.setState(new BikeSpeedUpState(this.bike));
+            this.bike.setState(new BikeSpeedUpState(this.bike, this.mover));
         }
     }
     

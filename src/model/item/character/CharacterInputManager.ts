@@ -36,21 +36,21 @@ export class CharacterInputManager extends MeshInputManager {
 
     private handleDirection() {
         if (this.keyboardService.activeKeys.has('a')) {
-            this.character.walker.setRotation(-this.rotationConst);
+            this.character.mover.setRotation(-this.rotationConst);
         } else if (this.keyboardService.activeKeys.has('d')) {
-            this.character.walker.setRotation(this.rotationConst);
+            this.character.mover.setRotation(this.rotationConst);
         } else {
-            this.character.walker.setRotation(0);
+            this.character.mover.setRotation(0);
         }
     }
 
     private handleSpeed() {
         if (this.keyboardService.activeKeys.has('w')) {
-            this.character.walker.setSpeed(this.speedConst);
+            this.character.mover.setSpeed(this.speedConst);
         } else if (this.keyboardService.activeKeys.has('s')) {
-            this.character.walker.setSpeed(-this.speedConst);
+            this.character.mover.setSpeed(-this.speedConst);
         } else {
-            this.character.walker.setSpeed(0);
+            this.character.mover.setSpeed(0);
         }
     }
 }

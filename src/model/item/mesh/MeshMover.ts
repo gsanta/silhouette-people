@@ -1,6 +1,6 @@
 import { CharacterItem } from "../character/CharacterItem";
 
-export abstract class MeshWalker {
+export abstract class MeshMover {
     protected _isDirty = false;
     protected speed = 0;
     protected rotation = 0;

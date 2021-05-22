@@ -5,17 +5,17 @@ import { MeshInputManager } from "../../MeshInputManager";
 import { BikeItem, CharacterItem } from "../character/CharacterItem";
 import { NextEdgeSelector } from "../route/adapters/routing/NextEdgeSelector";
 import { BikeStateInfo } from "./BikeState";
-import { BikeWalker } from "./states/BikeWalker";
+import { BikeMover } from "./states/BikeMover";
 
 export class BikeInputManager extends MeshInputManager {
     private keyboardService: KeyboardService;
-    private bikeWalker: BikeWalker;
+    private bikeWalker: BikeMover;
     private readonly character: CharacterItem;
     private readonly nextEdgeSelector: NextEdgeSelector;
     private readonly bikeInfo: BikeStateInfo;
     private readonly bike: BikeItem;
 
-    constructor(bikeWalker: BikeWalker, bike: BikeItem, character: CharacterItem,  keyboardService: KeyboardService, graphService: GraphService) {
+    constructor(bikeWalker: BikeMover, bike: BikeItem, character: CharacterItem,  keyboardService: KeyboardService, graphService: GraphService) {
         super();
         this.bikeWalker = bikeWalker;
         this.bike = bike;
@@ -23,11 +23,13 @@ export class BikeInputManager extends MeshInputManager {
         this.character = character;
         this.nextEdgeSelector = new NextEdgeSelector(character.routeWalker, <GraphImpl> graphService.getGraph());
         this.keyboardService.onKeydown(e => this.onKeyDown(e));
+        this.keyboardService.onKeyup(e => this.onKeyDown(e));
 
         this.bikeInfo = {
             isBreaking: false,
             isPedalling: false,
-            gear: 0
+            gear: 0,
+            isPowerBrakeOn: false
         }
     }
 
@@ -42,6 +44,18 @@ export class BikeInputManager extends MeshInputManager {
             case 'q':
                 this.nextEdgeSelector.choosePrevEdge();
             break;
+        }
+
+        if (e.shiftKey) {
+            this.bikeInfo.isPowerBrakeOn = true;
+            this.bike.animationState.updateInfo(this.bikeInfo);
+        }
+    }
+
+    onKeyUp(e: KeyboardEvent) {
+        if (!e.shiftKey) {
+            this.bikeInfo.isPowerBrakeOn = true;
+            this.bike.animationState.updateInfo(this.bikeInfo);
         }
     }
 

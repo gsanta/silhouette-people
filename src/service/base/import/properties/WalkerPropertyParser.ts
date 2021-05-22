@@ -1,7 +1,7 @@
-import { BikeWalker } from "../../../../model/item/bike/states/BikeWalker";
-import { CharacterWalker } from "../../../../model/item/character/states/CharacterWalker";
+import { BikeMover } from "../../../../model/item/bike/states/BikeMover";
+import { CharacterMover } from "../../../../model/item/character/states/CharacterMover";
 import { BikeItem, CharacterItem } from "../../../../model/item/character/CharacterItem";
-import { MeshWalker } from "../../../../model/item/mesh/MeshWalker";
+import { MeshMover } from "../../../../model/item/mesh/MeshMover";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 enum WalkerName {
@@ -17,15 +17,15 @@ export class WalkerPropertyParser extends AbstractPropertyParser<string> {
     }
 
     processProperty(mesh: CharacterItem, walkerName: string) {
-        mesh.walker = this.createWalker(mesh, walkerName as WalkerName);
+        mesh.mover = this.createWalker(mesh, walkerName as WalkerName);
     }
 
-    private createWalker(meshObj: CharacterItem, stateName: WalkerName): MeshWalker {
+    private createWalker(meshObj: CharacterItem, stateName: WalkerName): MeshMover {
         switch(stateName) {
             case WalkerName.BikeWalker:
-                return new BikeWalker(meshObj as BikeItem);
+                return new BikeMover(meshObj as BikeItem);
             case WalkerName.CharacterWalker:
-                return new CharacterWalker(meshObj);
+                return new CharacterMover(meshObj);
         }
     }
 }

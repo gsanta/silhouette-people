@@ -12,7 +12,7 @@ import { DynamicRouterAdapter } from "../../model/item/route/adapters/routing/Dy
 import { BikeParenter } from "../base/setup/BikeParenter";
 import { KeyboardService } from "../base/keyboard/KeyboardService";
 import { BikeInputManager } from "../../model/item/bike/BikeInputManager";
-import { BikeWalker } from "../../model/item/bike/states/BikeWalker";
+import { BikeMover } from "../../model/item/bike/states/BikeMover";
 
 export class PlayerSetup {
 
@@ -51,6 +51,6 @@ export class PlayerSetup {
         
         const bike = <BikeItem> player.getParent();
         bike.inputManager = player.inputManager;
-        player.inputManager = new BikeInputManager(<BikeWalker> player.walker, bike, player, this.keyboardService, this.graphService);
+        player.inputManager = new BikeInputManager(<BikeMover> player.mover, bike, player, this.keyboardService, this.graphService);
     }
 }

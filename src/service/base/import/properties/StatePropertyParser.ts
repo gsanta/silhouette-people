@@ -26,7 +26,7 @@ export class StatePropertyParser extends AbstractPropertyParser<string> {
             case MeshStateName.CharacterWalkingState:
                 return new CharacterWalkingState(gameObj);
             case MeshStateName.BikeIdleState:
-                return new BikeIdleState(<BikeItem> gameObj);
+                return new BikeIdleState(<BikeItem> gameObj, null);
             // case MeshStateName.BikeMovingState:
             //     return new BikeMovingState(gameObj);
         }

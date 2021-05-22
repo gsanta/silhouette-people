@@ -1,9 +1,9 @@
 import { Axis, Space } from "babylonjs";
 import { PersonItem } from "../CharacterItem";
-import { MeshWalker } from "../../mesh/MeshWalker";
+import { MeshMover } from "../../mesh/MeshMover";
 
 
-export class CharacterWalker extends MeshWalker {
+export class CharacterMover extends MeshMover {
     constructor(character: PersonItem) {
         super(character);
     }

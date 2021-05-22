@@ -11,6 +11,7 @@ export class KeyboardService {
 
     private handlers: KeyboardListener[] = [];
     private keydownHandlers: ((e: KeyboardEvent) => void)[] = [];
+    private keyupHandlers: ((e: KeyboardEvent) => void)[] = [];
 
     constructor() {
         this.checker = new KeyChecker(this);
@@ -22,6 +23,10 @@ export class KeyboardService {
 
     onKeydown(handler: (e: KeyboardEvent) => void) {
         this.keydownHandlers.push(handler);
+    }
+
+    onKeyup(handler: (e: KeyboardEvent) => void) {
+        this.keyupHandlers.push(handler);
     }
 
     removeListener(l: KeyboardListener) {
@@ -37,5 +42,6 @@ export class KeyboardService {
     keyUp(e: KeyboardEvent) {
         this.activeKeys.delete(e.key);
         this.handlers.forEach(l => l.onKeyUp && l.onKeyUp(e));
+        this.keyupHandlers.forEach(handler => handler(e));
     }
 }

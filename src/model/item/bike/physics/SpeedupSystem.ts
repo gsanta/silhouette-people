@@ -1,7 +1,7 @@
 import { Vector2 } from 'babylonjs';
 import regression from 'regression';
-import { BikeItem, CharacterItem } from '../../character/CharacterItem';
-import { BikeWalker } from '../states/BikeWalker';
+import { MeshMover } from '../../mesh/MeshMover';
+import { BikeMover } from '../states/BikeMover';
 import { AbstractBikePhysics } from './AbstractBikePhysics';
 
 export interface BikeSpeedPhysicsConf {
@@ -16,17 +16,17 @@ export enum BikeSpeedState {
     Idle = 'Idle'
 }
 
-export class BikeSpeedupPhysics extends AbstractBikePhysics {
+export class SpeedupSystem extends AbstractBikePhysics {
     private speedRanges: [Vector2, Vector2][];
     private equations: regression.Result[] = [];
     private speedLimits: [number, number][] = [];
     private startTime = 0;
     private currTime = 0;
     private maxTime = 0;
-    private currentGear = -1;
-    private readonly bikeWalker: BikeWalker;
+    private currentGear = 0;
+    private readonly mover: MeshMover;
 
-    constructor(bikeWalker: BikeWalker) {
+    constructor(mover: MeshMover) {
         super();
         this.speedRanges = [
             [ new Vector2(-1.6, -10 / 3.6), new Vector2(1.4, 2.5) ],
@@ -34,19 +34,19 @@ export class BikeSpeedupPhysics extends AbstractBikePhysics {
             [ new Vector2(1.4, 10 / 3.6), new Vector2(4.4, 7.5) ]
         ];
     
-        this.bikeWalker = bikeWalker;
+        this.mover = mover;
         this.setup();
     }
 
     setGear(gear: number) {
         if (gear !== this.currentGear) {            
-            this.bikeWalker.setGear(gear);
+            this.currentGear = gear;
             this.initGear();
         }
     }
 
     update(deltaTime: number) {
-        const [ gear, speed ] = [this.bikeWalker.getGear(), this.bikeWalker.getSpeed()];
+        const [ gear, speed ] = [this.currentGear, this.mover.getSpeed()];
 
         if (speed === 0 || gear !== this.currentGear) {
             this.initGear();
@@ -61,7 +61,7 @@ export class BikeSpeedupPhysics extends AbstractBikePhysics {
         } else {
             newSpeed = this.equations[gear].predict(this.currTime)[1];
         }
-        this.bikeWalker.setSpeed(newSpeed);
+        this.mover.setSpeed(newSpeed);
     }
 
     private resetTimers() {
@@ -71,8 +71,8 @@ export class BikeSpeedupPhysics extends AbstractBikePhysics {
     }
 
     private initGear() {
-        const gear = this.bikeWalker.getGear();
-        const speed = this.bikeWalker.getSpeed();
+        const gear = this.currentGear;
+        const speed = this.mover.getSpeed();
         this.resetTimers();
 
         const [min, max] = [this.speedLimits[gear][0], this.speedLimits[gear][1]];

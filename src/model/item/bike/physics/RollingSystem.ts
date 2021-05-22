@@ -1,26 +1,27 @@
-import { BikeWalker } from "../states/BikeWalker";
+import { MeshMover } from "../../mesh/MeshMover";
+import { BikeMover } from "../states/BikeMover";
 import { AbstractBikePhysics } from "./AbstractBikePhysics";
 
-export class BikeSlowdownPhysics extends AbstractBikePhysics {
-    private bikeWalker: BikeWalker;
+export class RollingSystem extends AbstractBikePhysics {
+    private mover: MeshMover;
     private readonly slowdown: number;
 
-    constructor(bikeWalker: BikeWalker, slowdownFactor: number) {
+    constructor(mover: MeshMover, slowdownFactor: number) {
         super();
-        this.bikeWalker = bikeWalker;
+        this.mover = mover;
 
         this.slowdown = slowdownFactor / 1000;
     }
 
     update(deltaTime: number) {
         const slowdownAmount = deltaTime * this.slowdown;
-        const speed = this.bikeWalker.getSpeed();
+        const speed = this.mover.getSpeed();
         let newSpeed = speed - slowdownAmount;
 
         if (newSpeed < 0) {
             newSpeed = 0;
         }
 
-        this.bikeWalker.setSpeed(newSpeed);
+        this.mover.setSpeed(newSpeed);
     }
 }

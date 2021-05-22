@@ -4,6 +4,7 @@ import { BikeItem, PersonItem } from "../CharacterItem";
 import { MeshState } from "../../mesh/MeshState";
 import { CharacterBikingState } from "./CharacterBikingState";
 import { BikeIdleState } from "../../bike/states/BikeIdleState";
+import { BikeMover } from "../../bike/states/BikeMover";
 
 export class CharacterGetOnBikeState extends MeshState {
     private bike: BikeItem;
@@ -24,6 +25,6 @@ export class CharacterGetOnBikeState extends MeshState {
         player.setParent(this.bike);
 
         player.animationState = new CharacterBikingState(player);
-        this.bike.animationState = new BikeIdleState(this.bike);
+        this.bike.animationState = new BikeIdleState(this.bike, <BikeMover> player.mover);
     }
 }

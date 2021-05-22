@@ -52,7 +52,7 @@ export class CitizenExecutor implements RouteExecutor {
     private updateWalkers(deltaTime: number) {
         const citizens =  this.citizenStore.getAll();
 
-        citizens.forEach(citizen => citizen.walker.walk(deltaTime));
+        citizens.forEach(citizen => citizen.mover.walk(deltaTime));
         citizens.forEach(citizen => citizen.animationState.update(deltaTime));
     }
 

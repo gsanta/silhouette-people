@@ -24,7 +24,7 @@ export class BikePanelComponent extends React.Component<ComponentProps> {
         }
 
         const bike = player.getParent() as BikeItem;
-        let speed = bike.walker.getSpeed();
+        let speed = bike.mover.getSpeed();
         speed = Math.trunc(speed * 10) / 10;
 
         return (
@@ -37,7 +37,7 @@ export class BikePanelComponent extends React.Component<ComponentProps> {
                     </div>
                     <div className="info-row">
                         <div>Gear</div>
-                        <div>{bike.walker.getGear()}</div>
+                        {/* <div>{bike.walker.getGear()}</div> */}
                     </div>
                 </div>
             </div>
