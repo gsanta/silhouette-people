@@ -1,4 +1,3 @@
-import { Tools } from "babylonjs";
 import { Direction } from "../../../../../service/graph/Direction";
 import { GraphEdge, GraphImpl, GraphVertex } from "../../../../../service/graph/GraphImpl";
 import { RouteWalker } from "../../RouteWalker";
@@ -14,27 +13,21 @@ export class NextEdgeSelector {
     }
 
     chooseNextEdge() {
-        const route = this.routeWalker.getRoute();
-        const currentEdge = this.routeWalker.getEdge();
-        const routeEdges = this.routeWalker.getRoute().getEdges();
-        const lastEdge = routeEdges[routeEdges.length - 1];
-
-        if (currentEdge && lastEdge !== currentEdge) {
-            const anchorVertex = route.isReversed(lastEdge) ? lastEdge.v2 : lastEdge.v1;
-    
-            let edges = this.getValidEdges(anchorVertex, [currentEdge, lastEdge]);
-    
-            if (edges.length > 0) {
-                edges = this.orderEdgesByAngle(lastEdge, edges);
-                let route = this.routeWalker.getRoute();
-                route = route.removeLastEdge();
-                route = route.addEdge(edges[0]);
-                this.routeWalker.setRoute(route);
-            }
-        }
+        this.chooseEdge(true);
     }
 
     choosePrevEdge() {
+        this.chooseEdge(false);
+    }
+
+    private chooseEdge(ascending: boolean) {
+        const edge = this.getNewEdge(ascending);
+        if (edge) {
+            this.setNewEdge(edge);
+        }
+    }
+
+    private getNewEdge(ascending: boolean) {
         const route = this.routeWalker.getRoute();
         const currentEdge = this.routeWalker.getEdge();
         const routeEdges = this.routeWalker.getRoute().getEdges();
@@ -42,17 +35,19 @@ export class NextEdgeSelector {
 
         if (currentEdge && lastEdge !== currentEdge) {
             const anchorVertex = route.isReversed(lastEdge) ? lastEdge.v2 : lastEdge.v1;
-    
+
             let edges = this.getValidEdges(anchorVertex, [currentEdge, lastEdge]);
-    
-            if (edges.length > 0) {
-                edges = this.orderEdgesByAngle(lastEdge, edges, false);
-                let route = this.routeWalker.getRoute();
-                route = route.removeLastEdge();
-                route = route.addEdge(edges[0]);
-                this.routeWalker.setRoute(route);
-            }
+            edges = this.orderEdgesByAngle(lastEdge, edges, ascending);
+
+            return edges.length > 0 ? edges[0] : undefined;
         }
+    }
+
+    private setNewEdge(edge: GraphEdge) {
+        let route = this.routeWalker.getRoute();
+        route = route.removeLastEdge();
+        route = route.addEdge(edge);
+        this.routeWalker.setRoute(route);
     }
 
     private orderEdgesByAngle(sourceEdge: GraphEdge, targetEdges: GraphEdge[], ascending = true): GraphEdge[] {

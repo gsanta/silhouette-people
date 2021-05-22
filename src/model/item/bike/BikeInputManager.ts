@@ -25,10 +25,13 @@ export class BikeInputManager extends MeshInputManager {
         switch(e.key) {
         
             case 'e':
-                this.nextEdgeSelector.choosePrevEdge();
+                this.nextEdgeSelector.chooseNextEdge();
             break;
             case 'r':
-                this.nextEdgeSelector.chooseNextEdge();
+                this.character.routeWalker.reverseRoute();
+            break;
+            case 'q':
+                this.nextEdgeSelector.choosePrevEdge();
             break;
         }
     }
@@ -38,10 +41,6 @@ export class BikeInputManager extends MeshInputManager {
         if (!this.isSpeedDisabled) {
             this.handleSpeed(e, isKeyDown);
         }
-
-        if (this.keyboardService.activeKeys.has('q')) {
-            if (isKeyDown) { this.character.routeWalker.reverseRoute(); }
-        } 
 
         if (!this.isDirectionDisabled) {
             this.handleDirection();
@@ -84,10 +83,6 @@ export class BikeInputManager extends MeshInputManager {
                 case 's':
                     walker.setBraking(true);
                 break;
-                // case 'r':
-                //     walker.setPedalling(true);
-                //     walker.setPedalDirection('backward');
-                // break;
             }
         } else {
             switch(e.key) {
@@ -97,9 +92,6 @@ export class BikeInputManager extends MeshInputManager {
                 case 's':
                     walker.setBraking(false);
                 break;
-                // case 'r':
-                //     walker.setPedalling(false);
-                // break;
             }
         }
     }

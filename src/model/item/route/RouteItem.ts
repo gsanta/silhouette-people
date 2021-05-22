@@ -38,7 +38,7 @@ export class RouteItem {
         if (this.edges.length === 0) { throw new Error('No edge to remove.'); }
         const clone = [...this.edges];
         clone.pop();
-        const isReversedIfSingleEdge = this.edges.length > 0 ? this.isReversed(this.edges[0]) : false;
+        const isReversedIfSingleEdge = clone.length > 0 ? this.isReversed(clone[0]) : false;
         return new RouteItem(clone, { name: this.name, isReversedIfSingleEdge });
     }
 
@@ -46,7 +46,7 @@ export class RouteItem {
         if (this.edges.length === 0) { throw new Error('No edge to remove.'); }
         const clone = [...this.edges];
         clone.shift();
-        const isReversedIfSingleEdge = this.edges.length > 0 ? this.isReversed(this.edges[0]) : false;
+        const isReversedIfSingleEdge = clone.length > 0 ? this.isReversed(clone[0]) : false;
         return new RouteItem(clone, { name: this.name, isReversedIfSingleEdge });
     }
 
