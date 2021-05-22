@@ -3,6 +3,7 @@ import { BikeMovingState } from "../../bike/states/BikeMovingState";
 import { BikeItem, PersonItem } from "../CharacterItem";
 import { MeshState } from "../../mesh/MeshState";
 import { CharacterBikingState } from "./CharacterBikingState";
+import { BikeIdleState } from "../../bike/states/BikeIdleState";
 
 export class CharacterGetOnBikeState extends MeshState {
     private bike: BikeItem;
@@ -23,6 +24,6 @@ export class CharacterGetOnBikeState extends MeshState {
         player.setParent(this.bike);
 
         player.animationState = new CharacterBikingState(player);
-        this.bike.animationState = new BikeMovingState(this.bike);
+        this.bike.animationState = new BikeIdleState(this.bike);
     }
 }

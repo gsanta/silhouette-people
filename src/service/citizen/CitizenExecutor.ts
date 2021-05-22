@@ -53,7 +53,7 @@ export class CitizenExecutor implements RouteExecutor {
         const citizens =  this.citizenStore.getAll();
 
         citizens.forEach(citizen => citizen.walker.walk(deltaTime));
-        citizens.forEach(citizen => citizen.animationState.update());
+        citizens.forEach(citizen => citizen.animationState.update(deltaTime));
     }
 
     private deleteFinishedCitizens() {

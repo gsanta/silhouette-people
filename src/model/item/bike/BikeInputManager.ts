@@ -2,8 +2,9 @@ import { KeyboardService } from "../../../service/base/keyboard/KeyboardService"
 import { GraphImpl } from "../../../service/graph/GraphImpl";
 import { GraphService } from "../../../service/graph/GraphService";
 import { MeshInputManager } from "../../MeshInputManager";
-import { CharacterItem } from "../character/CharacterItem";
+import { BikeItem, CharacterItem } from "../character/CharacterItem";
 import { NextEdgeSelector } from "../route/adapters/routing/NextEdgeSelector";
+import { BikeStateInfo } from "./BikeState";
 import { BikeWalker } from "./states/BikeWalker";
 
 export class BikeInputManager extends MeshInputManager {
@@ -11,19 +12,27 @@ export class BikeInputManager extends MeshInputManager {
     private bikeWalker: BikeWalker;
     private readonly character: CharacterItem;
     private readonly nextEdgeSelector: NextEdgeSelector;
+    private readonly bikeInfo: BikeStateInfo;
+    private readonly bike: BikeItem;
 
-    constructor(bikeWalker: BikeWalker, character: CharacterItem,  keyboardService: KeyboardService, graphService: GraphService) {
+    constructor(bikeWalker: BikeWalker, bike: BikeItem, character: CharacterItem,  keyboardService: KeyboardService, graphService: GraphService) {
         super();
         this.bikeWalker = bikeWalker;
+        this.bike = bike;
         this.keyboardService = keyboardService;
         this.character = character;
         this.nextEdgeSelector = new NextEdgeSelector(character.routeWalker, <GraphImpl> graphService.getGraph());
         this.keyboardService.onKeydown(e => this.onKeyDown(e));
+
+        this.bikeInfo = {
+            isBreaking: false,
+            isPedalling: false,
+            gear: 0
+        }
     }
 
     onKeyDown(e: KeyboardEvent) {
         switch(e.key) {
-        
             case 'e':
                 this.nextEdgeSelector.chooseNextEdge();
             break;
@@ -68,29 +77,43 @@ export class BikeInputManager extends MeshInputManager {
             }
             switch(e.key) {
                 case '1':
-                    walker.setGear(0);
+                    this.bikeInfo.gear = 0;
+                    this.bike.animationState.updateInfo(this.bikeInfo);
+                    // walker.setGear(0);
                 break;
                 case '2':
-                    walker.setGear(1);
+                    this.bikeInfo.gear = 1;
+                    this.bike.animationState.updateInfo(this.bikeInfo);
+                    // walker.setGear(1);
                 break;
                 case '3':
-                    walker.setGear(2);
+                    this.bikeInfo.gear = 2;
+                    this.bike.animationState.updateInfo(this.bikeInfo);
+                    // walker.setGear(2);
                 break;
                 case 'w':
-                    walker.setPedalling(true);
-                    walker.setPedalDirection('forward');
+                    this.bikeInfo.isPedalling = true;
+                    this.bike.animationState.updateInfo(this.bikeInfo);
+                    // walker.setPedalling(true);
+                    // walker.setPedalDirection('forward');
                 break;
                 case 's':
-                    walker.setBraking(true);
+                    this.bikeInfo.isBreaking = true;
+                    this.bike.animationState.updateInfo(this.bikeInfo);
+                    // walker.setBraking(true);
                 break;
             }
         } else {
             switch(e.key) {
                 case 'w':
-                    walker.setPedalling(false);
+                    this.bikeInfo.isPedalling = false;
+                    this.bike.animationState.updateInfo(this.bikeInfo);
+                    // walker.setPedalling(false);
                 break;
                 case 's':
-                    walker.setBraking(false);
+                    this.bikeInfo.isBreaking = false;
+                    this.bike.animationState.updateInfo(this.bikeInfo);
+                    // walker.setBraking(false);
                 break;
             }
         }

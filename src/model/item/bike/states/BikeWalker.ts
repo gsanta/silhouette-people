@@ -15,10 +15,13 @@ export class BikeWalker extends MeshWalker {
     protected pedalDirection: PedalDirection = 'forward'; 
     protected gear: number = 0;
 
+    private bike: BikeItem;
+
     constructor(bike: BikeItem) {
         super(bike);
 
-        this.physics = new BikeMasterPhysics(this);
+        this.bike = bike;
+        this.physics = new BikeMasterPhysics(bike, this);
     }
 
     setBraking(isBraking: boolean): void {
@@ -71,7 +74,9 @@ export class BikeWalker extends MeshWalker {
             return;
         }
 
-        this.physics.update(deltaTime);
+        this.bike.animationState.update(deltaTime);
+
+        // this.physics.update(deltaTime);
 
         const mesh = this.character.instance.getMesh();
         

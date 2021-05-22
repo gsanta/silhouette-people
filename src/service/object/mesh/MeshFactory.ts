@@ -1,4 +1,5 @@
 import { InjectProperty } from "../../../di/diDecorators";
+import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { MeshConfig, MeshItem, MeshObjType } from "../../../model/item/mesh/MeshItem";
 import { AbstractPropertyParser } from "../../base/import/AbstractPropertyParser";
 import { lookup } from "../../Lookup";
@@ -22,13 +23,19 @@ export class MeshFactory {
 
     async createFromConfig(meshConfig: MeshConfig): Promise<MeshItem> {
         const id = this.generateId(meshConfig.type);
-        const gameObject = new MeshItem(id, this.worldProvider.world);
-
-        if (meshConfig.props) {
-            await this.applyProperties(gameObject, meshConfig);
+        let meshItem: MeshItem 
+        
+        if (meshConfig.type === MeshObjType.Bicycle1) {
+            meshItem = new CharacterItem(id, this.worldProvider.world);
+        } else {
+            meshItem = new MeshItem(id, this.worldProvider.world);
         }
 
-        return gameObject;
+        if (meshConfig.props) {
+            await this.applyProperties(meshItem, meshConfig);
+        }
+
+        return meshItem;
     }
 
     

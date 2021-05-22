@@ -2,7 +2,7 @@ import { Vector2 } from 'babylonjs';
 import regression from 'regression';
 import { BikeItem, CharacterItem } from '../../character/CharacterItem';
 import { BikeWalker } from '../states/BikeWalker';
-import { IBikePhysics } from './IBikePhysics';
+import { AbstractBikePhysics } from './AbstractBikePhysics';
 
 export interface BikeSpeedPhysicsConf {
     gearSpeedRanges: [Vector2, Vector2][];
@@ -16,7 +16,7 @@ export enum BikeSpeedState {
     Idle = 'Idle'
 }
 
-export class BikeSpeedupPhysics implements IBikePhysics {
+export class BikeSpeedupPhysics extends AbstractBikePhysics {
     private speedRanges: [Vector2, Vector2][];
     private equations: regression.Result[] = [];
     private speedLimits: [number, number][] = [];
@@ -27,6 +27,7 @@ export class BikeSpeedupPhysics implements IBikePhysics {
     private readonly bikeWalker: BikeWalker;
 
     constructor(bikeWalker: BikeWalker) {
+        super();
         this.speedRanges = [
             [ new Vector2(-1.6, -10 / 3.6), new Vector2(1.4, 2.5) ],
             [ new Vector2(-0.1, 0), new Vector2(2, 5) ],
@@ -38,8 +39,10 @@ export class BikeSpeedupPhysics implements IBikePhysics {
     }
 
     setGear(gear: number) {
-        this.bikeWalker.setGear(gear);
-        this.initGear();
+        if (gear !== this.currentGear) {            
+            this.bikeWalker.setGear(gear);
+            this.initGear();
+        }
     }
 
     update(deltaTime: number) {
@@ -58,7 +61,6 @@ export class BikeSpeedupPhysics implements IBikePhysics {
         } else {
             newSpeed = this.equations[gear].predict(this.currTime)[1];
         }
-
         this.bikeWalker.setSpeed(newSpeed);
     }
 

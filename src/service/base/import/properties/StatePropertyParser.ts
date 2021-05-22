@@ -5,7 +5,7 @@ import { CharacterIdleState } from "../../../../model/item/character/states/Char
 import { CharacterWalkingState } from "../../../../model/item/character/states/CharacterWalkingState";
 import { MeshState } from "../../../../model/item/mesh/MeshState";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
-import { CharacterItem } from "../../../../model/item/character/CharacterItem";
+import { BikeItem, CharacterItem } from "../../../../model/item/character/CharacterItem";
 
 export class StatePropertyParser extends AbstractPropertyParser<string> {
     propName = 'state';
@@ -26,9 +26,9 @@ export class StatePropertyParser extends AbstractPropertyParser<string> {
             case MeshStateName.CharacterWalkingState:
                 return new CharacterWalkingState(gameObj);
             case MeshStateName.BikeIdleState:
-                return new BikeIdleState(gameObj);
-            case MeshStateName.BikeMovingState:
-                return new BikeMovingState(gameObj);
+                return new BikeIdleState(<BikeItem> gameObj);
+            // case MeshStateName.BikeMovingState:
+            //     return new BikeMovingState(gameObj);
         }
     }
 }

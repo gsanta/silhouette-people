@@ -1,11 +1,12 @@
 
 import { BikeWalker } from "../states/BikeWalker";
-import { IBikePhysics } from "./IBikePhysics";
+import { AbstractBikePhysics } from "./AbstractBikePhysics";
 
-export class BikeReversePhysics implements IBikePhysics {
+export class BikeReversePhysics extends AbstractBikePhysics {
     private bikeWalker: BikeWalker;
 
     constructor(bikeWalker: BikeWalker) {
+        super();
         this.bikeWalker = bikeWalker;
     }
 

@@ -1,4 +1,4 @@
-import { CharacterItem } from "../../model/item/character/CharacterItem";
+import { BikeItem, CharacterItem } from "../../model/item/character/CharacterItem";
 import { ActiveEdgeUpdaterAdapter } from "../../model/item/route/adapters/walking/ActiveEdgeUpdaterAdapter";
 import { DirectionRestrictorAdapter } from "../../model/item/route/adapters/rotation/RotationRestrictorAdapter";
 import { RouteVisualizerAdapter } from "../../model/item/route/adapters/visualization/RouteVisualizerAdapter";
@@ -48,8 +48,9 @@ export class PlayerSetup {
         walker.addListener(new DirectionRestrictorAdapter(walker));
         walker.addListener(new DynamicRouterAdapter(walker, graph));
         walker.addListener(new RouteVisualizerAdapter(walker, this.graphService));
-
-        player.inputManager = new BikeInputManager(<BikeWalker> player.walker, player, this.keyboardService, this.graphService);
-        (<CharacterItem> player.getParent()).inputManager = player.inputManager;
+        
+        const bike = <BikeItem> player.getParent();
+        bike.inputManager = player.inputManager;
+        player.inputManager = new BikeInputManager(<BikeWalker> player.walker, bike, player, this.keyboardService, this.graphService);
     }
 }

@@ -7,7 +7,6 @@ import { RouteWalker } from "./RouteWalker";
 export class RouteWalkerImpl implements RouteWalker {
     private readonly character: CharacterItem;
     private route: RouteItem;
-    // private routeReversed: RouteItem;
 
     private prevPos: Vector3;
     private currPos: Vector3;
@@ -15,7 +14,6 @@ export class RouteWalkerImpl implements RouteWalker {
     private edge: GraphEdge;
 
     private started = false;
-    private reversed = false;
 
     constructor(route: RouteItem, character: CharacterItem) {
         this.route = route;

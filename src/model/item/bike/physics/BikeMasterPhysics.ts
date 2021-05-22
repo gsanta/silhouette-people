@@ -2,32 +2,49 @@ import { BikeWalker } from "../states/BikeWalker";
 import { BikeReversePhysics } from "./BikeReversePhysics";
 import { BikeSlowdownPhysics } from "./BikeSlowdownPhysics";
 import { BikeSpeedupPhysics } from "./BikeSpeedupPhysics";
-import { IBikePhysics } from "./IBikePhysics";
+import { AbstractBikePhysics } from "./AbstractBikePhysics";
+import { BikeBrakingPhysics } from "./BikeBrakingPhysics";
+import { lookup } from "../../../../service/Lookup";
+import { CharacterItem } from "../../character/CharacterItem";
 
-
-export class BikeMasterPhysics implements IBikePhysics {
+export class BikeMasterPhysics extends AbstractBikePhysics {
     private bikeWalker: BikeWalker;
 
     private speedUpPhysics: BikeSpeedupPhysics;
     private rollingPhysics: BikeSlowdownPhysics;
-    private brakingPhysics: BikeSlowdownPhysics;
+    private brakingPhysics: BikeBrakingPhysics;
     private reversePhysics: BikeReversePhysics;
+    private currentPhysics: AbstractBikePhysics;
 
-
-    constructor(bikeWalker: BikeWalker) {
+    constructor(bike: CharacterItem, bikeWalker: BikeWalker) {
+        super();
         this.bikeWalker = bikeWalker;
 
         this.speedUpPhysics = new BikeSpeedupPhysics(this.bikeWalker);
-        this.rollingPhysics = new BikeSlowdownPhysics(this.bikeWalker, 2.5);
-        this.brakingPhysics = new BikeSlowdownPhysics(this.bikeWalker, 5);
+        this.rollingPhysics = new BikeSlowdownPhysics(this.bikeWalker, 1);
+        this.brakingPhysics = new BikeBrakingPhysics(lookup.worldProvider, bike, this.bikeWalker, 1.5);
         this.reversePhysics = new BikeReversePhysics(this.bikeWalker);
     }
 
     update(deltaTime: number) {
-        this.determinePhysics().update(deltaTime);
+        const newPhysics = this.determinePhysics();
+        if (this.currentPhysics !== newPhysics) {
+            if (this.currentPhysics) {
+                this.currentPhysics.exit();
+            }
+
+            if (newPhysics) {
+                newPhysics.enter();
+            }
+            this.currentPhysics = newPhysics;
+        }
+
+        if (this.currentPhysics) {
+            this.currentPhysics.update(deltaTime);
+        }
     }
 
-    private determinePhysics(): IBikePhysics {
+    private determinePhysics(): AbstractBikePhysics {
         const speed = this.bikeWalker.getSpeed();
         if (this.bikeWalker.isBraking()) {
             return this.brakingPhysics;

@@ -1,11 +1,12 @@
 import { BikeWalker } from "../states/BikeWalker";
-import { IBikePhysics } from "./IBikePhysics";
+import { AbstractBikePhysics } from "./AbstractBikePhysics";
 
-export class BikeSlowdownPhysics implements IBikePhysics {
+export class BikeSlowdownPhysics extends AbstractBikePhysics {
     private bikeWalker: BikeWalker;
     private readonly slowdown: number;
 
     constructor(bikeWalker: BikeWalker, slowdownFactor: number) {
+        super();
         this.bikeWalker = bikeWalker;
 
         this.slowdown = slowdownFactor / 1000;

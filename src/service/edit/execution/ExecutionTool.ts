@@ -112,6 +112,6 @@ export class ExecutionTool extends Tool {
 
     private updateWalkers(deltaTime: number, characters: CharacterItem[]) {
         characters.forEach(player => player.walker.walk(deltaTime));
-        characters.forEach(player => player.animationState.update());
+        characters.forEach(player => player.animationState.update(deltaTime));
     }
 }

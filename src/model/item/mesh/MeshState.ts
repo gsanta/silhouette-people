@@ -19,7 +19,7 @@ export abstract class MeshState {
         this._isDirty = false;
     }
 
-    update() {}
+    update(deltaTime: number) {}
 
     enterState() {}
     exitState() {
