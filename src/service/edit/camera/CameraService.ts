@@ -21,7 +21,7 @@ export class CameraService implements KeyboardListener {
 
     onKeyDown(e: KeyboardEvent): void {
         switch(e.key) {
-            case 'c':
+            case ' ':
                 if (this.cameraObj) {
                     this.cameraObj.increaseCornerIndex();
                 }

@@ -14,7 +14,11 @@ export enum KeyName {
     E = 'E',
     Q = 'Q',
     R = 'R',
-    NONE = 'NONE'
+    NONE = 'NONE',
+    FORWARD1 = 'FORWARD1',
+    BACKWARD1 = 'BACKWARD1',
+    FORWARD2 = 'FORWARD2',
+    BACKWARD2 = 'BACKWARD2'
 }
 
 export class KeyboardService {
@@ -23,8 +27,7 @@ export class KeyboardService {
     checker: KeyChecker;
 
     private handlers: KeyboardListener[] = [];
-    private keydownHandlers: ((e: KeyboardEvent) => void)[] = [];
-    private keyupHandlers: ((e: KeyboardEvent) => void)[] = [];
+    private keydownHandlers: ((keyName: KeyName) => void)[] = [];
 
     constructor() {
         this.checker = new KeyChecker(this);
@@ -34,12 +37,8 @@ export class KeyboardService {
         this.handlers.push(l);
     }
 
-    onKeydown(handler: (e: KeyboardEvent) => void) {
+    onKeydown(handler: (keyName: KeyName) => void) {
         this.keydownHandlers.push(handler);
-    }
-
-    onKeyup(handler: (e: KeyboardEvent) => void) {
-        this.keyupHandlers.push(handler);
     }
 
     removeListener(l: KeyboardListener) {
@@ -56,7 +55,7 @@ export class KeyboardService {
 
         this.handleShift(e);
         this.handlers.forEach(l => l.onKeyDown && l.onKeyDown(e));
-        this.keydownHandlers.forEach(handler => handler(e));
+        this.keydownHandlers.forEach(handler => handler(keyName));
     }
 
     keyUp(e: KeyboardEvent) {
@@ -64,7 +63,6 @@ export class KeyboardService {
         this.handleShift(e);
         this.keyNames.delete(this.mapKey(e.key));
         this.handlers.forEach(l => l.onKeyUp && l.onKeyUp(e));
-        this.keyupHandlers.forEach(handler => handler(e));
     }
 
     private handleShift(e: KeyboardEvent) {
@@ -89,12 +87,16 @@ export class KeyboardService {
                 return KeyName.LEFT;
             case 'd':
                 return KeyName.RIGHT;
-            case 'q':
-                return KeyName.Q;
             case 'e':
-                return KeyName.E;
+                return KeyName.FORWARD1;
+            case 'q':
+                return KeyName.BACKWARD1;
             case 'r':
                 return KeyName.R;
+            case 'c':
+                return KeyName.FORWARD2;
+            case 'x':
+                return KeyName.BACKWARD2;
             case 'shift':
                 return KeyName.SHIFT;
             default:

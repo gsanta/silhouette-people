@@ -1,4 +1,4 @@
-import { KeyboardService } from "../../../service/base/keyboard/KeyboardService";
+import { KeyboardService, KeyName } from "../../../service/base/keyboard/KeyboardService";
 import { GraphImpl } from "../../../service/graph/GraphImpl";
 import { GraphService } from "../../../service/graph/GraphService";
 import { MeshInputManager } from "../../MeshInputManager";
@@ -21,59 +21,57 @@ export class BikeInputManager extends MeshInputManager {
         this.keyboardService = keyboardService;
         this.character = character;
         this.nextEdgeSelector = new NextEdgeSelector(character.routeWalker, <GraphImpl> graphService.getGraph());
-        this.keyboardService.onKeydown(e => this.onKeyDown(e));
+        this.keyboardService.onKeydown(keyName => this.onKeyDown(keyName));
     }
 
-    onKeyDown(e: KeyboardEvent) {
-        let key = (e.key || '').toLowerCase();
-        let bikeInfo = this.bike.info;
+    onKeyDown(key: KeyName) {
+        let info = this.bike.info;
 
         switch(key) {
-            case 'e':
+            case KeyName.FORWARD1:
                 this.nextEdgeSelector.chooseNextEdge();
             break;
-            case 'r':
-                this.character.routeWalker.reverseRoute();
-            break;
-            case 'q':
+            case KeyName.BACKWARD1:
                 this.nextEdgeSelector.choosePrevEdge();
             break;
-            case '1':
-                bikeInfo = this.bike.info.setGear(0);
+            case KeyName.R:
+                this.character.routeWalker.reverseRoute();
             break;
-            case '2':
-                bikeInfo = this.bike.info.setGear(1);
+            case KeyName.FORWARD2:
+                const nextGear = info.gear === info.maxGear ? info.maxGear : info.gear + 1; 
+                info = this.bike.info.setGear(nextGear);
             break;
-            case '3':
-                bikeInfo = this.bike.info.setGear(2);
+            case KeyName.BACKWARD2:
+                const prevGear = info.gear === 0 ? 0 : info.gear - 1; 
+                info = this.bike.info.setGear(prevGear);
             break;
         }
-
-        this.updateStateIfBikeInfoChanged(bikeInfo);
-    }
-
-    keyboard(downKeys: Set<string>) {
-        let info: BikeStateInfo = this.bike.info;
-        
-        info = this.handleSpeed(info, downKeys);
-        info = this.handleSteering(info);
 
         this.updateStateIfBikeInfoChanged(info);
     }
 
-    private handleSpeed(info: BikeStateInfo, downKeys: Set<string>): BikeStateInfo {
-        info = info.setPowerBrakeOn(downKeys.has('shift'));
-        info = info.setPedalling(downKeys.has('w'));
-        info = info.setBraking(downKeys.has('s'));
+    keyboard(downKeys: Set<KeyName>) {
+        let info: BikeStateInfo = this.bike.info;
+        
+        info = this.handleSpeed(info, downKeys);
+        info = this.handleSteering(info, downKeys);
+
+        this.updateStateIfBikeInfoChanged(info);
+    }
+
+    private handleSpeed(info: BikeStateInfo, downKeys: Set<KeyName>): BikeStateInfo {
+        info = info.setPowerBrakeOn(downKeys.has(KeyName.SHIFT));
+        info = info.setPedalling(downKeys.has(KeyName.UP));
+        info = info.setBraking(downKeys.has(KeyName.DOWN));
 
         return info;
     }
 
-    private handleSteering(info: BikeStateInfo): BikeStateInfo {
+    private handleSteering(info: BikeStateInfo, downKeys: Set<KeyName>): BikeStateInfo {
         if (!this.isDirectionDisabled) {
-            if (this.keyboardService.keys.has('a')) {
+            if (downKeys.has(KeyName.LEFT)) {
                 info = info.setSteering(-this.bikeMover.rotationConst);
-            } else if (this.keyboardService.keys.has('d')) {
+            } else if (downKeys.has(KeyName.RIGHT)) {
                 info = info.setSteering(this.bikeMover.rotationConst);
             } else {
                 info = info.setSteering(0);

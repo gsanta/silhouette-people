@@ -6,6 +6,7 @@ export class BikeStateInfo {
     private _gear: number = 0;
     private _isPowerBrakeOn: boolean = false;
     private _steering: number = 0;
+    private _maxGear: number = 2;
 
     get isPedalling() {
         return this._isPedalling;
@@ -75,6 +76,10 @@ export class BikeStateInfo {
         }
 
         return this;
+    }
+
+    get maxGear() {
+        return this._maxGear;
     }
 
     private clone() {

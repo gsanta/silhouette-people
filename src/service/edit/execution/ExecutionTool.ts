@@ -94,7 +94,7 @@ export class ExecutionTool extends Tool {
 
     private updateInput(e: KeyboardEvent, isDown: boolean) {
         const activePlayer = this.playerStore.getActivePlayer();
-        activePlayer.inputManager.keyboard(this.keyboardService.keys);
+        activePlayer.inputManager.keyboard(this.keyboardService.keyNames);
     }
 
     private startRoutes(characters: CharacterItem[]) {
