@@ -52,6 +52,7 @@ export class ExecutionTool extends Tool {
         this.activePlayer = this.playerStore.getActivePlayer();
         this._isCanceled = isCanceled;
         this.startRoutes([this.activePlayer]);
+        this.routeExecutors.forEach(executor => executor.startRoutes());
     }
 
     private onPlayerFinished(route: RouteItem) {

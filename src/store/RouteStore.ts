@@ -13,8 +13,8 @@ export class RouteStore {
         return this.routes;
     }
 
-    getByName(name: string) {
-        return this.routes.find(route => route.name === name);
+    getById(name: string) {
+        return this.routes.find(route => route.id === name);
     }
     
     deleteRoute(route: RouteItem) {

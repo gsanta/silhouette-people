@@ -16,6 +16,10 @@ export class CitizenStore {
         this.meshStore.addItem(item);
     }
 
+    getById(id: string): CharacterItem {
+        return this.getAll().filter(item => item.id === id)[0];
+    }
+
     getAll(): CharacterItem[] {
         return <CharacterItem[]> this.meshStore.getByTag(MeshItemTag.Citizen);
     }

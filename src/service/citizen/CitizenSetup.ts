@@ -15,6 +15,12 @@ import { WorldProvider } from "../WorldProvider";
 import { CitizenExecutor } from "./CitizenExecutor";
 import { CitizenFactory } from "./CitizenFactory";
 import { RoutePool } from "./RoutePool";
+import { GraphService } from "../graph/GraphService";
+import { RouteWalkerListenerDecorator } from "../../model/item/route/RouteWalkerListenerDecorator";
+import { RouteWalkerImpl } from "../../model/item/route/RouteWalkerImpl";
+import { ActiveEdgeUpdaterAdapter } from "../../model/item/route/adapters/walking/ActiveEdgeUpdaterAdapter";
+import { DirectionRestrictorAdapter } from "../../model/item/route/adapters/rotation/RotationRestrictorAdapter";
+import { CharacterMover } from "../../model/item/character/states/CharacterMover";
 
 export class CitizenSetup {
 
@@ -41,14 +47,16 @@ export class CitizenSetup {
     private readonly routePool: RoutePool;
     private readonly citizenFactory: CitizenFactory;
     private readonly citizenExecutor: CitizenExecutor;
+    private readonly graphService: GraphService;
 
-    constructor(worldMapParser: WorldImporter) {
+    constructor(worldMapParser: WorldImporter, graphService: GraphService) {
         this.worldProvider = lookup.worldProvider;
         this.toolService = lookup.toolService;
         this.meshFactory = lookup.meshFactory;
         this.routeStore = lookup.routeStore;
         this.materialStore = lookup.materialStore;
         this.citizenStore = lookup.citizenStore;
+        this.graphService = graphService;
         this.worldMapParser = worldMapParser;
 
         this.routePool = new RoutePool();
@@ -59,8 +67,27 @@ export class CitizenSetup {
     async setup() {
         const { routeParser } = this.worldMapParser;
 
+        this.setupCitizen1();
+
+
         // routeParser.getRoutes().forEach(route => this.routePool.addRoute(route));
 
         this.toolService.execute.addRouteExecutor(this.citizenExecutor);
+    }
+
+    private setupCitizen1() {
+        const character = this.citizenStore.getById('C');
+        const route = this.routeStore.getById('route-1');
+
+        character.mover = new CharacterMover(character);
+        character.mover.setSpeed(1);
+
+        const graph = this.graphService.getGraph();
+        const walker = new RouteWalkerListenerDecorator(new RouteWalkerImpl(route, character));
+
+        character.routeWalker = walker;
+        
+        walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
+        walker.addListener(new DirectionRestrictorAdapter(walker));
     }
 }

@@ -97,10 +97,10 @@ export class SetupService {
         
         this.worldMapParser = new WorldImporter(this.worldProvider, this.routeFactory, this.routeStore, this.backlog);
         this.worldFactory = new WorldFactory(this.meshFactory);
-        this.citizenSetup = new CitizenSetup(this.worldMapParser);
+        this.citizenSetup = new CitizenSetup(this.worldMapParser, this.graphService);
 
         this.factorySetup = new FactorySetup();
-        this.routeSetup = new RouteSetup(this.worldProvider, this.graphService);
+        this.routeSetup = new RouteSetup(this.worldProvider, this.graphService, this.routeStore);
         this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.keyboardService);
         this.storySetup = new StorySetup();
         this.stageSetup = new StageSetup();

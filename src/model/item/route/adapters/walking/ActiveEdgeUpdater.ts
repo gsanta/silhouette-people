@@ -1,4 +1,4 @@
-import { Vector2 } from "babylonjs";
+import { Vector2, Vector3 } from "babylonjs";
 import { GraphEdge } from "../../../../../service/graph/GraphImpl";
 import { RouteWalker } from "../../RouteWalker";
 
@@ -13,7 +13,9 @@ export class ActiveEdgeUpdater {
         const route = this.routeWalker.getRoute();
         this.routeWalker.setEdge(route.getEdges()[0]);
         const source = this.routeWalker.getSource().p;
-        this.routeWalker.getCharacter().setPosition2D(new Vector2(source.x, source.z));
+        this.routeWalker.getCharacter().setPosition(new Vector3(source.x, 0, source.z));
+
+        // this.routeWalker.getCharacter().setPosition2D(new Vector2(source.x, source.z));
     }
     
     updateActiveEdge() {

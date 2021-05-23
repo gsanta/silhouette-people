@@ -6,24 +6,24 @@ export interface RouteStoryConfig {
 }
 
 export interface RouteItemConfig {
-    name?: string,
+    id?: string,
     isReversedIfSingleEdge?: boolean
 }
 
 export class RouteItem {
-    readonly name: string;
+    readonly id: string;
     private edges: GraphEdge[];
     private isReversedList: boolean[];
 
     constructor(edges: GraphEdge[], config: RouteItemConfig) {
         this.edges = edges;
         this.isReversedList = this.getIsReversedList(config.isReversedIfSingleEdge);
-        this.name = config.name;
+        this.id = config.id;
     }
 
     reverse(): RouteItem {
         const isReversedIfSingleEdge = this.edges.length > 0 ? !this.isReversed(this.edges[0]) : false;
-        return new RouteItem([...this.edges].reverse(), { name: this.name, isReversedIfSingleEdge });
+        return new RouteItem([...this.edges].reverse(), { id: this.id, isReversedIfSingleEdge });
     }
 
     isReversed(edge: GraphEdge): boolean {
@@ -31,7 +31,7 @@ export class RouteItem {
     }
 
     addEdge(edge: GraphEdge): RouteItem {
-        return new RouteItem([...this.edges, edge], { name: this.name });
+        return new RouteItem([...this.edges, edge], { id: this.id });
     }
 
     removeLastEdge(): RouteItem {
@@ -39,7 +39,7 @@ export class RouteItem {
         const clone = [...this.edges];
         clone.pop();
         const isReversedIfSingleEdge = clone.length > 0 ? this.isReversed(clone[0]) : false;
-        return new RouteItem(clone, { name: this.name, isReversedIfSingleEdge });
+        return new RouteItem(clone, { id: this.id, isReversedIfSingleEdge });
     }
 
     removeFirstEdge() {
@@ -47,7 +47,7 @@ export class RouteItem {
         const clone = [...this.edges];
         clone.shift();
         const isReversedIfSingleEdge = clone.length > 0 ? this.isReversed(clone[0]) : false;
-        return new RouteItem(clone, { name: this.name, isReversedIfSingleEdge });
+        return new RouteItem(clone, { id: this.id, isReversedIfSingleEdge });
     }
 
     getEdges(): GraphEdge[] {
