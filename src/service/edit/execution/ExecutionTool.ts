@@ -6,12 +6,14 @@ import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { RouteExecutor } from "./RouteExecutor";
 import { PlayerStore } from "../../player/PlayerStore";
 import { RouteItem } from "../../../model/item/route/RouteItem";
+import { KeyboardService } from "../../base/keyboard/KeyboardService";
 
 export class ExecutionTool extends Tool {
     private worldProvider: WorldProvider;
     private playerStore: PlayerStore;
     private routeStore: RouteStore;
     private renderService: RenderGuiService;
+    private readonly keyboardService: KeyboardService;
     private _isCanceled: boolean = true;
 
     private isStarted: boolean = false;
@@ -20,12 +22,13 @@ export class ExecutionTool extends Tool {
 
     private routeExecutors: RouteExecutor[] = [];
 
-    constructor(worldProvider: WorldProvider, playerStore: PlayerStore, routeStore: RouteStore, renderService: RenderGuiService) {
+    constructor(worldProvider: WorldProvider, playerStore: PlayerStore, routeStore: RouteStore, renderService: RenderGuiService, keyboardService: KeyboardService) {
         super(ToolType.MOVE);
         this.worldProvider = worldProvider;
         this.playerStore = playerStore;
         this.routeStore = routeStore;
         this.renderService = renderService;
+        this.keyboardService = keyboardService;
     }
 
     addRouteExecutor(routeExecutor: RouteExecutor) {
@@ -91,7 +94,7 @@ export class ExecutionTool extends Tool {
 
     private updateInput(e: KeyboardEvent, isDown: boolean) {
         const activePlayer = this.playerStore.getActivePlayer();
-        activePlayer.inputManager.keyboard(e, isDown);
+        activePlayer.inputManager.keyboard(this.keyboardService.keys);
     }
 
     private startRoutes(characters: CharacterItem[]) {

@@ -21,7 +21,8 @@ export class BikeBrakingState extends BikeState {
 
     updateInfo(bikeStateInfo: BikeStateInfo): void {
         this.powerBrake = bikeStateInfo.isPowerBrakeOn;
-        if (!bikeStateInfo.isBreaking) {
+        console.log(bikeStateInfo)
+        if (!bikeStateInfo.isBraking) {
             if (bikeStateInfo.isPedalling) {
                 this.bike.setState(new BikeSpeedUpState(this.bike, this.mover));
             } else {

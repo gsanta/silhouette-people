@@ -15,7 +15,7 @@ export class CharacterInputManager extends MeshInputManager {
         this.character = character;
     }
     
-    keyboard(e: KeyboardEvent) {
+    keyboard() {
         if (!this.isSpeedDisabled) {
             this.handleSpeed();
         }
@@ -35,9 +35,9 @@ export class CharacterInputManager extends MeshInputManager {
     }
 
     private handleDirection() {
-        if (this.keyboardService.activeKeys.has('a')) {
+        if (this.keyboardService.keys.has('a')) {
             this.character.mover.setRotation(-this.rotationConst);
-        } else if (this.keyboardService.activeKeys.has('d')) {
+        } else if (this.keyboardService.keys.has('d')) {
             this.character.mover.setRotation(this.rotationConst);
         } else {
             this.character.mover.setRotation(0);
@@ -45,9 +45,9 @@ export class CharacterInputManager extends MeshInputManager {
     }
 
     private handleSpeed() {
-        if (this.keyboardService.activeKeys.has('w')) {
+        if (this.keyboardService.keys.has('w')) {
             this.character.mover.setSpeed(this.speedConst);
-        } else if (this.keyboardService.activeKeys.has('s')) {
+        } else if (this.keyboardService.keys.has('s')) {
             this.character.mover.setSpeed(-this.speedConst);
         } else {
             this.character.mover.setSpeed(0);

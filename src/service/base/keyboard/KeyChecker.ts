@@ -18,7 +18,7 @@ export class KeyChecker {
     getActiveCommands(): KeyCommand[] {
         const commands: KeyCommand[] = [];
 
-        this.keyboard.activeKeys.forEach(key => {
+        this.keyboard.keys.forEach(key => {
             switch(key) {
                 case 'w':
                     commands.push(KeyCommand.MoveForward)

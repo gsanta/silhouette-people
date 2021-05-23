@@ -7,11 +7,6 @@ export type PedalDirection = 'forward' | 'backward';
 export class BikeMover extends MeshMover {
     readonly rotationConst = Math.PI / 30;
 
-    protected _isBraking = false
-    protected _isPedalling = false;
-    protected pedalDirection: PedalDirection = 'forward'; 
-    protected gear: number = 0;
-
     private bike: BikeItem;
 
     constructor(bike: BikeItem) {
@@ -39,6 +34,6 @@ export class BikeMover extends MeshMover {
         direction.normalize().multiplyInPlace(displacementVec);
         this.character.instance.moveWithCollision(direction);
 
-        mesh.rotate(Axis.Y, this.rotation, Space.LOCAL);
+        mesh.rotate(Axis.Y, this.bike.info.steering, Space.LOCAL);
     }
 }

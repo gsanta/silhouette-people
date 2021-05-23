@@ -19,7 +19,7 @@ export class BikeIdleState extends BikeState {
     }
 
     updateInfo(bikeStateInfo: BikeStateInfo): void {
-        if (bikeStateInfo.isBreaking) {
+        if (bikeStateInfo.isBraking) {
             this.bike.setState(new BikeBrakingState(this.bike, this.mover));
         } else if (bikeStateInfo.isPedalling) {
             this.bike.setState(new BikeSpeedUpState(this.bike, this.mover));

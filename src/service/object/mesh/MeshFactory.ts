@@ -1,4 +1,5 @@
 import { InjectProperty } from "../../../di/diDecorators";
+import { BikeStateInfo } from "../../../model/item/bike/BikeState";
 import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { MeshConfig, MeshItem, MeshObjType } from "../../../model/item/mesh/MeshItem";
 import { AbstractPropertyParser } from "../../base/import/AbstractPropertyParser";
@@ -26,7 +27,9 @@ export class MeshFactory {
         let meshItem: MeshItem 
         
         if (meshConfig.type === MeshObjType.Bicycle1) {
-            meshItem = new CharacterItem(id, this.worldProvider.world);
+            const character = new CharacterItem(id, this.worldProvider.world);
+            character.info = new BikeStateInfo();
+            meshItem = character;
         } else {
             meshItem = new MeshItem(id, this.worldProvider.world);
         }

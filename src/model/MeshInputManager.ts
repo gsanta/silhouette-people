@@ -4,7 +4,7 @@ export abstract class MeshInputManager {
     protected isSpeedDisabled = false;
     protected isDirectionDisabled = false;
     
-    abstract keyboard(e: KeyboardEvent, isKeyDown: boolean);
+    abstract keyboard(downKeys: Set<string>);
 
     disableSpeed() {
         this.isSpeedDisabled = true;

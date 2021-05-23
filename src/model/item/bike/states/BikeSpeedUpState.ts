@@ -19,9 +19,9 @@ export class BikeSpeedUpState extends BikeState {
     }
 
     updateInfo(bikeStateInfo: BikeStateInfo): void {
-        if (!bikeStateInfo.isBreaking && !bikeStateInfo.isPedalling) {
+        if (!bikeStateInfo.isBraking && !bikeStateInfo.isPedalling) {
             this.bike.setState(new BikeIdleState(this.bike, this.mover));
-        } else if (bikeStateInfo.isBreaking) {
+        } else if (bikeStateInfo.isBraking) {
             this.bike.setState(new BikeBrakingState(this.bike, this.mover));
         } else {
             this.speedUpSystem.setGear(bikeStateInfo.gear);
