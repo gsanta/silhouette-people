@@ -14,7 +14,7 @@ export class InsidePolygonRestrictor {
     restrict(edge: GraphEdge): number | null {
         const character = this.routeWalker.getCharacter();
         const route = this.routeWalker.getRoute();
-        const inPolygon = this.testPointInPolyon(character.instance.getPosition(), edge.dimensions);
+        const inPolygon = this.testPointInPolyon(character.position, edge.dimensions);
 
         if (!inPolygon) {
             return route.isReversed(edge) ? edge.oppositeDirection : edge.direction;

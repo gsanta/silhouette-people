@@ -59,7 +59,7 @@ export class RouteWalkerImpl implements RouteWalker {
     walk(): boolean {
         if (this.started && this.edge) {
             this.prevPos = this.currPos;
-            this.currPos = this.character.getPosition();
+            this.currPos = this.character.position;
             return true;
         }
         return false;

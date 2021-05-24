@@ -3,9 +3,9 @@ import { Vector2, Vector3 } from "babylonjs/Maths/math.vector";
 export abstract class GameItem {
     protected parent: GameItem;
     protected children: GameItem[] = [];
-    abstract setPosition(pos: Vector3): void;
-    abstract getPosition(): Vector3;
-    abstract setPosition2D(pos: Vector2): void;
+    abstract set position(pos: Vector3);
+    abstract get position(): Vector3;
+    abstract set position2D(pos: Vector2);
 
     setParent(parent: GameItem) {
         if (this.parent) {
@@ -15,7 +15,7 @@ export abstract class GameItem {
         this.parent = parent;
 
         if (this.parent) {
-            this.setPosition(this.parent.getPosition());
+            this.position = this.parent.position;
     
             if (!parent.children.includes(this)) {
                 parent.children.push(this);

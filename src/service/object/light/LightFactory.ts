@@ -25,7 +25,7 @@ export class LightFactory {
         });
         
         const lightObj = new LightItem(light);
-        lightObj.setPosition(pos);
+        lightObj.position = pos;
 
         return lightObj;
     }

@@ -13,7 +13,7 @@ export class ActiveEdgeUpdater {
         const route = this.routeWalker.getRoute();
         this.routeWalker.setEdge(route.getEdges()[0]);
         const source = this.routeWalker.getSource().p;
-        this.routeWalker.getCharacter().setPosition(new Vector3(source.x, 0, source.z));
+        this.routeWalker.getCharacter().position = new Vector3(source.x, 0, source.z);
 
         // this.routeWalker.getCharacter().setPosition2D(new Vector2(source.x, source.z));
     }
@@ -48,7 +48,7 @@ export class ActiveEdgeUpdater {
         const target = this.routeWalker.getTarget();
         const character = this.routeWalker.getCharacter();
         
-        const curr = character.getPosition();
+        const curr = character.position;
     
         const isWithinDestRadius = target.p.subtract(curr).length() < 0.2;
         const isLeavingDest = this.isLeavingDest();

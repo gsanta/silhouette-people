@@ -15,7 +15,7 @@ export class BrakingParticleSystem {
 
         this.particleSystem = new GPUParticleSystem('braking', { capacity: 1000 }, this.worldProvider.scene);
         this.particleSystem.particleTexture = new Texture('https://www.babylonjs.com/assets/Flare.png', this.worldProvider.scene);
-        this.particleSystem.emitter = this.item.instance.getColliderMesh();
+        this.particleSystem.emitter = this.item.collisionMesh;
         this.particleSystem.preWarmCycles = 100;
         this.particleSystem.preWarmStepOffset = 5;
     }

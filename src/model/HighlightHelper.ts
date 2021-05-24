@@ -32,9 +32,9 @@ export class HighlightHelper {
     }
 
     private attachToMesh(meshObj: MeshItem, lightObj: LightItem) {
-        lightObj.setPosition2D(meshObj.instance.getPosition2D());
+        lightObj.position2D = meshObj.position2D;
         meshObj.instance.addPositionChangeListener(() => {
-            lightObj.setPosition2D(meshObj.instance.getPosition2D());
+            lightObj.position2D = meshObj.position2D;
         });
     }
 
@@ -49,7 +49,7 @@ export class HighlightHelper {
     }
 
     private async fetchProjectionLight() {
-        const pos = this.pendingMeshObj.instance.getPosition2D();
+        const pos = this.pendingMeshObj.position2D;
 
         const lightObj = await this.lightFactory.createHighlightLight("RXBW6F", new Vector3(pos.x, 0, pos.y));
         this.lightStore.setHighlightLight(lightObj);

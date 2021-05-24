@@ -18,10 +18,10 @@ export class CharacterGetOnBikeState extends MeshState {
     enterState() {
         const player = this.character;
 
-        player.instance.getMesh().setAbsolutePosition(new Vector3(0, 0, 0));
-        player.instance.setRotation(0);
-        player.instance.getMesh().parent = this.bike.instance.getMesh();
-        player.instance.getMesh().checkCollisions = false;
+        player.mesh.setAbsolutePosition(new Vector3(0, 0, 0));
+        player.rotation = 0;;
+        player.mesh.parent = this.bike.mesh;
+        player.mesh.checkCollisions = false;
         player.setParent(this.bike);
 
         player.animationState = new CharacterBikingState(player);

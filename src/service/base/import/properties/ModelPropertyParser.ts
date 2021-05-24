@@ -47,8 +47,8 @@ export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyCon
 
         meshObj.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         meshObj.animation.setAnimations(result.animationGroups);
-        meshObj.instance.getMesh().translate(Axis.Y, 0.2, Space.WORLD);
-        meshObj.instance.getMesh().parent = this.worldProvider.world.ground;
+        meshObj.mesh.translate(Axis.Y, 0.2, Space.WORLD);
+        meshObj.mesh.parent = this.worldProvider.world.ground;
     }
 
     private removeRoot(meshes: AbstractMesh[]): AbstractMesh[] {

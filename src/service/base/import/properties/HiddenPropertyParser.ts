@@ -7,7 +7,7 @@ export class HiddenPropertyParser extends AbstractPropertyParser<boolean> {
 
     processProperty(meshObj: MeshItem, isHidden: boolean) {
         if (isHidden) {
-            meshObj.instance.setVisibility(false);
+            meshObj.visibility = true;
         }
     }
 }

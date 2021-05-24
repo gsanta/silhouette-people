@@ -1,4 +1,5 @@
 import { Skeleton, Vector2, Vector3 } from "babylonjs";
+import { Mesh } from "babylonjs/Meshes/index";
 import { InjectProperty } from "../../../di/diDecorators";
 import { lookup } from "../../../service/Lookup";
 import { QuarterStore } from "../../../store/QuarterStore";
@@ -62,6 +63,7 @@ export class MeshItem extends GameItem {
     private quarterStore: QuarterStore;
 
     instance: MeshInstance;
+    radius = 1;
 
     constructor(id: string, worldObj: WorldObj) {
         super();
@@ -72,20 +74,58 @@ export class MeshItem extends GameItem {
         this.animation = new AnimationHandler();
     }
 
-    setPosition(pos: Vector3): void {
+    moveWithCollision(displacement: Vector3) {
+        this.mesh.moveWithCollisions(displacement);
+
+        this.instance.emitPositionChange();
+    }
+
+    set position(pos: Vector3) {
         this.instance.setPosition(pos);
     }
 
-    getPosition(): Vector3 {
+    get position(): Vector3 {
         return this.instance.getPosition();
     }
 
-    setPosition2D(pos: Vector2): void {
+    set position2D(pos: Vector2) {
         this.instance.setPosition2D(pos);
     }
 
-    getQuarter(): QuarterItem {
+    get position2D(): Vector2 {
+        return this.instance.getPosition2D();
+    }
+
+    get quarter(): QuarterItem {
         return this.quarterStore.getQuarter(this.quarterIndex);
+    }
+
+    set rotation(rotation: number) {
+        this.instance.setRotation(rotation);
+    }
+
+    get rotation() {
+        return this.instance.getRotation().y;
+    }
+
+    set collisionMesh(mesh: Mesh) {
+        this.instance.setColliderMesh(mesh);
+    }
+
+    get collisionMesh(): Mesh {
+        return this.instance.getColliderMesh();
+    }
+
+    get mesh(): Mesh {
+        return this.instance.getMesh();
+    }
+
+    get meshes(): Mesh[] {
+        return this.instance.getAllMeshes();
+    }
+
+    set visibility(visibility: boolean) {
+        this.instance.setVisibility(visibility);
     }
 
     dispose() {

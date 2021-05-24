@@ -31,8 +31,8 @@ export class BikeMover extends MeshMover {
             this.bike.velocity = rotateVec(this.bike.velocity, this.bike.info.steering);
             let vel = this.bike.velocity.multiply(displacementVec);
     
-            this.character.instance.moveWithCollision(vel);
-            this.character.instance.setRotation(vecToRot(vel));
+            this.character.moveWithCollision(vel);
+            this.character.rotation = vecToRot(vel);
         }
         
     }

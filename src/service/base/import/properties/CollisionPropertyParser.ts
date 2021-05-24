@@ -25,29 +25,29 @@ export class CollisionPropertyParser extends AbstractPropertyParser<CollisionPro
 
     processProperty(gameObj: MeshItem, props: CollisionPropertyConfig) {
         const dimensions = parseStrVector(props.dimension);
-        const position = gameObj.getPosition().clone();
+        const position = gameObj.position.clone();
 
         const [width, depth, height] = [dimensions.x, dimensions.z, dimensions.y];
-        const collider = MeshBuilder.CreateBox(`${gameObj.id}-collider`, { width, depth, height}, this.worldProvider.scene);
-        collider.checkCollisions = true;
+        const collisionMesh = MeshBuilder.CreateBox(`${gameObj.id}-collider`, { width, depth, height}, this.worldProvider.scene);
+        collisionMesh.checkCollisions = true;
 
-        const mainMesh = gameObj.instance.getMesh();
+        const mainMesh = gameObj.mesh;
 
         mainMesh.translate(Axis.X, -position.x, Space.WORLD);
         mainMesh.translate(Axis.Z, -position.z, Space.WORLD);
 
         mainMesh.parent = null;
         
-        gameObj.instance.setColliderMesh(collider);
-        gameObj.instance.getColliderMesh().parent = this.worldProvider.world.ground;
+        gameObj.collisionMesh = collisionMesh;
+        gameObj.collisionMesh.parent = this.worldProvider.world.ground;
 
-        mainMesh.parent = collider;
-        collider.translate(Axis.X, position.x, Space.WORLD);
-        collider.translate(Axis.Z, position.z, Space.WORLD);
+        mainMesh.parent = collisionMesh;
+        collisionMesh.translate(Axis.X, position.x, Space.WORLD);
+        collisionMesh.translate(Axis.Z, position.z, Space.WORLD);
 
         const colliderMaterial = new StandardMaterial(`${gameObj.id}-collider-material`, this.worldProvider.scene);
         colliderMaterial.alpha = 0;
-        collider.material = colliderMaterial;
+        collisionMesh.material = colliderMaterial;
         
     }
 }

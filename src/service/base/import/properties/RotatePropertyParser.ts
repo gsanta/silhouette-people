@@ -12,6 +12,6 @@ export class RotatePropertyParser extends AbstractPropertyParser<number> {
     processProperty(gameObj: MeshItem, rotate: number) {
         const rotationRad = Tools.ToRadians(rotate);
         
-        gameObj.instance.getMesh().rotate(Axis.Y, rotationRad, Space.WORLD);
+        gameObj.mesh.rotate(Axis.Y, rotationRad, Space.WORLD);
     }
 }

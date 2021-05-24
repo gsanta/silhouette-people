@@ -10,17 +10,17 @@ export class LightItem extends GameItem {
         this.light = light;
     }
 
-    setPosition2D(pos: Vector2) {
+    set position2D(pos: Vector2) {
         this.light.position.x = pos.x;
         this.light.position.z = pos.y;
         this.light.setDirectionToTarget(new Vector3(pos.x, 0, pos.y));
     }
 
-    setPosition(pos: Vector3) {
+    set position(pos: Vector3) {
         LightItem.setPosition(this.light, pos);
     }
 
-    getPosition(): Vector3 {
+    get position(): Vector3 {
         return this.light.position;
     }
 

@@ -14,13 +14,13 @@ export class CharacterMover extends MeshMover {
             return;
         }
 
-        const mesh = this.character.instance.getMesh();
+        const mesh = this.character.mesh;
         
         const deltaTimeSec = deltaTime / 1000;
         const displacement = this.speed * deltaTimeSec;
         const displacementVec = new Vector3(displacement, displacement, displacement);
         const vel = this.character.velocity.multiply(displacementVec)
-        this.character.instance.moveWithCollision(vel);
-        this.character.instance.setRotation(vecToRot(vel));
+        this.character.moveWithCollision(vel);
+        this.character.rotation = vecToRot(vel);
     }
 }

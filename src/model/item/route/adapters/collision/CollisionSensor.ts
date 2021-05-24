@@ -1,56 +1,74 @@
+import { Vector3 } from "babylonjs";
+import { CharacterItem } from "../../../character/CharacterItem";
+import { MeshInstance } from "../../../mesh/MeshInstance";
+import { MeshItem } from "../../../mesh/MeshItem";
 
-// export class CollisionSensor {
+export class CollisionSensor {
+    private readonly character: CharacterItem;
+    private readonly longRadius = 1;
+    private readonly shortRadius = 1;
+    private readonly maxAvoidanceForce = 1;
 
-//     steer(obstacles) {
-//         const ahead = this.character.center.add(this.character.velocity.normalize().multiply(new BABYLON.Vector3(this._longRadius, 0.5, this._longRadius))); 
-//         const ahead2 = this.character.center.add(this.character.velocity.normalize().multiply(vectorize(this._shortRadius)));
-//         this.createLines(ahead)
-//         var mostThreatening = this.findMostThreateningObstacle(ahead, ahead2, obstacles);
-//         var avoidance = new BABYLON.Vector3(0, 0, 0);
+    constructor(character: CharacterItem) {
+        this.character = character;
+    }
 
-//         if (mostThreatening) {
-//             avoidance.x = ahead.x - mostThreatening.center.x;
-//             avoidance.z = -1 * (ahead.z - mostThreatening.center.z);
+    steer(obstacles: MeshItem[]) {
+        const pos = this.character.position;
+        const velocity = this.character.velocity;
 
-//             avoidance = avoidance.normalize();
-//             avoidance = avoidance.scale(this.maxAvoidanceForce);
-//         } else {
-//             avoidance = avoidance.scale(0); // nullify the avoidance force
-//         }
+        const ahead = pos.add(velocity.multiply(new Vector3(this.longRadius, pos.y, this.longRadius)));
 
-//         return avoidance;
-//     }
+        const ahead2 = pos.add(velocity.multiply(new Vector3(this.shortRadius, pos.y, this.shortRadius)));
+        var mostThreatening = this.findMostThreateningObstacle(ahead, ahead2, obstacles);
+        var avoidance = new BABYLON.Vector3(0, 0, 0);
 
-//     findMostThreateningObstacle(ahead, ahead2, obstacles) {
-//         var mostThreatening = null;
+        if (mostThreatening) {
+            avoidance.x = ahead.x - mostThreatening.center.x;
+            avoidance.z = -1 * (ahead.z - mostThreatening.center.z);
 
-//         for (let i = 0; i < obstacles.length; i++) {
-//             var obstacle = obstacles[i];
-//             var collision = this.lineIntersectsCircle(ahead, ahead2, obstacle);
+            avoidance = avoidance.normalize();
+            avoidance = avoidance.scale(this.maxAvoidanceForce);
+        } else {
+            avoidance = avoidance.scale(0);
+        }
 
-//             // "position" is the character's current position
-//             if (collision 
-//                     && (
-//                         !mostThreatening ||
-//                         this.distance(this.character.center, obstacle.center) < this.distance(this.character.center, mostThreatening.center)
-//                     )
-//             ) {
-//                 mostThreatening = obstacle;
-//             }
-//         }
+        return avoidance;
+    }
 
-//         if (mostThreatening) {
-//             mostThreatening.applyRedMaterial();
-//         }
+    findMostThreateningObstacle(ahead: Vector3, ahead2: Vector3, obstacles: MeshItem[]) {
+        const pos = this.character.position;
+        var mostThreatening = null;
+        
+        for (let i = 0; i < obstacles.length; i++) {
+            var obstacle = obstacles[i];
+            const obstaclePos = obstacle.position;
+            var collision = this.lineIntersectsCircle(ahead, ahead2, obstacle);
 
-//         return mostThreatening;
-//     }
+            if (collision && 
+                (
+                    !mostThreatening ||
+                    this.distance(pos, obstaclePos) < this.distance(pos, mostThreatening.center)
+                )
+            ) {
+                mostThreatening = obstacle;
+            }
+        }
 
-//     distance(a, b) {
-//         return Math.sqrt((a.x - b.x) * (a.x - b.x)  + (a.z - b.z) * (a.z - b.z));
-//     }
+        if (mostThreatening) {
+            mostThreatening.applyRedMaterial();
+        }
 
-//     lineIntersectsCircle(ahead, ahead2, obstacle) {
-//         return this.distance(obstacle.center, ahead) <= obstacle.radius || this.distance(obstacle.center, ahead2) <= obstacle.radius;
-//     }
-// }
+        return mostThreatening;
+    }
+
+    distance(a: Vector3, b: Vector3) {
+        return Math.sqrt((a.x - b.x) * (a.x - b.x)  + (a.z - b.z) * (a.z - b.z));
+    }
+
+    lineIntersectsCircle(ahead: Vector3, ahead2: Vector3, obstacle: MeshItem) {
+        const pos = obstacle.position;
+
+        return this.distance(pos, ahead) <= obstacle.radius || this.distance(pos, ahead2) <= obstacle.radius;
+    }
+}
