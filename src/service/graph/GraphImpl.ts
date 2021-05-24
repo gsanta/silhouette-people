@@ -1,4 +1,5 @@
 import { Vector3 } from "babylonjs/Maths/math.vector";
+import { vecToRot } from "../../helpers";
 import { Quad } from "../../model/shape/Quad";
 import { Graph } from "./Graph";
 
@@ -49,9 +50,7 @@ export class GraphEdge {
 
     private setDirection(): void {
         const vector = this.v2.p.subtract(this.v1.p);
-        const dirAngle = Math.atan2(vector.z, vector.x);
-
-        this._direction = Math.PI / 2 - dirAngle;
+        this._direction = vecToRot(vector);
     }
 }
 

@@ -35,13 +35,7 @@ export class CharacterInputManager extends MeshInputManager {
     }
 
     private handleDirection() {
-        if (this.keyboardService.keys.has('a')) {
-            this.character.mover.setRotation(-this.rotationConst);
-        } else if (this.keyboardService.keys.has('d')) {
-            this.character.mover.setRotation(this.rotationConst);
-        } else {
-            this.character.mover.setRotation(0);
-        }
+
     }
 
     private handleSpeed() {

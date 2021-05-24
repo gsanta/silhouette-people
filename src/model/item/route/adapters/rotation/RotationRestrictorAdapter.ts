@@ -2,7 +2,7 @@ import { RotationRestrictor } from "./RotationRestrictor";
 import { RouteWalker } from "../../RouteWalker";
 import { RouteWalkerListener } from "../../RouteWalkerListener";
 
-export class DirectionRestrictorAdapter extends RouteWalkerListener {
+export class RotationRestrictorAdapter extends RouteWalkerListener {
 
     private restrictor: RotationRestrictor;
 

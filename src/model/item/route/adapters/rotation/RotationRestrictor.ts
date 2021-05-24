@@ -1,3 +1,4 @@
+import { rotToVec } from "../../../../../helpers";
 import { RouteWalker } from "../../RouteWalker";
 import { ExactDirectionRestrictor } from "./ExactDirectionRestrictor";
 import { InsidePolygonRestrictor } from "./InsidePolygonRestrictor";
@@ -32,7 +33,8 @@ export class RotationRestrictor {
         if (edge) {
             const character = this.routeWalker.getCharacter();
             const initialDirection = route.isReversed(edge) ? edge.oppositeDirection : edge.direction;
-            character.mover.character.instance.setRotation(initialDirection);
+            // character.instance.setRotation(initialDirection);
+            character.velocity = rotToVec(initialDirection);
         }
     }
 
@@ -43,7 +45,8 @@ export class RotationRestrictor {
 
     private restrictToDirection(direction: number) {
         const character = this.routeWalker.getCharacter();
-        character.mover.character.instance.setRotation(direction);
+        // character.instance.setRotation(direction);
+        character.velocity = rotToVec(direction);
         character.inputManager.disableDirection();
     }
 

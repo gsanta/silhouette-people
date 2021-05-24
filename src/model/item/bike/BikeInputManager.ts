@@ -1,3 +1,4 @@
+import { rotateVec, rotToVec } from "../../../helpers";
 import { KeyboardService, KeyName } from "../../../service/base/keyboard/KeyboardService";
 import { GraphImpl } from "../../../service/graph/GraphImpl";
 import { GraphService } from "../../../service/graph/GraphService";

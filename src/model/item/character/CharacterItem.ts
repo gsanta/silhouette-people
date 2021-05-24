@@ -4,6 +4,7 @@ import { MeshMover } from "../mesh/MeshMover";
 import { MeshItem } from "../mesh/MeshItem";
 import { RouteWalker } from "../route/RouteWalker";
 import { BikeState, BikeStateInfo } from "../bike/BikeState";
+import { Vector3 } from "babylonjs";
 
 export type PersonItem = CharacterItem;
 export type BikeItem = CharacterItem<BikeState, BikeStateInfo>
@@ -15,6 +16,8 @@ export class CharacterItem<S extends MeshState = MeshState, I = any> extends Mes
     routeWalker: RouteWalker;
     info: I;
 
+    _velocity: Vector3 = new Vector3(0, 0, 1);
+
     setState(state: S) {
         if (this.animationState) {
             this.animationState.exitState();
@@ -25,5 +28,13 @@ export class CharacterItem<S extends MeshState = MeshState, I = any> extends Mes
         if (this.animationState) {
             this.animationState.enterState();
         }
+    }
+
+    set velocity(vector: Vector3) {
+        this._velocity = vector;
+    }
+
+    get velocity(): Vector3 {
+        return this._velocity;
     }
 }

@@ -1,4 +1,5 @@
 import { Axis, Space, Vector3 } from "babylonjs";
+import { rotateVec, vecToRot } from "../../../../helpers";
 import { BikeItem, CharacterItem } from "../../character/CharacterItem";
 import { MeshMover } from "../../mesh/MeshMover";
 
@@ -23,17 +24,16 @@ export class BikeMover extends MeshMover {
 
         this.bike.animationState.update(deltaTime);
 
-        const mesh = this.character.instance.getMesh();
+        if (this.speed > 0) {
+            const deltaTimeSec = deltaTime / 1000;
+            const displacement = this.speed * deltaTimeSec;
+            const displacementVec = new Vector3(displacement, displacement, displacement);
+            this.bike.velocity = rotateVec(this.bike.velocity, this.bike.info.steering);
+            let vel = this.bike.velocity.multiply(displacementVec);
+    
+            this.character.instance.moveWithCollision(vel);
+            this.character.instance.setRotation(vecToRot(vel));
+        }
         
-        const deltaTimeSec = deltaTime / 1000;
-        const displacement = this.speed * deltaTimeSec;
-        const displacementVec = new Vector3(displacement, displacement, displacement);
-        const forwardDir = new Vector3(0, 0, 1);
-        
-        var direction = mesh.getDirection(forwardDir);
-        direction.normalize().multiplyInPlace(displacementVec);
-        this.character.instance.moveWithCollision(direction);
-
-        mesh.rotate(Axis.Y, this.bike.info.steering, Space.LOCAL);
     }
 }

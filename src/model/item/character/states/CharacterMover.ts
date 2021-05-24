@@ -1,6 +1,7 @@
 import { Axis, Space, Vector3 } from "babylonjs";
-import { PersonItem } from "../CharacterItem";
+import { CharacterItem, PersonItem } from "../CharacterItem";
 import { MeshMover } from "../../mesh/MeshMover";
+import { vecToRot } from "../../../../helpers";
 
 
 export class CharacterMover extends MeshMover {
@@ -9,19 +10,17 @@ export class CharacterMover extends MeshMover {
     }
 
     walk(deltaTime: number) {
-        // this.character.instance.move(this.speed);
+        if (this.character.routeWalker && !this.character.routeWalker.isRunning()) {
+            return;
+        }
 
         const mesh = this.character.instance.getMesh();
         
         const deltaTimeSec = deltaTime / 1000;
         const displacement = this.speed * deltaTimeSec;
         const displacementVec = new Vector3(displacement, displacement, displacement);
-        const forwardDir = new Vector3(0, 0, 1);
-        
-        var direction = mesh.getDirection(forwardDir);
-        direction.normalize().multiplyInPlace(displacementVec);
-        this.character.instance.moveWithCollision(direction);
-
-        // mesh.rotate(Axis.Y, this.rotation, Space.WORLD);
+        const vel = this.character.velocity.multiply(displacementVec)
+        this.character.instance.moveWithCollision(vel);
+        this.character.instance.setRotation(vecToRot(vel));
     }
 }

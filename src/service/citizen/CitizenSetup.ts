@@ -19,8 +19,10 @@ import { GraphService } from "../graph/GraphService";
 import { RouteWalkerListenerDecorator } from "../../model/item/route/RouteWalkerListenerDecorator";
 import { RouteWalkerImpl } from "../../model/item/route/RouteWalkerImpl";
 import { ActiveEdgeUpdaterAdapter } from "../../model/item/route/adapters/walking/ActiveEdgeUpdaterAdapter";
-import { DirectionRestrictorAdapter } from "../../model/item/route/adapters/rotation/RotationRestrictorAdapter";
+import { RotationRestrictorAdapter } from "../../model/item/route/adapters/rotation/RotationRestrictorAdapter";
 import { CharacterMover } from "../../model/item/character/states/CharacterMover";
+import { RouterAdapter } from "../../model/item/route/adapters/routing/RouterAdapter";
+import { ReversingRouter } from "../../model/item/route/adapters/routing/ReversingRouter";
 
 export class CitizenSetup {
 
@@ -65,12 +67,8 @@ export class CitizenSetup {
     }
 
     async setup() {
-        const { routeParser } = this.worldMapParser;
-
         this.setupCitizen1();
-
-
-        // routeParser.getRoutes().forEach(route => this.routePool.addRoute(route));
+        this.setupCitizen2();
 
         this.toolService.execute.addRouteExecutor(this.citizenExecutor);
     }
@@ -88,6 +86,24 @@ export class CitizenSetup {
         character.routeWalker = walker;
         
         walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
-        walker.addListener(new DirectionRestrictorAdapter(walker));
+        walker.addListener(new RotationRestrictorAdapter(walker));
+        walker.addListener(new RouterAdapter(new ReversingRouter(walker)));
+    }
+
+    private setupCitizen2() {
+        const character = this.citizenStore.getById('C2');
+        const route = this.routeStore.getById('route-1').reverse();
+
+        character.mover = new CharacterMover(character);
+        character.mover.setSpeed(1);
+
+        const graph = this.graphService.getGraph();
+        const walker = new RouteWalkerListenerDecorator(new RouteWalkerImpl(route, character));
+
+        character.routeWalker = walker;
+        
+        walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
+        walker.addListener(new RotationRestrictorAdapter(walker));
+        walker.addListener(new RouterAdapter(new ReversingRouter(walker)));
     }
 }
