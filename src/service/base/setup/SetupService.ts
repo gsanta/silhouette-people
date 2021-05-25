@@ -67,6 +67,9 @@ export class SetupService {
     @InjectProperty("GraphService")
     private graphService: GraphService;
 
+    @InjectProperty("CitizenStore")
+    private citizenStore: CitizenStore;
+
     private readonly worldFactory: WorldFactory;
 
     private worldMapParser: WorldImporter;
@@ -94,6 +97,7 @@ export class SetupService {
         this.backlog = lookup.backlog;
         this.routeStore = lookup.routeStore;
         this.graphService = lookup.graphService;
+        this.citizenStore = lookup.citizenStore;
         
         this.worldMapParser = new WorldImporter(this.worldProvider, this.routeFactory, this.routeStore, this.backlog);
         this.worldFactory = new WorldFactory(this.meshFactory);
@@ -101,7 +105,7 @@ export class SetupService {
 
         this.factorySetup = new FactorySetup();
         this.routeSetup = new RouteSetup(this.worldProvider, this.graphService, this.routeStore);
-        this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.keyboardService);
+        this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.keyboardService, this.citizenStore);
         this.storySetup = new StorySetup();
         this.stageSetup = new StageSetup();
     }

@@ -34,6 +34,15 @@ export class RouteItem {
         return new RouteItem([...this.edges, edge], { id: this.id });
     }
 
+    insert(index: number, edge: GraphEdge): RouteItem {
+        const edges = [...this.edges.slice(0, index), edge, ...this.edges.slice(index)];
+        return new RouteItem(edges, { id: this.id });
+    }
+
+    getIndex(edge: GraphEdge): number {
+        return this.edges.indexOf(edge);
+    }
+
     removeLastEdge(): RouteItem {
         if (this.edges.length === 0) { throw new Error('No edge to remove.'); }
         const clone = [...this.edges];

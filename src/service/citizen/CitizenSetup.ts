@@ -23,6 +23,7 @@ import { RotationRestrictorAdapter } from "../../model/item/route/adapters/rotat
 import { CharacterMover } from "../../model/item/character/states/CharacterMover";
 import { RouterAdapter } from "../../model/item/route/adapters/routing/RouterAdapter";
 import { ReversingRouter } from "../../model/item/route/adapters/routing/ReversingRouter";
+import { CollisionSensorAdapter } from "../../model/item/route/adapters/collision/CollisionSensorAdapter";
 
 export class CitizenSetup {
 
@@ -88,6 +89,7 @@ export class CitizenSetup {
         walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
         walker.addListener(new RotationRestrictorAdapter(walker));
         walker.addListener(new RouterAdapter(new ReversingRouter(walker)));
+        walker.addListener(new CollisionSensorAdapter(walker, this.citizenStore))
     }
 
     private setupCitizen2() {

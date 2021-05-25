@@ -14,6 +14,9 @@ import { KeyboardService } from "../base/keyboard/KeyboardService";
 import { BikeInputManager } from "../../model/item/bike/BikeInputManager";
 import { BikeMover } from "../../model/item/bike/states/BikeMover";
 import { DynamicRouter } from "../../model/item/route/adapters/routing/DynamicRouter";
+import { CollisionSensor } from "../../model/item/route/adapters/collision/CollisionSensor";
+import { CitizenStore } from "../../store/CitizenStore";
+import { CollisionSensorAdapter } from "../../model/item/route/adapters/collision/CollisionSensorAdapter";
 
 export class PlayerSetup {
 
@@ -22,16 +25,18 @@ export class PlayerSetup {
     private readonly graphService: GraphService;
     private readonly bikeParenter: BikeParenter;
     private readonly keyboardService: KeyboardService;
+    private readonly citizenStore: CitizenStore;
 
     private readonly playerParser: PlayerParser;
 
-    constructor(worldProvider: WorldProvider, playerStore: PlayerStore, graphService: GraphService, keyboardService: KeyboardService) {
+    constructor(worldProvider: WorldProvider, playerStore: PlayerStore, graphService: GraphService, keyboardService: KeyboardService, citizenStore: CitizenStore) {
         this.worldProvider = worldProvider;
         this.playerStore = playerStore;
         this.graphService = graphService;
         this.playerParser = new PlayerParser(this.graphService);
         this.bikeParenter = new BikeParenter();
         this.keyboardService = keyboardService;
+        this.citizenStore = citizenStore;
     }
 
     setup() {
@@ -49,6 +54,7 @@ export class PlayerSetup {
         walker.addListener(new RotationRestrictorAdapter(walker));
         walker.addListener(new RouterAdapter(new DynamicRouter(walker, graph)));
         walker.addListener(new RouteVisualizerAdapter(walker, this.graphService));
+        walker.addListener(new CollisionSensorAdapter(walker, this.citizenStore));
         
         const bike = <BikeItem> player.getParent();
         bike.inputManager = player.inputManager;

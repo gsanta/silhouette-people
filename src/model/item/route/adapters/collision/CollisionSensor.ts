@@ -1,6 +1,5 @@
 import { Vector3 } from "babylonjs";
 import { CharacterItem } from "../../../character/CharacterItem";
-import { MeshInstance } from "../../../mesh/MeshInstance";
 import { MeshItem } from "../../../mesh/MeshItem";
 
 export class CollisionSensor {
@@ -21,11 +20,11 @@ export class CollisionSensor {
 
         const ahead2 = pos.add(velocity.multiply(new Vector3(this.shortRadius, pos.y, this.shortRadius)));
         var mostThreatening = this.findMostThreateningObstacle(ahead, ahead2, obstacles);
-        var avoidance = new BABYLON.Vector3(0, 0, 0);
+        var avoidance = new Vector3(0, 0, 0);
 
         if (mostThreatening) {
-            avoidance.x = ahead.x - mostThreatening.center.x;
-            avoidance.z = -1 * (ahead.z - mostThreatening.center.z);
+            avoidance.x = ahead.x - mostThreatening.position.x;
+            avoidance.z = -1 * (ahead.z - mostThreatening.position.z);
 
             avoidance = avoidance.normalize();
             avoidance = avoidance.scale(this.maxAvoidanceForce);
@@ -33,30 +32,30 @@ export class CollisionSensor {
             avoidance = avoidance.scale(0);
         }
 
-        return avoidance;
+        if (avoidance.x !== 0 || avoidance.z !== 0) {
+            console.log(avoidance);
+        }
+        return avoidance.normalize();
     }
 
     findMostThreateningObstacle(ahead: Vector3, ahead2: Vector3, obstacles: MeshItem[]) {
         const pos = this.character.position;
-        var mostThreatening = null;
+        var mostThreatening: MeshItem = null;
         
-        for (let i = 0; i < obstacles.length; i++) {
-            var obstacle = obstacles[i];
-            const obstaclePos = obstacle.position;
-            var collision = this.lineIntersectsCircle(ahead, ahead2, obstacle);
-
-            if (collision && 
-                (
-                    !mostThreatening ||
-                    this.distance(pos, obstaclePos) < this.distance(pos, mostThreatening.center)
-                )
-            ) {
-                mostThreatening = obstacle;
+        for (let obstacle of obstacles) {
+            if (obstacle !== this.character) {
+                const obstaclePos = obstacle.position;
+                var collision = this.lineIntersectsCircle(ahead, ahead2, obstacle);
+    
+                if (collision && 
+                    (
+                        !mostThreatening ||
+                        this.distance(pos, obstaclePos) < this.distance(pos, mostThreatening.position)
+                    )
+                ) {
+                    mostThreatening = obstacle;
+                }
             }
-        }
-
-        if (mostThreatening) {
-            mostThreatening.applyRedMaterial();
         }
 
         return mostThreatening;
@@ -71,4 +70,14 @@ export class CollisionSensor {
 
         return this.distance(pos, ahead) <= obstacle.radius || this.distance(pos, ahead2) <= obstacle.radius;
     }
+}
+
+function solveTangent(point: Vector3, circleCenter: Vector3, radius: number) {
+    const p = point.subtract(circleCenter);
+
+    const m1 = - (p.x * p.z + radius * Math.sqrt(p.x ** 2 + p.z ** 2 - radius ** 2)) / (radius ** 2 - p.x  ** 2);
+    const m2 = - (p.x * p.z - radius * Math.sqrt(p.x ** 2 + p.z ** 2 - radius ** 2)) / (radius ** 2 - p.x  ** 2);
+
+    p.z = m1 * p.x + c
+    x ** 2 + 
 }
