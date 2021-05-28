@@ -1,5 +1,5 @@
-import { Tools } from 'babylonjs';
-import { rotToVec } from '../src/helpers';
+import { Tools, Vector3 } from 'babylonjs';
+import { rotToVec, solveTangent } from '../src/helpers';
 
 
 describe('Converting angle to direction vector', () => {
@@ -26,9 +26,32 @@ describe('Converting angle to direction vector', () => {
 
     it ('handles 45 deg', () => {
         const vector = rotToVec(Tools.ToRadians(45));
-        console.log(vector);
         expect(vector.x).toBeCloseTo(0.707);
         expect(vector.y).toBeCloseTo(0);
         expect(vector.z).toBeCloseTo(0.707);
+    });
+});
+
+describe('solveTangent', () => {
+    it ('solves when tangent is horizontal', () => {
+        const p = new Vector3(-5, 0, 0);
+        const circleCenter = new Vector3(0, 0, 2);
+        const radius = 2;
+
+        const result = solveTangent(p, circleCenter, radius);
+
+        expect(result.x).toBeCloseTo(0);
+        expect(result.z).toBeCloseTo(0);
+    });
+
+    it ('solves when tangent is horizontal', () => {
+        const p = new Vector3(-10, 0, 0);
+        const circleCenter = new Vector3(0, 0, 0);
+        const radius = 5;
+
+        const result = solveTangent(p, circleCenter, radius);
+        console.log(result);
+        expect(result.x).toBeCloseTo(0);
+        expect(result.z).toBeCloseTo(5.77);
     });
 });

@@ -1,4 +1,5 @@
-import { Vector3 } from "babylonjs";
+import { Vector2, Vector3 } from "babylonjs";
+import { solveTangent } from "../../../../../helpers";
 import { CharacterItem } from "../../../character/CharacterItem";
 import { MeshItem } from "../../../mesh/MeshItem";
 
@@ -23,8 +24,9 @@ export class CollisionSensor {
         var avoidance = new Vector3(0, 0, 0);
 
         if (mostThreatening) {
-            avoidance.x = ahead.x - mostThreatening.position.x;
-            avoidance.z = -1 * (ahead.z - mostThreatening.position.z);
+            avoidance = solveTangent(pos, mostThreatening.position, 0.5)
+            // avoidance.x = ahead.x - mostThreatening.position.x;
+            // avoidance.z = -1 * (ahead.z - mostThreatening.position.z);
 
             avoidance = avoidance.normalize();
             avoidance = avoidance.scale(this.maxAvoidanceForce);
@@ -70,14 +72,4 @@ export class CollisionSensor {
 
         return this.distance(pos, ahead) <= obstacle.radius || this.distance(pos, ahead2) <= obstacle.radius;
     }
-}
-
-function solveTangent(point: Vector3, circleCenter: Vector3, radius: number) {
-    const p = point.subtract(circleCenter);
-
-    const m1 = - (p.x * p.z + radius * Math.sqrt(p.x ** 2 + p.z ** 2 - radius ** 2)) / (radius ** 2 - p.x  ** 2);
-    const m2 = - (p.x * p.z - radius * Math.sqrt(p.x ** 2 + p.z ** 2 - radius ** 2)) / (radius ** 2 - p.x  ** 2);
-
-    p.z = m1 * p.x + c
-    x ** 2 + 
 }

@@ -63,7 +63,7 @@ export class MeshItem extends GameItem {
     private quarterStore: QuarterStore;
 
     instance: MeshInstance;
-    radius = 1;
+    radius = 3;
 
     constructor(id: string, worldObj: WorldObj) {
         super();
