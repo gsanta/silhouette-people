@@ -16,7 +16,6 @@ export class QuadraticLineEquation {
         if (2 * this.a === 0) {
             return undefined;
         } else {
-            console.log('disc: ' + (this.b ** 2 - 4 * this.a * this.c));
             const discriminant =  this.b ** 2 - 4 * this.a * this.c;
             if (discriminant < 0) {
                 return [undefined, undefined];

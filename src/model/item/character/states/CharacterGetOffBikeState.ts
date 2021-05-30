@@ -20,7 +20,7 @@ export class CharacterGetOffBikeState extends MeshState {
         bike.animationState = new BikeIdleState(bike, bike.mover);
         player.animationState = new CharacterIdleState(player);
         player.mesh.parent = bike.mesh.parent;
-        player.instance.setPosition(bike.position);
+        player.position = bike.position;
         player.rotation = bike.rotation;
 
         // const dir = player.instance.getRotation().clone();

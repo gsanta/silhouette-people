@@ -27,11 +27,11 @@ export class MeshFactory {
         let meshItem: MeshItem 
         
         if (meshConfig.type === MeshObjType.Bicycle1) {
-            const character = new CharacterItem(id, this.worldProvider.world);
+            const character = new CharacterItem(id);
             character.info = new BikeStateInfo();
             meshItem = character;
         } else {
-            meshItem = new MeshItem(id, this.worldProvider.world);
+            meshItem = new MeshItem(id);
         }
 
         if (meshConfig.props) {

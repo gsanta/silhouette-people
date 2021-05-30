@@ -50,7 +50,6 @@ describe('solveTangent', () => {
         const radius = 5;
 
         const result = solveTangent(p, circleCenter, radius);
-        console.log(result);
         expect(result.x).toBeCloseTo(0);
         expect(result.z).toBeCloseTo(5.77);
     });

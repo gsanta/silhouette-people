@@ -1,4 +1,4 @@
-import { Skeleton, Vector2, Vector3 } from "babylonjs";
+import { Axis, Quaternion, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/index";
 import { InjectProperty } from "../../../di/diDecorators";
 import { lookup } from "../../../service/Lookup";
@@ -7,8 +7,6 @@ import { AnimationHandler } from "../../AnimationHandler";
 import { TagHandler } from "../../TagHandler";
 import { GameItem } from "../GameItem";
 import { QuarterItem } from "../quarter/QuarterItem";
-import { WorldObj } from "../WorldObj";
-import { MeshInstance } from "./MeshInstance";
 
 export enum MeshObjType {
     Player = 'player',
@@ -47,29 +45,27 @@ export interface MeshConfig {
 
 export class MeshItem extends GameItem {
     id: string;
+
+    private _collisionMesh: Mesh;
+    private _meshes: Mesh[] = [];
     
     skeleton: Skeleton;
     children: MeshItem[] = [];
     // TODO create tag from it
     isActivePlayer: boolean = false;
 
-    readonly worldObj: WorldObj;
     quarterIndex: number;
     
     readonly tag: TagHandler;
     readonly animation: AnimationHandler;
 
-    @InjectProperty("QuarterStore")
-    private quarterStore: QuarterStore;
+    private positionChangeListeners: (() => void)[] = [];
 
-    instance: MeshInstance;
     radius = 3;
 
-    constructor(id: string, worldObj: WorldObj) {
+    constructor(id: string) {
         super();
         this.id = id;
-        this.worldObj = worldObj;
-        this.quarterStore = lookup.quarterStore;
         this.tag = new TagHandler();
         this.animation = new AnimationHandler();
     }
@@ -77,58 +73,79 @@ export class MeshItem extends GameItem {
     moveWithCollision(displacement: Vector3) {
         this.mesh.moveWithCollisions(displacement);
 
-        this.instance.emitPositionChange();
+        this.emitPositionChange();
     }
 
     set position(pos: Vector3) {
-        this.instance.setPosition(pos);
+        this.mesh.setAbsolutePosition(pos);
+
+        this.emitPositionChange();
     }
 
     get position(): Vector3 {
-        return this.instance.getPosition();
+        return this.mesh.getAbsolutePosition();
     }
 
     set position2D(pos: Vector2) {
-        this.instance.setPosition2D(pos);
+        this.mesh.setAbsolutePosition(new Vector3(pos.x, this.position.y, pos.y));
+
+        this.emitPositionChange();
     }
 
     get position2D(): Vector2 {
-        return this.instance.getPosition2D();
-    }
-
-    get quarter(): QuarterItem {
-        return this.quarterStore.getQuarter(this.quarterIndex);
+        const pos = this.mesh.getAbsolutePosition();
+        return new Vector2(pos.x, pos.z);
     }
 
     set rotation(rotation: number) {
-        this.instance.setRotation(rotation);
+        this.mesh.rotationQuaternion = Quaternion.RotationAxis(Axis.Y, rotation);
     }
 
     get rotation() {
-        return this.instance.getRotation().y;
+        return this.mesh.rotationQuaternion.toEulerAngles().y;
     }
 
     set collisionMesh(mesh: Mesh) {
-        this.instance.setColliderMesh(mesh);
+        this._collisionMesh = mesh;
     }
 
     get collisionMesh(): Mesh {
-        return this.instance.getColliderMesh();
+        return this._collisionMesh;
     }
 
     get mesh(): Mesh {
-        return this.instance.getMesh();
+        return this.collisionMesh ? this.collisionMesh : this.meshes[0];
     }
 
     get meshes(): Mesh[] {
-        return this.instance.getAllMeshes();
+        return this._meshes;
+    }
+
+    set meshes(meshes: Mesh[]) {
+        this._meshes = meshes;
     }
 
     set visibility(visibility: boolean) {
-        this.instance.setVisibility(visibility);
+        this.meshes.forEach(mesh => mesh.isVisible = visibility);
+    }
+
+    addPositionChangeListener(callback: () => void) {
+        this.positionChangeListeners.push(callback);
+    }
+
+    removePositionChangeListener(callback: () => void) {
+        this.positionChangeListeners = this.positionChangeListeners.filter(listener => listener !== callback);
+    }
+
+    emitPositionChange() {
+        this.positionChangeListeners.forEach(listener => listener());
+        this.children.forEach(child => child.emitPositionChange())
     }
 
     dispose() {
-        this.instance.dispose();
+        this.meshes.forEach(mesh => mesh.dispose());
+        if (this.collisionMesh) {
+            this.collisionMesh.dispose();
+        }
     }
 }

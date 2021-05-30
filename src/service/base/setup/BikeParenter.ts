@@ -16,8 +16,8 @@ export class BikeParenter {
         const bikeWalker = new BikeMover(bike);
         player.mover = bikeWalker;
         bike.mover = bikeWalker;
-        bike.instance.addPositionChangeListener(() => {
-            player.instance.emitPositionChange();
+        bike.addPositionChangeListener(() => {
+            player.emitPositionChange();
         });
 
         bike.setState(new BikeIdleState(bike, bikeWalker));

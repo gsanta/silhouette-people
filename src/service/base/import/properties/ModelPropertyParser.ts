@@ -1,5 +1,4 @@
 import { AbstractMesh, Axis, Mesh, Space } from "babylonjs";
-import { MeshInstance } from "../../../../model/item/mesh/MeshInstance";
 import { MeshItem } from "../../../../model/item/mesh/MeshItem";
 import { AssetContainerStore } from "../../../../store/AssetContainerStore";
 import { WorldProvider } from "../../../WorldProvider";
@@ -29,7 +28,7 @@ export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyCon
         return true;
     }
 
-    async processPropertyAsync(meshObj: MeshItem, props: ModelPropertyConfig): Promise<void> {
+    async processPropertyAsync(meshItem: MeshItem, props: ModelPropertyConfig): Promise<void> {
         const removeRoot = props.removeRoot;
         // TODO for static objects there is a problem when using original instances, check it
         const canUseOriginalInstance = props.canUseOriginalInstance === false ? false : true
@@ -43,12 +42,12 @@ export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyCon
         const mainMesh = props.mainMeshIndex !== undefined ? meshes[props.mainMeshIndex] : this.findMainMesh(meshes);
         const otherMeshes = meshes.filter(mesh => mesh !== mainMesh);
 
-        meshObj.instance = new MeshInstance(<Mesh[]> [mainMesh, ...otherMeshes], result.isCloned, meshObj);
+        meshItem.meshes = <Mesh[]> [mainMesh, ...otherMeshes];
 
-        meshObj.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
-        meshObj.animation.setAnimations(result.animationGroups);
-        meshObj.mesh.translate(Axis.Y, 0.2, Space.WORLD);
-        meshObj.mesh.parent = this.worldProvider.world.ground;
+        meshItem.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
+        meshItem.animation.setAnimations(result.animationGroups);
+        meshItem.mesh.translate(Axis.Y, 0.2, Space.WORLD);
+        meshItem.mesh.parent = this.worldProvider.world.ground;
     }
 
     private removeRoot(meshes: AbstractMesh[]): AbstractMesh[] {

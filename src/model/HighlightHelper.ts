@@ -33,7 +33,7 @@ export class HighlightHelper {
 
     private attachToMesh(meshObj: MeshItem, lightObj: LightItem) {
         lightObj.position2D = meshObj.position2D;
-        meshObj.instance.addPositionChangeListener(() => {
+        meshObj.addPositionChangeListener(() => {
             lightObj.position2D = meshObj.position2D;
         });
     }
