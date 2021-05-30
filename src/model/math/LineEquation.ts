@@ -1,21 +1,47 @@
+import { Vector2 } from "babylonjs/Maths/math.vector";
 
 
 export class LineEquation {
-    readonly slope: number;
-    readonly yIntercept: number;
+    readonly m: number;
+    readonly c: number;
     readonly xIntercept: number;
 
-    constructor(slope: number, yIntercept: number, xIntercept?: number) {
-        this.slope = slope;
-        this.yIntercept = yIntercept;
+    constructor(m: number, c: number, xIntercept?: number) {
+        this.m = m;
+        this.c = c;
         this.xIntercept = xIntercept;
     }
 
+    getY(x: number) {
+        if (this.xIntercept !== undefined) {
+            return undefined;
+        }
+        return this.m * x + this.c;
+    }
+
+    getX(y: number): number {
+        if (this.xIntercept !== undefined) {
+            return this.xIntercept;
+        } else {
+            return (y - this.c) / this.m;
+        }
+    }
+
+    translate(vec: Vector2) {
+        if (this.xIntercept !== undefined) {
+            return new LineEquation(undefined, undefined, this.xIntercept + vec.x);
+        } else {
+            let c = this.c + vec.y;
+            c -= this.m * vec.x 
+            return new LineEquation(this.m, c, undefined);
+        }
+    }
+
     toString() {
-        if (this.slope === undefined) {
+        if (this.m === undefined) {
             return `Vertical line with x intercept of ${round(this.xIntercept)}`;
         } else {
-            return `y = ${round(this.slope)} * x + ${round(this.yIntercept)}`;
+            return `y = ${round(this.m)} * x + ${round(this.c)}`;
         }
     }
 }

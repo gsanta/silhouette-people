@@ -1,5 +1,6 @@
 import { Vector2, Vector3 } from "babylonjs";
 import { solveTangent } from "../../../../../helpers";
+import { Circle } from "../../../../shape/Circle";
 import { CharacterItem } from "../../../character/CharacterItem";
 import { MeshItem } from "../../../mesh/MeshItem";
 
@@ -24,7 +25,7 @@ export class CollisionSensor {
         var avoidance = new Vector3(0, 0, 0);
 
         if (mostThreatening) {
-            avoidance = solveTangent(pos, mostThreatening.position, 0.5)
+            avoidance = solveTangent(pos, mostThreatening.position, 0.5);
             // avoidance.x = ahead.x - mostThreatening.position.x;
             // avoidance.z = -1 * (ahead.z - mostThreatening.position.z);
 
@@ -38,6 +39,15 @@ export class CollisionSensor {
             console.log(avoidance);
         }
         return avoidance.normalize();
+    }
+
+    private findIntersecionPoints(point: Vector2, circlePos: Vector2, radius: number): [Vector2, Vector2] {
+        const circle = new Circle(circlePos, radius);
+        const [eq1, eq2] = circle.tangentFromExternalPoint(point);
+
+        
+        const p = point.subtract(circleCenter);
+
     }
 
     findMostThreateningObstacle(ahead: Vector3, ahead2: Vector3, obstacles: MeshItem[]) {
