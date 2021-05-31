@@ -28,30 +28,6 @@ export class RouteFactory {
         this.routeStore = lookup.routeStore;
         this.pathFinder = new MasterPathFinder();
     }
-    
-    createRandomRoute(character: CharacterItem): RouteItem {
-        const quarterMap = character.quarter.getMap();
-        const pos = character.position2D;
-        const maxIndex = quarterMap.len();
-
-        let randomIndex = Math.floor(Math.random() * maxIndex);
-
-        while (quarterMap.getNum(randomIndex) === 1) {
-            randomIndex++;
-            if (randomIndex >= maxIndex) {
-                randomIndex = 0;
-            }
-        }
-
-        const worldPos = quarterMap.getWorldCoordinate(randomIndex);
-        const path = this.pathFinder.findPath(pos, worldPos, quarterMap).map(pos => new Vector3(pos.x, 0, pos.y));
-
-        if (path.length < 2) { return undefined; }
-        
-        // const route = new RouteItem(new PathItem(path), undefined, character);
-        
-        // this.routeStore.addRoute(route);
-    }
 
     createFromConfig(routeConfig: RouteStoryConfig) {
         

@@ -15,12 +15,12 @@ export class CollisionSensorAdapter extends RouteWalkerListener {
     constructor(walker: RouteWalker, citizenStore: CitizenStore) {
         super();
         this.walker = walker;
-        this.sensor = new CollisionSensor(walker.getCharacter());
+        this.sensor = new CollisionSensor(walker.getCharacter(), 1);
         this.citizenStore = new CitizenStore();
     }
 
     onWalk() {
-        const avoidance = this.sensor.steer(this.citizenStore.getAll());
+        const avoidance = this.sensor.getSteeringPoints(this.citizenStore.getAll());
 
         // if (avoidance.x !== 0 || avoidance.z !== 0) {
         //     const currentEdge = this.walker.getEdge();

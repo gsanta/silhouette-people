@@ -26,8 +26,19 @@ export class Circle {
         if (dist <= this.radius + epsilon) {
             return [undefined, undefined];
         } else {
-            return tangentsFromExternalPoint(externalPoint, this);
+            const [tangent1, tangent2] = tangentsFromExternalPoint(externalPoint, this);
+            console.log(tangent1)
+            console.log(tangent2)
+            if (tangent1.isEqualTo(tangent2)) {
+                return [tangent1, undefined];
+            } else {
+                return [tangent1, tangent2];
+            }
         }
+    }
+
+    toString() {
+        return `center: ${this.center.toString()} radius: ${this.radius}`;
     }
 }
 
@@ -67,13 +78,17 @@ function oneTangentFromExternalPoint(externalPoint: Vector2, circle: Circle, sig
         slope = (p.x * p.y + sign * (r * Math.sqrt(p.x ** 2  + p.y ** 2 - r ** 2))) / (r ** 2 - p.x ** 2);
     }
 
+    let equation: LineEquation;
+
     if (slope === 0) {
-        return new LineEquation(slope, externalPoint.y);
+        equation = new LineEquation(slope, p.y);
     } else if (slope === undefined) {
-        return new LineEquation(undefined, undefined, externalPoint.x);
+        equation = new LineEquation(undefined, undefined, p.x);
     } else {
-        const yIntercept = externalPoint.y / (slope * externalPoint.x);
-        return new LineEquation(slope, yIntercept)
+        const yIntercept = p.x === 0 ? p.y : p.y / (slope * p.x);
+        equation = new LineEquation(slope, yIntercept);
     }
+
+    return equation.translate(circle.center);
 }
 

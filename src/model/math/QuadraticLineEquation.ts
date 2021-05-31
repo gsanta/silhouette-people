@@ -19,7 +19,7 @@ export class QuadraticLineEquation {
             const discriminant =  this.b ** 2 - 4 * this.a * this.c;
             if (discriminant < 0) {
                 return [undefined, undefined];
-            } else if (discriminant === 0) {
+            } else if (this.isZero(discriminant)) {
                 const r = - this.b / (2 * this.a);
                 return [r, undefined];
             } else {
@@ -28,5 +28,9 @@ export class QuadraticLineEquation {
                 return [r1, r2];
             }
         }
+    }
+
+    private isZero(num: number) {
+        return Math.abs(num) < 0.1;
     }
 }

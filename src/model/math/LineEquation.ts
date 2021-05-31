@@ -1,6 +1,5 @@
 import { Vector2 } from "babylonjs/Maths/math.vector";
 
-
 export class LineEquation {
     readonly m: number;
     readonly c: number;
@@ -42,6 +41,15 @@ export class LineEquation {
             return `Vertical line with x intercept of ${round(this.xIntercept)}`;
         } else {
             return `y = ${round(this.m)} * x + ${round(this.c)}`;
+        }
+    }
+
+    isEqualTo(otherLine: LineEquation): boolean {
+        if (!otherLine) { return false; }
+        if (this.xIntercept !== undefined) {
+            return otherLine.xIntercept === this.xIntercept;
+        } else {
+            return Math.abs(this.m - otherLine.m) < 0.01 && Math.abs(this.c - otherLine.c) < 0.01;
         }
     }
 }
