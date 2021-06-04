@@ -21,12 +21,10 @@ export class BrakingParticleSystem {
     }
 
     create() {
-        console.log('srart');
         this.particleSystem.start();
     }
 
     dispose() {
-        console.log('dispose')
         this.particleSystem.stop();
         // if (this.particleSystem) {
         // }

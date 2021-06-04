@@ -8,15 +8,15 @@ describe("Get steering points", () => {
         var engine = new NullEngine();
         var scene = new Scene(engine);
 
-        const obstacle = createObstacle('obstacle', new Vector3(4, 0, 0), 2, scene);
-        const character = createCharacter(new Vector3(0, 0, 0), new Vector3(1, 0, 0), scene);
+        const obstacle = createObstacle('obstacle', new Vector3(6, 0, 0), 2, scene);
+        const character = createCharacter(new Vector3(2, 0, 0), new Vector3(1, 0, 0), scene);
 
         const collisionSensor = new CollisionSensor(character, 4);
         const steeringPoints = collisionSensor.getSteeringPoints([obstacle]);
 
-        expect(steeringPoints[0].x).toBeCloseTo(3);
+        expect(steeringPoints[0].x).toBeCloseTo(5);
         expect(steeringPoints[0].y).toBeCloseTo(-1.732);
-        expect(steeringPoints[1].x).toBeCloseTo(3);
+        expect(steeringPoints[1].x).toBeCloseTo(5);
         expect(steeringPoints[1].y).toBeCloseTo(1.732);
     });
 
