@@ -1,40 +1,33 @@
-import { Mesh, NullEngine, Scene, Vector3 } from "babylonjs";
-import { CharacterItem } from "../../../../src/model/item/character/CharacterItem";
+import { Vector3 } from "babylonjs";
 import { RouteItem } from "../../../../src/model/item/route/RouteItem";
 import { RouteWalkerImpl } from "../../../../src/model/item/route/RouteWalkerImpl";
 import { GraphEdge, GraphVertex } from "../../../../src/service/graph/GraphImpl";
 import { CollisionAvoidance } from "../../../../src/service/motion/collision/CollisionAvoidance";
 import { CollisionSensor } from "../../../../src/service/motion/collision/CollisionSensor";
-import { checkVector3Equal, checkVertexEqual } from "../../../test_utils/routeUtils";
+import { CharacterBuilder } from "../../../test_utils/characterUtils";
+import { checkVertexEqual } from "../../../test_utils/routeUtils";
+
+declare const charBuilder: CharacterBuilder;
 
 describe('avoid', () => {
-
-    it ('no avoidance needed', () => {
-        var engine = new NullEngine();
-        var scene = new Scene(engine);
-        
-        const character = createCharacter(new Vector3(1, 0, 1), new Vector3(1, 0, 0), scene);
-        const obstacle = createObstacle('obstacle-1', new Vector3(5, 0, 1), 1, scene);
-        const collisionSensor = new CollisionSensor(character, 1);
+    it ('route does not change, when no avoidance is needed', () => {
+        const character = charBuilder.pos(new Vector3(1, 0, 1)).velocity(new Vector3(1, 0, 0)).build();
+        const obstacle = charBuilder.pos(new Vector3(5, 0, 1)).radius(1).build();
         const route = new RouteItem(createRoute());
         const routeWalker = new RouteWalkerImpl(route, character);
-        const collisionAvoidance = new CollisionAvoidance(routeWalker, collisionSensor);
+        const collisionAvoidance = new CollisionAvoidance(routeWalker, new CollisionSensor(character, 1));
         
         collisionAvoidance.avoid([obstacle]);
 
         expect(routeWalker.getRoute()).toBe(route);
     });
 
-    it ('avoidance is needed', () => {
-        var engine = new NullEngine();
-        var scene = new Scene(engine);
-        
-        const character = createCharacter(new Vector3(1, 0, 3), new Vector3(0, 0, 1), scene);
-        const obstacle = createObstacle('obstacle-1', new Vector3(1, 0, 5), 1, scene);
-        const collisionSensor = new CollisionSensor(character, 2);
+    it ('route changes, when avoidance is needed', () => {
+        const character = charBuilder.pos(new Vector3(1, 0, 3)).velocity(new Vector3(0, 0, 1)).build();
+        const obstacle = charBuilder.pos(new Vector3(1, 0, 5)).radius(1).build();
         const route = new RouteItem(createRoute());
         const routeWalker = new RouteWalkerImpl(route, character);
-        const collisionAvoidance = new CollisionAvoidance(routeWalker, collisionSensor);
+        const collisionAvoidance = new CollisionAvoidance(routeWalker, new CollisionSensor(character, 2));
         
         collisionAvoidance.avoid([obstacle]);
         const newRoute = routeWalker.getRoute();
@@ -48,26 +41,6 @@ describe('avoid', () => {
         expect(newRoute.lastEdge).toBe(route.lastEdge);
     });
 });
-
-function createObstacle(id: string, position: Vector3, radius: number, scene: Scene): CharacterItem {
-    const obstacle = new CharacterItem(id);
-
-    const mesh = new Mesh(`${id}-mesh`, scene);
-
-    obstacle.meshes = [mesh];
-    obstacle.position = position;
-    obstacle.radius = radius;
-    return obstacle;
-}
-
-function createCharacter(position: Vector3, velocity: Vector3, scene: Scene): CharacterItem {
-    const character = new CharacterItem('character-1');
-    const mesh = new Mesh('character-mesh', scene);
-    character.meshes = [mesh];
-    character.velocity = velocity;
-    character.position = position;
-    return character;
-}
 
 function createRoute(): GraphEdge[] {
     const vertices: GraphVertex[] = [
