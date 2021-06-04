@@ -1,4 +1,4 @@
-import { GraphEdge } from "../../../service/graph/GraphImpl";
+import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
 
 export interface RouteStoryConfig {
     routeId: string;
@@ -15,10 +15,10 @@ export class RouteItem {
     private edges: GraphEdge[];
     private isReversedList: boolean[];
 
-    constructor(edges: GraphEdge[], config: RouteItemConfig) {
+    constructor(edges: GraphEdge[], config?: RouteItemConfig) {
         this.edges = edges;
-        this.isReversedList = this.getIsReversedList(config.isReversedIfSingleEdge);
-        this.id = config.id;
+        this.isReversedList = this.getIsReversedList(config ? config.isReversedIfSingleEdge : false);
+        this.id = config ? config.id : undefined;
     }
 
     reverse(): RouteItem {
@@ -39,6 +39,10 @@ export class RouteItem {
         return new RouteItem(edges, { id: this.id });
     }
 
+    insertVertex(afterEdge: GraphEdge, vertex: GraphVertex) {
+
+    }
+
     getIndex(edge: GraphEdge): number {
         return this.edges.indexOf(edge);
     }
@@ -51,7 +55,7 @@ export class RouteItem {
         return new RouteItem(clone, { id: this.id, isReversedIfSingleEdge });
     }
 
-    removeFirstEdge() {
+    removeFirstEdge(): RouteItem {
         if (this.edges.length === 0) { throw new Error('No edge to remove.'); }
         const clone = [...this.edges];
         clone.shift();
@@ -59,8 +63,32 @@ export class RouteItem {
         return new RouteItem(clone, { id: this.id, isReversedIfSingleEdge });
     }
 
+    replaceEdge(edge: GraphEdge, ...newEdges: GraphEdge[]): RouteItem {
+        const clone = [...this.edges];
+        clone.splice(clone.indexOf(edge), 1, ...newEdges);
+        const isReversedIfSingleEdge = clone.length > 0 ? this.isReversed(clone[0]) : false;
+        return new RouteItem(clone, { id: this.id, isReversedIfSingleEdge });
+    }
+
     getEdges(): GraphEdge[] {
         return this.edges;
+    }
+
+    getEdge(index: number): GraphEdge {
+        return this.edges[index];
+    }
+
+    get lastVertex() {
+        const lastEdge = this.edges[this.edges.length - 1];
+        return this.isReversed(lastEdge) ? lastEdge.v1 : lastEdge.v2;
+    }
+
+    get firstEdge() {
+        return this.edges[0];
+    }
+
+    get lastEdge() {
+        return this.edges[this.edges.length - 1];
     }
 
     private getIsReversedList(isReversedIfSingleEdge: boolean = false): boolean[] {

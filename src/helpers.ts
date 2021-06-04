@@ -26,6 +26,10 @@ export function toVector2(vec3: Vector3) {
     return new Vector2(vec3.x, vec3.z);
 }
 
+export function toVector3(vec2: Vector2, y: number = 0) {
+    return new Vector3(vec2.x, y, vec2.x);
+}
+
 export function intersectionCicleAndLine(circle: Circle, lineEquation: LineEquation) {
     `x ** 2 + y ** 2 = r ** 2 => x ** 2 + (slope * x + c) ** 2 = r ** 2`;
     `(1 + slope ** 2) * x ** 2 + 2 * slope * x + (c ** 2 - r ** 2) = 0`

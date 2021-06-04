@@ -7,8 +7,8 @@ import { LockedSpeed } from "../../../model/item/route/features/LockedSpeed";
 import { RouteItem, RouteStoryConfig } from "../../../model/item/route/RouteItem";
 import { RouteWalkerImpl } from "../../../model/item/route/RouteWalkerImpl";
 import { RouteStore } from "../../../store/RouteStore";
-import { IPathFinder } from "../path/path_finder/IPathFinder";
-import { MasterPathFinder } from "../path/path_finder/MasterPathFinder";
+import { IPathFinder } from "../../object/path/path_finder/IPathFinder";
+import { MasterPathFinder } from "../../object/path/path_finder/MasterPathFinder";
 import { lookup } from "../../Lookup";
 
 export interface RouteFactoryConfig {

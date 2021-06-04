@@ -14,9 +14,8 @@ import { KeyboardService } from "../base/keyboard/KeyboardService";
 import { BikeInputManager } from "../../model/item/bike/BikeInputManager";
 import { BikeMover } from "../../model/item/bike/states/BikeMover";
 import { DynamicRouter } from "../../model/item/route/adapters/routing/DynamicRouter";
-import { CollisionSensor } from "../../model/item/route/adapters/collision/CollisionSensor";
 import { CitizenStore } from "../../store/CitizenStore";
-import { CollisionSensorAdapter } from "../../model/item/route/adapters/collision/CollisionSensorAdapter";
+import { CollisionSensorAdapter } from "../motion/collision/CollisionSensorAdapter";
 
 export class PlayerSetup {
 

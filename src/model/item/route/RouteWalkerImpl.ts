@@ -18,6 +18,7 @@ export class RouteWalkerImpl implements RouteWalker {
     constructor(route: RouteItem, character: CharacterItem) {
         this.route = route;
         this.character = character;
+        this.edge = route.firstEdge;
     }
 
     getRoute(): RouteItem {

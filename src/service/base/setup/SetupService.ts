@@ -8,7 +8,7 @@ import { ToolService } from "../../edit/ToolService";
 import { lookup } from "../../Lookup";
 import { FactorySetup } from "../../object/mesh/FactorySetup";
 import { MeshFactory } from "../../object/mesh/MeshFactory";
-import { RouteFactory } from "../../object/route/RouteFactory";
+import { RouteFactory } from "../../routing/route/RouteFactory";
 import { WorldFactory } from "../../object/world/WorldFactory";
 import { WorldImporter } from "../import/WorldImporter";
 import { WorldProvider } from "../../WorldProvider";
@@ -22,7 +22,7 @@ import { DebugPanel } from "../debug/DebugPanel";
 import { DebugService } from "../debug/DebugService";
 import { KeyboardService } from "../keyboard/KeyboardService";
 import { PointerService } from "../pointer/PointerService";
-import { RouteSetup } from "../../object/route/RouteSetup";
+import { RouteSetup } from "../../routing/route/RouteSetup";
 import { GraphService } from "../../graph/GraphService";
 import { PlayerSetup } from "../../player/PlayerSetup";
 

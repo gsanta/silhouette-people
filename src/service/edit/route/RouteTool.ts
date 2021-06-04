@@ -5,7 +5,7 @@ import { MaterialStore } from "../../../store/MaterialStore";
 import { MeshStore } from "../../../store/MeshStore";
 import { RouteStore } from "../../../store/RouteStore";
 import { PointerData } from "../../base/pointer/PointerService";
-import { RouteFactoryConfig, RouteFactory } from "../../object/route/RouteFactory";
+import { RouteFactoryConfig, RouteFactory } from "../../routing/route/RouteFactory";
 import { WorldProvider } from "../../WorldProvider";
 import { PlayerStore } from "../../player/PlayerStore";
 import { RenderGuiService } from "../../ui/RenderGuiService";

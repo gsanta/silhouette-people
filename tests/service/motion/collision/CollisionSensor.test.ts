@@ -1,10 +1,10 @@
 import { Mesh, NullEngine, Scene, Vector3 } from "babylonjs";
-import { CharacterItem } from "../src/model/item/character/CharacterItem";
-import { MeshItem } from "../src/model/item/mesh/MeshItem";
-import { CollisionSensor } from "../src/model/item/route/adapters/collision/CollisionSensor";
+import { CharacterItem } from "../../../../src/model/item/character/CharacterItem";
+import { MeshItem } from "../../../../src/model/item/mesh/MeshItem";
+import { CollisionSensor } from "../../../../src/service/motion/collision/CollisionSensor";
 
 describe("Get steering points", () => {
-    it ('one obstacle, within range', () => {
+    it ('one obstacle, it is within range', () => {
         var engine = new NullEngine();
         var scene = new Scene(engine);
 
@@ -20,7 +20,7 @@ describe("Get steering points", () => {
         expect(steeringPoints[1].y).toBeCloseTo(1.732);
     });
 
-    it ('no obstacle in range', () => {
+    it ('no obstacles in range', () => {
         var engine = new NullEngine();
         var scene = new Scene(engine);
 

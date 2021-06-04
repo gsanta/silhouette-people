@@ -1,6 +1,6 @@
 import { RouteStore } from "../../../store/RouteStore";
 import { StoryTracker } from "../../story/StoryTracker";
-import { RouteFactory } from "../../object/route/RouteFactory";
+import { RouteFactory } from "../../routing/route/RouteFactory";
 import { RouteParser } from "./map/RouteParser";
 import { MeshConfigParser } from "./map/MeshConfigParser";
 import { RouteStoryParser } from "./map/RouteStoryParser";

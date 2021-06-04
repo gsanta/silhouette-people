@@ -8,7 +8,7 @@ import { EventService } from "../base/EventService";
 import { ToolService } from "../edit/ToolService";
 import { lookup } from "../Lookup";
 import { MeshFactory } from "../object/mesh/MeshFactory";
-import { RouteFactory } from "../object/route/RouteFactory";
+import { RouteFactory } from "../routing/route/RouteFactory";
 import { RouteParser } from "../base/import/map/RouteParser";
 import { WorldImporter } from "../base/import/WorldImporter";
 import { WorldProvider } from "../WorldProvider";
@@ -23,7 +23,7 @@ import { RotationRestrictorAdapter } from "../../model/item/route/adapters/rotat
 import { CharacterMover } from "../../model/item/character/states/CharacterMover";
 import { RouterAdapter } from "../../model/item/route/adapters/routing/RouterAdapter";
 import { ReversingRouter } from "../../model/item/route/adapters/routing/ReversingRouter";
-import { CollisionSensorAdapter } from "../../model/item/route/adapters/collision/CollisionSensorAdapter";
+import { CollisionSensorAdapter } from "../motion/collision/CollisionSensorAdapter";
 
 export class CitizenSetup {
 

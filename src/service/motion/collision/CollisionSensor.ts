@@ -1,8 +1,8 @@
 import { Vector2 } from "babylonjs";
-import { toVector2 } from "../../../../../helpers";
-import { Circle } from "../../../../shape/Circle";
-import { CharacterItem } from "../../../character/CharacterItem";
-import { MeshItem } from "../../../mesh/MeshItem";
+import { toVector2 } from "../../../helpers";
+import { Circle } from "../../../model/shape/Circle";
+import { CharacterItem } from "../../../model/item/character/CharacterItem";
+import { MeshItem } from "../../../model/item/mesh/MeshItem";
 
 export class CollisionSensor {
     private readonly character: CharacterItem;

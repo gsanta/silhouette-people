@@ -4,7 +4,6 @@ import { GraphParser } from "../../base/import/map/parse/GraphParser";
 import { GraphService } from "../../graph/GraphService";
 import { WorldProvider } from "../../WorldProvider";
 
-
 export class RouteSetup {
     private readonly worldProvider: WorldProvider;
     private readonly graphParser: GraphParser;

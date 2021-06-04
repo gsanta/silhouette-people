@@ -9,7 +9,7 @@ import { MeshFactory } from "./object/mesh/MeshFactory";
 import { PointerService } from "./base/pointer/PointerService";
 import { QuarterStore } from "../store/QuarterStore";
 import { MeshStore } from "../store/MeshStore";
-import { RouteFactory } from "./object/route/RouteFactory";
+import { RouteFactory } from "./routing/route/RouteFactory";
 import { LightStore } from "../store/LightStore";
 import { LightFactory } from "./object/light/LightFactory";
 import { ActivePlayerService } from "./ActivePlayerService";
