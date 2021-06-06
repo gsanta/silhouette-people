@@ -1,4 +1,6 @@
+import { MeshBuilder } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
+import { AvoidanceRadiusAttachment } from "../../../model/item/attachments/AvoidanceRadiusAttachment";
 import { BikeStateInfo } from "../../../model/item/bike/BikeState";
 import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { MeshConfig, MeshItem, MeshObjType } from "../../../model/item/mesh/MeshItem";
@@ -7,19 +9,33 @@ import { lookup } from "../../Lookup";
 import { WorldProvider } from "../../WorldProvider";
 
 export class MeshFactory {
-
     @InjectProperty('WorldProvider')
     private worldProvider: WorldProvider;
-    
+
     private readonly indexesByType: Map<string, number> = new Map();
     private propertyParsers: AbstractPropertyParser<any>[] = [];
 
     constructor() {
         this.worldProvider = lookup.worldProvider;
     }
-
     setPropertyParsers(propertyParsers: AbstractPropertyParser<any>[]) {
         this.propertyParsers = propertyParsers;
+    }
+
+    createCollisionAvoidance(parentItem: MeshItem) {
+        const mesh = MeshBuilder.CreateCylinder(
+            `${parentItem.id}-collision-avoidance-mesh`,
+            { 
+                height: 1, 
+                diameterTop: parentItem.radius,
+                diameterBottom: parentItem.radius
+            }, 
+            this.worldProvider.scene
+        );
+
+        const avoidanceRadiusAttachment = new AvoidanceRadiusAttachment('avoidance-radius', parentItem);
+        avoidanceRadiusAttachment.mesh = mesh;
+        return avoidanceRadiusAttachment;
     }
 
     async createFromConfig(meshConfig: MeshConfig): Promise<MeshItem> {

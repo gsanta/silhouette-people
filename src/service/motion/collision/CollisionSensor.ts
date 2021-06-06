@@ -37,10 +37,6 @@ export class CollisionSensor {
         var closest: MeshItem = null;
         
         for (let obstacle of obstacles) {
-            if (obstacle === this.character) {
-                continue;
-            }
-
             const obstaclePos = obstacle.position2D;
             var collision = this.pointIsWithinCircle(ahead, obstacle);
 

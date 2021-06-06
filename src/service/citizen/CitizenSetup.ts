@@ -23,7 +23,8 @@ import { RotationRestrictorAdapter } from "../../model/item/route/adapters/rotat
 import { CharacterMover } from "../../model/item/character/states/CharacterMover";
 import { RouterAdapter } from "../../model/item/route/adapters/routing/RouterAdapter";
 import { ReversingRouter } from "../../model/item/route/adapters/routing/ReversingRouter";
-import { CollisionSensorAdapter } from "../motion/collision/CollisionSensorAdapter";
+import { CollisionAvoidanceAdapter } from "../motion/collision/CollisionAvoidanceAdapter";
+import { AvoidanceRadiusAttachment } from "../../model/item/attachments/AvoidanceRadiusAttachment";
 
 export class CitizenSetup {
 
@@ -80,6 +81,9 @@ export class CitizenSetup {
 
         character.mover = new CharacterMover(character);
         character.mover.setSpeed(1);
+        
+        const avoidanceRadiusAttachment = this.meshFactory.createCollisionAvoidance(character);
+        character.addAttachment(avoidanceRadiusAttachment);
 
         const graph = this.graphService.getGraph();
         const walker = new RouteWalkerListenerDecorator(new RouteWalkerImpl(route, character));
@@ -89,7 +93,7 @@ export class CitizenSetup {
         walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
         walker.addListener(new RotationRestrictorAdapter(walker));
         walker.addListener(new RouterAdapter(new ReversingRouter(walker)));
-        walker.addListener(new CollisionSensorAdapter(walker, this.citizenStore))
+        walker.addListener(new CollisionAvoidanceAdapter(walker, this.citizenStore))
     }
 
     private setupCitizen2() {

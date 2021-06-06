@@ -7,6 +7,7 @@ import { AnimationHandler } from "../../AnimationHandler";
 import { TagHandler } from "../../TagHandler";
 import { GameItem } from "../GameItem";
 import { QuarterItem } from "../quarter/QuarterItem";
+import { MeshAttachment } from "../MeshAttachment";
 
 export enum MeshObjType {
     Player = 'player',
@@ -60,6 +61,7 @@ export class MeshItem extends GameItem {
     readonly animation: AnimationHandler;
 
     private positionChangeListeners: (() => void)[] = [];
+    private attachments: MeshAttachment[] = [];
 
     radius = 3;
 
@@ -74,12 +76,14 @@ export class MeshItem extends GameItem {
         this.mesh.moveWithCollisions(displacement);
 
         this.emitPositionChange();
+        this.attachments.forEach(attachment => attachment.onItemPositionChanged());
     }
 
     set position(pos: Vector3) {
         this.mesh.setAbsolutePosition(pos);
 
         this.emitPositionChange();
+        this.attachments.forEach(attachment => attachment.onItemPositionChanged());
     }
 
     get position(): Vector3 {
@@ -90,6 +94,7 @@ export class MeshItem extends GameItem {
         this.mesh.setAbsolutePosition(new Vector3(pos.x, this.position.y, pos.y));
 
         this.emitPositionChange();
+        this.attachments.forEach(attachment => attachment.onItemPositionChanged());
     }
 
     get position2D(): Vector2 {
@@ -127,6 +132,14 @@ export class MeshItem extends GameItem {
 
     set visibility(visibility: boolean) {
         this.meshes.forEach(mesh => mesh.isVisible = visibility);
+    }
+
+    addAttachment(attachment: MeshAttachment) {
+        this.attachments.push(attachment);
+    }
+
+    removeAttachment(name: string) {
+
     }
 
     addPositionChangeListener(callback: () => void) {

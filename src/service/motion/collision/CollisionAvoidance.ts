@@ -24,7 +24,7 @@ export class CollisionAvoidance {
             const point = steerintPoints[0];
 
             const character = this.walker.getCharacter();
-            const targetPos = character.position.add(toVector3(point));
+            const targetPos = toVector3(point);
 
             const vertex1 = new GraphVertex(null, character.position)
             const vertex2 = new GraphVertex(null, targetPos);

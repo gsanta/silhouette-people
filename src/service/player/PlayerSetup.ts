@@ -15,7 +15,7 @@ import { BikeInputManager } from "../../model/item/bike/BikeInputManager";
 import { BikeMover } from "../../model/item/bike/states/BikeMover";
 import { DynamicRouter } from "../../model/item/route/adapters/routing/DynamicRouter";
 import { CitizenStore } from "../../store/CitizenStore";
-import { CollisionSensorAdapter } from "../motion/collision/CollisionSensorAdapter";
+import { CollisionAvoidanceAdapter } from "../motion/collision/CollisionAvoidanceAdapter";
 
 export class PlayerSetup {
 
@@ -53,7 +53,7 @@ export class PlayerSetup {
         walker.addListener(new RotationRestrictorAdapter(walker));
         walker.addListener(new RouterAdapter(new DynamicRouter(walker, graph)));
         walker.addListener(new RouteVisualizerAdapter(walker, this.graphService));
-        walker.addListener(new CollisionSensorAdapter(walker, this.citizenStore));
+        // walker.addListener(new CollisionAvoidanceAdapter(walker, this.citizenStore));
         
         const bike = <BikeItem> player.getParent();
         bike.inputManager = player.inputManager;
