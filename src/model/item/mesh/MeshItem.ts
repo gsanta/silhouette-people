@@ -134,6 +134,10 @@ export class MeshItem extends GameItem {
         this.meshes.forEach(mesh => mesh.isVisible = visibility);
     }
 
+    isCitizen() {
+        return this.tag.has(MeshItemTag.Citizen);
+    }
+
     addAttachment(attachment: MeshAttachment) {
         this.attachments.push(attachment);
     }

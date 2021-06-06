@@ -1,25 +1,19 @@
 import { ArcRotateCamera, Axis, Color3, MeshBuilder, PhysicsImpostor, Scene, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { CameraItem } from "../../../model/item/CameraItem";
-import { MeshConfig, MeshItemTag } from "../../../model/item/mesh/MeshItem";
 import { WorldObj } from "../../../model/item/WorldObj";
-import { MeshStore } from "../../../store/MeshStore";
 import { QuarterStore } from "../../../store/QuarterStore";
+import { GroundJson } from "../../base/import/map/WorldMap";
 import { CameraService } from "../../edit/camera/CameraService";
 import { lookup } from "../../Lookup";
-import { MeshFactory } from "../mesh/MeshFactory";
+import { WorldProvider } from "../../WorldProvider";
 import { ModelLoader } from "../mesh/ModelLoader";
 import { QuarterFactory, QuarterObjConfig } from "../quarter/QuarterFactory";
-import { GroundJson } from "../../base/import/map/WorldMap";
-import { WorldProvider } from "../../WorldProvider";
 
 export class WorldFactory {
 
     @InjectProperty("WorldProvider")
     private worldProvider: WorldProvider;
-
-    @InjectProperty("MeshStore")
-    private meshStore: MeshStore;
 
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;
@@ -27,17 +21,14 @@ export class WorldFactory {
     @InjectProperty("CameraService")
     private cameraService: CameraService;
     
-    private readonly meshFactory: MeshFactory;
     private readonly quarterFactory: QuarterFactory;
 
     private readonly modelLoader: ModelLoader;
     
-    constructor(meshFactory: MeshFactory) {
-        this.meshStore = lookup.meshStore;
+    constructor() {
         this.quarterStore = lookup.quarterStore;
         this.cameraService = lookup.cameraService;
         this.worldProvider = lookup.worldProvider;
-        this.meshFactory = meshFactory;
         this.quarterFactory = new QuarterFactory(this.worldProvider, this.quarterStore);
         
         this.modelLoader = new ModelLoader();
@@ -106,16 +97,5 @@ export class WorldFactory {
                 this.quarterFactory.createQuarter(config);
             }
         }
-    }
-
-    async createGameObjs(gameObjJsons: MeshConfig[], worldObj: WorldObj) {
-        const gameObjects = await Promise.all(gameObjJsons.map(json =>  this.meshFactory.createFromConfig(json)));
-        const colliderMeshes = gameObjects
-            .filter(obj => obj.collisionMesh && obj.tag.doesNotHave(MeshItemTag.Player, MeshItemTag.Enemy, MeshItemTag.Bicycle))
-            .map(obj => obj.collisionMesh);
-        
-
-        gameObjects.forEach(obj => this.meshStore.addItem(obj));
-        this.quarterStore.getQuarter(1).getMap().fillMeshes(colliderMeshes);
     }
 }

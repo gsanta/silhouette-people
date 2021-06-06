@@ -10,6 +10,7 @@ export type PersonItem = CharacterItem;
 export type BikeItem = CharacterItem<BikeState, BikeStateInfo>
 
 export class CharacterItem<S extends MeshState = MeshState, I = any> extends MeshItem {
+    collisionSensorDistance = 2;
     animationState: S;
     mover: MeshMover;
     inputManager: MeshInputManager;

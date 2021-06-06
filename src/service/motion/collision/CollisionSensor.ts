@@ -6,18 +6,17 @@ import { MeshItem } from "../../../model/item/mesh/MeshItem";
 
 export class CollisionSensor {
     private readonly character: CharacterItem;
-    private readonly sensorDistance: number;
 
-    constructor(character: CharacterItem, sensorDistance: number) {
+    constructor(character: CharacterItem) {
         this.character = character;
-        this.sensorDistance = sensorDistance;
     }
 
     getSteeringPoints(obstacles: MeshItem[]): Vector2[] {
         const pos = this.character.position2D;
         const velocity = toVector2(this.character.velocity);
 
-        const ahead = pos.add(velocity.multiply(new Vector2(this.sensorDistance, this.sensorDistance)));
+        const sensorDistance = this.character.collisionSensorDistance;
+        const ahead = pos.add(velocity.multiply(new Vector2(sensorDistance, sensorDistance)));
 
         var mostThreatening = this.findMostThreateningObstacle(ahead, obstacles);
 

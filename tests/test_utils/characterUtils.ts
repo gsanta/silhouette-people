@@ -6,6 +6,7 @@ export class CharacterBuilder {
     private _pos: Vector3;
     private _velocity: Vector3;
     private _radius: number;
+    private _collSensorDistance: number;
     private scene: Scene;
 
     constructor(scene: Scene) {
@@ -27,6 +28,11 @@ export class CharacterBuilder {
         return this;
     }
 
+    collisionSensorDistance(dist: number): CharacterBuilder {
+        this._collSensorDistance = dist;
+        return this;
+    }
+
     build(): CharacterItem {
         const character = new CharacterItem(`character-${this.index}`);
         const mesh = new Mesh(`character-${this.index}-mesh`, this.scene);
@@ -34,18 +40,10 @@ export class CharacterBuilder {
         character.meshes = [mesh];
         character.velocity = this._velocity;
         character.position = this._pos;
+        character.collisionSensorDistance = this._collSensorDistance !== undefined ? this._collSensorDistance : character.collisionSensorDistance;
 
         this.index++;
 
         return character;
     }
-}
-
-function createCharacter(position: Vector3, velocity: Vector3, scene: Scene): CharacterItem {
-    const character = new CharacterItem('character-1');
-    const mesh = new Mesh('character-mesh', scene);
-    character.meshes = [mesh];
-    character.velocity = velocity;
-    character.position = position;
-    return character;
 }

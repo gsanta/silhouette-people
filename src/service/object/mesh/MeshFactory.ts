@@ -1,41 +1,14 @@
-import { MeshBuilder } from "babylonjs";
-import { InjectProperty } from "../../../di/diDecorators";
-import { AvoidanceRadiusAttachment } from "../../../model/item/attachments/AvoidanceRadiusAttachment";
 import { BikeStateInfo } from "../../../model/item/bike/BikeState";
 import { CharacterItem } from "../../../model/item/character/CharacterItem";
-import { MeshConfig, MeshItem, MeshObjType } from "../../../model/item/mesh/MeshItem";
+import { MeshConfig, MeshItem, MeshItemTag, MeshObjType } from "../../../model/item/mesh/MeshItem";
 import { AbstractPropertyParser } from "../../base/import/AbstractPropertyParser";
-import { lookup } from "../../Lookup";
-import { WorldProvider } from "../../WorldProvider";
 
 export class MeshFactory {
-    @InjectProperty('WorldProvider')
-    private worldProvider: WorldProvider;
-
     private readonly indexesByType: Map<string, number> = new Map();
     private propertyParsers: AbstractPropertyParser<any>[] = [];
 
-    constructor() {
-        this.worldProvider = lookup.worldProvider;
-    }
     setPropertyParsers(propertyParsers: AbstractPropertyParser<any>[]) {
         this.propertyParsers = propertyParsers;
-    }
-
-    createCollisionAvoidance(parentItem: MeshItem) {
-        const mesh = MeshBuilder.CreateCylinder(
-            `${parentItem.id}-collision-avoidance-mesh`,
-            { 
-                height: 1, 
-                diameterTop: parentItem.radius,
-                diameterBottom: parentItem.radius
-            }, 
-            this.worldProvider.scene
-        );
-
-        const avoidanceRadiusAttachment = new AvoidanceRadiusAttachment('avoidance-radius', parentItem);
-        avoidanceRadiusAttachment.mesh = mesh;
-        return avoidanceRadiusAttachment;
     }
 
     async createFromConfig(meshConfig: MeshConfig): Promise<MeshItem> {
@@ -45,6 +18,9 @@ export class MeshFactory {
         if (meshConfig.type === MeshObjType.Bicycle1) {
             const character = new CharacterItem(id);
             character.info = new BikeStateInfo();
+            meshItem = character;
+        } else if (meshConfig.props.tags && meshConfig.props.tags.includes(MeshItemTag.Citizen)) {
+            const character = new CharacterItem(id);
             meshItem = character;
         } else {
             meshItem = new MeshItem(id);
