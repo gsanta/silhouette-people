@@ -3,6 +3,7 @@ import { toVector2 } from "../../../helpers";
 import { Circle } from "../../../model/shape/Circle";
 import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { MeshItem } from "../../../model/item/mesh/MeshItem";
+import { Rotation } from "../../../model/math/Rotation";
 
 export class CollisionSensor {
     private readonly character: CharacterItem;
@@ -29,6 +30,13 @@ export class CollisionSensor {
         }
 
         return [];
+    }
+
+    private increaseRotation(pos: Vector2) {
+        const rotation = new Rotation(this.character.position2D);
+        const relPos = pos.subtract(this.character.position2D);
+        
+        const diff = rotation.diffRad(relPos);
     }
 
     private findMostThreateningObstacle(ahead: Vector2, obstacles: MeshItem[]) {

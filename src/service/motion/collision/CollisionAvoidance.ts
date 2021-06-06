@@ -20,8 +20,9 @@ export class CollisionAvoidance {
     avoid(characters: CharacterItem[]) {
         const steerintPoints = this.sensor.getSteeringPoints(characters);
 
-        if (steerintPoints[0] !== undefined) {
-            const point = steerintPoints[0];
+        if (steerintPoints.length === 2) {
+            console.log(steerintPoints[0]);
+            const point = steerintPoints.length === 2 ? steerintPoints[1] : steerintPoints[0];
 
             const character = this.walker.getCharacter();
             const targetPos = toVector3(point);

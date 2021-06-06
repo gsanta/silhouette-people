@@ -35,8 +35,8 @@ describe('avoid', () => {
         expect(newRoute.getEdges().length).toBe(4);
         checkVertexEqual(newRoute.firstEdge.v2, new GraphVertex(undefined, new Vector3(1, 0, 3)));
         checkVertexEqual(newRoute.getEdge(1).v1, new GraphVertex(undefined, new Vector3(1, 0, 3)));
-        checkVertexEqual(newRoute.getEdge(1).v2, new GraphVertex(undefined, new Vector3(2.866, 0, 4.866)));
-        checkVertexEqual(newRoute.getEdge(2).v1, new GraphVertex(undefined, new Vector3(2.866, 0, 4.866)));
+        checkVertexEqual(newRoute.getEdge(1).v2, new GraphVertex(undefined, new Vector3(1.866, 0, 4.5)));
+        checkVertexEqual(newRoute.getEdge(2).v1, new GraphVertex(undefined, new Vector3(1.866, 0, 4.5)));
         checkVertexEqual(newRoute.getEdge(2).v2, new GraphVertex(undefined, new Vector3(1, 0, 10)));
         expect(newRoute.lastEdge).toBe(route.lastEdge);
     });

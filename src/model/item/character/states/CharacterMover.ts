@@ -1,7 +1,7 @@
 import { Axis, Space, Vector3 } from "babylonjs";
 import { CharacterItem, PersonItem } from "../CharacterItem";
 import { MeshMover } from "../../mesh/MeshMover";
-import { vecToRot } from "../../../../helpers";
+import { vector3ToRotation } from "../../../../helpers";
 
 
 export class CharacterMover extends MeshMover {
@@ -21,6 +21,6 @@ export class CharacterMover extends MeshMover {
         const displacementVec = new Vector3(displacement, displacement, displacement);
         const vel = this.character.velocity.multiply(displacementVec)
         this.character.moveWithCollision(vel);
-        this.character.rotation = vecToRot(vel);
+        this.character.rotation = vector3ToRotation(vel);
     }
 }

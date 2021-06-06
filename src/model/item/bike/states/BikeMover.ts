@@ -1,5 +1,5 @@
 import { Axis, Space, Vector3 } from "babylonjs";
-import { rotateVec, vecToRot } from "../../../../helpers";
+import { rotateVec, vector3ToRotation } from "../../../../helpers";
 import { BikeItem, CharacterItem } from "../../character/CharacterItem";
 import { MeshMover } from "../../mesh/MeshMover";
 
@@ -32,7 +32,7 @@ export class BikeMover extends MeshMover {
             let vel = this.bike.velocity.multiply(displacementVec);
     
             this.character.moveWithCollision(vel);
-            this.character.rotation = vecToRot(vel);
+            this.character.rotation = vector3ToRotation(vel);
         }
         
     }

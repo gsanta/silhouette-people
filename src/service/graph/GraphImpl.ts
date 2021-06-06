@@ -1,5 +1,5 @@
 import { Vector3 } from "babylonjs/Maths/math.vector";
-import { vecToRot } from "../../helpers";
+import { vector3ToRotation } from "../../helpers";
 import { Quad } from "../../model/shape/Quad";
 import { Graph } from "./Graph";
 
@@ -50,7 +50,7 @@ export class GraphEdge {
 
     private setDirection(): void {
         const vector = this.v2.p.subtract(this.v1.p);
-        this._direction = vecToRot(vector);
+        this._direction = vector3ToRotation(vector);
     }
 }
 

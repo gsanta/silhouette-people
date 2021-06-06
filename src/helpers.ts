@@ -1,6 +1,4 @@
 import { Matrix, Vector2, Vector3 } from "babylonjs";
-import { LineEquation } from "./model/math/LineEquation";
-import { Circle } from "./model/shape/Circle";
 
 export function rotToVec(rotation: number) {
     const matrix = Matrix.RotationY(rotation);
@@ -16,10 +14,17 @@ export function rotateVec(vector: Vector3, rotation: number) {
     return Vector3.TransformCoordinates(vector, matrix);
 }
 
-export function vecToRot(vector: Vector3) {
+export function vector3ToRotation(vector: Vector3) {
     const dirAngle = Math.atan2(-vector.z, vector.x);
 
     return dirAngle + Math.PI / 2;
+}
+
+export function vector2ToRotation(vector: Vector2) {
+    let dirAngle = Math.atan2(vector.y, vector.x);
+    const forwardDirAdjustMent = -Math.PI / 2;
+    dirAngle = dirAngle + forwardDirAdjustMent;
+    return dirAngle >= 0 ? dirAngle : 2 * Math.PI + dirAngle;
 }
 
 export function toVector2(vec3: Vector3) {
