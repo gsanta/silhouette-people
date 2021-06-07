@@ -26,6 +26,14 @@ export class LineEquation {
         }
     }
 
+    get slopeInRad(): number {
+        if (this.m === undefined) {
+            return Math.PI / 2;
+        } else {
+            return 
+        }
+    }
+
     translate(vec: Vector2) {
         if (this.xIntercept !== undefined) {
             return new LineEquation(undefined, undefined, this.xIntercept + vec.x);

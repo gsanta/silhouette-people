@@ -1,3 +1,4 @@
+import { EPSILON } from "../../helpers";
 
 
 export class QuadraticLineEquation {
@@ -16,7 +17,11 @@ export class QuadraticLineEquation {
         if (2 * this.a === 0) {
             return undefined;
         } else {
-            const discriminant =  this.b ** 2 - 4 * this.a * this.c;
+            let discriminant =  this.b ** 2 - 4 * this.a * this.c;
+            if (Math.abs(discriminant) < EPSILON) {
+                discriminant = 0;
+            }
+
             if (discriminant < 0) {
                 return [undefined, undefined];
             } else if (this.isZero(discriminant)) {

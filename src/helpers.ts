@@ -1,5 +1,7 @@
 import { Matrix, Vector2, Vector3 } from "babylonjs";
 
+export const EPSILON = 0.01;
+
 export function rotToVec(rotation: number) {
     const matrix = Matrix.RotationY(rotation);
     return Vector3.TransformCoordinates(new Vector3(0, 0, 1), matrix);
@@ -20,11 +22,16 @@ export function vector3ToRotation(vector: Vector3) {
     return dirAngle + Math.PI / 2;
 }
 
+export function toStandardAngle(angle: number) {
+    angle += Math.PI / 2;
+    return angle >= 2 * Math.PI ? angle - 2 * Math.PI : angle < 0 ? 2 * Math.PI + angle : angle;
+}
+
 export function vector2ToRotation(vector: Vector2) {
-    let dirAngle = Math.atan2(vector.y, vector.x);
+    let angle = Math.atan2(vector.y, vector.x);
     const forwardDirAdjustMent = -Math.PI / 2;
-    dirAngle = dirAngle + forwardDirAdjustMent;
-    return dirAngle >= 0 ? dirAngle : 2 * Math.PI + dirAngle;
+    angle = angle + forwardDirAdjustMent;
+    return angle >= 0 ? angle : 2 * Math.PI + angle;
 }
 
 export function toVector2(vec3: Vector3) {

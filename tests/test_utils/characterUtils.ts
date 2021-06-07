@@ -13,13 +13,13 @@ export class CharacterBuilder {
         this.scene = scene;
     }
 
-    pos(vec: Vector3): CharacterBuilder {
-        this._pos = vec;
+    pos(x: number, y: number, z: number): CharacterBuilder {
+        this._pos = new Vector3(x, y, z);
         return this;
     }
 
-    velocity(vec: Vector3): CharacterBuilder {
-        this._velocity = vec;
+    velocity(x: number, y: number, z: number): CharacterBuilder {
+        this._velocity = new Vector3(x, y, z);
         return this;
     }
 

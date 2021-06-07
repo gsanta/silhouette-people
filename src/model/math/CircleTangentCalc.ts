@@ -13,7 +13,7 @@ export class CircleTangentCalc {
         if (this.isExternalPoint(p)) {
             return [this.getSingleTangentLine(p, 1), this.getSingleTangentLine(p, -1)];
         } else {
-            return [undefined, undefined];
+            return undefined;
         }
     }
 

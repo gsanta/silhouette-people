@@ -11,8 +11,8 @@ declare const charBuilder: CharacterBuilder;
 
 describe('avoid', () => {
     it ('route does not change, when no avoidance is needed', () => {
-        const character = charBuilder.pos(new Vector3(1, 0, 1)).velocity(new Vector3(1, 0, 0)).collisionSensorDistance(1).build();
-        const obstacle = charBuilder.pos(new Vector3(5, 0, 1)).radius(1).build();
+        const character = charBuilder.pos(1, 0, 1).velocity(1, 0, 0).collisionSensorDistance(1).build();
+        const obstacle = charBuilder.pos(5, 0, 1).radius(1).build();
         const route = new RouteItem(createRoute());
         const routeWalker = new RouteWalkerImpl(route, character);
         const collisionAvoidance = new CollisionAvoidance(routeWalker, new CollisionSensor(character));
@@ -23,8 +23,8 @@ describe('avoid', () => {
     });
 
     it ('route changes, when avoidance is needed', () => {
-        const character = charBuilder.pos(new Vector3(1, 0, 3)).velocity(new Vector3(0, 0, 1)).collisionSensorDistance(2).build();
-        const obstacle = charBuilder.pos(new Vector3(1, 0, 5)).radius(1).build();
+        const character = charBuilder.pos(1, 0, 3).velocity(0, 0, 1).collisionSensorDistance(2).build();
+        const obstacle = charBuilder.pos(1, 0, 5).radius(1).build();
         const route = new RouteItem(createRoute());
         const routeWalker = new RouteWalkerImpl(route, character);
         const collisionAvoidance = new CollisionAvoidance(routeWalker, new CollisionSensor(character));

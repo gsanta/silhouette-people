@@ -5,25 +5,25 @@ describe('diffRad', () => {
     it ('compare EAST to NORTH', () => {
         const rotation = new Rotation(new Vector2(1, 0));
 
-        expect(rotation.diffRad(new Vector2(0, 1))).toBeCloseTo(Math.PI / 2);
+        expect(rotation.diff(new Vector2(0, 1))).toBeCloseTo(Math.PI / 2);
     });
 
     it ('compare EAST to SOUTH', () => {
         const rotation = new Rotation(new Vector2(1, 0));
 
-        expect(rotation.diffRad(new Vector2(0, -1))).toBeCloseTo(-Math.PI / 2);
+        expect(rotation.diff(new Vector2(0, -1))).toBeCloseTo(-Math.PI / 2);
     });
 
     it ('compare EAST to NORTWEST', () => {
         const rotation = new Rotation(new Vector2(1, 0));
 
-        expect(rotation.diffRad(new Vector2(-1, 1))).toBeCloseTo(2.356);
+        expect(rotation.diff(new Vector2(-1, 1))).toBeCloseTo(2.356);
     });
 
     it ('compare WEST to NORTHEAST', () => {
         const rotation = new Rotation(new Vector2(-1, 0));
 
-        expect(rotation.diffRad(new Vector2(1, 1))).toBeCloseTo(-2.356);
+        expect(rotation.diff(new Vector2(1, 1))).toBeCloseTo(-2.356);
     });
 });
 
@@ -57,14 +57,14 @@ describe('rotationRad', () => {
 describe('addRotation', () => {
     it ('add neg 30deg to rotation EAST', () => {
         const rotation = new Rotation(new Vector2(1, 0));
-        const newRotation = rotation.addRotation(-Math.PI / 6);
+        const newRotation = rotation.add(-Math.PI / 6);
 
         expect(newRotation.rotationRad).toBeCloseTo(Tools.ToRadians(240));
     });
 
     it ('add pos 30deg to rotation EAST', () => {
         const rotation = new Rotation(new Vector2(1, 0));
-        const newRotation = rotation.addRotation(Math.PI / 6);
+        const newRotation = rotation.add(Math.PI / 6);
 
         expect(newRotation.rotationRad).toBeCloseTo(Tools.ToRadians(300));
     });

@@ -1,6 +1,8 @@
-import { Mesh, NullEngine, Scene, Vector3 } from "babylonjs";
+import { Mesh, NullEngine, Scene, Tools, Vector3 } from "babylonjs";
+import { toStandardAngle } from "../../../../src/helpers";
 import { CharacterItem } from "../../../../src/model/item/character/CharacterItem";
 import { CollisionSensor } from "../../../../src/service/motion/collision/CollisionSensor";
+import { CharacterBuilder } from "../../../test_utils/characterUtils";
 
 describe("Get steering points", () => {
     it ('one obstacle, it is within range', () => {
@@ -64,6 +66,64 @@ describe("Get steering points", () => {
         expect(steeringPoints[1].x).toBeCloseTo(-0.49);
         expect(steeringPoints[1].y).toBeCloseTo(2.666);
 
+    });
+});
+
+declare const charBuilder: CharacterBuilder;
+
+describe("Get steering angles", () => {
+    it ('no obstacle within sensor distance', () => {
+        const character = charBuilder.pos(1, 0, 0).velocity(1, 0, 0).collisionSensorDistance(2).build();
+        const obstacle = charBuilder.pos(6, 0, 0).radius(2).build();
+
+        const collisionSensor = new CollisionSensor(character);
+        const steeringAngles = collisionSensor.getSteeringAngles([obstacle]);
+
+        expect(steeringAngles).toEqual(undefined);
+    });
+
+    it ('one obstacle within sensor distance (\u2192)', () => {
+        const character = charBuilder.pos(1, 0, 0).velocity(1, 0, 0).collisionSensorDistance(2).build();
+        const obstacle = charBuilder.pos(4, 0, 0).radius(2).build();
+
+        const collisionSensor = new CollisionSensor(character, 0);
+        const steeringAngles = collisionSensor.getSteeringAngles([obstacle]);
+
+        expect(Tools.ToDegrees(toStandardAngle(steeringAngles.angle1))).toBeCloseTo(318.189);
+        expect(Tools.ToDegrees(toStandardAngle(steeringAngles.angle2))).toBeCloseTo(41.81);
+    });
+
+    it ('one obstacle within sensor distance (\u2191)', () => {
+        const character = charBuilder.pos(1, 0, 0).velocity(0, 0, 1).collisionSensorDistance(2).build();
+        const obstacle = charBuilder.pos(1, 0, 4).radius(2).build();
+
+        const collisionSensor = new CollisionSensor(character, 0);
+        const steeringAngles = collisionSensor.getSteeringAngles([obstacle]);
+
+        expect(Tools.ToDegrees(toStandardAngle(steeringAngles.angle1))).toBeCloseTo(60);
+        expect(Tools.ToDegrees(toStandardAngle(steeringAngles.angle2))).toBeCloseTo(120);
+    });
+
+    it ('one obstacle within sensor distance (\u2190)', () => {
+        const character = charBuilder.pos(1, 0, 1).velocity(-1, 0, 0).collisionSensorDistance(2).build();
+        const obstacle = charBuilder.pos(-3, 0, 1).radius(2).build();
+
+        const collisionSensor = new CollisionSensor(character, 0);
+        const steeringAngles = collisionSensor.getSteeringAngles([obstacle]);
+
+        expect(Tools.ToDegrees(toStandardAngle(steeringAngles.angle1))).toBeCloseTo(150);
+        expect(Tools.ToDegrees(toStandardAngle(steeringAngles.angle2))).toBeCloseTo(210);
+    });
+
+    it ('one obstacle in sensor distance (\u2193)', () => {
+        const character = charBuilder.pos(1, 0, 1).velocity(0, 0, -1).collisionSensorDistance(2).build();
+        const obstacle = charBuilder.pos(1, 0, -3).radius(2).build();
+
+        const collisionSensor = new CollisionSensor(character, 0);
+        const steeringAngles = collisionSensor.getSteeringAngles([obstacle]);
+
+        expect(Tools.ToDegrees(toStandardAngle(steeringAngles.angle1))).toBeCloseTo(240);
+        expect(Tools.ToDegrees(toStandardAngle(steeringAngles.angle2))).toBeCloseTo(300);
     });
 });
 
