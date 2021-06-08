@@ -31,18 +31,22 @@ export class CollisionSensor {
         
         if (mostThreatening) {
             const circle = new Circle(toVector2(mostThreatening.position), mostThreatening.radius);
-            const intersections = circle.tangentFromExternalPoint(pos).map(t => t ? circle.intersection(t)[0] : undefined);
+            const tangents = circle.tangentFromExternalPoint(pos);
 
-            if (intersections) {
-                return this.getResult(intersections[0], intersections[1]);
+            if (tangents) {
+                const intersections = tangents.map(t => t ? circle.intersection(t)[0] : undefined);
+    
+                if (intersections) {
+                    return this.getResult(intersections[0], intersections[1]);
+                }
             }
-
         }
 
         return undefined;
     }
 
     private getResult(intersection1: Vector2, intersection2: Vector2): CollisionSensorResult {
+        const characterRot = this.character.rotationRad;
         intersection1 = intersection1.subtract(this.character.position2D);
         intersection2 = intersection2.subtract(this.character.position2D);
         const rot1 = Rotation.FromVector(intersection1);
@@ -50,8 +54,8 @@ export class CollisionSensor {
         const middle = rot1.middle(rot2.rad);
 
         return {
-            angle1: this.addOffsetToRotation(rot1, middle).rad,
-            angle2: this.addOffsetToRotation(rot2, middle).rad,
+            angle1: this.addOffsetToRotation(rot1, middle).rad,// .diff(characterRot).rad,
+            angle2: this.addOffsetToRotation(rot2, middle).rad //.diff(characterRot).rad,
         }
 
     }

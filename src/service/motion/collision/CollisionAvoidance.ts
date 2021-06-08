@@ -1,8 +1,9 @@
-import { Vector2 } from "babylonjs";
-import { toVector3 } from "../../../helpers";
+import { Vector2, Vector3 } from "babylonjs";
+import { toVector2, toVector3 } from "../../../helpers";
 import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { RouteWalker } from "../../../model/item/route/RouteWalker";
 import { VertexInjector } from "../../../model/item/route/VertexInjector";
+import { Rotation } from "../../../model/math/Rotation";
 import { GraphVertex } from "../../graph/GraphImpl";
 import { CollisionSensor } from "./CollisionSensor";
 
@@ -18,14 +19,14 @@ export class CollisionAvoidance {
     }
 
     avoid(characters: CharacterItem[]) {
-        const steerintPoints = this.sensor.getSteeringPoints(characters);
+        const angles = this.sensor.getSteeringAngles(characters);
 
-        if (steerintPoints.length === 2) {
-            console.log(steerintPoints[0]);
-            const point = steerintPoints.length === 2 ? steerintPoints[1] : steerintPoints[0];
-
+        if (angles) {
             const character = this.walker.getCharacter();
-            const targetPos = toVector3(point);
+            const characterRot = Rotation.FromVector(toVector2(character.velocity));
+            const angle = new Rotation(angles.angle1);
+            const steeringPos = new Rotation(angles.angle2).toVector3().multiply(new Vector3(10, 1, 10));
+            const targetPos = character.position.add(steeringPos);
 
             const vertex1 = new GraphVertex(null, character.position)
             const vertex2 = new GraphVertex(null, targetPos);

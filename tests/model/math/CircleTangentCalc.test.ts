@@ -42,10 +42,9 @@ describe('Calculating tangent to circle from external point', () => {
         const circle = new Circle(new Vector2(0, 0), 2);
 
         const calc = new CircleTangentCalc(circle);
-        const [lineEquation1, lineEquation2] = calc.getTangentLines(p);
+        const lines = calc.getTangentLines(p);
 
-        expect(lineEquation1).toBeFalsy();
-        expect(lineEquation2).toBeFalsy();
+        expect(lines).toBeFalsy();
     });
 
     it ('point is on circle border', () => {
@@ -53,9 +52,8 @@ describe('Calculating tangent to circle from external point', () => {
         const circle = new Circle(new Vector2(1, 1), 2);
 
         const calc = new CircleTangentCalc(circle);
-        const [lineEquation1, lineEquation2] = calc.getTangentLines(p);
+        const lines = calc.getTangentLines(p);
         
-        expect(lineEquation1).toBeFalsy();
-        expect(lineEquation2).toBeFalsy();
+        expect(lines).toBeFalsy();
     });
 });

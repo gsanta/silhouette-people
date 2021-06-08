@@ -52,6 +52,10 @@ export class GraphEdge {
         const vector = this.v2.p.subtract(this.v1.p);
         this._direction = vector3ToRotation(vector);
     }
+
+    toString() {
+        return `[ ${this.v1.toString()} : ${this.v2.toString()} ]`;
+    }
 }
 
 export class GraphVertex {
@@ -61,6 +65,10 @@ export class GraphVertex {
     constructor(id: string, p: Vector3) {
         this.id = id;
         this.p = p;
+    }
+
+    toString() {
+        return this.p.toString();
     }
 }
 

@@ -5,6 +5,8 @@ import { MeshItem } from "../mesh/MeshItem";
 import { RouteWalker } from "../route/RouteWalker";
 import { BikeState, BikeStateInfo } from "../bike/BikeState";
 import { Vector3 } from "babylonjs";
+import { Rotation } from "../../math/Rotation";
+import { toVector2 } from "../../../helpers";
 
 export type PersonItem = CharacterItem;
 export type BikeItem = CharacterItem<BikeState, BikeStateInfo>
@@ -37,5 +39,9 @@ export class CharacterItem<S extends MeshState = MeshState, I = any> extends Mes
 
     get velocity(): Vector3 {
         return this._velocity;
+    }
+
+    get rotationRad(): number {
+        return Rotation.FromVector(toVector2(this.velocity)).rad;
     }
 }

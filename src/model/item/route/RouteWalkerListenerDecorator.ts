@@ -44,7 +44,10 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
     getPos(): Vector3 { return this.delegate.getPos(); }
     getPrevPos(): Vector3 { return this.delegate.getPrevPos(); }
     getEdge(): GraphEdge { return this.delegate.getEdge(); }
-    setEdge(edge: GraphEdge): void { 
+    setEdge(edge: GraphEdge): void {
+        if (this.getCharacter().id === 'C') {
+            console.log(edge.toString());
+        }
         this.delegate.setEdge(edge);
         this.listeners.forEach(listener => listener.onEnterEdge());
     }
