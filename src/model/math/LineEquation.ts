@@ -12,31 +12,27 @@ export class LineEquation {
     }
 
     getY(x: number) {
-        if (this.xIntercept !== undefined) {
+        if (this.isVertical()) {
             return undefined;
         }
         return this.m * x + this.c;
     }
 
     getX(y: number): number {
-        if (this.xIntercept !== undefined) {
+        if (this.isVertical()) {
             return this.xIntercept;
         } else {
             return (y - this.c) / this.m;
         }
     }
 
-    get slopeInRad(): number {
-        if (this.m === undefined) {
-            return Math.PI / 2;
-        } else {
-            return 
-        }
+    get angle(): number {
+        return Math.atan(this.m);
     }
 
     translate(vec: Vector2) {
-        if (this.xIntercept !== undefined) {
-            return new LineEquation(undefined, undefined, this.xIntercept + vec.x);
+        if (this.isVertical()) {
+            return LineEquation.Vertical(this.xIntercept + vec.x);
         } else {
             let c = this.c + vec.y;
             c -= this.m * vec.x 
@@ -45,11 +41,19 @@ export class LineEquation {
     }
 
     toString() {
-        if (this.m === undefined) {
+        if (this.isVertical()) {
             return `Vertical line with x intercept of ${round(this.xIntercept)}`;
         } else {
             return `y = ${round(this.m)} * x + ${round(this.c)}`;
         }
+    }
+
+    isVertical(): boolean {
+        return isFinite(this.m) === false;
+    }
+
+    isHorizontal(): boolean {
+        return this.m === 0;
     }
 
     isEqualTo(otherLine: LineEquation): boolean {
@@ -59,6 +63,10 @@ export class LineEquation {
         } else {
             return Math.abs(this.m - otherLine.m) < 0.01 && Math.abs(this.c - otherLine.c) < 0.01;
         }
+    }
+
+    static Vertical(xIntercept: number) {
+        return new LineEquation(Infinity, undefined, xIntercept);
     }
 }
 

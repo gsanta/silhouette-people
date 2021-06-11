@@ -62,7 +62,7 @@ export class ActiveEdgeUpdater {
         const target = this.routeWalker.getTarget();
 
         if (prevPos) {
-            const checkDist = prevPos.subtract(target.p).length() < 2;
+            const checkDist = prevPos.subtract(target.p).length() < 0.5;
             const checkDir = prevPos.subtract(target.p).length() < currPos.subtract(target.p).length();
             return checkDist && checkDir;
         }

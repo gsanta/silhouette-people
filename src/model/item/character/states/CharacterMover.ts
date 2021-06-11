@@ -14,8 +14,6 @@ export class CharacterMover extends MeshMover {
             return;
         }
 
-        const mesh = this.character.mesh;
-        
         const deltaTimeSec = deltaTime / 1000;
         const displacement = this.speed * deltaTimeSec;
         const displacementVec = new Vector3(displacement, displacement, displacement);

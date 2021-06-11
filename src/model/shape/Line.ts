@@ -1,6 +1,6 @@
 import { Vector2 } from "babylonjs";
 
-export class LineShape {
+export class Line {
     readonly p1: Vector2;
     readonly p2: Vector2;
 

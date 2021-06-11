@@ -6,7 +6,7 @@ import { Circle } from "../../../src/model/shape/Circle";
 describe('getIntersectionPoints', () => {
     it ('two intersection points, vertical line, circle in the origo', () => {
         const circle = new Circle(new Vector2(0, 0), 2);
-        const line = new LineEquation(undefined, undefined, 1);
+        const line = LineEquation.Vertical(1);
 
         const calc = new CircleIntersectionCalc(circle);
         const [p1, p2] = calc.getIntersectionPoints(line);
@@ -19,7 +19,7 @@ describe('getIntersectionPoints', () => {
 
     it ('two intersection points, vertical line, circle not in the origo', () => {
         const circle = new Circle(new Vector2(2, 1), 2);
-        const line = new LineEquation(undefined, undefined, 2);
+        const line = LineEquation.Vertical(2);
 
         const calc = new CircleIntersectionCalc(circle);
         const [p1, p2] = calc.getIntersectionPoints(line);
@@ -83,7 +83,7 @@ describe('getIntersectionPoints', () => {
 
     it ('one intersection point, vertical line', () => {
         const circle = new Circle(new Vector2(1, 3), 2);
-        const line = new LineEquation(undefined, undefined, 3);
+        const line = LineEquation.Vertical(3);
 
         const calc = new CircleIntersectionCalc(circle);
         const [p1, p2] = calc.getIntersectionPoints(line);
@@ -107,7 +107,7 @@ describe('getIntersectionPoints', () => {
 
     it ('no intersection, vertical line', () => {
         const circle = new Circle(new Vector2(0, 0), 2);
-        const line = new LineEquation(undefined, undefined, 3);
+        const line = LineEquation.Vertical(3);
 
         const calc = new CircleIntersectionCalc(circle);
         const [p1, p2] = calc.getIntersectionPoints(line);

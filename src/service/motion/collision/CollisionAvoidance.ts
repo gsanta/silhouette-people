@@ -25,7 +25,7 @@ export class CollisionAvoidance {
             const character = this.walker.getCharacter();
             const characterRot = Rotation.FromVector(toVector2(character.velocity));
             const angle = new Rotation(angles.angle1);
-            const steeringPos = new Rotation(angles.angle2).toVector3().multiply(new Vector3(10, 1, 10));
+            const steeringPos = new Rotation(angles.angle2).toVector3().multiply(new Vector3(3, 1, 3));
             const targetPos = character.position.add(steeringPos);
 
             const vertex1 = new GraphVertex(null, character.position)
@@ -34,7 +34,7 @@ export class CollisionAvoidance {
 
             const route = this.vertexInjector.inject(this.walker.getRoute(), this.walker.getEdge(), [vertex1, vertex2]);
             this.walker.setRoute(route);
-            this.walker.setEdge(route.getEdge(currentEdgeIndex));
+            this.walker.setEdge(route.getEdge(currentEdgeIndex + 1));
         }
     }
 }

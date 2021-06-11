@@ -58,33 +58,31 @@ describe('FromVector', () => {
 });
 
 describe("toVector3", () => {
-    describe('Converting angle to direction vector', () => {
-        it ('handles 0 deg', () => {
-            const vector = new Rotation(0).toVector3();
-            expect(vector.x).toBe(0);
-            expect(vector.y).toBe(0);
-            expect(vector.z).toBe(1);
-        });
-        
-        it ('handles 90 deg', () => {
-            const vector = new Rotation(Tools.ToRadians(90)).toVector3();
-            expect(vector.x).toBeCloseTo(1);
-            expect(vector.y).toBeCloseTo(0);
-            expect(vector.z).toBeCloseTo(0);
-        });
+    it ('handles 0 deg', () => {
+        const vector = new Rotation(0).toVector3();
+        expect(vector.x).toBe(0);
+        expect(vector.y).toBe(0);
+        expect(vector.z).toBe(1);
+    });
     
-        it ('handles -90 deg', () => {
-            const vector = new Rotation(Tools.ToRadians(-90)).toVector3();
-            expect(vector.x).toBeCloseTo(-1);
-            expect(vector.y).toBeCloseTo(0);
-            expect(vector.z).toBeCloseTo(0);
-        });
-    
-        it ('handles 45 deg', () => {
-            const vector = new Rotation(Tools.ToRadians(45)).toVector3();
-            expect(vector.x).toBeCloseTo(0.707);
-            expect(vector.y).toBeCloseTo(0);
-            expect(vector.z).toBeCloseTo(0.707);
-        });
+    it ('handles 90 deg', () => {
+        const vector = new Rotation(Tools.ToRadians(90)).toVector3();
+        expect(vector.x).toBeCloseTo(-1);
+        expect(vector.y).toBeCloseTo(0);
+        expect(vector.z).toBeCloseTo(0);
+    });
+
+    it ('handles -90 deg', () => {
+        const vector = new Rotation(Tools.ToRadians(-90)).toVector3();
+        expect(vector.x).toBeCloseTo(1);
+        expect(vector.y).toBeCloseTo(0);
+        expect(vector.z).toBeCloseTo(0);
+    });
+
+    it ('handles 45 deg', () => {
+        const vector = new Rotation(Tools.ToRadians(45)).toVector3();
+        expect(vector.x).toBeCloseTo(-0.707);
+        expect(vector.y).toBeCloseTo(0);
+        expect(vector.z).toBeCloseTo(0.707);
     });
 });

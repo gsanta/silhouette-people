@@ -87,7 +87,7 @@ export class Rotation {
         return new Rotation(Math.abs(this.rad));
     }
 
-    toVector3() {
+    toVector3(): Vector3 {
         // somehow rotation is clockwise opposed to the standard counter clockwise direction so rad negation needed
         const matrix = Matrix.RotationY(-this.rad);
         return Vector3.TransformCoordinates(new Vector3(0, 0, 1), matrix);

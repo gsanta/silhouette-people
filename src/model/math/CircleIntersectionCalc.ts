@@ -13,7 +13,7 @@ export class CircleIntersectionCalc {
     getIntersectionPoints(lineEq: LineEquation): [Vector2, Vector2] {
         lineEq = lineEq.translate(this.circle.center.negate());
         
-        let intersections = lineEq.m === undefined ? this.verticalLineIntersection(lineEq) : this.lineIntersection(lineEq);
+        let intersections = lineEq.isVertical() ? this.verticalLineIntersection(lineEq) : this.lineIntersection(lineEq);
 
         return <[Vector2, Vector2]> intersections.map(point => point ? point.add(this.circle.center) : undefined);
     }

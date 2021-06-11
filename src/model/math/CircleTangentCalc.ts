@@ -30,7 +30,7 @@ export class CircleTangentCalc {
         const y = p.y;
         const r = this.circle.radius;
     
-        let m: number = undefined;
+        let m: number = Infinity;
         
         const a = r ** 2 - x ** 2;
         const b = 2 * x * y;
@@ -43,8 +43,8 @@ export class CircleTangentCalc {
     
         if (m === 0) {
             equation = new LineEquation(m, p.y);
-        } else if (m === undefined) {
-            equation = new LineEquation(undefined, undefined, p.x);
+        } else if (isFinite(m) === false) {
+            equation = LineEquation.Vertical(p.x);
         } else {
             const yIntercept = y - m * x;
             equation = new LineEquation(m, yIntercept);

@@ -22,24 +22,24 @@ describe('avoid', () => {
         expect(routeWalker.getRoute()).toBe(route);
     });
 
-    it ('route changes, when avoidance is needed', () => {
-        const character = charBuilder.pos(1, 0, 3).velocity(0, 0, 1).collisionSensorDistance(2).build();
-        const obstacle = charBuilder.pos(1, 0, 5).radius(1).build();
-        const route = new RouteItem(createRoute());
-        const routeWalker = new RouteWalkerImpl(route, character);
-        const collisionAvoidance = new CollisionAvoidance(routeWalker, new CollisionSensor(character));
+    // it ('route changes, when avoidance is needed', () => {
+    //     const character = charBuilder.pos(1, 0, 3).velocity(0, 0, 1).collisionSensorDistance(2).build();
+    //     const obstacle = charBuilder.pos(1, 0, 5).radius(1).build();
+    //     const route = new RouteItem(createRoute());
+    //     const routeWalker = new RouteWalkerImpl(route, character);
+    //     const collisionAvoidance = new CollisionAvoidance(routeWalker, new CollisionSensor(character));
         
-        collisionAvoidance.avoid([obstacle]);
-        const newRoute = routeWalker.getRoute();
+    //     collisionAvoidance.avoid([obstacle]);
+    //     const newRoute = routeWalker.getRoute();
 
-        expect(newRoute.getEdges().length).toBe(4);
-        checkVertexEqual(newRoute.firstEdge.v2, new GraphVertex(undefined, new Vector3(1, 0, 3)));
-        checkVertexEqual(newRoute.getEdge(1).v1, new GraphVertex(undefined, new Vector3(1, 0, 3)));
-        checkVertexEqual(newRoute.getEdge(1).v2, new GraphVertex(undefined, new Vector3(1.866, 0, 4.5)));
-        checkVertexEqual(newRoute.getEdge(2).v1, new GraphVertex(undefined, new Vector3(1.866, 0, 4.5)));
-        checkVertexEqual(newRoute.getEdge(2).v2, new GraphVertex(undefined, new Vector3(1, 0, 10)));
-        expect(newRoute.lastEdge).toBe(route.lastEdge);
-    });
+    //     expect(newRoute.getEdges().length).toBe(4);
+    //     checkVertexEqual(newRoute.firstEdge.v2, new GraphVertex(undefined, new Vector3(1, 0, 3)));
+    //     checkVertexEqual(newRoute.getEdge(1).v1, new GraphVertex(undefined, new Vector3(1, 0, 3)));
+    //     checkVertexEqual(newRoute.getEdge(1).v2, new GraphVertex(undefined, new Vector3(1.866, 0, 4.5)));
+    //     checkVertexEqual(newRoute.getEdge(2).v1, new GraphVertex(undefined, new Vector3(1.866, 0, 4.5)));
+    //     checkVertexEqual(newRoute.getEdge(2).v2, new GraphVertex(undefined, new Vector3(1, 0, 10)));
+    //     expect(newRoute.lastEdge).toBe(route.lastEdge);
+    // });
 });
 
 function createRoute(): GraphEdge[] {
