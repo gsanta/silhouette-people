@@ -1,4 +1,5 @@
-import { GraphEdge, GraphImpl, GraphVertex } from "../../../../graph/GraphImpl";
+import { GraphEdge } from "../../../../graph/GraphEdge";
+import { GraphImpl, GraphVertex } from "../../../../graph/GraphImpl";
 import { RouteConfig, RouteParser } from "../RouteParser";
 import { WorldMap } from "../WorldMap";
 import { EdgeDimensionCalc } from "./EdgeDimensionCalc";

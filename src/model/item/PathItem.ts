@@ -1,11 +1,8 @@
-import { Mesh } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
 
 
 export class PathItem {
     private points: Vector3[] = [];
-    private meshes: Mesh[] = [];
-    private arrowHead: Mesh;
 
     constructor(points: Vector3[]) {
         this.points = points;

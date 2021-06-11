@@ -1,5 +1,6 @@
 import { Direction } from "../../../../../service/graph/Direction";
-import { GraphEdge, GraphImpl, GraphVertex } from "../../../../../service/graph/GraphImpl";
+import { GraphEdge } from "../../../../../service/graph/GraphEdge";
+import { GraphImpl, GraphVertex } from "../../../../../service/graph/GraphImpl";
 import { RouteWalker } from "../../RouteWalker";
 
 export class NextEdgeSelector {
@@ -53,7 +54,7 @@ export class NextEdgeSelector {
     private orderEdgesByAngle(sourceEdge: GraphEdge, targetEdges: GraphEdge[], ascending = true): GraphEdge[] {
         const angles: Map<GraphEdge, number> = new Map();
         targetEdges.forEach(targetEdge => {
-            const angle = Direction.angleBetween(sourceEdge.direction, targetEdge.direction);
+            const angle = Direction.angleBetween(sourceEdge.angle.worldAngle().rad, targetEdge.angle.worldAngle().rad);
             angles.set(targetEdge, angle);
         });
         

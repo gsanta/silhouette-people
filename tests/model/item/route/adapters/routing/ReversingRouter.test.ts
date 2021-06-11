@@ -2,7 +2,8 @@ import { Vector3 } from "babylonjs";
 import { ReversingRouter } from "../../../../../../src/model/item/route/adapters/routing/ReversingRouter";
 import { RouteItem } from "../../../../../../src/model/item/route/RouteItem";
 import { RouteWalkerImpl } from "../../../../../../src/model/item/route/RouteWalkerImpl";
-import { GraphEdge, GraphVertex } from "../../../../../../src/service/graph/GraphImpl";
+import { GraphEdge } from "../../../../../../src/service/graph/GraphEdge";
+import { GraphVertex } from "../../../../../../src/service/graph/GraphImpl";
 
 
 describe('edgeChanged', () => {

@@ -65,8 +65,17 @@ export class LineEquation {
         }
     }
 
-    static Vertical(xIntercept: number) {
+    static Vertical(xIntercept: number): LineEquation {
         return new LineEquation(Infinity, undefined, xIntercept);
+    }
+
+    static PointSlope(point: Vector2, m: number): LineEquation {
+        if (isFinite(m)) {
+            const c = - m * point.x + point.y;
+            return new LineEquation(m, c);
+        } else {
+            return LineEquation.Vertical(point.x);
+        }
     }
 }
 

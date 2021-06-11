@@ -1,6 +1,7 @@
 import { Vector3 } from "babylonjs";
 import { RouteItem } from "../../../../src/model/item/route/RouteItem";
-import { GraphEdge, GraphVertex } from "../../../../src/service/graph/GraphImpl";
+import { GraphEdge } from "../../../../src/service/graph/GraphEdge";
+import { GraphVertex } from "../../../../src/service/graph/GraphImpl";
 
 
 describe('lastVertex', () => {

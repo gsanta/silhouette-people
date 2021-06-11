@@ -1,11 +1,11 @@
 import { Vector3 } from "babylonjs";
 import { RouteItem } from "../../../../src/model/item/route/RouteItem";
 import { RouteWalkerImpl } from "../../../../src/model/item/route/RouteWalkerImpl";
-import { GraphEdge, GraphVertex } from "../../../../src/service/graph/GraphImpl";
+import { GraphEdge } from "../../../../src/service/graph/GraphEdge";
+import { GraphVertex } from "../../../../src/service/graph/GraphImpl";
 import { CollisionAvoidance } from "../../../../src/service/motion/collision/CollisionAvoidance";
 import { CollisionSensor } from "../../../../src/service/motion/collision/CollisionSensor";
 import { CharacterBuilder } from "../../../test_utils/characterUtils";
-import { checkVertexEqual } from "../../../test_utils/routeUtils";
 
 declare const charBuilder: CharacterBuilder;
 

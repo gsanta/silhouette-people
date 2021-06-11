@@ -1,7 +1,6 @@
 import { Vector3 } from "babylonjs";
 import { Quad } from "../../../../../model/shape/Quad";
-import { GraphEdge } from "../../../../graph/GraphImpl";
-
+import { GraphEdge } from "../../../../graph/GraphEdge";
 
 export class EdgeDimensionCalc {
 

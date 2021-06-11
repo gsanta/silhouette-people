@@ -35,25 +35,25 @@ describe('FromVector', () => {
     it ('vector direction is NORTH', () => {
         const rotation = Rotation.FromVector(new Vector2(0, 1));
 
-        expect(rotation.rad).toBeCloseTo(0);
+        expect(rotation.rad).toBeCloseTo(Math.PI / 2);
     });
 
     it ('vector direction is EAST', () => {
         const rotation = Rotation.FromVector(new Vector2(1, 0));
 
-        expect(rotation.rad).toBeCloseTo(3 * Math.PI / 2);
+        expect(rotation.rad).toBeCloseTo(0);
     });
 
     it ('vector direction is SOUTH', () => {
         const rotation = Rotation.FromVector(new Vector2(0, -1));
 
-        expect(rotation.rad).toBeCloseTo(Math.PI);
+        expect(rotation.rad).toBeCloseTo(3 * Math.PI / 2);
     });
 
     it ('vector direction is WEST', () => {
         const rotation = Rotation.FromVector(new Vector2(-1, 0));
 
-        expect(rotation.rad).toBeCloseTo(Math.PI / 2);
+        expect(rotation.rad).toBeCloseTo(Math.PI);
     });
 });
 

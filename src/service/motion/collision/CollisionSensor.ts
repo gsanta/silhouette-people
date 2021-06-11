@@ -46,11 +46,10 @@ export class CollisionSensor {
     }
 
     private getResult(intersection1: Vector2, intersection2: Vector2): CollisionSensorResult {
-        const characterRot = this.character.rotationRad;
         intersection1 = intersection1.subtract(this.character.position2D);
         intersection2 = intersection2.subtract(this.character.position2D);
-        const rot1 = Rotation.FromVector(intersection1);
-        const rot2 = Rotation.FromVector(intersection2);
+        const rot1 = Rotation.FromVector(intersection1).worldAngle();
+        const rot2 = Rotation.FromVector(intersection2).worldAngle();
         const middle = rot1.middle(rot2.rad);
 
         return {

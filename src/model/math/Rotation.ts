@@ -1,5 +1,5 @@
 import { Matrix, Vector2, Vector3 } from "babylonjs";
-import { vector2ToRotation } from "../../helpers";
+import { toVector2, vector2ToRotation } from "../../helpers";
 
 export class DIRECTION {
     static N() {
@@ -30,15 +30,19 @@ export class DIRECTION {
 export class Rotation {
     readonly rad: number;
 
-    constructor(rad: number) {
-        this.rad = rad;
+    constructor(angle: number) {
+        this.rad = angle;
     }
 
-    norm() {
-        return this.rad >= 0 ? this.rad : 2 * Math.PI + this.rad;
+    norm(): number {
+        return this.rad >= 2 * Math.PI ? this.rad - 2 * Math.PI : this.rad < 0 ? 2 * Math.PI + this.rad : this.rad;
     }
 
-    add(rad: number) {
+    worldAngle(): Rotation {
+        return new Rotation(this.rad - Math.PI / 2);
+    }
+
+    add(rad: number): Rotation {
         return new Rotation(this.rad + rad);
     }
 
@@ -94,6 +98,13 @@ export class Rotation {
     }
 
     static FromVector(vec: Vector2): Rotation {
-        return new Rotation(vector2ToRotation(vec));
+        let angle = Math.atan2(vec.y, vec.x);
+        angle = angle >= 0 ? angle : 2 * Math.PI + angle;
+        return new Rotation(angle);
+    }
+
+    static FromVectors(ve1: Vector2, vec2: Vector2): Rotation {
+        const vector = vec2.subtract(ve1);
+        return Rotation.FromVector(vector);
     }
 }

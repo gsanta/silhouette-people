@@ -1,5 +1,6 @@
 import { Vector3 } from "babylonjs";
-import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
+import { GraphEdge } from "../../../service/graph/GraphEdge";
+import { GraphVertex } from "../../../service/graph/GraphImpl";
 import { CharacterItem } from "../character/CharacterItem";
 import { RouteItem } from "./RouteItem";
 

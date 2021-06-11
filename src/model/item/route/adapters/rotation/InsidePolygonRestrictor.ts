@@ -1,6 +1,6 @@
 import { Vector3 } from "babylonjs";
 import pointInPolygon from "point-in-polygon";
-import { GraphEdge } from "../../../../../service/graph/GraphImpl";
+import { GraphEdge } from "../../../../../service/graph/GraphEdge";
 import { Quad } from "../../../../shape/Quad";
 import { RouteWalker } from "../../RouteWalker";
 
@@ -17,7 +17,7 @@ export class InsidePolygonRestrictor {
         const inPolygon = this.testPointInPolyon(character.position, edge.dimensions);
 
         if (!inPolygon) {
-            return route.isReversed(edge) ? edge.oppositeDirection : edge.direction;
+            return route.isReversed(edge) ? edge.oppositeAngle.worldAngle().rad : edge.angle.worldAngle().rad;
         }
 
         return null;

@@ -1,4 +1,6 @@
-import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
+import { GraphEdge } from "../../../service/graph/GraphEdge";
+import { GraphVertex } from "../../../service/graph/GraphImpl";
+import { LineEquation } from "../../math/LineEquation";
 
 export interface RouteStoryConfig {
     routeId: string;
@@ -14,6 +16,7 @@ export class RouteItem {
     readonly id: string;
     private edges: GraphEdge[];
     private isReversedList: boolean[];
+    private borderLines: LineEquation[];
 
     constructor(edges: GraphEdge[], config?: RouteItemConfig) {
         this.edges = edges;
@@ -107,4 +110,12 @@ export class RouteItem {
 
         return isReversedList;
     }
+
+    // private setBorderLines() {
+    //     this.borderLines = this.edges.map(edge => {
+    //         if (this.isReversed(edge)) {
+
+    //         }
+    //     });
+    // }
 }

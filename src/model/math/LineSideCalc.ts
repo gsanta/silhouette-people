@@ -1,5 +1,7 @@
 
 /**
+ * link: https://math.stackexchange.com/questions/274712/calculate-on-which-side-of-a-straight-line-is-a-given-point-located
+ * 
  * AB line direction: <x2,y2>−<x1,y1>=<x2−x1,y2−y1>
  * Orthogonal (perpendicular) direction Vnormal = <y2−y1,−(x2−x1)> (flip the x's and the y's and negate one component i.e (y's, -x's))
  * One possible vector going from the line to the Point P is D = P − A = <x−x1,y−y1>

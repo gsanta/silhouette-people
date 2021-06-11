@@ -1,4 +1,4 @@
-import { GraphEdge } from "../../../../../service/graph/GraphImpl";
+import { GraphEdge } from "../../../../../service/graph/GraphEdge";
 import { RouteWalker } from "../../RouteWalker";
 
 export class ExactDirectionRestrictor {
@@ -9,6 +9,6 @@ export class ExactDirectionRestrictor {
     }
 
     restrict(edge: GraphEdge): number | null {
-        return this.routeWalker.getRoute().isReversed(edge) ? edge.oppositeDirection : edge.direction;
+        return this.routeWalker.getRoute().isReversed(edge) ? edge.oppositeAngle.worldAngle().rad : edge.angle.worldAngle().rad;
     }
 }

@@ -1,4 +1,5 @@
-import { GraphEdge, GraphVertex } from "../../../service/graph/GraphImpl";
+import { GraphEdge } from "../../../service/graph/GraphEdge";
+import { GraphVertex } from "../../../service/graph/GraphImpl";
 import { RouteItem } from "./RouteItem";
 
 

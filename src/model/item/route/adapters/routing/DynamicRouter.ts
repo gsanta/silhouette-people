@@ -1,6 +1,7 @@
 
 import { Graph } from "../../../../../service/graph/Graph";
-import { GraphEdge, GraphVertex } from "../../../../../service/graph/GraphImpl";
+import { GraphEdge } from "../../../../../service/graph/GraphEdge";
+import { GraphVertex } from "../../../../../service/graph/GraphImpl";
 import { RouteWalker } from "../../RouteWalker";
 import { IRouter } from "./IRouter";
 

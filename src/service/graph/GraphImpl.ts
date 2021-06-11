@@ -2,61 +2,7 @@ import { Vector3 } from "babylonjs/Maths/math.vector";
 import { vector3ToRotation } from "../../helpers";
 import { Quad } from "../../model/shape/Quad";
 import { Graph } from "./Graph";
-
-export class GraphEdge {
-    readonly v1: GraphVertex;
-    readonly v2: GraphVertex;
-    thickness: number = 0;
-    dimensions: Quad;
-
-    private _direction: number;
-
-    constructor(v1: GraphVertex, v2: GraphVertex) {
-        this.v1 = v1;
-        this.v2 = v2;
-
-        this.setDirection();
-    }
-
-    hasVertex(v: GraphVertex) {
-        return this.v1 === v || this.v2 === v;
-    }
-
-    getOtherVertex(v: GraphVertex) {
-        if (v === this.v1) {
-            return this.v2;
-        } else if (v === this.v2) {
-            return this.v1;
-        }
-
-        return undefined;
-    }
-
-    get direction(): number {
-        return this._direction;
-    }
-
-    get oppositeDirection(): number {
-        return this._direction + Math.PI;
-    }
-
-    getSource(isReversed = false): GraphVertex {
-        return isReversed ? this.v2 : this.v1;
-    }
-
-    getTraget(isReversed = false): GraphVertex {
-        return isReversed ? this.v1 : this.v2;
-    }
-
-    private setDirection(): void {
-        const vector = this.v2.p.subtract(this.v1.p);
-        this._direction = vector3ToRotation(vector);
-    }
-
-    toString() {
-        return `[ ${this.v1.toString()} : ${this.v2.toString()} ]`;
-    }
-}
+import { GraphEdge } from "./GraphEdge";
 
 export class GraphVertex {
     readonly p: Vector3;

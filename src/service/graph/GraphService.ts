@@ -3,7 +3,8 @@ import { MaterialStore } from "../../store/MaterialStore";
 import { lookup } from "../Lookup";
 import { WorldProvider } from "../WorldProvider";
 import { Graph } from "./Graph";
-import { GraphEdge, GraphVertex } from "./GraphImpl";
+import { GraphEdge } from "./GraphEdge";
+import { GraphVertex } from "./GraphImpl";
 import { GraphVisualizer } from "./GraphVisualizer";
 
 export class GraphService {

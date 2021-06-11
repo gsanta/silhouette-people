@@ -1,5 +1,5 @@
-import { Vector2, Vector3 } from "babylonjs";
-import { GraphEdge } from "../../../../../service/graph/GraphImpl";
+import { Vector3 } from "babylonjs";
+import { GraphEdge } from "../../../../../service/graph/GraphEdge";
 import { RouteWalker } from "../../RouteWalker";
 
 export class ActiveEdgeUpdater {

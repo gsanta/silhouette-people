@@ -3,7 +3,7 @@ import { RouteItem } from "../../model/item/route/RouteItem";
 import { RouteWalker } from "../../model/item/route/RouteWalker";
 import { MaterialStore } from "../../store/MaterialStore";
 import { WorldProvider } from "../WorldProvider";
-import { GraphEdge } from "./GraphImpl";
+import { GraphEdge } from "./GraphEdge";
 
 export class GraphVisualizer {
     private readonly worldProvider: WorldProvider;
