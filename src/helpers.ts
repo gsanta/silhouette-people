@@ -3,7 +3,7 @@ import { Matrix, Vector2, Vector3 } from "babylonjs";
 export const EPSILON = 0.01;
 
 export function rotToVec(rotation: number) {
-    const matrix = Matrix.RotationY(rotation);
+    const matrix = Matrix.RotationY(-rotation);
     return Vector3.TransformCoordinates(new Vector3(0, 0, 1), matrix);
 }
 
@@ -12,7 +12,7 @@ export function areSamePoints(vec1: Vector2, vec2: Vector2) {
 }
 
 export function rotateVec(vector: Vector3, rotation: number) {
-    const matrix = Matrix.RotationY(rotation);
+    const matrix = Matrix.RotationY(-rotation);
     return Vector3.TransformCoordinates(vector, matrix);
 }
 

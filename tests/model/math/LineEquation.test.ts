@@ -52,6 +52,30 @@ describe('PointSlope', () => {
     });
 });
 
+describe('TwoPoints', () => {
+
+    it ('horizontal line', () => {
+
+        const lineEq = LineEquation.TwoPoints(new Vector2(2, 3), new Vector2(5, 3));
+        expect(lineEq.isHorizontal()).toBeTruthy();
+        expect(lineEq.c).toBeCloseTo(3);
+    });
+
+    it ('vertical line', () => {
+
+        const lineEq = LineEquation.TwoPoints(new Vector2(2, 3), new Vector2(2, 5));
+        expect(lineEq.isVertical()).toBeTruthy();
+        expect(lineEq.xIntercept).toBeCloseTo(2);
+    });
+
+    it ('45 deg line', () => {
+
+        const lineEq = LineEquation.TwoPoints(new Vector2(2, 3), new Vector2(4, 5));
+        expect(lineEq.m).toBeCloseTo(1);
+        expect(lineEq.getY(2)).toBeCloseTo(3);
+    });
+});
+
 describe('getPerpendicularLine', () => {
 
     it ('horziontal line', () => {

@@ -1,21 +1,26 @@
 import { Vector3 } from "babylonjs";
 import { GraphEdge } from "../../../../../service/graph/GraphEdge";
+import { LineSideCalc } from "../../../../math/LineSideCalc";
 import { RouteWalker } from "../../RouteWalker";
 
 export class ActiveEdgeUpdater {
     private readonly routeWalker: RouteWalker;
+    private currentSide: number = undefined;
+    private lineSideCalc: LineSideCalc;
     
     constructor(routeWalker: RouteWalker) {
         this.routeWalker = routeWalker;
     }
 
     initActiveEdge() {
+        const character = this.routeWalker.getCharacter();
         const route = this.routeWalker.getRoute();
-        this.routeWalker.setEdge(route.getEdges()[0]);
+        const edge = route.getEdges()[0];
+        this.routeWalker.setEdge(edge);
         const source = this.routeWalker.getSource().p;
-        this.routeWalker.getCharacter().position = new Vector3(source.x, 0, source.z);
+        character.position = new Vector3(source.x, 0, source.z);
 
-        // this.routeWalker.getCharacter().setPosition2D(new Vector2(source.x, source.z));
+        this.updateSide();
     }
     
     updateActiveEdge() {
@@ -28,6 +33,7 @@ export class ActiveEdgeUpdater {
     private setNextCheckPoint() {
         const nextEdge = this.getNextEdge();
         this.routeWalker.setEdge(nextEdge);
+        this.updateSide();
     }
 
     private getNextEdge(): GraphEdge {
@@ -44,28 +50,17 @@ export class ActiveEdgeUpdater {
         return nextEdge;
     }
 
-    private isEdgeFinished() {
-        const target = this.routeWalker.getTarget();
+    updateSide() {
+        const edge = this.routeWalker.getEdge();
         const character = this.routeWalker.getCharacter();
-        
-        const curr = character.position;
-    
-        const isWithinDestRadius = target.p.subtract(curr).length() < 0.2;
-        const isLeavingDest = this.isLeavingDest();
-    
-        return isWithinDestRadius || isLeavingDest;
+        this.lineSideCalc = new LineSideCalc(this.routeWalker.getRoute().getBorderLine(edge));
+        this.currentSide = this.lineSideCalc.getSide(character.position2D);
     }
 
-    private isLeavingDest() {
-        const currPos = this.routeWalker.getPos();
-        const prevPos = this.routeWalker.getPrevPos();
-        const target = this.routeWalker.getTarget();
+    private isEdgeFinished() {
+        const character = this.routeWalker.getCharacter();
 
-        if (prevPos) {
-            const checkDist = prevPos.subtract(target.p).length() < 0.5;
-            const checkDir = prevPos.subtract(target.p).length() < currPos.subtract(target.p).length();
-            return checkDist && checkDir;
-        }
-        return false;
+        const side = this.lineSideCalc.getSide(character.position2D);
+        return side !== this.currentSide;
     }
 }

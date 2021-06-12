@@ -54,12 +54,12 @@ export class CitizenSetup {
     }
 
     async setup() {
-        const char1 = this.setupCitizen1();
-        this.applyDebugAttachments(char1);
-        const char2 = this.setupCitizen2();
-        this.applyDebugAttachments(char2);
+        // const char1 = this.setupCitizen1();
+        // this.applyDebugAttachments(char1);
+        // const char2 = this.setupCitizen2();
+        // this.applyDebugAttachments(char2);
 
-        this.toolService.execute.addRouteExecutor(this.citizenExecutor);
+        // this.toolService.execute.addRouteExecutor(this.citizenExecutor);
     }
 
     private setupCitizen1(): CharacterItem {

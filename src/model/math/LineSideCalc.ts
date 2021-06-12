@@ -29,7 +29,8 @@ export class LineSideCalc {
 
     getSide(P: Vector2): number {
         const [A, B] = this.getPointsOnLine(P);
-        return (P.x - A.x) * (B.y - A.y) - (P.y - A.y) * (B.x - A.x);
+        const side = (P.x - A.x) * (B.y - A.y) - (P.y - A.y) * (B.x - A.x);
+        return Math.sign(side);
     }
 
     private getPointsOnLine(point: Vector2): [Vector2, Vector2] {

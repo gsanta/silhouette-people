@@ -1,3 +1,4 @@
+import { toVector2 } from "../../../helpers";
 import { GraphEdge } from "../../../service/graph/GraphEdge";
 import { GraphVertex } from "../../../service/graph/GraphImpl";
 import { LineEquation } from "../../math/LineEquation";
@@ -20,7 +21,8 @@ export class RouteItem {
 
     constructor(edges: GraphEdge[], config?: RouteItemConfig) {
         this.edges = edges;
-        this.isReversedList = this.getIsReversedList(config ? config.isReversedIfSingleEdge : false);
+        this.setIsReversedList(config ? config.isReversedIfSingleEdge : false);
+        this.setBorderLines();
         this.id = config ? config.id : undefined;
     }
 
@@ -42,12 +44,13 @@ export class RouteItem {
         return new RouteItem(edges, { id: this.id });
     }
 
-    insertVertex(afterEdge: GraphEdge, vertex: GraphVertex) {
-
-    }
-
     getIndex(edge: GraphEdge): number {
         return this.edges.indexOf(edge);
+    }
+
+    getBorderLine(edge: GraphEdge): LineEquation {
+        const index = this.getIndex(edge);
+        return this.borderLines[index];
     }
 
     removeLastEdge(): RouteItem {
@@ -94,11 +97,14 @@ export class RouteItem {
         return this.edges[this.edges.length - 1];
     }
 
-    private getIsReversedList(isReversedIfSingleEdge: boolean = false): boolean[] {
+    private setIsReversedList(isReversedIfSingleEdge: boolean = false): void {
         const edges = this.edges;
 
-        if (edges.length === 0) { return []; }
-        if (edges.length === 1) { return [isReversedIfSingleEdge]; }
+        if (edges.length === 0) { return; }
+        if (edges.length === 1) { 
+            this.isReversedList = [isReversedIfSingleEdge]; 
+            return;
+        }
 
         const isFirstReversed = edges[1].hasVertex(edges[0].v1) ? true : false;
         const isReversedList: boolean[] = [ isFirstReversed ];
@@ -108,14 +114,21 @@ export class RouteItem {
             isReversedList.push(isReversed);
         }
 
-        return isReversedList;
+        this.isReversedList = isReversedList;
     }
 
-    // private setBorderLines() {
-    //     this.borderLines = this.edges.map(edge => {
-    //         if (this.isReversed(edge)) {
+    private setBorderLines() {
+        this.borderLines = this.edges.map(edge => {
+            const p1 = toVector2(edge.v1.p);
+            const p2 = toVector2(edge.v2.p);
 
-    //         }
-    //     });
-    // }
+            if (this.isReversed(edge)) {
+                const lineEq = LineEquation.TwoPoints(p2, p1);
+                return lineEq.getPerpendicularLine(p1);
+            } else {
+                const lineEq = LineEquation.TwoPoints(p1, p2);
+                return lineEq.getPerpendicularLine(p2);
+            }
+        });
+    }
 }

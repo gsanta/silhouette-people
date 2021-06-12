@@ -32,8 +32,7 @@ export class LineEquation {
     }
 
     getPerpendicularLine(point: Vector2): LineEquation {
-        const angle = new Rotation(this.angle).add(Math.PI / 2).norm();
-        let m = isVerticalAngle(angle) ? Infinity : Math.tan(angle);
+        let m = this.isHorizontal() ? Infinity : (- 1 / this.m);
         return LineEquation.PointSlope(point, m);
     }
 
@@ -84,6 +83,29 @@ export class LineEquation {
         } else {
             return LineEquation.Vertical(point.x);
         }
+    }
+
+    static TwoPoints(vec1: Vector2, vec2: Vector2) {
+        if (Point.isVertical(vec1, vec2)) {
+            return LineEquation.Vertical(vec1.x);
+        } else {
+            const m = (vec2.y - vec1.y) / (vec2.x - vec1.x);
+            const c = vec1.y - (vec1.x * m);
+
+            return new LineEquation(m, c);
+        }
+    }
+}
+
+namespace Point {
+    const epsilon = 0.1;
+
+    export function isVertical(vec1: Vector2, vec2: Vector2): boolean {
+        return Math.abs(vec1.x - vec2.x) <= epsilon;
+    }
+
+    export function isZero(num: number): boolean {
+        return Math.abs(num) <= epsilon;
     }
 }
 

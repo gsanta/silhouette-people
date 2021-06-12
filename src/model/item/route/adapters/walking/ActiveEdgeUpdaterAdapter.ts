@@ -18,4 +18,8 @@ export class ActiveEdgeUpdaterAdapter extends RouteWalkerListener {
     onStarted() {
         this.updater.initActiveEdge();
     }
+
+    onDirectionChanged() {
+        this.updater.updateSide();
+    }
 }
