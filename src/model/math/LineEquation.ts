@@ -1,4 +1,5 @@
 import { Vector2 } from "babylonjs/Maths/math.vector";
+import { Rotation } from "./Rotation";
 
 export class LineEquation {
     readonly m: number;
@@ -30,6 +31,12 @@ export class LineEquation {
         return Math.atan(this.m);
     }
 
+    getPerpendicularLine(point: Vector2): LineEquation {
+        const angle = new Rotation(this.angle).add(Math.PI / 2).norm();
+        let m = isVerticalAngle(angle) ? Infinity : Math.tan(angle);
+        return LineEquation.PointSlope(point, m);
+    }
+
     translate(vec: Vector2) {
         if (this.isVertical()) {
             return LineEquation.Vertical(this.xIntercept + vec.x);
@@ -53,7 +60,8 @@ export class LineEquation {
     }
 
     isHorizontal(): boolean {
-        return this.m === 0;
+        const epsilon = 0.01;
+        return Math.abs(this.m) <= epsilon;
     }
 
     isEqualTo(otherLine: LineEquation): boolean {
@@ -77,6 +85,11 @@ export class LineEquation {
             return LineEquation.Vertical(point.x);
         }
     }
+}
+
+function isVerticalAngle(angle: number) {
+    const epsilon = 0.01;
+    return Math.abs(Math.PI / 2 - Math.abs(angle)) <= epsilon;
 }
 
 function round(val: number) {
