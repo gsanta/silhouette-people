@@ -1,27 +1,26 @@
-import { rotateVec, rotToVec } from "../../../helpers";
-import { KeyboardService, KeyName } from "../../../service/base/keyboard/KeyboardService";
-import { GraphImpl } from "../../../service/graph/GraphImpl";
-import { GraphService } from "../../../service/graph/GraphService";
-import { MeshInputManager } from "../../MeshInputManager";
-import { BikeItem, CharacterItem } from "../character/CharacterItem";
-import { NextEdgeSelector } from "../route/adapters/routing/NextEdgeSelector";
-import { BikeStateInfo } from "./BikeState";
-import { BikeMover } from "./states/BikeMover";
+import { KeyboardService, KeyName } from "../../../../service/base/keyboard/KeyboardService";
+import { GraphImpl } from "../../../../service/graph/GraphImpl";
+import { GraphService } from "../../../../service/graph/GraphService";
+import { BikeItem, CharacterItem } from "../../character/CharacterItem";
+import { InputController } from "./InputController";
+import { NextEdgeSelector } from "../../route/adapters/routing/NextEdgeSelector";
+import { BikeStateInfo } from "../../bike/BikeState";
+import { BikeController } from "../../bike/states/BikeController";
 
-export class BikeInputManager extends MeshInputManager {
+export class BikeInputController extends InputController {
     private keyboardService: KeyboardService;
-    private bikeMover: BikeMover;
+    private bikeMover: BikeController;
     private readonly character: CharacterItem;
     private readonly nextEdgeSelector: NextEdgeSelector;
     private readonly bike: BikeItem;
 
-    constructor(bikeWalker: BikeMover, bike: BikeItem, character: CharacterItem,  keyboardService: KeyboardService, graphService: GraphService) {
+    constructor(bikeWalker: BikeController, bike: BikeItem, character: CharacterItem,  keyboardService: KeyboardService, graphService: GraphService) {
         super();
         this.bikeMover = bikeWalker;
         this.bike = bike;
         this.keyboardService = keyboardService;
         this.character = character;
-        this.nextEdgeSelector = new NextEdgeSelector(character.routeWalker, <GraphImpl> graphService.getGraph());
+        this.nextEdgeSelector = new NextEdgeSelector(character.routeController, <GraphImpl> graphService.getGraph());
         this.keyboardService.onKeydown(keyName => this.onKeyDown(keyName));
     }
 
@@ -36,7 +35,7 @@ export class BikeInputManager extends MeshInputManager {
                 this.nextEdgeSelector.choosePrevEdge();
             break;
             case KeyName.R:
-                this.character.routeWalker.reverseRoute();
+                this.character.routeController.reverseRoute();
             break;
             case KeyName.FORWARD2:
                 const nextGear = info.gear === info.maxGear ? info.maxGear : info.gear + 1; 

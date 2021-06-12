@@ -3,19 +3,19 @@ import { BikeState, BikeStateInfo } from "../BikeState";
 import { RollingSystem } from "../physics/RollingSystem";
 import { BikeBrakingState } from "./BikeBrakingState";
 import { BikeSpeedUpState } from "./BikeSpeedupState";
-import { BikeMover } from "./BikeMover";
-import { MeshMover } from "../../mesh/MeshMover";
+import { BikeController } from "./BikeController";
+import { CharacterController } from "../../mesh/CharacterController";
 
 export class BikeIdleState extends BikeState {
     private readonly bike: BikeItem;
-    private readonly mover: MeshMover;
+    private readonly mover: CharacterController;
     private readonly rollingSystem: RollingSystem;
 
-    constructor(bike: BikeItem, mover: MeshMover) {
+    constructor(bike: BikeItem, mover: CharacterController) {
         super(bike);
         this.bike = bike;
         this.mover = mover;
-        this.rollingSystem = new RollingSystem(this.bike.mover, 1)
+        this.rollingSystem = new RollingSystem(this.bike.characterController, 1)
     }
 
     updateInfo(bikeStateInfo: BikeStateInfo): void {

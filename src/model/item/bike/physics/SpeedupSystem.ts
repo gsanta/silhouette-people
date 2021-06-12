@@ -1,7 +1,7 @@
 import { Vector2 } from 'babylonjs';
 import regression from 'regression';
-import { MeshMover } from '../../mesh/MeshMover';
-import { BikeMover } from '../states/BikeMover';
+import { CharacterController } from '../../mesh/CharacterController';
+import { BikeController } from '../states/BikeController';
 import { AbstractBikePhysics } from './AbstractBikePhysics';
 
 export interface BikeSpeedPhysicsConf {
@@ -24,9 +24,9 @@ export class SpeedupSystem extends AbstractBikePhysics {
     private currTime = 0;
     private maxTime = 0;
     private currentGear = 0;
-    private readonly mover: MeshMover;
+    private readonly mover: CharacterController;
 
-    constructor(mover: MeshMover) {
+    constructor(mover: CharacterController) {
         super();
         this.speedRanges = [
             [ new Vector2(-1.6, -10 / 3.6), new Vector2(1.4, 2.5) ],

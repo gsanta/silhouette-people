@@ -1,12 +1,9 @@
-import { MeshInputManager } from "../../MeshInputManager";
+import { InputController } from "../game_object/input/InputController";
 import { MeshState } from "../mesh/MeshState";
-import { MeshMover } from "../mesh/MeshMover";
+import { CharacterController } from "../mesh/CharacterController";
 import { MeshItem } from "../mesh/MeshItem";
-import { RouteWalker } from "../route/RouteWalker";
+import { RouteController } from "../route/RouteController";
 import { BikeState, BikeStateInfo } from "../bike/BikeState";
-import { Vector3 } from "babylonjs";
-import { Rotation } from "../../math/Rotation";
-import { toVector2 } from "../../../helpers";
 
 export type PersonItem = CharacterItem;
 export type BikeItem = CharacterItem<BikeState, BikeStateInfo>
@@ -14,12 +11,10 @@ export type BikeItem = CharacterItem<BikeState, BikeStateInfo>
 export class CharacterItem<S extends MeshState = MeshState, I = any> extends MeshItem {
     collisionSensorDistance = 2;
     animationState: S;
-    mover: MeshMover;
-    inputManager: MeshInputManager;
-    routeWalker: RouteWalker;
+    characterController: CharacterController;
+    inputController: InputController;
+    routeController: RouteController;
     info: I;
-
-    _velocity: Vector3 = new Vector3(0, 0, 1);
 
     setState(state: S) {
         if (this.animationState) {
@@ -31,17 +26,5 @@ export class CharacterItem<S extends MeshState = MeshState, I = any> extends Mes
         if (this.animationState) {
             this.animationState.enterState();
         }
-    }
-
-    set velocity(vector: Vector3) {
-        this._velocity = vector;
-    }
-
-    get velocity(): Vector3 {
-        return this._velocity;
-    }
-
-    get rotationRad(): number {
-        return Rotation.FromVector(toVector2(this.velocity)).rad;
     }
 }

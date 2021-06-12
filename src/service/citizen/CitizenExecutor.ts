@@ -30,8 +30,8 @@ export class CitizenExecutor implements RouteExecutor {
     }
 
     startRoutes() {
-        this.activeCitizens = this.citizenStore.getAll().filter(citizen => citizen.routeWalker);
-        this.activeCitizens.forEach(citizen => citizen.routeWalker.setStarted(true))
+        this.activeCitizens = this.citizenStore.getAll().filter(citizen => citizen.routeController);
+        this.activeCitizens.forEach(citizen => citizen.routeController.setStarted(true))
     }
 
     private initRoutesIfNeeded() {
@@ -49,8 +49,8 @@ export class CitizenExecutor implements RouteExecutor {
     }
 
     private updateWalkers(deltaTime: number) {
-        this.activeCitizens.forEach(player => player.routeWalker.walk(deltaTime));
-        this.activeCitizens.forEach(citizen => citizen.mover.walk(deltaTime));
+        this.activeCitizens.forEach(player => player.routeController.walk(deltaTime));
+        this.activeCitizens.forEach(citizen => citizen.characterController.walk(deltaTime));
         this.activeCitizens.forEach(citizen => citizen.animationState.update(deltaTime));
     }
 

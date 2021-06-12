@@ -18,10 +18,10 @@ export class CitizenRouteDebugger {
 
     visualize() {
         this.citizenStore.getAll().forEach(citizen => {
-            if (citizen.routeWalker) {
+            if (citizen.routeController) {
                 const visualizer = new RouteVisualizer(this.worldProvider, this.materialStore);
                 this.visualizers.push(visualizer);
-                visualizer.visualize(citizen.routeWalker.getRoute());
+                visualizer.visualize(citizen.routeController.getRoute());
             }
         });
     }

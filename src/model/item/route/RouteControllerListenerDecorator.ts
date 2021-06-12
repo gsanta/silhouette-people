@@ -3,15 +3,15 @@ import { GraphEdge } from "../../../service/graph/GraphEdge";
 import { GraphVertex } from "../../../service/graph/GraphImpl";
 import { CharacterItem } from "../character/CharacterItem";
 import { RouteItem } from "./RouteItem";
-import { RouteWalker } from "./RouteWalker";
-import { RouteWalkerListener } from "./RouteWalkerListener";
+import { RouteController } from "./RouteController";
+import { RouteControllerListener } from "./RouteControllerListener";
 
-export class RouteWalkerListenerDecorator implements RouteWalker {
+export class RouteControllerListenerDecorator implements RouteController {
 
-    private delegate: RouteWalker;
-    private listeners: RouteWalkerListener[] = [];
+    private delegate: RouteController;
+    private listeners: RouteControllerListener[] = [];
 
-    constructor(delegate: RouteWalker) {
+    constructor(delegate: RouteController) {
         this.delegate = delegate;
     }
 
@@ -61,7 +61,7 @@ export class RouteWalkerListenerDecorator implements RouteWalker {
     }
     getCharacter(): CharacterItem { return this.delegate.getCharacter() };
 
-    addListener(routeWalkerListener: RouteWalkerListener) {
+    addListener(routeWalkerListener: RouteControllerListener) {
         this.listeners.push(routeWalkerListener);
     }
 }

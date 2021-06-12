@@ -2,14 +2,14 @@
 import { Graph } from "../../../../../service/graph/Graph";
 import { GraphEdge } from "../../../../../service/graph/GraphEdge";
 import { GraphVertex } from "../../../../../service/graph/GraphImpl";
-import { RouteWalker } from "../../RouteWalker";
+import { RouteController } from "../../RouteController";
 import { IRouter } from "./IRouter";
 
 export class DynamicRouter implements IRouter {
-    private readonly routeWalker: RouteWalker;
+    private readonly routeWalker: RouteController;
     private readonly graph: Graph<GraphVertex, GraphEdge>;
 
-    constructor(routeWalker: RouteWalker, graph: Graph<GraphVertex, GraphEdge>) {
+    constructor(routeWalker: RouteController, graph: Graph<GraphVertex, GraphEdge>) {
         this.graph = graph;
         this.routeWalker = routeWalker;
     }

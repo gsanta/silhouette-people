@@ -105,7 +105,7 @@ export class SetupService {
 
         this.factorySetup = new FactorySetup();
         this.routeSetup = new RouteSetup(this.worldProvider, this.graphService, this.routeStore);
-        this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.keyboardService, this.citizenStore);
+        this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.keyboardService);
         this.storySetup = new StorySetup();
         this.stageSetup = new StageSetup();
     }

@@ -17,7 +17,7 @@ export class CharacterGetOffBikeState extends MeshState {
         const bike = <BikeItem> player.getParent();
         player.setParent(undefined);
 
-        bike.animationState = new BikeIdleState(bike, bike.mover);
+        bike.animationState = new BikeIdleState(bike, bike.characterController);
         player.animationState = new CharacterIdleState(player);
         player.mesh.parent = bike.mesh.parent;
         player.position = bike.position;

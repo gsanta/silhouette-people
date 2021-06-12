@@ -1,10 +1,10 @@
 import { GraphEdge } from "../../../../../service/graph/GraphEdge";
-import { RouteWalker } from "../../RouteWalker";
+import { RouteController } from "../../RouteController";
 
 export class ExactDirectionRestrictor {
-    private readonly routeWalker: RouteWalker;
+    private readonly routeWalker: RouteController;
 
-    constructor(routeWalker: RouteWalker) {
+    constructor(routeWalker: RouteController) {
         this.routeWalker = routeWalker;
     }
 

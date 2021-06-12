@@ -1,7 +1,7 @@
-import { RouteWalkerListener } from "../../RouteWalkerListener";
+import { RouteControllerListener } from "../../RouteControllerListener";
 import { IRouter } from "./IRouter";
 
-export class RouterAdapter extends RouteWalkerListener {
+export class RouterAdapter extends RouteControllerListener {
     private readonly router: IRouter;
 
     constructor(router: IRouter) {

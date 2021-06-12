@@ -1,16 +1,16 @@
-import { RouteWalker } from "../../../model/item/route/RouteWalker";
-import { RouteWalkerListener } from "../../../model/item/route/RouteWalkerListener";
+import { RouteController } from "../../../model/item/route/RouteController";
+import { RouteControllerListener } from "../../../model/item/route/RouteControllerListener";
 import { CitizenStore } from "../../../store/CitizenStore";
 import { CollisionAvoidance } from "./CollisionAvoidance";
 import { CollisionSensor } from "./CollisionSensor";
 
-export class CollisionAvoidanceAdapter extends RouteWalkerListener {
+export class CollisionAvoidanceAdapter extends RouteControllerListener {
 
     private readonly collisionAvoidance: CollisionAvoidance;
     private readonly citizenStore: CitizenStore;
-    private readonly walker: RouteWalker;
+    private readonly walker: RouteController;
 
-    constructor(walker: RouteWalker, citizenStore: CitizenStore) {
+    constructor(walker: RouteController, citizenStore: CitizenStore) {
         super();
         this.walker = walker;
         this.collisionAvoidance = new CollisionAvoidance(this.walker, new CollisionSensor(walker.getCharacter()));

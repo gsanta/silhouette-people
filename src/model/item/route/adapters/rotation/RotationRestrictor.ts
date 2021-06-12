@@ -1,14 +1,14 @@
 import { rotToVec } from "../../../../../helpers";
-import { RouteWalker } from "../../RouteWalker";
+import { RouteController } from "../../RouteController";
 import { ExactDirectionRestrictor } from "./ExactDirectionRestrictor";
 import { InsidePolygonRestrictor } from "./InsidePolygonRestrictor";
 
 export class RotationRestrictor {
-    private routeWalker: RouteWalker;
+    private routeWalker: RouteController;
     private exactDirectionRestrictor: ExactDirectionRestrictor;
     private insidePolygonRestrictor: InsidePolygonRestrictor;
 
-    constructor(routeWalker: RouteWalker) {
+    constructor(routeWalker: RouteController) {
         this.routeWalker = routeWalker;
         this.exactDirectionRestrictor = new ExactDirectionRestrictor(this.routeWalker);
         this.insidePolygonRestrictor = new InsidePolygonRestrictor(routeWalker);
@@ -22,7 +22,7 @@ export class RotationRestrictor {
             if (direction !== null) {
                 this.restrictToDirection(direction)
             } else {
-                this.routeWalker.getCharacter().inputManager.enableDirection();
+                this.routeWalker.getCharacter().inputController.enableDirection();
             }
         }
     }
@@ -33,7 +33,7 @@ export class RotationRestrictor {
         if (edge) {
             const character = this.routeWalker.getCharacter();
             const initialAngle = route.isReversed(edge) ? edge.oppositeAngle : edge.angle;
-            character.velocity = initialAngle.worldAngle().toVector3();
+            character.characterController.velocity = initialAngle.worldAngle().toVector3();
         }
     }
 
@@ -45,21 +45,21 @@ export class RotationRestrictor {
     private restrictToDirection(direction: number) {
         const character = this.routeWalker.getCharacter();
         // character.instance.setRotation(direction);
-        character.velocity = rotToVec(direction);
-        character.inputManager.disableDirection();
+        character.characterController.velocity = rotToVec(direction);
+        character.inputController.disableDirection();
     }
 
     on() {
         const character = this.routeWalker.getCharacter();
-        if (character && character.inputManager) {
-            character.inputManager.disableDirection();
+        if (character && character.inputController) {
+            character.inputController.disableDirection();
         }
     }
 
     off() {
         const character = this.routeWalker.getCharacter();
-        if (character && character.inputManager) {
-            character.inputManager.enableDirection();
+        if (character && character.inputController) {
+            character.inputController.enableDirection();
         }
     }
 }

@@ -1,6 +1,6 @@
 
 
-export abstract class MeshInputManager {
+export abstract class InputController {
     protected isSpeedDisabled = false;
     protected isDirectionDisabled = false;
     

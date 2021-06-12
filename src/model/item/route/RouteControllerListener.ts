@@ -1,6 +1,6 @@
 
 
-export abstract class RouteWalkerListener {
+export abstract class RouteControllerListener {
     onWalk(deltaTime: number) {}
     onFinished() {}
     onStarted() {}

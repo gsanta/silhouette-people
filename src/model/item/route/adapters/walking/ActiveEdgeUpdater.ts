@@ -1,14 +1,14 @@
 import { Vector3 } from "babylonjs";
 import { GraphEdge } from "../../../../../service/graph/GraphEdge";
 import { LineSideCalc } from "../../../../math/LineSideCalc";
-import { RouteWalker } from "../../RouteWalker";
+import { RouteController } from "../../RouteController";
 
 export class ActiveEdgeUpdater {
-    private readonly routeWalker: RouteWalker;
+    private readonly routeWalker: RouteController;
     private currentSide: number = undefined;
     private lineSideCalc: LineSideCalc;
     
-    constructor(routeWalker: RouteWalker) {
+    constructor(routeWalker: RouteController) {
         this.routeWalker = routeWalker;
     }
 

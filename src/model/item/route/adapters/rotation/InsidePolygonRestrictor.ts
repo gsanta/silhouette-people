@@ -2,12 +2,12 @@ import { Vector3 } from "babylonjs";
 import pointInPolygon from "point-in-polygon";
 import { GraphEdge } from "../../../../../service/graph/GraphEdge";
 import { Quad } from "../../../../shape/Quad";
-import { RouteWalker } from "../../RouteWalker";
+import { RouteController } from "../../RouteController";
 
 export class InsidePolygonRestrictor {
-    private readonly routeWalker: RouteWalker;
+    private readonly routeWalker: RouteController;
 
-    constructor(routeWalker: RouteWalker) {
+    constructor(routeWalker: RouteController) {
         this.routeWalker = routeWalker;
     }
 

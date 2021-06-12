@@ -1,16 +1,16 @@
 import { Mesh } from "babylonjs";
 import { GraphService } from "../../../../../service/graph/GraphService";
-import { RouteWalker } from "../../RouteWalker";
-import { RouteWalkerListener } from "../../RouteWalkerListener";
+import { RouteController } from "../../RouteController";
+import { RouteControllerListener } from "../../RouteControllerListener";
 
-export class RouteVisualizerAdapter extends RouteWalkerListener {
+export class RouteVisualizerAdapter extends RouteControllerListener {
 
-    private readonly routeWalker: RouteWalker;
+    private readonly routeWalker: RouteController;
     private readonly graphService: GraphService;
 
     private meshes: Mesh[] = [];
 
-    constructor(routeWalker: RouteWalker, graphService: GraphService) {
+    constructor(routeWalker: RouteController, graphService: GraphService) {
         super();
 
         this.routeWalker = routeWalker;

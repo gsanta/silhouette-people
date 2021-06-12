@@ -143,7 +143,7 @@ export class MeshItem extends GameItem {
     }
 
     removeAttachment(name: string) {
-
+        this.attachments = this.attachments.filter(attachment => attachment.name !== name);
     }
 
     addPositionChangeListener(callback: () => void) {

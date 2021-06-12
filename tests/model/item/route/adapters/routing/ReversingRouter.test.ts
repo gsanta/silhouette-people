@@ -1,7 +1,7 @@
 import { Vector3 } from "babylonjs";
 import { ReversingRouter } from "../../../../../../src/model/item/route/adapters/routing/ReversingRouter";
 import { RouteItem } from "../../../../../../src/model/item/route/RouteItem";
-import { RouteWalkerImpl } from "../../../../../../src/model/item/route/RouteWalkerImpl";
+import { RouteControllerImpl } from "../../../../../../src/model/item/route/RouteControllerImpl";
 import { GraphEdge } from "../../../../../../src/service/graph/GraphEdge";
 import { GraphVertex } from "../../../../../../src/service/graph/GraphImpl";
 
@@ -10,7 +10,7 @@ describe('edgeChanged', () => {
 
     it ('does nothing when there is an active edge in route walker', () => {
         const route = new RouteItem(createRoute());
-        const routeWalker = new RouteWalkerImpl(route, undefined);
+        const routeWalker = new RouteControllerImpl(route, undefined);
 
         routeWalker.setEdge(route.firstEdge);
 
@@ -22,7 +22,7 @@ describe('edgeChanged', () => {
 
     it ('reverses route when there is no active edge in route walker', () => {
         const route = new RouteItem(createRoute());
-        const routeWalker = new RouteWalkerImpl(route, undefined);
+        const routeWalker = new RouteControllerImpl(route, undefined);
 
         routeWalker.setEdge(undefined);
 

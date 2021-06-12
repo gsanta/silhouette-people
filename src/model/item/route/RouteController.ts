@@ -4,7 +4,7 @@ import { GraphVertex } from "../../../service/graph/GraphImpl";
 import { CharacterItem } from "../character/CharacterItem";
 import { RouteItem } from "./RouteItem";
 
-export interface RouteWalker {
+export interface RouteController {
     walk(deltaTime: number): boolean;
 
     getRoute(): RouteItem;

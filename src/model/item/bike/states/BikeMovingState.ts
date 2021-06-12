@@ -18,7 +18,7 @@ export class BikeMovingState extends MeshState {
     
     update(): void {
         const deltaTime = this.worldProvider.world.engine.getDeltaTime();
-        this.character.mover.walk(deltaTime);
+        this.character.characterController.walk(deltaTime);
     }
 
     enterState() {

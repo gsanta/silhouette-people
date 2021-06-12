@@ -1,8 +1,8 @@
-import { KeyboardService } from "../../../service/base/keyboard/KeyboardService";
-import { CharacterItem } from "./CharacterItem";
-import { MeshInputManager } from "../../MeshInputManager";
+import { KeyboardService } from "../../../../service/base/keyboard/KeyboardService";
+import { CharacterItem } from "../../character/CharacterItem";
+import { InputController } from "./InputController";
 
-export class CharacterInputManager extends MeshInputManager {
+export class HumanInputManager extends InputController {
     readonly speedConst = 0.04;
     readonly rotationConst = Math.PI / 30;
     
@@ -40,11 +40,11 @@ export class CharacterInputManager extends MeshInputManager {
 
     private handleSpeed() {
         if (this.keyboardService.keys.has('w')) {
-            this.character.mover.setSpeed(this.speedConst);
+            this.character.characterController.setSpeed(this.speedConst);
         } else if (this.keyboardService.keys.has('s')) {
-            this.character.mover.setSpeed(-this.speedConst);
+            this.character.characterController.setSpeed(-this.speedConst);
         } else {
-            this.character.mover.setSpeed(0);
+            this.character.characterController.setSpeed(0);
         }
     }
 }

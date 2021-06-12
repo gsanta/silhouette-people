@@ -1,5 +1,5 @@
 import { Vector3 } from "babylonjs";
-import { BikeMover } from "../../../model/item/bike/states/BikeMover";
+import { BikeController } from "../../../model/item/bike/states/BikeController";
 import { CharacterBikingState } from "../../../model/item/character/states/CharacterBikingState";
 import { BikeItem, PersonItem } from "../../../model/item/character/CharacterItem";
 import { KeyboardService } from "../keyboard/KeyboardService";
@@ -13,9 +13,9 @@ export class BikeParenter {
         player.mesh.parent = bike.mesh;
         player.mesh.checkCollisions = false;
         player.setParent(bike);
-        const bikeWalker = new BikeMover(bike);
-        player.mover = bikeWalker;
-        bike.mover = bikeWalker;
+        const bikeWalker = new BikeController(bike);
+        player.characterController = bikeWalker;
+        bike.characterController = bikeWalker;
         bike.addPositionChangeListener(() => {
             player.emitPositionChange();
         });

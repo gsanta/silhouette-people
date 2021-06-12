@@ -95,27 +95,27 @@ export class ExecutionTool extends Tool {
 
     private updateInput(e: KeyboardEvent, isDown: boolean) {
         const activePlayer = this.playerStore.getActivePlayer();
-        activePlayer.inputManager.keyboard(this.keyboardService.keyNames);
+        activePlayer.inputController.keyboard(this.keyboardService.keyNames);
     }
 
     private startRoutes(characters: CharacterItem[]) {
         characters.forEach(player => {
-            if (player.routeWalker) {
-                player.routeWalker.setStarted(true);
+            if (player.routeController) {
+                player.routeController.setStarted(true);
             }
         });
     }
 
     private updateRoutes(deltaTime: number, characters: CharacterItem[]) {
         characters.forEach(player => {
-            if (player.routeWalker) {
-                player.routeWalker.walk(deltaTime);        
+            if (player.routeController) {
+                player.routeController.walk(deltaTime);        
             } 
         });
     }
 
     private updateWalkers(deltaTime: number, characters: CharacterItem[]) {
-        characters.forEach(player => player.mover.walk(deltaTime));
+        characters.forEach(player => player.characterController.walk(deltaTime));
         characters.forEach(player => player.animationState.update(deltaTime));
     }
 }

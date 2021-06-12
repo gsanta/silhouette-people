@@ -1,6 +1,6 @@
 import { Vector3 } from "babylonjs";
 import { RouteItem } from "../../../../src/model/item/route/RouteItem";
-import { RouteWalkerImpl } from "../../../../src/model/item/route/RouteWalkerImpl";
+import { RouteControllerImpl } from "../../../../src/model/item/route/RouteControllerImpl";
 import { GraphEdge } from "../../../../src/service/graph/GraphEdge";
 import { GraphVertex } from "../../../../src/service/graph/GraphImpl";
 import { CollisionAvoidance } from "../../../../src/service/motion/collision/CollisionAvoidance";
@@ -14,7 +14,7 @@ describe('avoid', () => {
         const character = charBuilder.pos(1, 0, 1).velocity(1, 0, 0).collisionSensorDistance(1).build();
         const obstacle = charBuilder.pos(5, 0, 1).radius(1).build();
         const route = new RouteItem(createRoute());
-        const routeWalker = new RouteWalkerImpl(route, character);
+        const routeWalker = new RouteControllerImpl(route, character);
         const collisionAvoidance = new CollisionAvoidance(routeWalker, new CollisionSensor(character));
         
         collisionAvoidance.avoid([obstacle]);

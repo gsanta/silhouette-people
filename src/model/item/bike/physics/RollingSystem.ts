@@ -1,12 +1,12 @@
-import { MeshMover } from "../../mesh/MeshMover";
-import { BikeMover } from "../states/BikeMover";
+import { CharacterController } from "../../mesh/CharacterController";
+import { BikeController } from "../states/BikeController";
 import { AbstractBikePhysics } from "./AbstractBikePhysics";
 
 export class RollingSystem extends AbstractBikePhysics {
-    private mover: MeshMover;
+    private mover: CharacterController;
     private readonly slowdown: number;
 
-    constructor(mover: MeshMover, slowdownFactor: number) {
+    constructor(mover: CharacterController, slowdownFactor: number) {
         super();
         this.mover = mover;
 

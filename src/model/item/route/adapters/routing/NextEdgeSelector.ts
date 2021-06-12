@@ -1,14 +1,14 @@
 import { Direction } from "../../../../../service/graph/Direction";
 import { GraphEdge } from "../../../../../service/graph/GraphEdge";
 import { GraphImpl, GraphVertex } from "../../../../../service/graph/GraphImpl";
-import { RouteWalker } from "../../RouteWalker";
+import { RouteController } from "../../RouteController";
 
 export class NextEdgeSelector {
 
-    private readonly routeWalker: RouteWalker;
+    private readonly routeWalker: RouteController;
     private graph: GraphImpl;
 
-    constructor(routeWalker: RouteWalker, graph: GraphImpl) {
+    constructor(routeWalker: RouteController, graph: GraphImpl) {
         this.routeWalker = routeWalker;
         this.graph = graph;
     }

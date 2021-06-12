@@ -21,7 +21,7 @@ export class CollisionVecVisualizerAttachment extends MeshAttachment<CharacterIt
     }
 
     private createOrUpdateMesh() {
-        const vec = this.meshItem.velocity.multiply(numToVector3(this.meshItem.collisionSensorDistance));
+        const vec = this.meshItem.characterController.velocity.multiply(numToVector3(this.meshItem.collisionSensorDistance));
         const startPos = this.meshItem.position.clone();
         const endPos = startPos.add(vec);
         startPos.y = meshAttachmentHeight;

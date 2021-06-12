@@ -1,6 +1,6 @@
 import { Mesh, MeshBuilder, Vector3 } from "babylonjs";
 import { RouteItem } from "../../model/item/route/RouteItem";
-import { RouteWalker } from "../../model/item/route/RouteWalker";
+import { RouteController } from "../../model/item/route/RouteController";
 import { MaterialStore } from "../../store/MaterialStore";
 import { WorldProvider } from "../WorldProvider";
 import { GraphEdge } from "./GraphEdge";
@@ -14,7 +14,7 @@ export class GraphVisualizer {
         this.materialStore = materialStore;
     }
 
-    visualizeRoute(route: RouteItem, routeWalker: RouteWalker): Mesh[] {
+    visualizeRoute(route: RouteItem, routeWalker: RouteController): Mesh[] {
         const meshes: Mesh[] = [];
         meshes.push(this.createArrow(route, routeWalker));
         meshes.push(...route.getEdges().map(edge => this.createPathEdge(edge)));
@@ -35,7 +35,7 @@ export class GraphVisualizer {
         return mesh;
     }
 
-    private createArrow(route: RouteItem, routeWalker: RouteWalker): Mesh {
+    private createArrow(route: RouteItem, routeWalker: RouteController): Mesh {
         const pathes = this.getArrowPathes(route, routeWalker);
 
         const mesh = MeshBuilder.CreateRibbon("arrow-head", {pathArray: pathes}, this.worldProvider.scene);
@@ -44,7 +44,7 @@ export class GraphVisualizer {
         return mesh;
     }
 
-    private getArrowPathes(route: RouteItem, routeWalker: RouteWalker) {
+    private getArrowPathes(route: RouteItem, routeWalker: RouteController) {
         const lastEdge = route.getEdges()[route.getEdges().length - 1];
         const isReversed = route.isReversed(lastEdge);
         const source = lastEdge.getSource(isReversed).p.clone();

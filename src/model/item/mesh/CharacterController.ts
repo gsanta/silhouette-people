@@ -1,9 +1,13 @@
+import { Vector3 } from "babylonjs";
+import { toVector2 } from "../../../helpers";
+import { Rotation } from "../../math/Rotation";
 import { CharacterItem } from "../character/CharacterItem";
 
-export abstract class MeshMover {
+export abstract class CharacterController {
     protected _isDirty = false;
     protected speed = 0;
     protected rotation = 0;
+    private _velocity: Vector3 = new Vector3(0, 0, 1);
     readonly character: CharacterItem;
 
     constructor(character: CharacterItem) {
@@ -30,6 +34,18 @@ export abstract class MeshMover {
 
     getRotation(): number {
         return this.rotation;
+    }
+
+    set velocity(vector: Vector3) {
+        this._velocity = vector;
+    }
+
+    get velocity(): Vector3 {
+        return this._velocity;
+    }
+
+    get rotationRad(): number {
+        return Rotation.FromVector(toVector2(this.velocity)).rad;
     }
 
     abstract walk(deltaTime: number);

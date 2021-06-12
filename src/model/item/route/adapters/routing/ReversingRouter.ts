@@ -1,12 +1,12 @@
 import { RouteItem } from "../../RouteItem";
-import { RouteWalker } from "../../RouteWalker";
+import { RouteController } from "../../RouteController";
 import { IRouter } from "./IRouter";
 
 export class ReversingRouter implements IRouter {
-    private readonly routeWalker: RouteWalker;
+    private readonly routeWalker: RouteController;
     private readonly referenceRoute: RouteItem;
 
-    constructor(routeWalker: RouteWalker) {
+    constructor(routeWalker: RouteController) {
         this.routeWalker = routeWalker;
         this.referenceRoute = routeWalker.getRoute();
     }

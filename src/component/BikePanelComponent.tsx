@@ -24,7 +24,7 @@ export class BikePanelComponent extends React.Component<ComponentProps> {
         }
 
         const bike = player.getParent() as BikeItem;
-        let speed = bike.mover.getSpeed();
+        let speed = bike.characterController.getSpeed();
         speed = Math.trunc(speed * 10) / 10;
 
         return (

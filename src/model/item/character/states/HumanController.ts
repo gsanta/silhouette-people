@@ -1,23 +1,23 @@
-import { Axis, Space, Vector3 } from "babylonjs";
-import { CharacterItem, PersonItem } from "../CharacterItem";
-import { MeshMover } from "../../mesh/MeshMover";
+import { Vector3 } from "babylonjs";
 import { vector3ToRotation } from "../../../../helpers";
+import { CharacterController } from "../../mesh/CharacterController";
+import { PersonItem } from "../CharacterItem";
 
 
-export class CharacterMover extends MeshMover {
+export class HumanController extends CharacterController {
     constructor(character: PersonItem) {
         super(character);
     }
 
     walk(deltaTime: number) {
-        if (this.character.routeWalker && !this.character.routeWalker.isRunning()) {
+        if (this.character.routeController && !this.character.routeController.isRunning()) {
             return;
         }
 
         const deltaTimeSec = deltaTime / 1000;
         const displacement = this.speed * deltaTimeSec;
         const displacementVec = new Vector3(displacement, displacement, displacement);
-        const vel = this.character.velocity.multiply(displacementVec)
+        const vel = this.velocity.multiply(displacementVec)
         this.character.moveWithCollision(vel);
         this.character.rotation = vector3ToRotation(vel);
     }

@@ -2,9 +2,9 @@ import { Vector3 } from "babylonjs/Maths/math.vector";
 import { GraphEdge } from "../../../service/graph/GraphEdge";
 import { CharacterItem } from "../character/CharacterItem";
 import { RouteItem } from "./RouteItem";
-import { RouteWalker } from "./RouteWalker";
+import { RouteController } from "./RouteController";
 
-export class RouteWalkerImpl implements RouteWalker {
+export class RouteControllerImpl implements RouteController {
     private readonly character: CharacterItem;
     private route: RouteItem;
 

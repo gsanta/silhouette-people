@@ -126,24 +126,3 @@ describe("Get steering angles", () => {
         expect(Tools.ToDegrees(toStandardAngle(steeringAngles.angle2))).toBeCloseTo(300);
     });
 });
-
-function createObstacle(id: string, position: Vector3, radius: number, collisionSensorDist: number, scene: Scene): CharacterItem {
-    const character = new CharacterItem('obstacle-1');
-
-    const mesh = new Mesh(`${id}-mesh`, scene);
-
-    character.meshes = [mesh];
-    character.position = position;
-    character.radius = radius;
-    character.collisionSensorDistance = collisionSensorDist;
-    return character;
-}
-
-function createCharacter(position: Vector3, velocity: Vector3, scene: Scene): CharacterItem {
-    const character = new CharacterItem('character-1');
-    const mesh = new Mesh('character-mesh', scene);
-    character.meshes = [mesh];
-    character.velocity = velocity;
-    character.position = position;
-    return character;
-}

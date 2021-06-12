@@ -22,7 +22,7 @@ export class CollisionSensor {
 
     getSteeringAngles(obstacles: MeshItem[]): CollisionSensorResult {
         const pos = this.character.position2D;
-        const velocity = toVector2(this.character.velocity);
+        const velocity = toVector2(this.character.characterController.velocity);
 
         const sensorDistance = this.character.collisionSensorDistance;
         const ahead = pos.add(velocity.multiply(new Vector2(sensorDistance, sensorDistance)));
@@ -68,7 +68,7 @@ export class CollisionSensor {
 
     getSteeringPoints(obstacles: MeshItem[]): Vector2[] {
         const pos = this.character.position2D;
-        const velocity = toVector2(this.character.velocity);
+        const velocity = toVector2(this.character.characterController.velocity);
 
         const sensorDistance = this.character.collisionSensorDistance;
         const ahead = pos.add(velocity.multiply(new Vector2(sensorDistance, sensorDistance)));

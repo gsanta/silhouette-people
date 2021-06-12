@@ -2,13 +2,13 @@ import { InjectProperty } from "../../di/diDecorators";
 import { CollisionRadiusVisualizerAttachment } from "../../model/item/attachments/CollisionRadiusVisualizerAttachment";
 import { CollisionVecVisualizerAttachment } from "../../model/item/attachments/CollisionVecVisualizerAttachment";
 import { CharacterItem } from "../../model/item/character/CharacterItem";
-import { CharacterMover } from "../../model/item/character/states/CharacterMover";
+import { HumanController } from "../../model/item/character/states/HumanController";
 import { RotationRestrictorAdapter } from "../../model/item/route/adapters/rotation/RotationRestrictorAdapter";
 import { ReversingRouter } from "../../model/item/route/adapters/routing/ReversingRouter";
 import { RouterAdapter } from "../../model/item/route/adapters/routing/RouterAdapter";
 import { ActiveEdgeUpdaterAdapter } from "../../model/item/route/adapters/walking/ActiveEdgeUpdaterAdapter";
-import { RouteWalkerImpl } from "../../model/item/route/RouteWalkerImpl";
-import { RouteWalkerListenerDecorator } from "../../model/item/route/RouteWalkerListenerDecorator";
+import { RouteControllerImpl } from "../../model/item/route/RouteControllerImpl";
+import { RouteControllerListenerDecorator } from "../../model/item/route/RouteControllerListenerDecorator";
 import { CitizenStore } from "../../store/CitizenStore";
 import { MaterialStore } from "../../store/MaterialStore";
 import { RouteStore } from "../../store/RouteStore";
@@ -66,12 +66,12 @@ export class CitizenSetup {
         const character = this.citizenStore.getById('C');
         const route = this.routeStore.getById('route-1');
 
-        character.mover = new CharacterMover(character);
-        character.mover.setSpeed(1);
+        character.characterController = new HumanController(character);
+        character.characterController.setSpeed(1);
 
-        const walker = new RouteWalkerListenerDecorator(new RouteWalkerImpl(route, character));
+        const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, character));
 
-        character.routeWalker = walker;
+        character.routeController = walker;
         
         walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
         walker.addListener(new RotationRestrictorAdapter(walker));
@@ -85,12 +85,12 @@ export class CitizenSetup {
         const character = this.citizenStore.getById('C2');
         const route = this.routeStore.getById('route-1').reverse();
 
-        character.mover = new CharacterMover(character);
-        character.mover.setSpeed(1);
+        character.characterController = new HumanController(character);
+        character.characterController.setSpeed(1);
 
-        const walker = new RouteWalkerListenerDecorator(new RouteWalkerImpl(route, character));
+        const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, character));
 
-        character.routeWalker = walker;
+        character.routeController = walker;
         
         walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
         walker.addListener(new RotationRestrictorAdapter(walker));

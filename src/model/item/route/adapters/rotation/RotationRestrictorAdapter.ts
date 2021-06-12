@@ -1,12 +1,12 @@
 import { RotationRestrictor } from "./RotationRestrictor";
-import { RouteWalker } from "../../RouteWalker";
-import { RouteWalkerListener } from "../../RouteWalkerListener";
+import { RouteController } from "../../RouteController";
+import { RouteControllerListener } from "../../RouteControllerListener";
 
-export class RotationRestrictorAdapter extends RouteWalkerListener {
+export class RotationRestrictorAdapter extends RouteControllerListener {
 
     private restrictor: RotationRestrictor;
 
-    constructor(routeWalker: RouteWalker) {
+    constructor(routeWalker: RouteController) {
         super();
 
         this.restrictor = new RotationRestrictor(routeWalker);

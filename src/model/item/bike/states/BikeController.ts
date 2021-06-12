@@ -1,11 +1,11 @@
 import { Axis, Space, Vector3 } from "babylonjs";
 import { rotateVec, vector3ToRotation } from "../../../../helpers";
 import { BikeItem, CharacterItem } from "../../character/CharacterItem";
-import { MeshMover } from "../../mesh/MeshMover";
+import { CharacterController } from "../../mesh/CharacterController";
 
 export type PedalDirection = 'forward' | 'backward';
 
-export class BikeMover extends MeshMover {
+export class BikeController extends CharacterController {
     readonly rotationConst = Math.PI / 30;
 
     private bike: BikeItem;
@@ -18,7 +18,7 @@ export class BikeMover extends MeshMover {
 
     walk(deltaTime: number) {
         const character = <CharacterItem> this.character.children[0];
-        if (character.routeWalker && !character.routeWalker.isRunning()) {
+        if (character.routeController && !character.routeController.isRunning()) {
             return;
         }
 
@@ -28,8 +28,8 @@ export class BikeMover extends MeshMover {
             const deltaTimeSec = deltaTime / 1000;
             const displacement = this.speed * deltaTimeSec;
             const displacementVec = new Vector3(displacement, displacement, displacement);
-            this.bike.velocity = rotateVec(this.bike.velocity, this.bike.info.steering);
-            let vel = this.bike.velocity.multiply(displacementVec);
+            this.velocity = rotateVec(this.velocity, this.bike.info.steering);
+            let vel = this.velocity.multiply(displacementVec);
     
             this.character.moveWithCollision(vel);
             this.character.rotation = vector3ToRotation(vel);

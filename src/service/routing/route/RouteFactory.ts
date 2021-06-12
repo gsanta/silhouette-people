@@ -1,11 +1,8 @@
-import { Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { PathItem } from "../../../model/item/PathItem";
-import { RotationRestrictor } from "../../../model/item/route/adapters/rotation/RotationRestrictor";
-import { LockedSpeed } from "../../../model/item/route/features/LockedSpeed";
 import { RouteItem, RouteStoryConfig } from "../../../model/item/route/RouteItem";
-import { RouteWalkerImpl } from "../../../model/item/route/RouteWalkerImpl";
+import { RouteControllerImpl } from "../../../model/item/route/RouteControllerImpl";
 import { RouteStore } from "../../../store/RouteStore";
 import { IPathFinder } from "../../object/path/path_finder/IPathFinder";
 import { MasterPathFinder } from "../../object/path/path_finder/MasterPathFinder";
@@ -42,8 +39,8 @@ export class RouteFactory {
         return undefined;
     }
 
-    private createRouteWalker(route: RouteItem, config: RouteFactoryConfig): RouteWalkerImpl {
-        const routeWalker = new RouteWalkerImpl(route, null);
+    private createRouteWalker(route: RouteItem, config: RouteFactoryConfig): RouteControllerImpl {
+        const routeWalker = new RouteControllerImpl(route, null);
 
         if (config.lockDirection) {
             // routeWalker.addFeature(new DirectionRestrictor(routeWalker, route));

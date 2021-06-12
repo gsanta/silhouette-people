@@ -1,12 +1,12 @@
 import { ActiveEdgeUpdater } from "./ActiveEdgeUpdater";
-import { RouteWalker } from "../../RouteWalker";
-import { RouteWalkerListener } from "../../RouteWalkerListener";
+import { RouteController } from "../../RouteController";
+import { RouteControllerListener } from "../../RouteControllerListener";
 
-export class ActiveEdgeUpdaterAdapter extends RouteWalkerListener {
+export class ActiveEdgeUpdaterAdapter extends RouteControllerListener {
 
     private readonly updater: ActiveEdgeUpdater;
 
-    constructor(routeWalker: RouteWalker) {
+    constructor(routeWalker: RouteController) {
         super();
         this.updater = new ActiveEdgeUpdater(routeWalker);
     }
