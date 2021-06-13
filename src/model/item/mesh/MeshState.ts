@@ -1,10 +1,10 @@
-import { CharacterItem } from "../character/CharacterItem";
+import { MeshItem } from "./MeshItem";
 
 export abstract class MeshState {
     protected _isDirty = false;
-    protected character: CharacterItem;
+    protected character: MeshItem;
 
-    constructor(meshObj: CharacterItem) {
+    constructor(meshObj: MeshItem) {
         this.character = meshObj;
         if (meshObj.stateController && meshObj.stateController.state) {
             meshObj.stateController.state.exitState();

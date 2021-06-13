@@ -1,8 +1,8 @@
-import { CharacterItem } from "../CharacterItem";
+import { MeshItem } from "../../mesh/MeshItem";
 import { MeshState } from "../../mesh/MeshState";
 
 export class CharacterBikingState extends MeshState {
-    constructor(player: CharacterItem) {
+    constructor(player: MeshItem) {
         super(player);
         this.enterState();
     }

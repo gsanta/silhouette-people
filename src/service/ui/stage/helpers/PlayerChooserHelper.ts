@@ -1,12 +1,11 @@
-import { CharacterItem } from "../../../../model/item/character/CharacterItem";
-
+import { MeshItem } from "../../../../model/item/mesh/MeshItem";
 
 export class PlayerChooserHelper {
-    private players: CharacterItem[] = [];
-    private finishedPlayers: Set<CharacterItem>;
-    private activePlayer: CharacterItem;
+    private players: MeshItem[] = [];
+    private finishedPlayers: Set<MeshItem>;
+    private activePlayer: MeshItem;
 
-    setPlayers(players: CharacterItem[]) {
+    setPlayers(players: MeshItem[]) {
         this.players = players;
 
         this.players = players;
@@ -14,7 +13,7 @@ export class PlayerChooserHelper {
         this.activePlayer = undefined;
     }
 
-    isPlayerFinished(player: CharacterItem): boolean {
+    isPlayerFinished(player: MeshItem): boolean {
         return this.finishedPlayers.has(player);
     }
 
@@ -24,16 +23,16 @@ export class PlayerChooserHelper {
         }
     }
 
-    getActivePlayer(): CharacterItem {
+    getActivePlayer(): MeshItem {
         return this.activePlayer;
     }
 
-    determineNextActivePlayer(): CharacterItem {
+    determineNextActivePlayer(): MeshItem {
         this.activePlayer = this.getNextPlayer();
         return this.activePlayer;
     }
 
-    private getNextPlayer(): CharacterItem {
+    private getNextPlayer(): MeshItem {
         if (this.players.length > 0 && !this.activePlayer) {
             return this.players[0];
         } 

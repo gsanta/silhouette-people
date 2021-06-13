@@ -2,11 +2,11 @@ import { RenderGuiService } from "../../ui/RenderGuiService";
 import { WorldProvider } from "../../WorldProvider";
 import { RouteStore } from "../../../store/RouteStore";
 import { Tool, ToolType } from "../Tool";
-import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { RouteExecutor } from "./RouteExecutor";
 import { PlayerStore } from "../../player/PlayerStore";
 import { RouteItem } from "../../../model/item/route/RouteItem";
 import { KeyboardService } from "../../base/keyboard/KeyboardService";
+import { MeshItem } from "../../../model/item/mesh/MeshItem";
 
 export class ExecutionTool extends Tool {
     private worldProvider: WorldProvider;
@@ -18,7 +18,7 @@ export class ExecutionTool extends Tool {
 
     private isStarted: boolean = false;
     private readyListeners: ((wasCanceled: boolean) => void)[] = [];
-    private activePlayer: CharacterItem;
+    private activePlayer: MeshItem;
 
     private routeExecutors: RouteExecutor[] = [];
 
@@ -98,7 +98,7 @@ export class ExecutionTool extends Tool {
         activePlayer.inputController.keyboard(this.keyboardService.keyNames);
     }
 
-    private startRoutes(characters: CharacterItem[]) {
+    private startRoutes(characters: MeshItem[]) {
         characters.forEach(player => {
             if (player.routeController) {
                 player.routeController.setStarted(true);
@@ -106,7 +106,7 @@ export class ExecutionTool extends Tool {
         });
     }
 
-    private updateRoutes(deltaTime: number, characters: CharacterItem[]) {
+    private updateRoutes(deltaTime: number, characters: MeshItem[]) {
         characters.forEach(player => {
             if (player.routeController) {
                 player.routeController.walk(deltaTime);        
@@ -114,7 +114,7 @@ export class ExecutionTool extends Tool {
         });
     }
 
-    private updateWalkers(deltaTime: number, characters: CharacterItem[]) {
+    private updateWalkers(deltaTime: number, characters: MeshItem[]) {
         characters.forEach(player => player.characterController.walk(deltaTime));
         characters.forEach(player => player.stateController.state.update(deltaTime));
     }

@@ -1,9 +1,7 @@
 
 
-import { BikeInputController } from "../../../../model/item/game_object/input/BikeInputController";
-import { BikeController } from "../../../../model/item/bike/states/BikeController";
 import { HumanInputManager } from "../../../../model/item/game_object/input/HumanInputManager";
-import { CharacterItem } from "../../../../model/item/character/CharacterItem";
+import { MeshItem } from "../../../../model/item/mesh/MeshItem";
 import { GraphService } from "../../../graph/GraphService";
 import { KeyboardService } from "../../keyboard/KeyboardService";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
@@ -29,7 +27,7 @@ export class InputManagerPropertyParser extends AbstractPropertyParser<string> {
         return false;
     }
 
-    processProperty(character: CharacterItem, inputManager: string): void {
+    processProperty(character: MeshItem, inputManager: string): void {
         switch(inputManager) {
             case InputManagerType.CharacterInputManager:
                 character.inputController = new HumanInputManager(character, this.keyboardService);

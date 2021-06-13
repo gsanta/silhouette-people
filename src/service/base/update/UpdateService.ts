@@ -1,5 +1,4 @@
 import { InjectProperty } from "../../../di/diDecorators";
-import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { MeshStore } from "../../../store/MeshStore";
 import { KeyboardListener, KeyboardService } from "../keyboard/KeyboardService";
 import { lookup } from "../../Lookup";
@@ -45,7 +44,7 @@ export class UpdateService implements KeyboardListener {
     beforeRender() {
         this.quarterUpdater.updateQuarterBasedOnPlayerPosition();
 
-        const activePlayer = <CharacterItem> this.meshStore.getById('player2');
+        const activePlayer = this.meshStore.getById('player2');
 
         if (!activePlayer) { return; }
 

@@ -5,7 +5,7 @@ import { RouteExecutor } from "../edit/execution/RouteExecutor";
 import { RouteVisualizer } from "../../model/item/route/adapters/visualization/RouteVisualizer";
 import { WorldProvider } from "../WorldProvider";
 import { RoutePool } from "./RoutePool";
-import { CharacterItem } from "../../model/item/character/CharacterItem";
+import { MeshItem } from "../../model/item/mesh/MeshItem";
 
 export class CitizenExecutor implements RouteExecutor {
 
@@ -14,7 +14,7 @@ export class CitizenExecutor implements RouteExecutor {
     private routePool: RoutePool;
     private pathVisualizer: RouteVisualizer;
 
-    private activeCitizens: CharacterItem[] = [];
+    private activeCitizens: MeshItem[] = [];
 
     constructor(citizenStore: CitizenStore, routePool: RoutePool, routeStore: RouteStore, worldProvider: WorldProvider, materialStore: MaterialStore) {
         this.routeStore = routeStore;

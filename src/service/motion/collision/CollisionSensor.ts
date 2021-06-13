@@ -1,7 +1,6 @@
 import { Tools, Vector2 } from "babylonjs";
 import { toVector2 } from "../../../helpers";
 import { Circle } from "../../../model/shape/Circle";
-import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { MeshItem } from "../../../model/item/mesh/MeshItem";
 import { Rotation } from "../../../model/math/Rotation";
 
@@ -11,11 +10,11 @@ export interface CollisionSensorResult {
 }
 
 export class CollisionSensor {
-    private readonly character: CharacterItem;
+    private readonly character: MeshItem;
 
     private readonly steeringOffset: number;
 
-    constructor(character: CharacterItem, steeringOffset = Tools.ToRadians(10)) {
+    constructor(character: MeshItem, steeringOffset = Tools.ToRadians(10)) {
         this.character = character;
         this.steeringOffset = steeringOffset;
     }

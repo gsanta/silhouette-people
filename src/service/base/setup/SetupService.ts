@@ -1,6 +1,5 @@
 import { Scene } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { PersonItem } from "../../../model/item/character/CharacterItem";
 import { CitizenStore } from "../../../store/CitizenStore";
 import { RouteStore } from "../../../store/RouteStore";
 import { CitizenSetup } from "../../citizen/CitizenSetup";

@@ -1,13 +1,14 @@
 import { Axis, Quaternion, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/index";
-import { InjectProperty } from "../../../di/diDecorators";
-import { lookup } from "../../../service/Lookup";
-import { QuarterStore } from "../../../store/QuarterStore";
 import { AnimationHandler } from "../../AnimationHandler";
 import { TagHandler } from "../../TagHandler";
 import { GameItem } from "../GameItem";
-import { QuarterItem } from "../quarter/QuarterItem";
+import { CharacterBehaviour } from "../game_object/behaviour/CharacterBehaviour";
+import { InputController } from "../game_object/input/InputController";
+import { StateController } from "../game_object/state/StateController";
 import { MeshAttachment } from "../MeshAttachment";
+import { RouteController } from "../route/RouteController";
+import { CharacterController } from "./CharacterController";
 
 export enum MeshObjType {
     Player = 'player',
@@ -44,11 +45,16 @@ export interface MeshConfig {
     props: {[key: string]: any};
 }
 
-export class MeshItem extends GameItem {
+export class MeshItem<B extends CharacterBehaviour = any> extends GameItem {
     id: string;
 
-    private _collisionMesh: Mesh;
-    private _meshes: Mesh[] = [];
+    collisionSensorDistance = 2;
+    stateController: StateController;
+    characterController: CharacterController;
+    inputController: InputController;
+    routeController: RouteController;
+
+    behaviour: B;
     
     skeleton: Skeleton;
     children: MeshItem[] = [];
@@ -59,6 +65,9 @@ export class MeshItem extends GameItem {
     
     readonly tag: TagHandler;
     readonly animation: AnimationHandler;
+
+    private _collisionMesh: Mesh;
+    private _meshes: Mesh[] = [];
 
     private positionChangeListeners: (() => void)[] = [];
     private attachments: MeshAttachment[] = [];

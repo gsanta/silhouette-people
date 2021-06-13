@@ -1,7 +1,7 @@
 import { Vector3 } from "babylonjs";
 import { GraphEdge } from "../../../service/graph/GraphEdge";
 import { GraphVertex } from "../../../service/graph/GraphImpl";
-import { CharacterItem } from "../character/CharacterItem";
+import { MeshItem } from "../mesh/MeshItem";
 import { RouteItem } from "./RouteItem";
 
 export interface RouteController {
@@ -9,7 +9,7 @@ export interface RouteController {
 
     getRoute(): RouteItem;
     setRoute(route: RouteItem): void;
-    getCharacter(): CharacterItem;
+    getCharacter(): MeshItem;
 
     getPos(): Vector3;
     getPrevPos(): Vector3;

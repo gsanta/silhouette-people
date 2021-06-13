@@ -1,10 +1,10 @@
-import { CharacterItem } from "../../../../model/item/character/CharacterItem";
+import { MeshItem } from "../../../../model/item/mesh/MeshItem";
 import { StageDescription, StepDescription, StepState } from "../StageDescription";
 import { PlayerChooserHelper } from "./PlayerChooserHelper";
 
 
 export class StageDescriptionHelper {
-    private players: CharacterItem[] = [];
+    private players: MeshItem[] = [];
     private playerChooserHelper: PlayerChooserHelper;
     private stageText: string;
 
@@ -13,7 +13,7 @@ export class StageDescriptionHelper {
         this.playerChooserHelper = playerChooserHelper;    
     }
 
-    setPlayers(players: CharacterItem[]) {
+    setPlayers(players: MeshItem[]) {
         this.players = players;
     }
 
@@ -28,7 +28,7 @@ export class StageDescriptionHelper {
         return stageDescription;
     }
 
-    private getStepDescriptions(activePlayer: CharacterItem): StepDescription[] {
+    private getStepDescriptions(activePlayer: MeshItem): StepDescription[] {
         return this.players.map(player => {
             let state: StepState = StepState.Undefined;
 

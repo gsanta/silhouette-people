@@ -1,5 +1,4 @@
 import { InjectProperty } from "../di/diDecorators";
-import { PersonItem } from "../model/item/character/CharacterItem";
 import { MeshItem, MeshItemTag } from "../model/item/mesh/MeshItem";
 import { lookup } from "../service/Lookup";
 import { QuarterStore } from "./QuarterStore";
@@ -28,8 +27,8 @@ export class MeshStore {
         }
     }
 
-    getEnemies(): PersonItem[] {
-        return <PersonItem[]> this.getByTag(MeshItemTag.Enemy);
+    getEnemies(): MeshItem[] {
+        return <MeshItem[]> this.getByTag(MeshItemTag.Enemy);
     }
 
     getByTag(tag: MeshItemTag): MeshItem[] {

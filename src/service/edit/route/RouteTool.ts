@@ -1,8 +1,6 @@
-import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { PathItem } from "../../../model/item/PathItem";
 import { RouteItem } from "../../../model/item/route/RouteItem";
 import { MaterialStore } from "../../../store/MaterialStore";
-import { MeshStore } from "../../../store/MeshStore";
 import { RouteStore } from "../../../store/RouteStore";
 import { PointerData } from "../../base/pointer/PointerService";
 import { RouteFactoryConfig, RouteFactory } from "../../routing/route/RouteFactory";
@@ -12,6 +10,7 @@ import { RenderGuiService } from "../../ui/RenderGuiService";
 import { Tool, ToolType } from "../Tool";
 import { PathBuilder } from "./PathBuilder";
 import { RouteVisualizer } from "../../../model/item/route/adapters/visualization/RouteVisualizer";
+import { MeshItem } from "../../../model/item/mesh/MeshItem";
 
 export class RouteTool extends Tool {
     private playerStore: PlayerStore;
@@ -21,7 +20,7 @@ export class RouteTool extends Tool {
     private routeFactory: RouteFactory;
     private routeStore: RouteStore;
     
-    private character: CharacterItem;
+    private character: MeshItem;
     private currentPath: PathItem;
     private route: RouteItem;
     private _isReset = true;

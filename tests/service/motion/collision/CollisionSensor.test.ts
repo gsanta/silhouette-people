@@ -1,6 +1,5 @@
-import { Mesh, NullEngine, Scene, Tools, Vector3 } from "babylonjs";
+import { Tools } from "babylonjs";
 import { toStandardAngle } from "../../../../src/helpers";
-import { CharacterItem } from "../../../../src/model/item/character/CharacterItem";
 import { CollisionSensor } from "../../../../src/service/motion/collision/CollisionSensor";
 import { CharacterBuilder } from "../../../test_utils/characterUtils";
 

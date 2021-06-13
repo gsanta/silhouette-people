@@ -1,6 +1,5 @@
 import { InjectProperty } from "../di/diDecorators";
-import { CharacterItem } from "../model/item/character/CharacterItem";
-import { MeshItemTag } from "../model/item/mesh/MeshItem";
+import { MeshItem, MeshItemTag } from "../model/item/mesh/MeshItem";
 import { lookup } from "../service/Lookup";
 import { MeshStore } from "./MeshStore";
 
@@ -12,19 +11,19 @@ export class CitizenStore {
         this.meshStore = lookup.meshStore;
     }
 
-    addItem(item: CharacterItem) {
+    addItem(item: MeshItem) {
         this.meshStore.addItem(item);
     }
 
-    getById(id: string): CharacterItem {
+    getById(id: string): MeshItem {
         return this.getAll().filter(item => item.id === id)[0];
     }
 
-    getAll(): CharacterItem[] {
-        return <CharacterItem[]> this.meshStore.getByTag(MeshItemTag.Citizen);
+    getAll(): MeshItem[] {
+        return <MeshItem[]> this.meshStore.getByTag(MeshItemTag.Citizen);
     }
 
-    removeItem(citizen: CharacterItem, disposeMesh = false) {
+    removeItem(citizen: MeshItem, disposeMesh = false) {
         this.meshStore.removeItem(citizen, disposeMesh);
     }
 }

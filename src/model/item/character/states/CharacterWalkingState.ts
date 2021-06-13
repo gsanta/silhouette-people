@@ -1,18 +1,11 @@
-import { InjectProperty } from "../../../../di/diDecorators";
-import { lookup } from "../../../../service/Lookup";
-import { WorldProvider } from "../../../../service/WorldProvider";
-import { CharacterItem } from "../CharacterItem";
+import { MeshItem } from "../../mesh/MeshItem";
 import { MeshState } from "../../mesh/MeshState";
 import { CharacterIdleState } from "./CharacterIdleState";
 
 export class CharacterWalkingState extends MeshState {
 
-    @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
-
-    constructor(character: CharacterItem) {
+    constructor(character: MeshItem) {
         super(character);
-        this.worldProvider = lookup.worldProvider;
         this.enterState();
     }
 

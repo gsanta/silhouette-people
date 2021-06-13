@@ -1,11 +1,11 @@
 import { Vector3 } from "babylonjs/Maths/math.vector";
 import { GraphEdge } from "../../../service/graph/GraphEdge";
-import { CharacterItem } from "../character/CharacterItem";
 import { RouteItem } from "./RouteItem";
 import { RouteController } from "./RouteController";
+import { MeshItem } from "../mesh/MeshItem";
 
 export class RouteControllerImpl implements RouteController {
-    private readonly character: CharacterItem;
+    private readonly character: MeshItem;
     private route: RouteItem;
 
     private prevPos: Vector3;
@@ -15,7 +15,7 @@ export class RouteControllerImpl implements RouteController {
 
     private started = false;
 
-    constructor(route: RouteItem, character: CharacterItem) {
+    constructor(route: RouteItem, character: MeshItem) {
         this.route = route;
         this.character = character;
         this.edge = route.firstEdge;
@@ -29,7 +29,7 @@ export class RouteControllerImpl implements RouteController {
         this.route = route;
     }
 
-    getCharacter(): CharacterItem {
+    getCharacter(): MeshItem {
         return this.character;
     }
 

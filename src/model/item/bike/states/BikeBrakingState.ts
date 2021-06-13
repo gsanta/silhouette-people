@@ -1,6 +1,6 @@
 import { lookup } from "../../../../service/Lookup";
-import { BikeItem } from "../../character/CharacterItem";
 import { CharacterController } from "../../mesh/CharacterController";
+import { MeshItem } from "../../mesh/MeshItem";
 import { MeshState } from "../../mesh/MeshState";
 import { BikeStateInfo } from "../BikeState";
 import { BrakingSystem } from "../physics/BrakingSystem";
@@ -8,12 +8,12 @@ import { BikeIdleState } from "./BikeIdleState";
 import { BikeSpeedUpState } from "./BikeSpeedupState";
 
 export class BikeBrakingState extends MeshState {
-    private readonly bike: BikeItem;
+    private readonly bike: MeshItem;
     private readonly mover: CharacterController;
     private readonly brakeSystem: BrakingSystem;
     private powerBrake = false;
 
-    constructor(bike: BikeItem, mover: CharacterController) {
+    constructor(bike: MeshItem, mover: CharacterController) {
         super(bike);
         this.bike = bike;
         this.mover = mover;

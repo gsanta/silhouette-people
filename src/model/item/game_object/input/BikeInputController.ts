@@ -1,20 +1,20 @@
 import { KeyboardService, KeyName } from "../../../../service/base/keyboard/KeyboardService";
 import { GraphImpl } from "../../../../service/graph/GraphImpl";
 import { GraphService } from "../../../../service/graph/GraphService";
-import { BikeItem, CharacterItem } from "../../character/CharacterItem";
 import { InputController } from "./InputController";
 import { NextEdgeSelector } from "../../route/adapters/routing/NextEdgeSelector";
 import { BikeStateInfo } from "../../bike/BikeState";
 import { BikeController } from "../../bike/states/BikeController";
+import { MeshItem } from "../../mesh/MeshItem";
 
 export class BikeInputController extends InputController {
     private keyboardService: KeyboardService;
     private bikeMover: BikeController;
-    private readonly character: CharacterItem;
+    private readonly character: MeshItem;
     private readonly nextEdgeSelector: NextEdgeSelector;
-    private readonly bike: BikeItem;
+    private readonly bike: MeshItem;
 
-    constructor(bikeWalker: BikeController, bike: BikeItem, character: CharacterItem,  keyboardService: KeyboardService, graphService: GraphService) {
+    constructor(bikeWalker: BikeController, bike: MeshItem, character: MeshItem,  keyboardService: KeyboardService, graphService: GraphService) {
         super();
         this.bikeMover = bikeWalker;
         this.bike = bike;

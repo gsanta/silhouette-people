@@ -1,5 +1,4 @@
 import { InjectProperty } from "../../../di/diDecorators";
-import { CharacterItem } from "../../../model/item/character/CharacterItem";
 import { PathItem } from "../../../model/item/PathItem";
 import { RouteItem, RouteStoryConfig } from "../../../model/item/route/RouteItem";
 import { RouteControllerImpl } from "../../../model/item/route/RouteControllerImpl";
@@ -7,6 +6,7 @@ import { RouteStore } from "../../../store/RouteStore";
 import { IPathFinder } from "../../object/path/path_finder/IPathFinder";
 import { MasterPathFinder } from "../../object/path/path_finder/MasterPathFinder";
 import { lookup } from "../../Lookup";
+import { MeshItem } from "../../../model/item/mesh/MeshItem";
 
 export interface RouteFactoryConfig {
     lockSpeed?: boolean;
@@ -30,7 +30,7 @@ export class RouteFactory {
         
     }
 
-    createRoute(path: PathItem, config: RouteFactoryConfig, character?: CharacterItem): RouteItem {
+    createRoute(path: PathItem, config: RouteFactoryConfig, character?: MeshItem): RouteItem {
         // const route = new RouteItem(path, config.name, character);
         // route.walker = this.createRouteWalker(route, config);
 

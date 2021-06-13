@@ -1,6 +1,5 @@
 import { InjectProperty } from "../../di/diDecorators";
-import { BikeItem, CharacterItem, PersonItem } from "../../model/item/character/CharacterItem";
-import { MeshItemTag } from "../../model/item/mesh/MeshItem";
+import { MeshItem, MeshItemTag } from "../../model/item/mesh/MeshItem";
 import { MeshStore } from "../../store/MeshStore";
 import { lookup } from "../Lookup";
 
@@ -12,27 +11,27 @@ export class PlayerStore {
         this.meshStore = lookup.meshStore;
     }
 
-    addItem(item: CharacterItem) {
+    addItem(item: MeshItem) {
         this.meshStore.addItem(item);
     }
 
-    getActivePlayer(): PersonItem {
-        return <PersonItem> this.getPlayers().find(player => player.isActivePlayer); 
+    getActivePlayer(): MeshItem {
+        return <MeshItem> this.getPlayers().find(player => player.isActivePlayer); 
     }
 
-    getPlayerById(id: string): PersonItem {
-        return <PersonItem> this.meshStore.getById(id);
+    getPlayerById(id: string): MeshItem {
+        return <MeshItem> this.meshStore.getById(id);
     }
 
-    getPlayers(): CharacterItem[] {
-        return <CharacterItem[]> this.meshStore.getByTag(MeshItemTag.Player);
+    getPlayers(): MeshItem[] {
+        return <MeshItem[]> this.meshStore.getByTag(MeshItemTag.Player);
     }
 
-    getBikes(): BikeItem[] {
-        return <BikeItem[]> this.meshStore.getByTag(MeshItemTag.Bicycle);
+    getBikes(): MeshItem[] {
+        return <MeshItem[]> this.meshStore.getByTag(MeshItemTag.Bicycle);
     }
 
-    removeItem(citizen: CharacterItem, disposeMesh = false) {
+    removeItem(citizen: MeshItem, disposeMesh = false) {
         this.meshStore.removeItem(citizen, disposeMesh);
     }
 }

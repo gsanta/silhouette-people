@@ -1,4 +1,3 @@
-import { BikeItem, CharacterItem } from "../../model/item/character/CharacterItem";
 import { ActiveEdgeUpdaterAdapter } from "../../model/item/route/adapters/walking/ActiveEdgeUpdaterAdapter";
 import { RotationRestrictorAdapter } from "../../model/item/route/adapters/rotation/RotationRestrictorAdapter";
 import { RouteVisualizerAdapter } from "../../model/item/route/adapters/visualization/RouteVisualizerAdapter";
@@ -16,6 +15,7 @@ import { BikeController } from "../../model/item/bike/states/BikeController";
 import { DynamicRouter } from "../../model/item/route/adapters/routing/DynamicRouter";
 import { CitizenStore } from "../../store/CitizenStore";
 import { CollisionAvoidanceAdapter } from "../motion/collision/CollisionAvoidanceAdapter";
+import { MeshItem } from "../../model/item/mesh/MeshItem";
 
 export class PlayerSetup {
 
@@ -40,10 +40,10 @@ export class PlayerSetup {
         const player = this.playerStore.getActivePlayer();
         const route = this.playerParser.parse(this.worldProvider.worldMap);
 
-        this.bikeParenter.parentToBike(player, this.playerStore.getBikes()[0], this.keyboardService, this.graphService);
+        this.bikeParenter.parentToBike(player, this.playerStore.getBikes()[0]);
 
         const graph = this.graphService.getGraph();
-        const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, <CharacterItem> player.getParent()));
+        const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, <MeshItem> player.getParent()));
 
         player.routeController = walker;
         
@@ -52,7 +52,7 @@ export class PlayerSetup {
         walker.addListener(new RouterAdapter(new DynamicRouter(walker, graph)));
         walker.addListener(new RouteVisualizerAdapter(walker, this.graphService));
         
-        const bike = <BikeItem> player.getParent();
+        const bike = <MeshItem> player.getParent();
         bike.inputController = player.inputController;
         player.inputController = new BikeInputController(<BikeController> player.characterController, bike, player, this.keyboardService, this.graphService);
     }

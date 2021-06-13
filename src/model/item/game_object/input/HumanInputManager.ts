@@ -1,5 +1,5 @@
 import { KeyboardService } from "../../../../service/base/keyboard/KeyboardService";
-import { CharacterItem } from "../../character/CharacterItem";
+import { MeshItem } from "../../mesh/MeshItem";
 import { InputController } from "./InputController";
 
 export class HumanInputManager extends InputController {
@@ -7,9 +7,9 @@ export class HumanInputManager extends InputController {
     readonly rotationConst = Math.PI / 30;
     
     private keyboardService: KeyboardService;
-    private character: CharacterItem;
+    private character: MeshItem;
 
-    constructor(character: CharacterItem, keyboardService: KeyboardService) {
+    constructor(character: MeshItem, keyboardService: KeyboardService) {
         super();
         this.keyboardService = keyboardService;
         this.character = character;

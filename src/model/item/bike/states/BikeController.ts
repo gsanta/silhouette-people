@@ -1,23 +1,23 @@
-import { Axis, Space, Vector3 } from "babylonjs";
+import { Vector3 } from "babylonjs";
 import { rotateVec, vector3ToRotation } from "../../../../helpers";
-import { BikeItem, CharacterItem } from "../../character/CharacterItem";
 import { CharacterController } from "../../mesh/CharacterController";
+import { MeshItem } from "../../mesh/MeshItem";
 
 export type PedalDirection = 'forward' | 'backward';
 
 export class BikeController extends CharacterController {
     readonly rotationConst = Math.PI / 30;
 
-    private bike: BikeItem;
+    private bike: MeshItem;
 
-    constructor(bike: BikeItem) {
+    constructor(bike: MeshItem) {
         super(bike);
 
         this.bike = bike;
     }
 
     walk(deltaTime: number) {
-        const character = <CharacterItem> this.character.children[0];
+        const character = this.character.children[0];
         if (character.routeController && !character.routeController.isRunning()) {
             return;
         }

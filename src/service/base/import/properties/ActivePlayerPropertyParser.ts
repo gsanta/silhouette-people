@@ -1,5 +1,5 @@
+import { MeshItem } from "../../../../model/item/mesh/MeshItem";
 import { ActivePlayerService } from "../../../ActivePlayerService";
-import { CharacterItem } from "../../../../model/item/character/CharacterItem";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export class ActivePlayerPropertyParser extends AbstractPropertyParser<boolean> {
@@ -12,7 +12,7 @@ export class ActivePlayerPropertyParser extends AbstractPropertyParser<boolean> 
         this.highlightService = highlightService;
     }
 
-    processProperty(gameObj: CharacterItem, isActive: boolean) {
+    processProperty(gameObj: MeshItem, isActive: boolean) {
         if (isActive) {
             this.highlightService.activate(gameObj);
         }

@@ -1,15 +1,15 @@
 import { MeshBuilder, LinesMesh } from "babylonjs";
 import { numToVector3 } from "../../../helpers";
 import { WorldProvider } from "../../../service/WorldProvider";
-import { CharacterItem } from "../character/CharacterItem";
+import { MeshItem } from "../mesh/MeshItem";
 import { MeshAttachment, meshAttachmentHeight } from "../MeshAttachment";
 import { Attachments } from "./Attachments";
 
-export class CollisionVecVisualizerAttachment extends MeshAttachment<CharacterItem> {
+export class CollisionVecVisualizerAttachment extends MeshAttachment<MeshItem> {
     private _mesh: LinesMesh;
     private worldProvider: WorldProvider;
 
-    constructor(character: CharacterItem, worldProvider: WorldProvider) {
+    constructor(character: MeshItem, worldProvider: WorldProvider) {
         super(Attachments.COLLISION_VEC_VISUALIZER, character);
         this.worldProvider = worldProvider;
 

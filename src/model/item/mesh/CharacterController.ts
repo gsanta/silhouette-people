@@ -1,16 +1,16 @@
 import { Vector3 } from "babylonjs";
 import { toVector2 } from "../../../helpers";
 import { Rotation } from "../../math/Rotation";
-import { CharacterItem } from "../character/CharacterItem";
+import { MeshItem } from "./MeshItem";
 
 export abstract class CharacterController {
     protected _isDirty = false;
     protected speed = 0;
     protected rotation = 0;
     private _velocity: Vector3 = new Vector3(0, 0, 1);
-    readonly character: CharacterItem;
+    readonly character: MeshItem;
 
-    constructor(character: CharacterItem) {
+    constructor(character: MeshItem) {
         this.character = character;
     }
 

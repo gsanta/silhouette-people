@@ -1,8 +1,6 @@
 import { InjectProperty } from "../../di/diDecorators";
-import { CollisionRadiusVisualizerAttachment } from "../../model/item/attachments/CollisionRadiusVisualizerAttachment";
-import { CollisionVecVisualizerAttachment } from "../../model/item/attachments/CollisionVecVisualizerAttachment";
-import { CharacterItem } from "../../model/item/character/CharacterItem";
 import { HumanController } from "../../model/item/character/states/HumanController";
+import { MeshItem } from "../../model/item/mesh/MeshItem";
 import { RotationRestrictorAdapter } from "../../model/item/route/adapters/rotation/RotationRestrictorAdapter";
 import { ReversingRouter } from "../../model/item/route/adapters/routing/ReversingRouter";
 import { RouterAdapter } from "../../model/item/route/adapters/routing/RouterAdapter";
@@ -62,7 +60,7 @@ export class CitizenSetup {
         // this.toolService.execute.addRouteExecutor(this.citizenExecutor);
     }
 
-    private setupCitizen1(): CharacterItem {
+    private setupCitizen1(): MeshItem {
         const character = this.citizenStore.getById('C');
         const route = this.routeStore.getById('route-1');
 
@@ -81,7 +79,7 @@ export class CitizenSetup {
         return character;
     }
 
-    private setupCitizen2(): CharacterItem {
+    private setupCitizen2(): MeshItem {
         const character = this.citizenStore.getById('C2');
         const route = this.routeStore.getById('route-1').reverse();
 
@@ -99,7 +97,7 @@ export class CitizenSetup {
         return character;
     }
 
-    private applyDebugAttachments(character: CharacterItem) {
+    private applyDebugAttachments(character: MeshItem) {
         // character.addAttachment(new CollisionRadiusVisualizerAttachment(character, this.worldProvider));
         // character.addAttachment(new CollisionVecVisualizerAttachment(character, this.worldProvider));
     }
