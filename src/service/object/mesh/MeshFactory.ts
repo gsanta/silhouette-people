@@ -1,5 +1,5 @@
-import { BikeStateInfo } from "../../../model/item/bike/BikeState";
 import { CharacterItem } from "../../../model/item/character/CharacterItem";
+import { BikeBehaviour } from "../../../model/item/game_object/behaviour/BikeBehaviour";
 import { MeshConfig, MeshItem, MeshItemTag, MeshObjType } from "../../../model/item/mesh/MeshItem";
 import { AbstractPropertyParser } from "../../base/import/AbstractPropertyParser";
 
@@ -17,7 +17,7 @@ export class MeshFactory {
         
         if (meshConfig.type === MeshObjType.Bicycle1) {
             const character = new CharacterItem(id);
-            character.info = new BikeStateInfo();
+            character.behaviour = new BikeBehaviour();
             meshItem = character;
         } else if (meshConfig.props.tags && meshConfig.props.tags.includes(MeshItemTag.Citizen)) {
             const character = new CharacterItem(id);

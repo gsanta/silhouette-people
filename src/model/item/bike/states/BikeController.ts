@@ -22,13 +22,13 @@ export class BikeController extends CharacterController {
             return;
         }
 
-        this.bike.animationState.update(deltaTime);
+        this.bike.stateController.state.update(deltaTime);
 
         if (this.speed > 0) {
             const deltaTimeSec = deltaTime / 1000;
             const displacement = this.speed * deltaTimeSec;
             const displacementVec = new Vector3(displacement, displacement, displacement);
-            this.velocity = rotateVec(this.velocity, this.bike.info.steering);
+            this.velocity = rotateVec(this.velocity, this.bike.behaviour.info.steering);
             let vel = this.velocity.multiply(displacementVec);
     
             this.character.moveWithCollision(vel);

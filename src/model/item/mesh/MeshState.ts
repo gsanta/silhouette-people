@@ -6,8 +6,8 @@ export abstract class MeshState {
 
     constructor(meshObj: CharacterItem) {
         this.character = meshObj;
-        if (meshObj.animationState) {
-            meshObj.animationState.exitState();
+        if (meshObj.stateController && meshObj.stateController.state) {
+            meshObj.stateController.state.exitState();
         }
     }
 

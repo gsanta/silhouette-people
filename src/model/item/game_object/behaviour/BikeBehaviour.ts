@@ -3,6 +3,6 @@ import { CharacterItem } from "../../character/CharacterItem";
 import { CharacterBehaviour } from "./CharacterBehaviour";
 
 export class BikeBehaviour extends CharacterBehaviour {
-    info: BikeStateInfo;
+    info: BikeStateInfo = new BikeStateInfo();
     character: CharacterItem;
 }

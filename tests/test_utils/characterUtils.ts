@@ -1,5 +1,6 @@
 import { Mesh, Scene, Vector3 } from "babylonjs";
 import { CharacterItem } from "../../src/model/item/character/CharacterItem";
+import { HumanController } from "../../src/model/item/character/states/HumanController";
 
 export class CharacterBuilder {
     private index = 0;
@@ -38,6 +39,7 @@ export class CharacterBuilder {
         const mesh = new Mesh(`character-${this.index}-mesh`, this.scene);
         character.radius = this._radius !== undefined ? this._radius : character.radius;
         character.meshes = [mesh];
+        character.characterController = new HumanController(character);
         character.characterController.velocity = this._velocity;
         character.position = this._pos;
         character.collisionSensorDistance = this._collSensorDistance !== undefined ? this._collSensorDistance : character.collisionSensorDistance;

@@ -4,27 +4,19 @@ import { CharacterController } from "../mesh/CharacterController";
 import { MeshItem } from "../mesh/MeshItem";
 import { RouteController } from "../route/RouteController";
 import { BikeState, BikeStateInfo } from "../bike/BikeState";
+import { CharacterBehaviour } from "../game_object/behaviour/CharacterBehaviour";
+import { BikeBehaviour } from "../game_object/behaviour/BikeBehaviour";
+import { StateController } from "../game_object/state/StateController";
 
 export type PersonItem = CharacterItem;
-export type BikeItem = CharacterItem<BikeState, BikeStateInfo>
+export type BikeItem = CharacterItem<BikeBehaviour>
 
-export class CharacterItem<S extends MeshState = MeshState, I = any> extends MeshItem {
+export class CharacterItem<B extends CharacterBehaviour = any> extends MeshItem {
     collisionSensorDistance = 2;
-    animationState: S;
+    stateController: StateController;
     characterController: CharacterController;
     inputController: InputController;
     routeController: RouteController;
-    info: I;
 
-    setState(state: S) {
-        if (this.animationState) {
-            this.animationState.exitState();
-        }
-
-        this.animationState = state;
-
-        if (this.animationState) {
-            this.animationState.enterState();
-        }
-    }
+    behaviour: B;
 }

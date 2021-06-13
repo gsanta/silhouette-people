@@ -25,7 +25,7 @@ export class BikeInputController extends InputController {
     }
 
     onKeyDown(key: KeyName) {
-        let info = this.bike.info;
+        let info = this.bike.behaviour.info;
 
         switch(key) {
             case KeyName.FORWARD1:
@@ -39,11 +39,11 @@ export class BikeInputController extends InputController {
             break;
             case KeyName.FORWARD2:
                 const nextGear = info.gear === info.maxGear ? info.maxGear : info.gear + 1; 
-                info = this.bike.info.setGear(nextGear);
+                info = this.bike.behaviour.info.setGear(nextGear);
             break;
             case KeyName.BACKWARD2:
                 const prevGear = info.gear === 0 ? 0 : info.gear - 1; 
-                info = this.bike.info.setGear(prevGear);
+                info = this.bike.behaviour.info.setGear(prevGear);
             break;
         }
 
@@ -51,7 +51,7 @@ export class BikeInputController extends InputController {
     }
 
     keyboard(downKeys: Set<KeyName>) {
-        let info: BikeStateInfo = this.bike.info;
+        let info: BikeStateInfo = this.bike.behaviour.info;
         
         info = this.handleSpeed(info, downKeys);
         info = this.handleSteering(info, downKeys);
@@ -82,9 +82,9 @@ export class BikeInputController extends InputController {
     }
 
     private updateStateIfBikeInfoChanged(bikeInfo: BikeStateInfo) {
-        if (this.bike.info !== bikeInfo) {
-            this.bike.info = bikeInfo;
-            this.bike.animationState.updateInfo(bikeInfo);
+        if (this.bike.behaviour.info !== bikeInfo) {
+            this.bike.behaviour.info = bikeInfo;
+            // this.bike.animationState.updateInfo(bikeInfo);
         }
     }
 }

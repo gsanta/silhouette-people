@@ -1,11 +1,12 @@
 import { BikeItem } from "../../character/CharacterItem";
 import { CharacterController } from "../../mesh/CharacterController";
-import { BikeState, BikeStateInfo } from "../BikeState";
+import { MeshState } from "../../mesh/MeshState";
+import { BikeStateInfo } from "../BikeState";
 import { SpeedupSystem } from "../physics/SpeedupSystem";
 import { BikeBrakingState } from "./BikeBrakingState";
 import { BikeIdleState } from "./BikeIdleState";
 
-export class BikeSpeedUpState extends BikeState {
+export class BikeSpeedUpState extends MeshState {
     private readonly bike: BikeItem;
     private readonly mover: CharacterController;
     private readonly speedUpSystem: SpeedupSystem;
@@ -17,17 +18,18 @@ export class BikeSpeedUpState extends BikeState {
         this.speedUpSystem = new SpeedupSystem(this.mover);
     }
 
-    updateInfo(bikeStateInfo: BikeStateInfo): void {
+    update(deltaTime: number) {
+        this.updateInfo(this.bike.behaviour.info);
+        this.speedUpSystem.update(deltaTime);
+    }
+
+    private updateInfo(bikeStateInfo: BikeStateInfo): void {
         if (!bikeStateInfo.isBraking && !bikeStateInfo.isPedalling) {
-            this.bike.setState(new BikeIdleState(this.bike, this.mover));
+            this.bike.stateController.state = new BikeIdleState(this.bike, this.mover);
         } else if (bikeStateInfo.isBraking) {
-            this.bike.setState(new BikeBrakingState(this.bike, this.mover));
+            this.bike.stateController.state = new BikeBrakingState(this.bike, this.mover);
         } else {
             this.speedUpSystem.setGear(bikeStateInfo.gear);
         }
-    }
-
-    update(deltaTime: number) {
-        this.speedUpSystem.update(deltaTime);
     }
 }

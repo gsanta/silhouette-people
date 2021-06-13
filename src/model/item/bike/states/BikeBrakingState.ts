@@ -1,12 +1,13 @@
 import { lookup } from "../../../../service/Lookup";
 import { BikeItem } from "../../character/CharacterItem";
-import { BikeState, BikeStateInfo } from "../BikeState";
+import { CharacterController } from "../../mesh/CharacterController";
+import { MeshState } from "../../mesh/MeshState";
+import { BikeStateInfo } from "../BikeState";
 import { BrakingSystem } from "../physics/BrakingSystem";
 import { BikeIdleState } from "./BikeIdleState";
 import { BikeSpeedUpState } from "./BikeSpeedupState";
-import { CharacterController } from "../../mesh/CharacterController";
 
-export class BikeBrakingState extends BikeState {
+export class BikeBrakingState extends MeshState {
     private readonly bike: BikeItem;
     private readonly mover: CharacterController;
     private readonly brakeSystem: BrakingSystem;
@@ -19,19 +20,20 @@ export class BikeBrakingState extends BikeState {
         this.brakeSystem = new BrakingSystem(lookup.worldProvider, bike, this.mover, 1.5);
     }
 
-    updateInfo(bikeStateInfo: BikeStateInfo): void {
+    update(deltaTime: number) {
+        this.updateInfo(this.bike.behaviour.info);
+        this.brakeSystem.break(deltaTime, this.powerBrake);
+    }
+
+    private updateInfo(bikeStateInfo: BikeStateInfo): void {
         this.powerBrake = bikeStateInfo.isPowerBrakeOn;
         if (!bikeStateInfo.isBraking) {
             if (bikeStateInfo.isPedalling) {
-                this.bike.setState(new BikeSpeedUpState(this.bike, this.mover));
+                this.bike.stateController.state = new BikeSpeedUpState(this.bike, this.mover);
             } else {
-                this.bike.setState(new BikeIdleState(this.bike, this.mover));
+                this.bike.stateController.state = new BikeIdleState(this.bike, this.mover);
             }
         }
-    }
-
-    update(deltaTime: number) {
-        this.brakeSystem.break(deltaTime, this.powerBrake);
     }
 
     enterState() {

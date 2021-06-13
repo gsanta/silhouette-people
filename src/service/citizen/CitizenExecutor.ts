@@ -51,7 +51,7 @@ export class CitizenExecutor implements RouteExecutor {
     private updateWalkers(deltaTime: number) {
         this.activeCitizens.forEach(player => player.routeController.walk(deltaTime));
         this.activeCitizens.forEach(citizen => citizen.characterController.walk(deltaTime));
-        this.activeCitizens.forEach(citizen => citizen.animationState.update(deltaTime));
+        this.activeCitizens.forEach(citizen => citizen.stateController.state.update(deltaTime));
     }
 
     private deleteFinishedCitizens() {

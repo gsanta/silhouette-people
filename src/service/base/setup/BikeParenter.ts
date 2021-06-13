@@ -20,8 +20,7 @@ export class BikeParenter {
             player.emitPositionChange();
         });
 
-        bike.setState(new BikeIdleState(bike, bikeWalker));
-
-        player.animationState = new CharacterBikingState(player);
+        bike.stateController.state = new BikeIdleState(bike, bikeWalker);
+        player.stateController.state = new CharacterBikingState(player);
     }
 }

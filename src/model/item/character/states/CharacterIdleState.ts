@@ -23,7 +23,7 @@ export class CharacterIdleState extends MeshState {
         if (!walker) { return; }
 
         if (walker.getRotation() !== 0 || walker.getSpeed() !== 0) {
-            this.character.animationState = new CharacterWalkingState(this.character); 
+            this.character.stateController.state = new CharacterWalkingState(this.character); 
         }
     }
 }

@@ -23,7 +23,7 @@ export class CharacterGetOnBikeState extends MeshState {
         player.mesh.checkCollisions = false;
         player.setParent(this.bike);
 
-        player.animationState = new CharacterBikingState(player);
-        this.bike.animationState = new BikeIdleState(this.bike, <BikeController> player.characterController);
+        player.stateController.state = new CharacterBikingState(player);
+        this.bike.stateController.state = new BikeIdleState(this.bike, <BikeController> player.characterController);
     }
 }

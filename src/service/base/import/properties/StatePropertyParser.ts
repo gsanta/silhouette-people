@@ -1,11 +1,11 @@
 import { BikeIdleState } from "../../../../model/item/bike/states/BikeIdleState";
-import { BikeMovingState } from "../../../../model/item/bike/states/BikeMovingState";
 import { MeshStateName } from "../../../../model/item/mesh/AbstractMeshState";
 import { CharacterIdleState } from "../../../../model/item/character/states/CharacterIdleState";
 import { CharacterWalkingState } from "../../../../model/item/character/states/CharacterWalkingState";
 import { MeshState } from "../../../../model/item/mesh/MeshState";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 import { BikeItem, CharacterItem } from "../../../../model/item/character/CharacterItem";
+import { StateController } from "../../../../model/item/game_object/state/StateController";
 
 export class StatePropertyParser extends AbstractPropertyParser<string> {
     propName = 'state';
@@ -15,8 +15,10 @@ export class StatePropertyParser extends AbstractPropertyParser<string> {
     }
 
     processProperty(mesh: CharacterItem, stateName: string) {
-        mesh.animationState = this.createState(mesh, stateName as MeshStateName);
-        mesh.animationState.enterState();
+        const state = this.createState(mesh, stateName as MeshStateName);
+        
+        mesh.stateController = new StateController();
+        mesh.stateController.state = state;
     }
 
     private createState(gameObj: CharacterItem, stateName: MeshStateName): MeshState {
@@ -27,8 +29,6 @@ export class StatePropertyParser extends AbstractPropertyParser<string> {
                 return new CharacterWalkingState(gameObj);
             case MeshStateName.BikeIdleState:
                 return new BikeIdleState(<BikeItem> gameObj, null);
-            // case MeshStateName.BikeMovingState:
-            //     return new BikeMovingState(gameObj);
         }
     }
 }
