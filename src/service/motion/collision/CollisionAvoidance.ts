@@ -1,7 +1,7 @@
 import { Vector3 } from "babylonjs";
 import { toVector2 } from "../../../helpers";
-import { MeshItem } from "../../../model/item/mesh/MeshItem";
-import { RouteController } from "../../../model/item/route/RouteController";
+import { GameObject } from "../../../model/objects/game_object/GameObject";
+import { RouteController } from "../../../model/objects/game_object/controller_route/RouteController";
 import { VertexInjector } from "../../../model/item/route/VertexInjector";
 import { Rotation } from "../../../model/math/Rotation";
 import { GraphVertex } from "../../graph/GraphImpl";
@@ -18,7 +18,7 @@ export class CollisionAvoidance {
         this.vertexInjector = new VertexInjector();
     }
 
-    avoid(characters: MeshItem[]) {
+    avoid(characters: GameObject[]) {
         const angles = this.sensor.getSteeringAngles(characters);
 
         if (angles) {

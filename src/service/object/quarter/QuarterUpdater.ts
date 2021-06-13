@@ -1,5 +1,5 @@
 import { InjectProperty } from "../../../di/diDecorators";
-import { MeshItem } from "../../../model/item/mesh/MeshItem";
+import { GameObject } from "../../../model/objects/game_object/GameObject";
 import { QuarterStore } from "../../../store/QuarterStore";
 import { WorldProvider } from "../../WorldProvider";
 import { lookup } from "../../Lookup";
@@ -31,7 +31,7 @@ export class QuarterUpdater {
         }
     }
 
-    private isQuarterChanged(player: MeshItem) {
+    private isQuarterChanged(player: GameObject) {
         const camera = this.worldProvider.world.camera.getQuarterIndex();
         const quarter = this.quarterStore.getQuarter(camera);
         const pos = player.position2D;
@@ -39,7 +39,7 @@ export class QuarterUpdater {
         return !quarter.containsPoint2D(pos);
     }
 
-    private updateActiveQuarter(player: MeshItem): void {
+    private updateActiveQuarter(player: GameObject): void {
         const pos = player.position2D;
 
         const quarterIndex = this.quarterStore.getAllQuarters().findIndex(quarter => quarter.containsPoint2D(pos));

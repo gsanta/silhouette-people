@@ -1,4 +1,4 @@
-import { RouteItem } from "../../../model/item/route/RouteItem";
+import { RouteItem } from "../../../model/objects/route/RouteItem";
 import { RouteStore } from "../../../store/RouteStore";
 import { GraphParser } from "../../base/import/map/parse/GraphParser";
 import { GraphService } from "../../graph/GraphService";

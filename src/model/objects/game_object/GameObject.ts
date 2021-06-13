@@ -2,15 +2,15 @@ import { Axis, Quaternion, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/index";
 import { AnimationHandler } from "../../AnimationHandler";
 import { TagHandler } from "../../TagHandler";
-import { GameItem } from "../GameItem";
-import { CharacterBehaviour } from "../game_object/behaviour/CharacterBehaviour";
-import { InputController } from "../game_object/input/InputController";
-import { StateController } from "../game_object/state/StateController";
-import { MeshAttachment } from "../MeshAttachment";
-import { RouteController } from "../route/RouteController";
-import { CharacterController } from "./CharacterController";
+import { GameItem } from "../../item/GameItem";
+import { CharacterBehaviour } from "./CharacterBehaviour";
+import { InputController } from "./controller_input/InputController";
+import { StateController } from "./controller_state/StateController";
+import { MeshAttachment } from "../../item/MeshAttachment";
+import { RouteController } from "./controller_route/RouteController";
+import { MotionController } from "./controller_motion/MotionController";
 
-export enum MeshObjType {
+export enum GameObjectType {
     Player = 'player',
     Enemy = 'enemy',
     Tree1 = 'tree1',
@@ -29,7 +29,7 @@ export enum MeshObjType {
     QuarterGround = 'QuarterGround'
 }
 
-export enum MeshItemTag {
+export enum GameObjectTag {
     Player = 'Player',
     Citizen = 'Citizen',
     Enemy = 'Enemy',
@@ -37,27 +37,27 @@ export enum MeshItemTag {
     ActiveVehicle = 'ActiveVehicle'
 }
 
-export interface MeshConfig {
+export interface GameObjectConfig {
     id?: string;
     ch: string;
-    type: MeshObjType;
+    type: GameObjectType;
 
     props: {[key: string]: any};
 }
 
-export class MeshItem<B extends CharacterBehaviour = any> extends GameItem {
+export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
     id: string;
 
     collisionSensorDistance = 2;
     stateController: StateController;
-    characterController: CharacterController;
+    characterController: MotionController;
     inputController: InputController;
     routeController: RouteController;
 
     behaviour: B;
     
     skeleton: Skeleton;
-    children: MeshItem[] = [];
+    children: GameObject[] = [];
     // TODO create tag from it
     isActivePlayer: boolean = false;
 
@@ -144,7 +144,7 @@ export class MeshItem<B extends CharacterBehaviour = any> extends GameItem {
     }
 
     isCitizen() {
-        return this.tag.has(MeshItemTag.Citizen);
+        return this.tag.has(GameObjectTag.Citizen);
     }
 
     addAttachment(attachment: MeshAttachment) {

@@ -1,7 +1,7 @@
-import { MeshConfig } from "../../model/item/mesh/MeshItem";
+import { GameObjectConfig } from "../../model/objects/game_object/GameObject";
 import { StoryTracker } from "./StoryTracker";
 import { StoryItem, StoryType } from "./StoryItem";
-import { RouteStoryConfig } from "../../model/item/route/RouteItem";
+import { RouteStoryConfig } from "../../model/objects/route/RouteItem";
 
 export class StoryProducer {
     private readonly backlog: StoryTracker;
@@ -11,7 +11,7 @@ export class StoryProducer {
         this.backlog = backlog;
     }
 
-    createMeshStory(meshConfig: MeshConfig) {
+    createMeshStory(meshConfig: GameObjectConfig) {
         this.backlog.addStory(new StoryItem(`${this.idCounter}`, StoryType.CREATE_MESH, meshConfig));
         this.idCounter += 1;
     }

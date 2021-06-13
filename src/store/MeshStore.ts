@@ -1,10 +1,10 @@
 import { InjectProperty } from "../di/diDecorators";
-import { MeshItem, MeshItemTag } from "../model/item/mesh/MeshItem";
+import { GameObject, GameObjectTag } from "../model/objects/game_object/GameObject";
 import { lookup } from "../service/Lookup";
 import { QuarterStore } from "./QuarterStore";
 
 export class MeshStore {
-    private items: MeshItem[] = [];
+    private items: GameObject[] = [];
 
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;
@@ -13,25 +13,25 @@ export class MeshStore {
         this.quarterStore = lookup.quarterStore;
     }
 
-    addItem(meshItem: MeshItem) {
+    addItem(meshItem: GameObject) {
         this.items.push(meshItem);
 
         const quarterIndex = this.calcQuarterIndex(meshItem);
         meshItem.quarterIndex = quarterIndex;
     }
 
-    removeItem(item: MeshItem, disposeMesh = false) {
+    removeItem(item: GameObject, disposeMesh = false) {
         this.items = this.items.filter(i => i !== item);
         if (disposeMesh) {
             item.dispose();
         }
     }
 
-    getEnemies(): MeshItem[] {
-        return <MeshItem[]> this.getByTag(MeshItemTag.Enemy);
+    getEnemies(): GameObject[] {
+        return <GameObject[]> this.getByTag(GameObjectTag.Enemy);
     }
 
-    getByTag(tag: MeshItemTag): MeshItem[] {
+    getByTag(tag: GameObjectTag): GameObject[] {
         return this.items.filter(gameObj => gameObj.tag.has(tag));
     }
 
@@ -39,7 +39,7 @@ export class MeshStore {
         return this.items.find(obj => obj.id === id);
     }
 
-    getAll(): MeshItem[] {
+    getAll(): GameObject[] {
         return this.items;
     }
 
@@ -47,7 +47,7 @@ export class MeshStore {
         this.items.forEach(obj => obj.dispose());
     }
 
-    private calcQuarterIndex(obj: MeshItem): number {
+    private calcQuarterIndex(obj: GameObject): number {
         const pos = obj.position2D;
 
         const quarterIndex = this.quarterStore.getAllQuarters().findIndex(quarter => quarter.containsPoint2D(pos));

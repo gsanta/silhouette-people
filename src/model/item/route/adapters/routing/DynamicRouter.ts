@@ -2,7 +2,7 @@
 import { Graph } from "../../../../../service/graph/Graph";
 import { GraphEdge } from "../../../../../service/graph/GraphEdge";
 import { GraphVertex } from "../../../../../service/graph/GraphImpl";
-import { RouteController } from "../../RouteController";
+import { RouteController } from "../../../../objects/game_object/controller_route/RouteController";
 import { IRouter } from "./IRouter";
 
 export class DynamicRouter implements IRouter {

@@ -1,7 +1,7 @@
-import { BikeController } from "../../../../model/item/bike/states/BikeController";
+import { BikeController } from "../../../../model/objects/game_object/types/bike/BikeController";
 import { HumanController } from "../../../../model/item/character/states/HumanController";
-import { CharacterController } from "../../../../model/item/mesh/CharacterController";
-import { MeshItem } from "../../../../model/item/mesh/MeshItem";
+import { MotionController } from "../../../../model/objects/game_object/controller_motion/MotionController";
+import { GameObject } from "../../../../model/objects/game_object/GameObject";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 enum WalkerName {
@@ -16,14 +16,14 @@ export class WalkerPropertyParser extends AbstractPropertyParser<string> {
         return false;
     }
 
-    processProperty(mesh: MeshItem, walkerName: string) {
+    processProperty(mesh: GameObject, walkerName: string) {
         mesh.characterController = this.createWalker(mesh, walkerName as WalkerName);
     }
 
-    private createWalker(meshObj: MeshItem, stateName: WalkerName): CharacterController {
+    private createWalker(meshObj: GameObject, stateName: WalkerName): MotionController {
         switch(stateName) {
             case WalkerName.BikeWalker:
-                return new BikeController(meshObj as MeshItem);
+                return new BikeController(meshObj as GameObject);
             case WalkerName.CharacterWalker:
                 return new HumanController(meshObj);
         }

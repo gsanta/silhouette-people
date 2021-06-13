@@ -1,5 +1,5 @@
-import { RouteItem } from "../../RouteItem";
-import { RouteController } from "../../RouteController";
+import { RouteItem } from "../../../../objects/route/RouteItem";
+import { RouteController } from "../../../../objects/game_object/controller_route/RouteController";
 import { IRouter } from "./IRouter";
 
 export class ReversingRouter implements IRouter {

@@ -3,7 +3,7 @@ import { StoryLoader } from "../../../service/story/StoryLoader";
 import { StoryTracker } from "../../../service/story/StoryTracker";
 import { MeshStore } from "../../../store/MeshStore";
 import { RouteStore } from "../../../store/RouteStore";
-import { RouteStoryConfig } from "./RouteItem";
+import { RouteStoryConfig } from "../../objects/route/RouteItem";
 
 export class RouteLoader implements StoryLoader {
 

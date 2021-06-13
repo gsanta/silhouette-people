@@ -1,6 +1,6 @@
 import { toVector2, vector3ToRotation } from "../../helpers";
 import { Rotation } from "../../model/math/Rotation";
-import { Quad } from "../../model/shape/Quad";
+import { Quad } from "../../model/math/shapes/Quad";
 import { GraphVertex } from "./GraphImpl";
 
 export class GraphEdge {

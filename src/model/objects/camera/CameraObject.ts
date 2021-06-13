@@ -1,11 +1,11 @@
 import { ArcRotateCamera, Vector2, Vector3 } from "babylonjs";
-import { InjectProperty } from "../../di/diDecorators";
-import { lookup } from "../../service/Lookup";
-import { QuarterStore } from "../../store/QuarterStore";
-import { WorldObj } from "./WorldObj";
+import { InjectProperty } from "../../../di/diDecorators";
+import { lookup } from "../../../service/Lookup";
+import { QuarterStore } from "../../../store/QuarterStore";
+import { WorldObj } from "../../item/WorldObj";
 
 
-export class CameraItem {
+export class CameraObject {
 
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;

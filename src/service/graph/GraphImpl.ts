@@ -1,6 +1,6 @@
 import { Vector3 } from "babylonjs/Maths/math.vector";
 import { vector3ToRotation } from "../../helpers";
-import { Quad } from "../../model/shape/Quad";
+import { Quad } from "../../model/math/shapes/Quad";
 import { Graph } from "./Graph";
 import { GraphEdge } from "./GraphEdge";
 

@@ -1,6 +1,6 @@
 import { Vector2 } from "babylonjs";
 
-export class AngleShape {
+export class Angle {
     readonly anchor: Vector2;
     readonly angle: number;
 

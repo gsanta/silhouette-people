@@ -1,9 +1,9 @@
 import { Attachments } from "./attachments/Attachments";
-import { MeshItem } from "./mesh/MeshItem";
+import { GameObject } from "../objects/game_object/GameObject";
 
 export const meshAttachmentHeight = 1;
 
-export abstract class MeshAttachment<I extends MeshItem = MeshItem> {
+export abstract class MeshAttachment<I extends GameObject = GameObject> {
     readonly name: Attachments;
     readonly meshItem: I; 
 

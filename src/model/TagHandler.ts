@@ -1,22 +1,22 @@
-import { MeshItemTag } from "./item/mesh/MeshItem";
+import { GameObjectTag } from "./objects/game_object/GameObject";
 
 
 export class TagHandler {
-    private tags: Set<MeshItemTag> = new Set();
+    private tags: Set<GameObjectTag> = new Set();
 
-    add(...tag: MeshItemTag[]) {
+    add(...tag: GameObjectTag[]) {
         tag.forEach(t => this.tags.add(t));
     }
 
-    has(...tag: MeshItemTag[]) {
+    has(...tag: GameObjectTag[]) {
         return tag.every(t => this.tags.has(t));
     }
 
-    doesNotHave(...tag: MeshItemTag[]) {
+    doesNotHave(...tag: GameObjectTag[]) {
         return tag.every(t => !this.tags.has(t));
     }
 
-    remove(tag: MeshItemTag) {
+    remove(tag: GameObjectTag) {
         this.tags.delete(tag);
     }
 
@@ -25,14 +25,14 @@ export class TagHandler {
     }
 
     isPlayer() {
-        return this.has(MeshItemTag.Player);
+        return this.has(GameObjectTag.Player);
     }
 
     removePlayer() {
-        this.remove(MeshItemTag.Player);
+        this.remove(GameObjectTag.Player);
     }
 
     addPlayer() {
-        this.add(MeshItemTag.Player);
+        this.add(GameObjectTag.Player);
     }
 }

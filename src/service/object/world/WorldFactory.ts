@@ -1,6 +1,6 @@
 import { ArcRotateCamera, Axis, Color3, MeshBuilder, PhysicsImpostor, Scene, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { CameraItem } from "../../../model/item/CameraItem";
+import { CameraObject } from "../../../model/objects/camera/CameraObject";
 import { WorldObj } from "../../../model/item/WorldObj";
 import { QuarterStore } from "../../../store/QuarterStore";
 import { GroundJson } from "../../base/import/map/WorldMap";
@@ -53,7 +53,7 @@ export class WorldFactory {
         const camera = new ArcRotateCamera("camera", Math.PI + Math.PI / 3, Math.PI / 3, 120, new Vector3(0, 0, 0), this.worldProvider.scene);
         camera.attachControl(this.worldProvider.canvas, true);
 
-        const cameraOj = new CameraItem(camera, worldObj);
+        const cameraOj = new CameraObject(camera, worldObj);
 
         this.cameraService.setCameraObj(cameraOj);
 

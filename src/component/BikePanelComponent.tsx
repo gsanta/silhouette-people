@@ -4,7 +4,7 @@ import './../../assets/css/action-panel.scss'
 import { InjectProperty } from "../di/diDecorators";
 import { lookup } from "../service/Lookup";
 import { PlayerStore } from "../service/player/PlayerStore";
-import { MeshItem } from "../model/item/mesh/MeshItem";
+import { GameObject } from "../model/objects/game_object/GameObject";
 
 export class BikePanelComponent extends React.Component<ComponentProps> {
 
@@ -23,7 +23,7 @@ export class BikePanelComponent extends React.Component<ComponentProps> {
             return null;
         }
 
-        const bike = player.getParent() as MeshItem;
+        const bike = player.getParent() as GameObject;
         let speed = bike.characterController.getSpeed();
         speed = Math.trunc(speed * 10) / 10;
 

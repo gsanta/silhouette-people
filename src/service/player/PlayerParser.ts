@@ -1,4 +1,4 @@
-import { RouteItem } from "../../model/item/route/RouteItem";
+import { RouteItem } from "../../model/objects/route/RouteItem";
 import { WorldMap } from "../base/import/map/WorldMap";
 import { GraphService } from "../graph/GraphService";
 

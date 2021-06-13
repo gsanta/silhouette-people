@@ -1,11 +1,10 @@
-import { BikeIdleState } from "../../../../model/item/bike/states/BikeIdleState";
-import { MeshStateName } from "../../../../model/item/mesh/AbstractMeshState";
+import { BikeIdleState } from "../../../../model/objects/game_object/types/bike/states/BikeIdleState";
 import { CharacterIdleState } from "../../../../model/item/character/states/CharacterIdleState";
 import { CharacterWalkingState } from "../../../../model/item/character/states/CharacterWalkingState";
-import { MeshState } from "../../../../model/item/mesh/MeshState";
+import { MeshState, MeshStateName } from "../../../../model/item/mesh/MeshState";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
-import { StateController } from "../../../../model/item/game_object/state/StateController";
-import { MeshItem } from "../../../../model/item/mesh/MeshItem";
+import { StateController } from "../../../../model/objects/game_object/controller_state/StateController";
+import { GameObject } from "../../../../model/objects/game_object/GameObject";
 
 export class StatePropertyParser extends AbstractPropertyParser<string> {
     propName = 'state';
@@ -14,14 +13,14 @@ export class StatePropertyParser extends AbstractPropertyParser<string> {
         return false;
     }
 
-    processProperty(mesh: MeshItem, stateName: string) {
+    processProperty(mesh: GameObject, stateName: string) {
         const state = this.createState(mesh, stateName as MeshStateName);
         
         mesh.stateController = new StateController();
         mesh.stateController.state = state;
     }
 
-    private createState(gameObj: MeshItem, stateName: MeshStateName): MeshState {
+    private createState(gameObj: GameObject, stateName: MeshStateName): MeshState {
         switch(stateName) {
             case MeshStateName.CharacterIdleState:
                 return new CharacterIdleState(gameObj);

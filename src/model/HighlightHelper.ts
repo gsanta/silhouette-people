@@ -3,12 +3,12 @@ import { InjectProperty } from "../di/diDecorators";
 import { LightFactory } from "../service/object/light/LightFactory";
 import { lookup } from "../service/Lookup";
 import { LightStore } from "../store/LightStore";
-import { LightItem } from "./item/LightItem";
-import { MeshItem } from "./item/mesh/MeshItem";
+import { LightObject } from "./objects/light/LightObject";
+import { GameObject } from "./objects/game_object/GameObject";
 
 export class HighlightHelper {
     private pending = false;
-    private pendingMeshObj: MeshItem;
+    private pendingMeshObj: GameObject;
 
     @InjectProperty("LightStore")
     private lightStore: LightStore;
@@ -21,7 +21,7 @@ export class HighlightHelper {
         this.lightFactory = lookup.lightFactory;
     }
 
-    attachHighlightTo(meshObj: MeshItem) {
+    attachHighlightTo(meshObj: GameObject) {
         const lightObj = this.lightStore.getHighlightLight();
 
         if (lightObj) {
@@ -31,14 +31,14 @@ export class HighlightHelper {
         }
     }
 
-    private attachToMesh(meshObj: MeshItem, lightObj: LightItem) {
+    private attachToMesh(meshObj: GameObject, lightObj: LightObject) {
         lightObj.position2D = meshObj.position2D;
         meshObj.addPositionChangeListener(() => {
             lightObj.position2D = meshObj.position2D;
         });
     }
 
-    private loadLightObj(meshObj: MeshItem) {
+    private loadLightObj(meshObj: GameObject) {
         this.pendingMeshObj = meshObj;
     
         if (!this.pending) {

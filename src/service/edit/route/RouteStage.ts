@@ -1,4 +1,4 @@
-import { MeshItem } from "../../../model/item/mesh/MeshItem";
+import { GameObject } from "../../../model/objects/game_object/GameObject";
 import { ActivePlayerService } from "../../ActivePlayerService";
 import { PlayerStore } from "../../player/PlayerStore";
 import { GameStage } from "../../ui/stage/GameStage";
@@ -16,7 +16,7 @@ export class RouteStage implements GameStage {
     private stageController: StageController;
     private playerChooserHelper: PlayerChooserHelper;
     private stageDescriptionHelper: StageDescriptionHelper;
-    private players: MeshItem[] = [];
+    private players: GameObject[] = [];
 
     constructor(stageController: StageController, toolService: ToolService, playerStore: PlayerStore, activePlayerService: ActivePlayerService) {
         this.stageController = stageController;

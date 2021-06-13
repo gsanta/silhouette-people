@@ -1,7 +1,7 @@
 import { Color3, Mesh, MeshBuilder, StandardMaterial } from "babylonjs";
 import { toVector3 } from "../../../helpers";
 import { WorldProvider } from "../../../service/WorldProvider";
-import { MeshItem } from "../mesh/MeshItem";
+import { GameObject } from "../../objects/game_object/GameObject";
 import { MeshAttachment, meshAttachmentHeight } from "../MeshAttachment";
 import { Attachments } from "./Attachments";
 
@@ -9,7 +9,7 @@ export class CollisionRadiusVisualizerAttachment extends MeshAttachment {
     private _mesh: Mesh;
     private readonly worldProvider: WorldProvider;
 
-    constructor(meshItem: MeshItem, worldProvider: WorldProvider) {
+    constructor(meshItem: GameObject, worldProvider: WorldProvider) {
         super(Attachments.COLLISION_RADIUS_VISUALIZER, meshItem);
         this.worldProvider = worldProvider;
         this.createMesh();

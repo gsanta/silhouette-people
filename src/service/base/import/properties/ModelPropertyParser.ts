@@ -1,5 +1,5 @@
 import { AbstractMesh, Axis, Mesh, Space } from "babylonjs";
-import { MeshItem } from "../../../../model/item/mesh/MeshItem";
+import { GameObject } from "../../../../model/objects/game_object/GameObject";
 import { AssetContainerStore } from "../../../../store/AssetContainerStore";
 import { WorldProvider } from "../../../WorldProvider";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
@@ -28,7 +28,7 @@ export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyCon
         return true;
     }
 
-    async processPropertyAsync(meshItem: MeshItem, props: ModelPropertyConfig): Promise<void> {
+    async processPropertyAsync(meshItem: GameObject, props: ModelPropertyConfig): Promise<void> {
         const removeRoot = props.removeRoot;
         // TODO for static objects there is a problem when using original instances, check it
         const canUseOriginalInstance = props.canUseOriginalInstance === false ? false : true

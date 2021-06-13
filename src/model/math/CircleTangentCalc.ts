@@ -1,5 +1,5 @@
 import { Vector2 } from "babylonjs";
-import { Circle } from "../shape/Circle";
+import { Circle } from "./shapes/Circle";
 import { LineEquation } from "./LineEquation";
 
 export class CircleTangentCalc {

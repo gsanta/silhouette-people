@@ -1,6 +1,6 @@
 import { Vector2 } from "babylonjs";
 import { CircleTangentCalc } from "../../../src/model/math/CircleTangentCalc";
-import { Circle } from "../../../src/model/shape/Circle";
+import { Circle } from "../../../src/model/math/shapes/Circle";
 
 describe('Calculating tangent to circle from external point', () => {
 

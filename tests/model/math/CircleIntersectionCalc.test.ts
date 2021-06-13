@@ -1,7 +1,7 @@
 import { Vector2 } from "babylonjs";
 import { CircleIntersectionCalc } from "../../../src/model/math/CircleIntersectionCalc";
 import { LineEquation } from "../../../src/model/math/LineEquation";
-import { Circle } from "../../../src/model/shape/Circle";
+import { Circle } from "../../../src/model/math/shapes/Circle";
 
 describe('getIntersectionPoints', () => {
     it ('two intersection points, vertical line, circle in the origo', () => {

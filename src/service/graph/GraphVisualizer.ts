@@ -1,6 +1,6 @@
 import { Mesh, MeshBuilder, Vector3 } from "babylonjs";
-import { RouteItem } from "../../model/item/route/RouteItem";
-import { RouteController } from "../../model/item/route/RouteController";
+import { RouteItem } from "../../model/objects/route/RouteItem";
+import { RouteController } from "../../model/objects/game_object/controller_route/RouteController";
 import { MaterialStore } from "../../store/MaterialStore";
 import { WorldProvider } from "../WorldProvider";
 import { GraphEdge } from "./GraphEdge";

@@ -1,7 +1,7 @@
 import { Vector3 } from "babylonjs";
 import { ReversingRouter } from "../../../../../../src/model/item/route/adapters/routing/ReversingRouter";
-import { RouteItem } from "../../../../../../src/model/item/route/RouteItem";
-import { RouteControllerImpl } from "../../../../../../src/model/item/route/RouteControllerImpl";
+import { RouteItem } from "../../../../../../src/model/objects/route/RouteItem";
+import { RouteControllerImpl } from "../../../../../../src/model/objects/game_object/controller_route/RouteControllerImpl";
 import { GraphEdge } from "../../../../../../src/service/graph/GraphEdge";
 import { GraphVertex } from "../../../../../../src/service/graph/GraphImpl";
 

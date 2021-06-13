@@ -2,7 +2,7 @@ import { Mesh, MeshBuilder, StandardMaterial, Vector3 } from "babylonjs";
 import { PathItem } from "../../../PathItem";
 import { WorldProvider } from "../../../../../service/WorldProvider";
 import { MaterialStore } from "../../../../../store/MaterialStore";
-import { RouteItem } from "../../RouteItem";
+import { RouteItem } from "../../../../objects/route/RouteItem";
 import { GraphVertex } from "../../../../../service/graph/GraphImpl";
 
 export class RouteVisualizer {

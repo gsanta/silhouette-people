@@ -1,4 +1,4 @@
-import { MeshItem, MeshItemTag } from "../../../../model/item/mesh/MeshItem";
+import { GameObject, GameObjectTag } from "../../../../model/objects/game_object/GameObject";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export class TagPropertyParser extends AbstractPropertyParser<string[]> {
@@ -8,7 +8,7 @@ export class TagPropertyParser extends AbstractPropertyParser<string[]> {
         return false;
     }
 
-    processProperty(gameObject: MeshItem, tags: string[]) {
-        gameObject.tag.add(...(tags as MeshItemTag[]));
+    processProperty(gameObject: GameObject, tags: string[]) {
+        gameObject.tag.add(...(tags as GameObjectTag[]));
     }
 }

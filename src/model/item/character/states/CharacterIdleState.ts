@@ -1,10 +1,10 @@
-import { MeshItem } from "../../mesh/MeshItem";
+import { GameObject } from "../../../objects/game_object/GameObject";
 import { MeshState } from "../../mesh/MeshState";
 import { CharacterWalkingState } from "./CharacterWalkingState";
 
 export class CharacterIdleState extends MeshState {
 
-    constructor(character: MeshItem) {
+    constructor(character: GameObject) {
         super(character);
         this.enterState();
     }

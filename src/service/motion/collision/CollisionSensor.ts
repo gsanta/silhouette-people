@@ -1,7 +1,7 @@
 import { Tools, Vector2 } from "babylonjs";
 import { toVector2 } from "../../../helpers";
-import { Circle } from "../../../model/shape/Circle";
-import { MeshItem } from "../../../model/item/mesh/MeshItem";
+import { Circle } from "../../../model/math/shapes/Circle";
+import { GameObject } from "../../../model/objects/game_object/GameObject";
 import { Rotation } from "../../../model/math/Rotation";
 
 export interface CollisionSensorResult {
@@ -10,16 +10,16 @@ export interface CollisionSensorResult {
 }
 
 export class CollisionSensor {
-    private readonly character: MeshItem;
+    private readonly character: GameObject;
 
     private readonly steeringOffset: number;
 
-    constructor(character: MeshItem, steeringOffset = Tools.ToRadians(10)) {
+    constructor(character: GameObject, steeringOffset = Tools.ToRadians(10)) {
         this.character = character;
         this.steeringOffset = steeringOffset;
     }
 
-    getSteeringAngles(obstacles: MeshItem[]): CollisionSensorResult {
+    getSteeringAngles(obstacles: GameObject[]): CollisionSensorResult {
         const pos = this.character.position2D;
         const velocity = toVector2(this.character.characterController.velocity);
 
@@ -65,7 +65,7 @@ export class CollisionSensor {
         return pos.diff(middle.rad).abs > neg.diff(middle.rad).abs ? pos : neg; 
     }
 
-    getSteeringPoints(obstacles: MeshItem[]): Vector2[] {
+    getSteeringPoints(obstacles: GameObject[]): Vector2[] {
         const pos = this.character.position2D;
         const velocity = toVector2(this.character.characterController.velocity);
 
@@ -85,9 +85,9 @@ export class CollisionSensor {
         return [];
     }
 
-    private findMostThreateningObstacle(ahead: Vector2, obstacles: MeshItem[]) {
+    private findMostThreateningObstacle(ahead: Vector2, obstacles: GameObject[]) {
         const pos = this.character.position2D;
-        var closest: MeshItem = null;
+        var closest: GameObject = null;
         
         for (let obstacle of obstacles) {
             const obstaclePos = obstacle.position2D;
@@ -105,7 +105,7 @@ export class CollisionSensor {
         return this.distance(origin, target1) < this.distance(origin, target2);
     }
 
-    private pointIsWithinCircle(ahead: Vector2, obstacle: MeshItem) {
+    private pointIsWithinCircle(ahead: Vector2, obstacle: GameObject) {
         const pos = obstacle.position2D;
 
         return this.distance(pos, ahead) <= obstacle.radius;

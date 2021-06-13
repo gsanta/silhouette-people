@@ -1,5 +1,5 @@
 import { GraphEdge } from "../../../../../service/graph/GraphEdge";
-import { RouteController } from "../../RouteController";
+import { RouteController } from "../../../../objects/game_object/controller_route/RouteController";
 
 export class ExactDirectionRestrictor {
     private readonly routeWalker: RouteController;

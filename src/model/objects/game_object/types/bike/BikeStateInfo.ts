@@ -1,5 +1,3 @@
-import { MeshState } from "../mesh/MeshState";
-
 export class BikeStateInfo {
     private _isPedalling: boolean = false;
     private _isBraking: boolean = false;
@@ -90,8 +88,4 @@ export class BikeStateInfo {
         info._isPowerBrakeOn = this._isPowerBrakeOn;
         return info;
     }
-}
-
-export abstract class BikeState extends MeshState {
-    abstract updateInfo(bikeStateInfo: BikeStateInfo): void;
 }

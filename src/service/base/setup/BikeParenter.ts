@@ -1,11 +1,11 @@
 import { Vector3 } from "babylonjs";
-import { BikeController } from "../../../model/item/bike/states/BikeController";
+import { BikeController } from "../../../model/objects/game_object/types/bike/BikeController";
 import { CharacterBikingState } from "../../../model/item/character/states/CharacterBikingState";
-import { BikeIdleState } from "../../../model/item/bike/states/BikeIdleState";
-import { MeshItem } from "../../../model/item/mesh/MeshItem";
+import { BikeIdleState } from "../../../model/objects/game_object/types/bike/states/BikeIdleState";
+import { GameObject } from "../../../model/objects/game_object/GameObject";
 
 export class BikeParenter {
-    parentToBike(player: MeshItem, bike: MeshItem) {
+    parentToBike(player: GameObject, bike: GameObject) {
         player.mesh.setAbsolutePosition(new Vector3(0, 0, 0));
         player.rotation = 0;
         player.mesh.parent = bike.mesh;

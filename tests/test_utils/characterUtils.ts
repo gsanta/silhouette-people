@@ -1,6 +1,6 @@
 import { Mesh, Scene, Vector3 } from "babylonjs";
 import { HumanController } from "../../src/model/item/character/states/HumanController";
-import { MeshItem } from "../../src/model/item/mesh/MeshItem";
+import { GameObject } from "../../src/model/objects/game_object/GameObject";
 
 export class CharacterBuilder {
     private index = 0;
@@ -34,8 +34,8 @@ export class CharacterBuilder {
         return this;
     }
 
-    build(): MeshItem {
-        const character = new MeshItem(`character-${this.index}`);
+    build(): GameObject {
+        const character = new GameObject(`character-${this.index}`);
         const mesh = new Mesh(`character-${this.index}-mesh`, this.scene);
         character.radius = this._radius !== undefined ? this._radius : character.radius;
         character.meshes = [mesh];

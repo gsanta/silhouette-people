@@ -1,12 +1,12 @@
 import { InjectProperty } from "../../di/diDecorators";
 import { HumanController } from "../../model/item/character/states/HumanController";
-import { MeshItem } from "../../model/item/mesh/MeshItem";
+import { GameObject } from "../../model/objects/game_object/GameObject";
 import { RotationRestrictorAdapter } from "../../model/item/route/adapters/rotation/RotationRestrictorAdapter";
 import { ReversingRouter } from "../../model/item/route/adapters/routing/ReversingRouter";
 import { RouterAdapter } from "../../model/item/route/adapters/routing/RouterAdapter";
 import { ActiveEdgeUpdaterAdapter } from "../../model/item/route/adapters/walking/ActiveEdgeUpdaterAdapter";
-import { RouteControllerImpl } from "../../model/item/route/RouteControllerImpl";
-import { RouteControllerListenerDecorator } from "../../model/item/route/RouteControllerListenerDecorator";
+import { RouteControllerImpl } from "../../model/objects/game_object/controller_route/RouteControllerImpl";
+import { RouteControllerListenerDecorator } from "../../model/objects/game_object/controller_route/RouteControllerListenerDecorator";
 import { CitizenStore } from "../../store/CitizenStore";
 import { MaterialStore } from "../../store/MaterialStore";
 import { RouteStore } from "../../store/RouteStore";
@@ -60,7 +60,7 @@ export class CitizenSetup {
         // this.toolService.execute.addRouteExecutor(this.citizenExecutor);
     }
 
-    private setupCitizen1(): MeshItem {
+    private setupCitizen1(): GameObject {
         const character = this.citizenStore.getById('C');
         const route = this.routeStore.getById('route-1');
 
@@ -79,7 +79,7 @@ export class CitizenSetup {
         return character;
     }
 
-    private setupCitizen2(): MeshItem {
+    private setupCitizen2(): GameObject {
         const character = this.citizenStore.getById('C2');
         const route = this.routeStore.getById('route-1').reverse();
 
@@ -97,7 +97,7 @@ export class CitizenSetup {
         return character;
     }
 
-    private applyDebugAttachments(character: MeshItem) {
+    private applyDebugAttachments(character: GameObject) {
         // character.addAttachment(new CollisionRadiusVisualizerAttachment(character, this.worldProvider));
         // character.addAttachment(new CollisionVecVisualizerAttachment(character, this.worldProvider));
     }

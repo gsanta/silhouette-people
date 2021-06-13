@@ -1,15 +1,15 @@
 import { Vector3 } from "babylonjs";
-import { GraphEdge } from "../../../service/graph/GraphEdge";
-import { GraphVertex } from "../../../service/graph/GraphImpl";
-import { MeshItem } from "../mesh/MeshItem";
-import { RouteItem } from "./RouteItem";
+import { GraphEdge } from "../../../../service/graph/GraphEdge";
+import { GraphVertex } from "../../../../service/graph/GraphImpl";
+import { GameObject } from "../GameObject";
+import { RouteItem } from "../../route/RouteItem";
 
 export interface RouteController {
     walk(deltaTime: number): boolean;
 
     getRoute(): RouteItem;
     setRoute(route: RouteItem): void;
-    getCharacter(): MeshItem;
+    getCharacter(): GameObject;
 
     getPos(): Vector3;
     getPrevPos(): Vector3;

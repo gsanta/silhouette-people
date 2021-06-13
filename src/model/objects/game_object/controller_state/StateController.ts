@@ -1,4 +1,4 @@
-import { MeshState } from "../../mesh/MeshState";
+import { MeshState } from "../../../item/mesh/MeshState";
 
 
 export class StateController {

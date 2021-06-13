@@ -1,5 +1,5 @@
 import { StandardMaterial, Texture } from "babylonjs";
-import { MeshItem } from "../../../../model/item/mesh/MeshItem";
+import { GameObject } from "../../../../model/objects/game_object/GameObject";
 import { Lookup } from "../../../Lookup";
 import { WorldProvider } from "../../../WorldProvider";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
@@ -23,7 +23,7 @@ export class TexturePropertyParser extends AbstractPropertyParser<TexturePropert
         return false;
     }
 
-    processProperty(gameObject: MeshItem, config: TexturePropertyConfig) {
+    processProperty(gameObject: GameObject, config: TexturePropertyConfig) {
         const index = config.meshIndex !== undefined ? config.meshIndex : 0;
 
         const texture = new Texture(`assets/textures/${config.path}`, this.worldProvider.scene);

@@ -1,5 +1,5 @@
 import { Axis, Space, Tools } from "babylonjs";
-import { MeshItem } from "../../../../model/item/mesh/MeshItem";
+import { GameObject } from "../../../../model/objects/game_object/GameObject";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export class RotatePropertyParser extends AbstractPropertyParser<number> {
@@ -9,7 +9,7 @@ export class RotatePropertyParser extends AbstractPropertyParser<number> {
         return false;
     }
 
-    processProperty(gameObj: MeshItem, rotate: number) {
+    processProperty(gameObj: GameObject, rotate: number) {
         const rotationRad = Tools.ToRadians(rotate);
         
         gameObj.mesh.rotate(Axis.Y, rotationRad, Space.WORLD);

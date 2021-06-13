@@ -1,4 +1,4 @@
-import { MeshItem } from "../../../../model/item/mesh/MeshItem";
+import { GameObject } from "../../../../model/objects/game_object/GameObject";
 import { RouteStore } from "../../../../store/RouteStore";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
@@ -16,7 +16,7 @@ export class RoutePropertyParser extends AbstractPropertyParser<RoutePropertyCon
         this.routeStore = routeStore;
     }
 
-    processProperty(character: MeshItem, config: RoutePropertyConfig) {
+    processProperty(character: GameObject, config: RoutePropertyConfig) {
         // const route = this.routeStore.getByName(`pre-defined-route-${config.name}`);
         // character.route = route;
         // route.character = character;

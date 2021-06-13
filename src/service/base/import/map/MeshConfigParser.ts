@@ -1,4 +1,4 @@
-import { MeshConfig, MeshObjType } from "../../../../model/item/mesh/MeshItem";
+import { GameObjectConfig, GameObjectType } from "../../../../model/objects/game_object/GameObject";
 import { toStrVector } from "../AbstractPropertyParser";
 import { IndexPosition } from "./parse/ItemParser";
 import { MapParser, ParsedItem } from "./parse/MapParser";
@@ -11,13 +11,13 @@ export class MeshConfigParser {
         this.mapParser = mapParser;
     }
 
-    parse(json: WorldMap): MeshConfig[] {
+    parse(json: WorldMap): GameObjectConfig[] {
         const mapResult = this.mapParser.parse(json.map, new Set([IndexPosition.RIGHT]));
 
         return mapResult.items.map(item => this.createMeshConfig(item, json));
     }
 
-    private createMeshConfig(parsedItem: ParsedItem, worldJson: WorldMap): MeshConfig {
+    private createMeshConfig(parsedItem: ParsedItem, worldJson: WorldMap): GameObjectConfig {
         const type = worldJson.charToType[parsedItem.str];
 
         const typeProps = worldJson.objects[type] ? worldJson.objects[type].properties || {} : {};
@@ -26,7 +26,7 @@ export class MeshConfigParser {
         props.position = toStrVector(parsedItem.pos);
 
         return {
-            type: <MeshObjType> type,
+            type: <GameObjectType> type,
             ch: parsedItem.str,
             props: props
         };

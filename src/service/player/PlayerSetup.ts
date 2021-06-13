@@ -1,8 +1,8 @@
 import { ActiveEdgeUpdaterAdapter } from "../../model/item/route/adapters/walking/ActiveEdgeUpdaterAdapter";
 import { RotationRestrictorAdapter } from "../../model/item/route/adapters/rotation/RotationRestrictorAdapter";
 import { RouteVisualizerAdapter } from "../../model/item/route/adapters/visualization/RouteVisualizerAdapter";
-import { RouteControllerImpl } from "../../model/item/route/RouteControllerImpl";
-import { RouteControllerListenerDecorator } from "../../model/item/route/RouteControllerListenerDecorator";
+import { RouteControllerImpl } from "../../model/objects/game_object/controller_route/RouteControllerImpl";
+import { RouteControllerListenerDecorator } from "../../model/objects/game_object/controller_route/RouteControllerListenerDecorator";
 import { GraphService } from "../graph/GraphService";
 import { WorldProvider } from "../WorldProvider";
 import { PlayerParser } from "./PlayerParser";
@@ -11,11 +11,11 @@ import { RouterAdapter } from "../../model/item/route/adapters/routing/RouterAda
 import { BikeParenter } from "../base/setup/BikeParenter";
 import { KeyboardService } from "../base/keyboard/KeyboardService";
 import { BikeInputController } from "../../model/item/game_object/input/BikeInputController";
-import { BikeController } from "../../model/item/bike/states/BikeController";
+import { BikeController } from "../../model/objects/game_object/types/bike/BikeController";
 import { DynamicRouter } from "../../model/item/route/adapters/routing/DynamicRouter";
 import { CitizenStore } from "../../store/CitizenStore";
 import { CollisionAvoidanceAdapter } from "../motion/collision/CollisionAvoidanceAdapter";
-import { MeshItem } from "../../model/item/mesh/MeshItem";
+import { GameObject } from "../../model/objects/game_object/GameObject";
 
 export class PlayerSetup {
 
@@ -43,7 +43,7 @@ export class PlayerSetup {
         this.bikeParenter.parentToBike(player, this.playerStore.getBikes()[0]);
 
         const graph = this.graphService.getGraph();
-        const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, <MeshItem> player.getParent()));
+        const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, <GameObject> player.getParent()));
 
         player.routeController = walker;
         
@@ -52,7 +52,7 @@ export class PlayerSetup {
         walker.addListener(new RouterAdapter(new DynamicRouter(walker, graph)));
         walker.addListener(new RouteVisualizerAdapter(walker, this.graphService));
         
-        const bike = <MeshItem> player.getParent();
+        const bike = <GameObject> player.getParent();
         bike.inputController = player.inputController;
         player.inputController = new BikeInputController(<BikeController> player.characterController, bike, player, this.keyboardService, this.graphService);
     }

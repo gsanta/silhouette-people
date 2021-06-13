@@ -1,10 +1,10 @@
 import { InjectProperty } from "../../../di/diDecorators";
-import { CameraItem } from "../../../model/item/CameraItem";
+import { CameraObject } from "../../../model/objects/camera/CameraObject";
 import { KeyboardListener, KeyboardService } from "../../base/keyboard/KeyboardService";
 import { lookup } from "../../Lookup";
 
 export class CameraService implements KeyboardListener {
-    private cameraObj: CameraItem;
+    private cameraObj: CameraObject;
 
     @InjectProperty("KeyboardService")
     private keyboardService: KeyboardService;
@@ -15,7 +15,7 @@ export class CameraService implements KeyboardListener {
         this.keyboardService.addListener(this);
     }
 
-    setCameraObj(cameraObj: CameraItem) {
+    setCameraObj(cameraObj: CameraObject) {
         this.cameraObj = cameraObj;
     }
 

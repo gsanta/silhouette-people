@@ -1,10 +1,10 @@
 import { Vector3 } from "babylonjs";
-import { GraphEdge } from "../../../service/graph/GraphEdge";
-import { GraphVertex } from "../../../service/graph/GraphImpl";
-import { RouteItem } from "./RouteItem";
+import { GraphEdge } from "../../../../service/graph/GraphEdge";
+import { GraphVertex } from "../../../../service/graph/GraphImpl";
+import { RouteItem } from "../../route/RouteItem";
 import { RouteController } from "./RouteController";
 import { RouteControllerListener } from "./RouteControllerListener";
-import { MeshItem } from "../mesh/MeshItem";
+import { GameObject } from "../GameObject";
 
 export class RouteControllerListenerDecorator implements RouteController {
 
@@ -59,7 +59,7 @@ export class RouteControllerListenerDecorator implements RouteController {
         this.delegate.setRoute(route); 
         this.listeners.forEach(listener => listener.onRouteChanged());
     }
-    getCharacter(): MeshItem { return this.delegate.getCharacter() };
+    getCharacter(): GameObject { return this.delegate.getCharacter() };
 
     addListener(routeWalkerListener: RouteControllerListener) {
         this.listeners.push(routeWalkerListener);

@@ -1,5 +1,5 @@
 import { BikeBehaviour } from "../../../model/item/game_object/behaviour/BikeBehaviour";
-import { MeshConfig, MeshItem, MeshItemTag, MeshObjType } from "../../../model/item/mesh/MeshItem";
+import { GameObjectConfig, GameObject, GameObjectTag, GameObjectType } from "../../../model/objects/game_object/GameObject";
 import { AbstractPropertyParser } from "../../base/import/AbstractPropertyParser";
 
 export class MeshFactory {
@@ -10,19 +10,19 @@ export class MeshFactory {
         this.propertyParsers = propertyParsers;
     }
 
-    async createFromConfig(meshConfig: MeshConfig): Promise<MeshItem> {
+    async createFromConfig(meshConfig: GameObjectConfig): Promise<GameObject> {
         const id = this.generateId(meshConfig.type);
-        let meshItem: MeshItem 
+        let meshItem: GameObject 
         
-        if (meshConfig.type === MeshObjType.Bicycle1) {
-            const character = new MeshItem(id);
+        if (meshConfig.type === GameObjectType.Bicycle1) {
+            const character = new GameObject(id);
             character.behaviour = new BikeBehaviour();
             meshItem = character;
-        } else if (meshConfig.props.tags && meshConfig.props.tags.includes(MeshItemTag.Citizen)) {
-            const character = new MeshItem(id);
+        } else if (meshConfig.props.tags && meshConfig.props.tags.includes(GameObjectTag.Citizen)) {
+            const character = new GameObject(id);
             meshItem = character;
         } else {
-            meshItem = new MeshItem(id);
+            meshItem = new GameObject(id);
         }
 
         if (meshConfig.props) {
@@ -33,7 +33,7 @@ export class MeshFactory {
     }
 
     
-    private async applyProperties(gameObj: MeshItem, meshConfig: MeshConfig) {
+    private async applyProperties(gameObj: GameObject, meshConfig: GameObjectConfig) {
         const { props } = meshConfig;
 
         for (let propertyParser of this.propertyParsers) {
@@ -47,7 +47,7 @@ export class MeshFactory {
         }
     }
 
-    private generateId(type: MeshObjType) {
+    private generateId(type: GameObjectType) {
         const currIndex = this.indexesByType.get(type) || 0;
         this.indexesByType.set(type, currIndex + 1);
         return `${type}-${currIndex}`;

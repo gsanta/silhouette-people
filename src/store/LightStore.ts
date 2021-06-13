@@ -1,14 +1,14 @@
-import { LightItem } from "../model/item/LightItem";
+import { LightObject } from "../model/objects/light/LightObject";
 
 
 export class LightStore {
-    private highlightLight: LightItem;
+    private highlightLight: LightObject;
 
-    setHighlightLight(light: LightItem) {
+    setHighlightLight(light: LightObject) {
         this.highlightLight = light;
     }
 
-    getHighlightLight(): LightItem {
+    getHighlightLight(): LightObject {
         return this.highlightLight;
     }
 }

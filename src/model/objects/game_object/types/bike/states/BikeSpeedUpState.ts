@@ -1,17 +1,17 @@
-import { CharacterController } from "../../mesh/CharacterController";
-import { MeshItem } from "../../mesh/MeshItem";
-import { MeshState } from "../../mesh/MeshState";
-import { BikeStateInfo } from "../BikeState";
+import { MotionController } from "../../../controller_motion/MotionController";
+import { GameObject } from "../../../GameObject";
+import { MeshState } from "../../../../../item/mesh/MeshState";
+import { BikeStateInfo } from "../BikeStateInfo";
 import { SpeedupSystem } from "../physics/SpeedupSystem";
 import { BikeBrakingState } from "./BikeBrakingState";
 import { BikeIdleState } from "./BikeIdleState";
 
 export class BikeSpeedUpState extends MeshState {
-    private readonly bike: MeshItem;
-    private readonly mover: CharacterController;
+    private readonly bike: GameObject;
+    private readonly mover: MotionController;
     private readonly speedUpSystem: SpeedupSystem;
 
-    constructor(bike: MeshItem, mover: CharacterController) {
+    constructor(bike: GameObject, mover: MotionController) {
         super(bike);
         this.bike = bike;
         this.mover = mover;

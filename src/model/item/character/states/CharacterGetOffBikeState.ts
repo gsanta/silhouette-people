@@ -1,12 +1,12 @@
 import { Axis, Space, Vector3 } from "babylonjs";
-import { BikeIdleState } from "../../bike/states/BikeIdleState";
-import { MeshItem } from "../../mesh/MeshItem";
+import { BikeIdleState } from "../../../objects/game_object/types/bike/states/BikeIdleState";
+import { GameObject } from "../../../objects/game_object/GameObject";
 import { MeshState } from "../../mesh/MeshState";
 import { CharacterIdleState } from "./CharacterIdleState";
 
 export class CharacterGetOffBikeState extends MeshState {
     
-    constructor(player: MeshItem) {
+    constructor(player: GameObject) {
         super(player);
         this.enterState();
     }
@@ -14,7 +14,7 @@ export class CharacterGetOffBikeState extends MeshState {
     enterState() {
         const player = this.character;
         
-        const bike = <MeshItem> player.getParent();
+        const bike = <GameObject> player.getParent();
         player.setParent(undefined);
 
         bike.stateController.state = new BikeIdleState(bike, bike.characterController);

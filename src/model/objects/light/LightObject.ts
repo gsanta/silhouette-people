@@ -1,8 +1,8 @@
 import { NodeMaterial, SpotLight, Tools, Vector2, Vector3 } from "babylonjs";
-import { Lookup } from "../../service/Lookup";
-import { GameItem } from "./GameItem";
+import { Lookup } from "../../../service/Lookup";
+import { GameItem } from "../../item/GameItem";
 
-export class LightItem extends GameItem {
+export class LightObject extends GameItem {
     light: SpotLight;
 
     constructor(light: SpotLight) {
@@ -17,7 +17,7 @@ export class LightItem extends GameItem {
     }
 
     set position(pos: Vector3) {
-        LightItem.setPosition(this.light, pos);
+        LightObject.setPosition(this.light, pos);
     }
 
     get position(): Vector3 {
@@ -35,7 +35,7 @@ export class LightItem extends GameItem {
         light.setDirectionToTarget(pos);
     }
 
-    static async CreateProjectionTextureLight(config: { snippet: string, pos: Vector3 }, world: Lookup): Promise<LightItem> {
+    static async CreateProjectionTextureLight(config: { snippet: string, pos: Vector3 }, world: Lookup): Promise<LightObject> {
         const scene = world.scene;
         const { pos } = config;
         const light = new SpotLight("selection-light", new Vector3(0, 6, 0), new Vector3(0, -1, 0), Tools.ToRadians(45), 1, scene);
@@ -47,6 +47,6 @@ export class LightItem extends GameItem {
             light.projectionTexture = proceduralTexture;
         });
         
-        return new LightItem(light);
+        return new LightObject(light);
     }
 }

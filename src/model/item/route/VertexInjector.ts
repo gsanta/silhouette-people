@@ -1,6 +1,6 @@
 import { GraphEdge } from "../../../service/graph/GraphEdge";
 import { GraphVertex } from "../../../service/graph/GraphImpl";
-import { RouteItem } from "./RouteItem";
+import { RouteItem } from "../../objects/route/RouteItem";
 
 
 export class VertexInjector {

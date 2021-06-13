@@ -1,5 +1,5 @@
-import { RouteController } from "../../../model/item/route/RouteController";
-import { RouteControllerListener } from "../../../model/item/route/RouteControllerListener";
+import { RouteController } from "../../../model/objects/game_object/controller_route/RouteController";
+import { RouteControllerListener } from "../../../model/objects/game_object/controller_route/RouteControllerListener";
 import { CitizenStore } from "../../../store/CitizenStore";
 import { CollisionAvoidance } from "./CollisionAvoidance";
 import { CollisionSensor } from "./CollisionSensor";

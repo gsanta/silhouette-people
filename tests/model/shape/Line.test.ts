@@ -1,5 +1,5 @@
 import { Tools, Vector2 } from "babylonjs";
-import { Line } from "../../../src/model/shape/Line";
+import { Line } from "../../../src/model/math/shapes/Line";
 
 
 describe('Line angle', () => {

@@ -1,8 +1,8 @@
 import { Vector3 } from "babylonjs";
 import pointInPolygon from "point-in-polygon";
 import { GraphEdge } from "../../../../../service/graph/GraphEdge";
-import { Quad } from "../../../../shape/Quad";
-import { RouteController } from "../../RouteController";
+import { Quad } from "../../../../math/shapes/Quad";
+import { RouteController } from "../../../../objects/game_object/controller_route/RouteController";
 
 export class InsidePolygonRestrictor {
     private readonly routeWalker: RouteController;

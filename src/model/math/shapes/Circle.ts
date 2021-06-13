@@ -1,7 +1,7 @@
 import { Vector2 } from "babylonjs";
-import { CircleIntersectionCalc } from "../math/CircleIntersectionCalc";
-import { CircleTangentCalc } from "../math/CircleTangentCalc";
-import { LineEquation } from "../math/LineEquation";
+import { CircleIntersectionCalc } from "../CircleIntersectionCalc";
+import { CircleTangentCalc } from "../CircleTangentCalc";
+import { LineEquation } from "../LineEquation";
 
 export class Circle {
     readonly center: Vector2;

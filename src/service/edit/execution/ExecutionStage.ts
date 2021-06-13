@@ -1,4 +1,4 @@
-import { MeshItem } from "../../../model/item/mesh/MeshItem";
+import { GameObject } from "../../../model/objects/game_object/GameObject";
 import { ActivePlayerService } from "../../ActivePlayerService";
 import { PlayerStore } from "../../player/PlayerStore";
 import { GameStage } from "../../ui/stage/GameStage";
@@ -10,7 +10,7 @@ import { ToolService } from "../ToolService";
 
 export class ExecutionStage implements GameStage {
     private playerStore: PlayerStore;
-    private players: MeshItem[];
+    private players: GameObject[];
     private activePlayerService: ActivePlayerService;
     private toolService: ToolService;
     private stageController: StageController;

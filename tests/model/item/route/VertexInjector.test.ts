@@ -1,5 +1,5 @@
 import { Vector3 } from "babylonjs";
-import { RouteItem } from "../../../../src/model/item/route/RouteItem";
+import { RouteItem } from "../../../../src/model/objects/route/RouteItem";
 import { VertexInjector } from "../../../../src/model/item/route/VertexInjector";
 import { GraphEdge } from "../../../../src/service/graph/GraphEdge";
 import { GraphVertex } from "../../../../src/service/graph/GraphImpl";

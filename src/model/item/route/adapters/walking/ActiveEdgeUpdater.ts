@@ -1,7 +1,7 @@
 import { Vector3 } from "babylonjs";
 import { GraphEdge } from "../../../../../service/graph/GraphEdge";
 import { LineSideCalc } from "../../../../math/LineSideCalc";
-import { RouteController } from "../../RouteController";
+import { RouteController } from "../../../../objects/game_object/controller_route/RouteController";
 
 export class ActiveEdgeUpdater {
     private readonly routeWalker: RouteController;

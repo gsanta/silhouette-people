@@ -1,5 +1,5 @@
 import { PathItem } from "../../../model/item/PathItem";
-import { RouteItem } from "../../../model/item/route/RouteItem";
+import { RouteItem } from "../../../model/objects/route/RouteItem";
 import { MaterialStore } from "../../../store/MaterialStore";
 import { RouteStore } from "../../../store/RouteStore";
 import { PointerData } from "../../base/pointer/PointerService";
@@ -10,7 +10,7 @@ import { RenderGuiService } from "../../ui/RenderGuiService";
 import { Tool, ToolType } from "../Tool";
 import { PathBuilder } from "./PathBuilder";
 import { RouteVisualizer } from "../../../model/item/route/adapters/visualization/RouteVisualizer";
-import { MeshItem } from "../../../model/item/mesh/MeshItem";
+import { GameObject } from "../../../model/objects/game_object/GameObject";
 
 export class RouteTool extends Tool {
     private playerStore: PlayerStore;
@@ -20,7 +20,7 @@ export class RouteTool extends Tool {
     private routeFactory: RouteFactory;
     private routeStore: RouteStore;
     
-    private character: MeshItem;
+    private character: GameObject;
     private currentPath: PathItem;
     private route: RouteItem;
     private _isReset = true;

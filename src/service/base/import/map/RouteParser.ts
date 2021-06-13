@@ -1,6 +1,6 @@
 import { Vector3 } from "babylonjs";
 import { PathItem } from "../../../../model/item/PathItem";
-import { RouteItem } from "../../../../model/item/route/RouteItem";
+import { RouteItem } from "../../../../model/objects/route/RouteItem";
 import { IndexPosition } from "./parse/ItemParser";
 import { MapParser, ParsedItem } from "./parse/MapParser";
 import { WorldMap } from "./WorldMap";

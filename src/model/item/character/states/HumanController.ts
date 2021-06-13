@@ -1,10 +1,10 @@
 import { Vector3 } from "babylonjs";
 import { vector3ToRotation } from "../../../../helpers";
-import { CharacterController } from "../../mesh/CharacterController";
-import { MeshItem } from "../../mesh/MeshItem";
+import { MotionController } from "../../../objects/game_object/controller_motion/MotionController";
+import { GameObject } from "../../../objects/game_object/GameObject";
 
-export class HumanController extends CharacterController {
-    constructor(character: MeshItem) {
+export class HumanController extends MotionController {
+    constructor(character: GameObject) {
         super(character);
     }
 

@@ -1,5 +1,5 @@
 import { rotToVec } from "../../../../../helpers";
-import { RouteController } from "../../RouteController";
+import { RouteController } from "../../../../objects/game_object/controller_route/RouteController";
 import { ExactDirectionRestrictor } from "./ExactDirectionRestrictor";
 import { InsidePolygonRestrictor } from "./InsidePolygonRestrictor";
 

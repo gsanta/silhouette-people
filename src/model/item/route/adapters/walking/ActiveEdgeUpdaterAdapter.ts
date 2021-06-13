@@ -1,6 +1,6 @@
 import { ActiveEdgeUpdater } from "./ActiveEdgeUpdater";
-import { RouteController } from "../../RouteController";
-import { RouteControllerListener } from "../../RouteControllerListener";
+import { RouteController } from "../../../../objects/game_object/controller_route/RouteController";
+import { RouteControllerListener } from "../../../../objects/game_object/controller_route/RouteControllerListener";
 
 export class ActiveEdgeUpdaterAdapter extends RouteControllerListener {
 

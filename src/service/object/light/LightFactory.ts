@@ -1,6 +1,6 @@
 import { NodeMaterial, SpotLight, Tools, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { LightItem } from "../../../model/item/LightItem";
+import { LightObject } from "../../../model/objects/light/LightObject";
 import { lookup } from "../../Lookup";
 import { WorldProvider } from "../../WorldProvider";
 
@@ -14,7 +14,7 @@ export class LightFactory {
         this.worldProvider = lookup.worldProvider;
     }
 
-    async createHighlightLight(snippet: string, pos: Vector3): Promise<LightItem> {
+    async createHighlightLight(snippet: string, pos: Vector3): Promise<LightObject> {
         const scene = this.worldProvider.scene;
         const light = new SpotLight("highlight-light", new Vector3(0, 6, 0), new Vector3(0, -1, 0), Tools.ToRadians(45), 1, scene);
     
@@ -24,7 +24,7 @@ export class LightFactory {
             light.projectionTexture = proceduralTexture;
         });
         
-        const lightObj = new LightItem(light);
+        const lightObj = new LightObject(light);
         lightObj.position = pos;
 
         return lightObj;

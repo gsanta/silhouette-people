@@ -1,16 +1,16 @@
 import { Vector3 } from "babylonjs";
-import { rotateVec, vector3ToRotation } from "../../../../helpers";
-import { CharacterController } from "../../mesh/CharacterController";
-import { MeshItem } from "../../mesh/MeshItem";
+import { rotateVec, vector3ToRotation } from "../../../../../helpers";
+import { MotionController } from "../../controller_motion/MotionController";
+import { GameObject } from "../../GameObject";
 
 export type PedalDirection = 'forward' | 'backward';
 
-export class BikeController extends CharacterController {
+export class BikeController extends MotionController {
     readonly rotationConst = Math.PI / 30;
 
-    private bike: MeshItem;
+    private bike: GameObject;
 
-    constructor(bike: MeshItem) {
+    constructor(bike: GameObject) {
         super(bike);
 
         this.bike = bike;

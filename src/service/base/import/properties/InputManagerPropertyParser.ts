@@ -1,7 +1,7 @@
 
 
 import { HumanInputManager } from "../../../../model/item/game_object/input/HumanInputManager";
-import { MeshItem } from "../../../../model/item/mesh/MeshItem";
+import { GameObject } from "../../../../model/objects/game_object/GameObject";
 import { GraphService } from "../../../graph/GraphService";
 import { KeyboardService } from "../../keyboard/KeyboardService";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
@@ -27,7 +27,7 @@ export class InputManagerPropertyParser extends AbstractPropertyParser<string> {
         return false;
     }
 
-    processProperty(character: MeshItem, inputManager: string): void {
+    processProperty(character: GameObject, inputManager: string): void {
         switch(inputManager) {
             case InputManagerType.CharacterInputManager:
                 character.inputController = new HumanInputManager(character, this.keyboardService);

@@ -1,4 +1,4 @@
-import { MeshConfig } from "../../../model/item/mesh/MeshItem";
+import { GameObjectConfig } from "../../../model/objects/game_object/GameObject";
 import { MeshStore } from "../../../store/MeshStore";
 import { StoryTracker } from "../../story/StoryTracker";
 import { StoryItem, StoryType } from "../../story/StoryItem";
@@ -20,14 +20,14 @@ export class MeshItemLoader implements StoryLoader {
     }
 
     async checkBacklogAsync() {
-        const stories = <StoryItem<MeshConfig>[]> this.backlog.getStories().filter(story => story.type === StoryType.CREATE_MESH);
+        const stories = <StoryItem<GameObjectConfig>[]> this.backlog.getStories().filter(story => story.type === StoryType.CREATE_MESH);
 
         for (let story of stories) {
             await this.processStory(story);
         }
     }
 
-    private async processStory(story: StoryItem<MeshConfig>) {
+    private async processStory(story: StoryItem<GameObjectConfig>) {
         const meshItem = await this.meshFactory.createFromConfig(story.data);
         this.meshStore.addItem(meshItem);
     }

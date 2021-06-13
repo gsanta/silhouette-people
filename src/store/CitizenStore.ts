@@ -1,5 +1,5 @@
 import { InjectProperty } from "../di/diDecorators";
-import { MeshItem, MeshItemTag } from "../model/item/mesh/MeshItem";
+import { GameObject, GameObjectTag } from "../model/objects/game_object/GameObject";
 import { lookup } from "../service/Lookup";
 import { MeshStore } from "./MeshStore";
 
@@ -11,19 +11,19 @@ export class CitizenStore {
         this.meshStore = lookup.meshStore;
     }
 
-    addItem(item: MeshItem) {
+    addItem(item: GameObject) {
         this.meshStore.addItem(item);
     }
 
-    getById(id: string): MeshItem {
+    getById(id: string): GameObject {
         return this.getAll().filter(item => item.id === id)[0];
     }
 
-    getAll(): MeshItem[] {
-        return <MeshItem[]> this.meshStore.getByTag(MeshItemTag.Citizen);
+    getAll(): GameObject[] {
+        return <GameObject[]> this.meshStore.getByTag(GameObjectTag.Citizen);
     }
 
-    removeItem(citizen: MeshItem, disposeMesh = false) {
+    removeItem(citizen: GameObject, disposeMesh = false) {
         this.meshStore.removeItem(citizen, disposeMesh);
     }
 }

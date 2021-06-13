@@ -4,7 +4,7 @@ import { InjectProperty } from "../../../di/diDecorators";
 import { lookup } from "../../../service/Lookup";
 import { WorldProvider } from "../../../service/WorldProvider";
 import { QuarterMap } from "./QuarterMap";
-import { Rect } from "../../shape/Rect";
+import { Rect } from "../../math/shapes/Rect";
 
 export class QuarterItem  {
     id: string;

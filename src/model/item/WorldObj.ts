@@ -1,5 +1,5 @@
 import { Engine, Mesh, Scene, Vector2 } from "babylonjs";
-import { CameraItem } from "./CameraItem";
+import { CameraObject } from "../objects/camera/CameraObject";
 
 export class WorldObj {
     readonly QUARTER_SIZE: number;
@@ -11,7 +11,7 @@ export class WorldObj {
 
     // TODO: put into MeshStore.
     ground: Mesh;
-    camera: CameraItem;
+    camera: CameraObject;
 
     constructor(cameraLocation: number) {
         this.cameraLocation = cameraLocation;

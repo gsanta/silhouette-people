@@ -1,7 +1,7 @@
 import { Direction } from "../../../../../service/graph/Direction";
 import { GraphEdge } from "../../../../../service/graph/GraphEdge";
 import { GraphImpl, GraphVertex } from "../../../../../service/graph/GraphImpl";
-import { RouteController } from "../../RouteController";
+import { RouteController } from "../../../../objects/game_object/controller_route/RouteController";
 
 export class NextEdgeSelector {
 

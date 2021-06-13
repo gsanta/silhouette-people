@@ -1,15 +1,15 @@
 import { KeyboardService } from "../../../../service/base/keyboard/KeyboardService";
-import { MeshItem } from "../../mesh/MeshItem";
-import { InputController } from "./InputController";
+import { GameObject } from "../../../objects/game_object/GameObject";
+import { InputController } from "../../../objects/game_object/controller_input/InputController";
 
 export class HumanInputManager extends InputController {
     readonly speedConst = 0.04;
     readonly rotationConst = Math.PI / 30;
     
     private keyboardService: KeyboardService;
-    private character: MeshItem;
+    private character: GameObject;
 
-    constructor(character: MeshItem, keyboardService: KeyboardService) {
+    constructor(character: GameObject, keyboardService: KeyboardService) {
         super();
         this.keyboardService = keyboardService;
         this.character = character;

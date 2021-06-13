@@ -1,4 +1,4 @@
-import { RouteStoryConfig } from "../../../../model/item/route/RouteItem";
+import { RouteStoryConfig } from "../../../../model/objects/route/RouteItem";
 
 export interface GroundJson {
     color: string;
