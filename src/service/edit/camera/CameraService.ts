@@ -15,8 +15,12 @@ export class CameraService implements KeyboardListener {
         this.keyboardService.addListener(this);
     }
 
-    setCameraObj(cameraObj: CameraObject) {
+    setCamera(cameraObj: CameraObject) {
         this.cameraObj = cameraObj;
+    }
+
+    getCamera() {
+        return this.cameraObj;
     }
 
     onKeyDown(e: KeyboardEvent): void {

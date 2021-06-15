@@ -24,6 +24,8 @@ import { PointerService } from "../pointer/PointerService";
 import { RouteSetup } from "../../routing/route/RouteSetup";
 import { GraphService } from "../../graph/GraphService";
 import { PlayerSetup } from "../../player/PlayerSetup";
+import { FogOfWarSetup } from "../../fow/FogOfWarSetup";
+import { CameraService } from "../../edit/camera/CameraService";
 
 export class SetupService {
 
@@ -81,8 +83,9 @@ export class SetupService {
     private storySetup: StorySetup;
     private citizenSetup: CitizenSetup;
     private stageSetup: StageSetup;
+    private fogOfWarSetup: FogOfWarSetup;
 
-    constructor() {
+    constructor(cameraService: CameraService) {
         this.worldProvider = lookup.worldProvider;
         this.debugService = lookup.debugService;
         this.pointerService = lookup.pointer;
@@ -107,6 +110,7 @@ export class SetupService {
         this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.keyboardService);
         this.storySetup = new StorySetup();
         this.stageSetup = new StageSetup();
+        this.fogOfWarSetup = new FogOfWarSetup(this.worldProvider, cameraService, this.playerStore);
     }
 
     isReady() {
@@ -127,6 +131,8 @@ export class SetupService {
         this.debugService.addGuiComponent(new DebugPanel());
         this.debugService.render();
         this.pointerService.listen();
+
+        this.fogOfWarSetup.setup();
 
         await this.citizenSetup.setup();
         

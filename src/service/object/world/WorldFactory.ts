@@ -41,6 +41,9 @@ export class WorldFactory {
         worldObj.scene = scene;
         worldObj.engine = scene.getEngine();
 
+        const testMesh = MeshBuilder.CreateBox('test-mesh', { size: 3 }, scene);
+        testMesh.position.y = 3;
+
         worldObj.camera = this.createCamera(worldObj);
         this.createGround(worldObj);
         this.createQuarters(json.grounds);
@@ -55,7 +58,7 @@ export class WorldFactory {
 
         const cameraOj = new CameraObject(camera, worldObj);
 
-        this.cameraService.setCameraObj(cameraOj);
+        this.cameraService.setCamera(cameraOj);
 
         return cameraOj;
     }

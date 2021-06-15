@@ -134,7 +134,7 @@ export class Lookup {
         this.stageController = new StageController();
         lookup.stageController = this.stageController;
 
-        this.setup = new SetupService();
+        this.setup = new SetupService(this.cameraService);
         this.update = new UpdateService();
     }
 
