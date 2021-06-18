@@ -18,7 +18,8 @@ export enum KeyName {
     FORWARD1 = 'FORWARD1',
     BACKWARD1 = 'BACKWARD1',
     FORWARD2 = 'FORWARD2',
-    BACKWARD2 = 'BACKWARD2'
+    BACKWARD2 = 'BACKWARD2',
+    SPACE = 'SPACE'
 }
 
 export class KeyboardService {
@@ -99,6 +100,8 @@ export class KeyboardService {
                 return KeyName.BACKWARD2;
             case 'shift':
                 return KeyName.SHIFT;
+            case ' ':
+                return KeyName.SPACE;
             default:
                 return KeyName.NONE;
         }

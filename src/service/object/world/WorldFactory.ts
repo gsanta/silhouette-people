@@ -1,10 +1,8 @@
-import { ArcRotateCamera, Axis, Color3, MeshBuilder, PhysicsImpostor, Scene, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
+import { Axis, Color3, MeshBuilder, PhysicsImpostor, Scene, Space, StandardMaterial, Vector2 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { CameraObject } from "../../../model/objects/camera/CameraObject";
 import { WorldObj } from "../../../model/objects/WorldObj";
 import { QuarterStore } from "../../../store/QuarterStore";
 import { GroundJson } from "../../base/import/map/WorldMap";
-import { CameraService } from "../../edit/camera/CameraService";
 import { lookup } from "../../Lookup";
 import { WorldProvider } from "../../WorldProvider";
 import { ModelLoader } from "../mesh/ModelLoader";
@@ -17,9 +15,6 @@ export class WorldFactory {
 
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;
-
-    @InjectProperty("CameraService")
-    private cameraService: CameraService;
     
     private readonly quarterFactory: QuarterFactory;
 
@@ -27,7 +22,6 @@ export class WorldFactory {
     
     constructor() {
         this.quarterStore = lookup.quarterStore;
-        this.cameraService = lookup.cameraService;
         this.worldProvider = lookup.worldProvider;
         this.quarterFactory = new QuarterFactory(this.worldProvider, this.quarterStore);
         
@@ -44,23 +38,11 @@ export class WorldFactory {
         const testMesh = MeshBuilder.CreateBox('test-mesh', { size: 3 }, scene);
         testMesh.position.y = 3;
 
-        worldObj.camera = this.createCamera(worldObj);
         this.createGround(worldObj);
         this.createQuarters(json.grounds);
         await this.loadModels(json.models);
 
         return worldObj;
-    }
-
-    createCamera(worldObj: WorldObj) {
-        const camera = new ArcRotateCamera("camera", Math.PI + Math.PI / 3, Math.PI / 3, 120, new Vector3(0, 0, 0), this.worldProvider.scene);
-        camera.attachControl(this.worldProvider.canvas, true);
-
-        const cameraOj = new CameraObject(camera, worldObj);
-
-        this.cameraService.setCamera(cameraOj);
-
-        return cameraOj;
     }
 
     createGround(worldObj: WorldObj) {

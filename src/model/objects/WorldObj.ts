@@ -11,7 +11,7 @@ export class WorldObj {
 
     // TODO: put into MeshStore.
     ground: Mesh;
-    camera: CameraObject;
+    activeQuarterIndex = -1;
 
     constructor(cameraLocation: number) {
         this.cameraLocation = cameraLocation;

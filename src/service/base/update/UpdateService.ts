@@ -4,6 +4,7 @@ import { KeyboardListener, KeyboardService } from "../keyboard/KeyboardService";
 import { lookup } from "../../Lookup";
 import { WorldProvider } from "../../WorldProvider";
 import { QuarterUpdater } from "../../object/quarter/QuarterUpdater";
+import { CameraService } from "../../camera/CameraService";
 
 export class UpdateService implements KeyboardListener {
 
@@ -16,9 +17,12 @@ export class UpdateService implements KeyboardListener {
     @InjectProperty("KeyboardService")
     private keyboardService: KeyboardService;
 
+    private readonly cameraService: CameraService;
+
     private quarterUpdater: QuarterUpdater;
 
-    constructor() {
+    constructor(cameraService: CameraService) {
+        this.cameraService = cameraService;
         this.worldProvider = lookup.worldProvider;
         this.meshStore = lookup.meshStore;
         this.keyboardService = lookup.keyboard;
@@ -33,9 +37,13 @@ export class UpdateService implements KeyboardListener {
     onKeyUp(e: KeyboardEvent): void {}
 
     update() {
-        this.quarterUpdater.updateQuarterBasedOnPlayerPosition();
+        this.quarterUpdater.updateActiveQuarter();
 
         const deltaTime = this.worldProvider.world.engine.getDeltaTime();
         this.meshStore.getAll().forEach(gameObject => gameObject.update(deltaTime));
+        
+        if (this.cameraService.hasActiveCamera()) {
+            this.cameraService.getActiveCamera().update(deltaTime);
+        }
     }
 }

@@ -16,7 +16,7 @@ import { ActivePlayerService } from "./ActivePlayerService";
 import { MaterialStore } from "../store/MaterialStore";
 import { RouteStore } from "../store/RouteStore";
 import { AssetContainerStore } from "../store/AssetContainerStore";
-import { CameraService } from "./edit/camera/CameraService";
+import { CameraService } from "./camera/CameraService";
 import { RoutePool } from "./citizen/RoutePool";
 import { EventService } from "./base/EventService";
 import { CitizenStore } from "../store/CitizenStore";
@@ -106,10 +106,10 @@ export class Lookup {
         
         this.renderGui = new RenderGuiService();
         lookup.renderGui = this.renderGui;
-        this.cameraService = new CameraService();
+        this.cameraService = new CameraService(this.worldProvider);
         lookup.cameraService = this.cameraService;
 
-        this.pointer = new PointerService();
+        this.pointer = new PointerService(this.worldProvider, this.cameraService);
         lookup.pointer = this.pointer;
 
         this.lightFactory = new LightFactory();
@@ -124,8 +124,8 @@ export class Lookup {
         this.meshFactory = new MeshFactory();
         lookup.meshFactory = this.meshFactory;
 
-        this.setup = new SetupService(this.activePlayerService);
-        this.update = new UpdateService();
+        this.setup = new SetupService(this.activePlayerService, this.quarterStore, this.cameraService);
+        this.update = new UpdateService(this.cameraService);
     }
 
     setScene(scene: Scene) {

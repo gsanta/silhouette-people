@@ -1,8 +1,7 @@
 import { Vector2, Vector3 } from "babylonjs";
 import { PointerInfo } from "babylonjs/Events/pointerEvents";
-import { InjectProperty } from "../../../di/diDecorators";
+import { CameraService } from "../../camera/CameraService";
 import { WorldProvider } from "../../WorldProvider";
-import { lookup } from "../../Lookup";
 
 export enum MouseButtonType {
     LEFT = 'LEFT',
@@ -21,12 +20,13 @@ export class PointerData {
 export class PointerService {
     pointer: PointerData;
 
-    @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
+    private readonly worldProvider: WorldProvider;
+    private readonly cameraService: CameraService;
 
-    constructor() {
+    constructor(worldProvider: WorldProvider, cameraService: CameraService) {
         this.pointer = new PointerData();
-        this.worldProvider = lookup.worldProvider;
+        this.worldProvider = worldProvider;
+        this.cameraService = cameraService;
     }
 
     listen() {
@@ -53,15 +53,18 @@ export class PointerService {
     }
 
     private updatePointerData(info: PointerInfo, eventInfo: { isDown: boolean }) {
-        const curr = this.worldProvider.world.camera.screenToCanvasPoint(new Vector2(info.event.clientX, info.event.clientY));
-        const curr2D = new Vector2(curr.x, curr.z);
-
-        if (eventInfo.isDown) {
-            this.pointer.down = curr;
-            this.pointer.down2D = curr2D;
-        } else {
-            this.pointer.curr = curr;
-            this.pointer.curr2D = curr2D;
+        if (this.cameraService.hasActiveCamera()) {
+            const camera = this.cameraService.getActiveCamera();
+            const curr = camera.screenToCanvasPoint(new Vector2(info.event.clientX, info.event.clientY));
+            const curr2D = new Vector2(curr.x, curr.z);
+    
+            if (eventInfo.isDown) {
+                this.pointer.down = curr;
+                this.pointer.down2D = curr2D;
+            } else {
+                this.pointer.curr = curr;
+                this.pointer.curr2D = curr2D;
+            }    
         }
 
         switch(info.event.button) {

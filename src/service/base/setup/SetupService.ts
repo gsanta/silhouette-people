@@ -20,6 +20,9 @@ import { RouteSetup } from "../../routing/route/RouteSetup";
 import { GraphService } from "../../graph/GraphService";
 import { PlayerSetup } from "../../player/PlayerSetup";
 import { ActivePlayerService } from "../../ActivePlayerService";
+import { CameraSetup } from "../../camera/CameraSetup";
+import { QuarterStore } from "../../../store/QuarterStore";
+import { CameraService } from "../../camera/CameraService";
 
 export class SetupService {
 
@@ -54,6 +57,8 @@ export class SetupService {
     private graphService: GraphService;
 
     private readonly worldFactory: WorldFactory;
+    private readonly quarterStore: QuarterStore;
+    private readonly cameraService: CameraService;
 
     private worldMapParser: WorldImporter;
 
@@ -64,8 +69,15 @@ export class SetupService {
     private playerSetup: PlayerSetup;
     private storySetup: StorySetup;
     private citizenSetup: CitizenSetup;
+    private cameraSetup: CameraSetup;
 
-    constructor(activePlayerService: ActivePlayerService) {
+    constructor(
+        activePlayerService: ActivePlayerService,
+        quarterStore: QuarterStore,
+        cameraService: CameraService
+    ) {
+        this.quarterStore = quarterStore;
+        this.cameraService = cameraService;
         this.worldProvider = lookup.worldProvider;
         this.debugService = lookup.debugService;
         this.pointerService = lookup.pointer;
@@ -84,6 +96,8 @@ export class SetupService {
         this.factorySetup = new FactorySetup();
         this.routeSetup = new RouteSetup(this.worldProvider, this.graphService, this.routeStore);
         this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.keyboardService, activePlayerService);
+        this.cameraSetup = new CameraSetup(this.worldProvider, this.quarterStore, this.keyboardService, this.cameraService);
+        
         this.storySetup = new StorySetup();
     }
 
@@ -100,6 +114,8 @@ export class SetupService {
         await this.backlog.processor.process();
         this.routeSetup.setup();
         this.playerSetup.setup();
+
+        this.cameraSetup.setup();
 
         this.debugService.addGuiComponent(new DebugPanel());
         this.debugService.render();
