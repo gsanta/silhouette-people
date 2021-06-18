@@ -18,7 +18,7 @@ export class CharacterWalkingState extends MeshState {
     }
 
     private changeStateIfNeeded() {
-        const { characterController: walker } = this.character;
+        const { motionController: walker } = this.character;
         if (walker.getRotation() === 0 && walker.getSpeed() === 0) {
             this.character.stateController.state = new CharacterIdleState(this.character);
             return true;

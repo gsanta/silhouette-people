@@ -54,6 +54,6 @@ export class PlayerSetup {
         
         const bike = <GameObject> player.getParent();
         bike.inputController = player.inputController;
-        player.inputController = new BikeInputController(<BikeController> player.characterController, bike, player, this.keyboardService, this.graphService);
+        player.inputController = new BikeInputController(<BikeController> player.motionController, bike, player, this.keyboardService, this.graphService);
     }
 }

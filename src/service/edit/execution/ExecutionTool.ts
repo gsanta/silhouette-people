@@ -109,13 +109,13 @@ export class ExecutionTool extends Tool {
     private updateRoutes(deltaTime: number, characters: GameObject[]) {
         characters.forEach(player => {
             if (player.routeController) {
-                player.routeController.walk(deltaTime);        
+                player.routeController.update(deltaTime);        
             } 
         });
     }
 
     private updateWalkers(deltaTime: number, characters: GameObject[]) {
-        characters.forEach(player => player.characterController.walk(deltaTime));
+        characters.forEach(player => player.motionController.update(deltaTime));
         characters.forEach(player => player.stateController.state.update(deltaTime));
     }
 }

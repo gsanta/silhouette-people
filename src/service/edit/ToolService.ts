@@ -3,7 +3,7 @@ import { RouteTool } from "./route/RouteTool";
 import { Tool } from "./Tool";
 import { InjectProperty } from "../../di/diDecorators";
 import { MaterialStore } from "../../store/MaterialStore";
-import { MeshStore } from "../../store/MeshStore";
+import { GameObjectStore } from "../../store/GameObjectStore";
 import { RouteStore } from "../../store/RouteStore";
 import { RouteFactory } from "../routing/route/RouteFactory";
 import { KeyboardListener, KeyboardService } from "../base/keyboard/KeyboardService";
@@ -25,7 +25,7 @@ export class ToolService implements KeyboardListener {
     private materialStore: MaterialStore;
 
     @InjectProperty("MeshStore")
-    private meshStore: MeshStore;
+    private meshStore: GameObjectStore;
 
     @InjectProperty("PlayerStore")
     private playerStore: PlayerStore;

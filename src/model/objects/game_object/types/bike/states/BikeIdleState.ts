@@ -15,7 +15,7 @@ export class BikeIdleState extends MeshState {
         super(bike);
         this.bike = bike;
         this.mover = mover;
-        this.rollingSystem = new RollingSystem(this.bike.characterController, 1)
+        this.rollingSystem = new RollingSystem(this.bike.motionController, 1)
     }
     
     update(deltaTime: number) {

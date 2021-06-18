@@ -85,7 +85,7 @@ function initGame(lookup: Lookup) {
         scene.render();
         
         if (lookup.setup.isReady()) {
-            lookup.update.beforeRender();
+            lookup.update.update();
         }
 
         lookup.renderGui.processDirty();

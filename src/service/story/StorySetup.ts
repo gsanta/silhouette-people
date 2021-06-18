@@ -1,6 +1,6 @@
 import { InjectProperty } from "../../di/diDecorators";
 import { RouteLoader } from "../../model/item/route/RouteLoader";
-import { MeshStore } from "../../store/MeshStore";
+import { GameObjectStore } from "../../store/GameObjectStore";
 import { RouteStore } from "../../store/RouteStore";
 import { lookup } from "../Lookup";
 import { MeshFactory } from "../object/mesh/MeshFactory";
@@ -12,7 +12,7 @@ export class StorySetup {
     private meshFactory: MeshFactory;
 
     @InjectProperty('MeshFactory')
-    private meshStore: MeshStore;
+    private meshStore: GameObjectStore;
 
     @InjectProperty('Backlog')
     private storyTracker: StoryTracker;

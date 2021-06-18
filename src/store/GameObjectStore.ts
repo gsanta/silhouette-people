@@ -3,7 +3,7 @@ import { GameObject, GameObjectTag } from "../model/objects/game_object/GameObje
 import { lookup } from "../service/Lookup";
 import { QuarterStore } from "./QuarterStore";
 
-export class MeshStore {
+export class GameObjectStore {
     private items: GameObject[] = [];
 
     @InjectProperty("QuarterStore")

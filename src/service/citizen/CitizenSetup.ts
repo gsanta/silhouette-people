@@ -64,8 +64,8 @@ export class CitizenSetup {
         const character = this.citizenStore.getById('C');
         const route = this.routeStore.getById('route-1');
 
-        character.characterController = new HumanController(character);
-        character.characterController.setSpeed(1);
+        character.motionController = new HumanController(character);
+        character.motionController.setSpeed(1);
 
         const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, character));
 
@@ -83,8 +83,8 @@ export class CitizenSetup {
         const character = this.citizenStore.getById('C2');
         const route = this.routeStore.getById('route-1').reverse();
 
-        character.characterController = new HumanController(character);
-        character.characterController.setSpeed(1);
+        character.motionController = new HumanController(character);
+        character.motionController.setSpeed(1);
 
         const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, character));
 

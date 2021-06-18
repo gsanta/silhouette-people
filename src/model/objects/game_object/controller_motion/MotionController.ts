@@ -1,9 +1,11 @@
 import { Vector3 } from "babylonjs";
 import { toVector2 } from "../../../../helpers";
+import { MonoBehaviour } from "../../../behaviours/MonoBehaviour";
+import { MonoBehaviourName } from "../../../behaviours/MonoBehaviourName";
 import { Rotation } from "../../../math/Rotation";
 import { GameObject } from "../GameObject";
 
-export abstract class MotionController {
+export abstract class MotionController extends MonoBehaviour {
     protected _isDirty = false;
     protected speed = 0;
     protected rotation = 0;
@@ -11,6 +13,7 @@ export abstract class MotionController {
     readonly character: GameObject;
 
     constructor(character: GameObject) {
+        super(MonoBehaviourName.MOTION_CONTROLLER);
         this.character = character;
     }
 
@@ -47,6 +50,4 @@ export abstract class MotionController {
     get rotationRad(): number {
         return Rotation.FromVector(toVector2(this.velocity)).rad;
     }
-
-    abstract walk(deltaTime: number);
 }

@@ -39,8 +39,8 @@ export class CharacterBuilder {
         const mesh = new Mesh(`character-${this.index}-mesh`, this.scene);
         character.radius = this._radius !== undefined ? this._radius : character.radius;
         character.meshes = [mesh];
-        character.characterController = new HumanController(character);
-        character.characterController.velocity = this._velocity;
+        character.motionController = new HumanController(character);
+        character.motionController.velocity = this._velocity;
         character.position = this._pos;
         character.collisionSensorDistance = this._collSensorDistance !== undefined ? this._collSensorDistance : character.collisionSensorDistance;
 

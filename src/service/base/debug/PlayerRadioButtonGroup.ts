@@ -1,13 +1,13 @@
 import { Container, Control, RadioButton, StackPanel } from "babylonjs-gui";
 import { InjectProperty } from "../../../di/diDecorators";
-import { MeshStore } from "../../../store/MeshStore";
+import { GameObjectStore } from "../../../store/GameObjectStore";
 import { ActivePlayerService } from "../../ActivePlayerService";
 import { lookup } from "../../Lookup";
 import { IGUIComponent } from "./IGUIComponent";
 
 export class PlayerRadioButtonGroup implements IGUIComponent {
     @InjectProperty("MeshStore")
-    private meshStore: MeshStore;
+    private meshStore: GameObjectStore;
 
     @InjectProperty("ActivePlayerService")
     private activePlayerService: ActivePlayerService;

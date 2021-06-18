@@ -17,7 +17,7 @@ export class WalkerPropertyParser extends AbstractPropertyParser<string> {
     }
 
     processProperty(mesh: GameObject, walkerName: string) {
-        mesh.characterController = this.createWalker(mesh, walkerName as WalkerName);
+        mesh.motionController = this.createWalker(mesh, walkerName as WalkerName);
     }
 
     private createWalker(meshObj: GameObject, stateName: WalkerName): MotionController {

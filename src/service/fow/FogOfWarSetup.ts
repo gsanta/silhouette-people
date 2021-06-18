@@ -19,9 +19,9 @@ export class FogOfWarSetup {
     setup() {
         if (!this.fogOfWar) {
             const config: FogOfWarConfig = {
-                width: 500,
-                height: 500,
-                positionY: 5
+                width: 200,
+                height: 200,
+                positionY: 10
             }
 
             this.fogOfWar = new FogOfWar(this.worldProvider.scene, this.cameraService.getCamera().getCamera(), this.playerStore.getActivePlayer(), config);

@@ -3,8 +3,10 @@ import { GraphEdge } from "../../../../service/graph/GraphEdge";
 import { RouteItem } from "../../route/RouteItem";
 import { RouteController } from "./RouteController";
 import { GameObject } from "../GameObject";
+import { MonoBehaviour } from "../../../behaviours/MonoBehaviour";
+import { MonoBehaviourName } from "../../../behaviours/MonoBehaviourName";
 
-export class RouteControllerImpl implements RouteController {
+export class RouteControllerImpl extends MonoBehaviour implements RouteController {
     private readonly character: GameObject;
     private route: RouteItem;
 
@@ -16,6 +18,7 @@ export class RouteControllerImpl implements RouteController {
     private started = false;
 
     constructor(route: RouteItem, character: GameObject) {
+        super(MonoBehaviourName.ROUTE_CONTROLLER);
         this.route = route;
         this.character = character;
         this.edge = route.firstEdge;
@@ -57,7 +60,7 @@ export class RouteControllerImpl implements RouteController {
         return this.edge && this.edge.getSource(this.route.isReversed(this.edge));
     }
 
-    walk(): boolean {
+    update(): boolean {
         if (this.started && this.edge) {
             this.prevPos = this.currPos;
             this.currPos = this.character.position;

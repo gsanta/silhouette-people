@@ -12,8 +12,8 @@ export class BikeParenter {
         player.mesh.checkCollisions = false;
         player.setParent(bike);
         const bikeWalker = new BikeController(bike);
-        player.characterController = bikeWalker;
-        bike.characterController = bikeWalker;
+        player.motionController = bikeWalker;
+        bike.motionController = bikeWalker;
         bike.addPositionChangeListener(() => {
             player.emitPositionChange();
         });

@@ -1,7 +1,7 @@
 import { StoryItem, StoryType } from "../../../service/story/StoryItem";
 import { StoryLoader } from "../../../service/story/StoryLoader";
 import { StoryTracker } from "../../../service/story/StoryTracker";
-import { MeshStore } from "../../../store/MeshStore";
+import { GameObjectStore } from "../../../store/GameObjectStore";
 import { RouteStore } from "../../../store/RouteStore";
 import { RouteStoryConfig } from "../../objects/route/RouteItem";
 
@@ -9,11 +9,11 @@ export class RouteLoader implements StoryLoader {
 
     private readonly backlog: StoryTracker;
     private readonly routeStore: RouteStore;
-    private readonly meshStore: MeshStore;
+    private readonly meshStore: GameObjectStore;
 
     isAsync = false;
 
-    constructor(backlog: StoryTracker, routeStore: RouteStore, meshStore: MeshStore) {
+    constructor(backlog: StoryTracker, routeStore: RouteStore, meshStore: GameObjectStore) {
         this.backlog = backlog;
         this.routeStore = routeStore;
         this.meshStore  = meshStore;

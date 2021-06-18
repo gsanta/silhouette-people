@@ -8,7 +8,7 @@ import { UpdateService } from "./base/update/UpdateService";
 import { MeshFactory } from "./object/mesh/MeshFactory";
 import { PointerService } from "./base/pointer/PointerService";
 import { QuarterStore } from "../store/QuarterStore";
-import { MeshStore } from "../store/MeshStore";
+import { GameObjectStore } from "../store/GameObjectStore";
 import { RouteFactory } from "./routing/route/RouteFactory";
 import { LightStore } from "../store/LightStore";
 import { LightFactory } from "./object/light/LightFactory";
@@ -55,7 +55,7 @@ export class Lookup {
 
     materialStore: MaterialStore;
     quarterStore: QuarterStore;
-    meshStore: MeshStore;
+    meshStore: GameObjectStore;
     citizenStore: CitizenStore;
     playerStore: PlayerStore;
     assetContainerStore: AssetContainerStore;
@@ -95,7 +95,7 @@ export class Lookup {
         lookup.materialStore = this.materialStore;
         this.quarterStore = new QuarterStore();
         lookup.quarterStore = this.quarterStore;
-        this.meshStore = new MeshStore();
+        this.meshStore = new GameObjectStore();
         lookup.meshStore = this.meshStore;
         this.citizenStore = new CitizenStore();
         lookup.citizenStore = this.citizenStore;

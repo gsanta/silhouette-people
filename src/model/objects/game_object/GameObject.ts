@@ -6,9 +6,10 @@ import { GameItem } from "../../item/GameItem";
 import { CharacterBehaviour } from "./CharacterBehaviour";
 import { InputController } from "./controller_input/InputController";
 import { StateController } from "./controller_state/StateController";
-import { MeshAttachment } from "../../item/MeshAttachment";
+import { MonoBehaviour } from "../../behaviours/MonoBehaviour";
 import { RouteController } from "./controller_route/RouteController";
 import { MotionController } from "./controller_motion/MotionController";
+import { RouteControllerImpl } from "./controller_route/RouteControllerImpl";
 
 export enum GameObjectType {
     Player = 'player',
@@ -49,12 +50,13 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
     id: string;
 
     collisionSensorDistance = 2;
-    stateController: StateController;
-    characterController: MotionController;
+    private _stateController: StateController;
+    private _motionController: MotionController;
     inputController: InputController;
-    routeController: RouteController;
+    private _routeController: RouteController;
 
     behaviour: B;
+    private _behaviours: Map<string, MonoBehaviour> = new Map();
     
     skeleton: Skeleton;
     children: GameObject[] = [];
@@ -70,7 +72,7 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
     private _meshes: Mesh[] = [];
 
     private positionChangeListeners: (() => void)[] = [];
-    private attachments: MeshAttachment[] = [];
+    private attachments: MonoBehaviour[] = [];
 
     radius = 3;
 
@@ -79,6 +81,38 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
         this.id = id;
         this.tag = new TagHandler();
         this.animation = new AnimationHandler();
+    }
+
+    update(deltaTime: number) {
+        this._behaviours.forEach((val) => val.update(deltaTime));
+        // this.behaviours.forEach(behaviour => behaviour.update());
+    }
+
+    get routeController(): RouteController {
+        return this._routeController;
+    }
+
+    set routeController(routeController: RouteController) {
+        this._routeController = routeController;
+        this._behaviours.set(routeController.name, routeController);
+    }
+
+    get motionController(): MotionController {
+        return this._motionController;
+    }
+
+    set motionController(motionController: MotionController) {
+        this._motionController = motionController;
+        this._behaviours.set(motionController.name, motionController);
+    }
+
+    get stateController(): StateController {
+        return this._stateController;
+    }
+
+    set stateController(stateController: StateController) {
+        this._stateController = stateController;
+        this._behaviours.set(stateController.name, stateController);
     }
 
     moveWithCollision(displacement: Vector3) {
@@ -147,7 +181,7 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
         return this.tag.has(GameObjectTag.Citizen);
     }
 
-    addAttachment(attachment: MeshAttachment) {
+    addAttachment(attachment: MonoBehaviour) {
         this.attachments.push(attachment);
     }
 

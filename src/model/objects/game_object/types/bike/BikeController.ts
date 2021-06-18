@@ -16,7 +16,7 @@ export class BikeController extends MotionController {
         this.bike = bike;
     }
 
-    walk(deltaTime: number) {
+    update(deltaTime: number) {
         const character = this.character.children[0];
         if (character.routeController && !character.routeController.isRunning()) {
             return;

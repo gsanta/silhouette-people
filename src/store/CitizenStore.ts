@@ -1,11 +1,11 @@
 import { InjectProperty } from "../di/diDecorators";
 import { GameObject, GameObjectTag } from "../model/objects/game_object/GameObject";
 import { lookup } from "../service/Lookup";
-import { MeshStore } from "./MeshStore";
+import { GameObjectStore } from "./GameObjectStore";
 
 export class CitizenStore {
     @InjectProperty('MeshStore')
-    private meshStore: MeshStore;
+    private meshStore: GameObjectStore;
 
     constructor() {
         this.meshStore = lookup.meshStore;

@@ -2,7 +2,7 @@ import { AdvancedDynamicTexture } from "babylonjs-gui";
 import { InjectProperty } from "../../../di/diDecorators";
 import { CitizenStore } from "../../../store/CitizenStore";
 import { MaterialStore } from "../../../store/MaterialStore";
-import { MeshStore } from "../../../store/MeshStore";
+import { GameObjectStore } from "../../../store/GameObjectStore";
 import { lookup } from "../../Lookup";
 import { WorldProvider } from "../../WorldProvider";
 import { CitizenRouteDebugger } from "./CitizenRouteDebugger";
@@ -17,7 +17,7 @@ export class DebugService {
     areaMapDebugger: QuarterMapDebugger;
     
     @InjectProperty("MeshStore")
-    private meshStore: MeshStore;
+    private meshStore: GameObjectStore;
 
     @InjectProperty("WorldProvider")
     private worldProvider: WorldProvider;

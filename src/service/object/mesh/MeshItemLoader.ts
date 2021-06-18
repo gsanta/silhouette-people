@@ -1,5 +1,5 @@
 import { GameObjectConfig } from "../../../model/objects/game_object/GameObject";
-import { MeshStore } from "../../../store/MeshStore";
+import { GameObjectStore } from "../../../store/GameObjectStore";
 import { StoryTracker } from "../../story/StoryTracker";
 import { StoryItem, StoryType } from "../../story/StoryItem";
 import { StoryLoader } from "../../story/StoryLoader";
@@ -8,12 +8,12 @@ import { MeshFactory } from "./MeshFactory";
 export class MeshItemLoader implements StoryLoader {
 
     private readonly backlog: StoryTracker;
-    private readonly meshStore: MeshStore;
+    private readonly meshStore: GameObjectStore;
     private readonly meshFactory: MeshFactory;
 
     isAsync = true;
 
-    constructor(backlog: StoryTracker, meshStore: MeshStore, meshFactory: MeshFactory) {
+    constructor(backlog: StoryTracker, meshStore: GameObjectStore, meshFactory: MeshFactory) {
         this.backlog = backlog;
         this.meshStore = meshStore;
         this.meshFactory = meshFactory;

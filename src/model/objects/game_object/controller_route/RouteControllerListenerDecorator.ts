@@ -5,18 +5,20 @@ import { RouteItem } from "../../route/RouteItem";
 import { RouteController } from "./RouteController";
 import { RouteControllerListener } from "./RouteControllerListener";
 import { GameObject } from "../GameObject";
+import { MonoBehaviour } from "../../../behaviours/MonoBehaviour";
+import { MonoBehaviourName } from "../../../behaviours/MonoBehaviourName";
 
-export class RouteControllerListenerDecorator implements RouteController {
-
+export class RouteControllerListenerDecorator extends MonoBehaviour implements RouteController {
     private delegate: RouteController;
     private listeners: RouteControllerListener[] = [];
 
     constructor(delegate: RouteController) {
+        super(MonoBehaviourName.ROUTE_CONTROLLER);
         this.delegate = delegate;
     }
 
-    walk(deltaTime: number): boolean {
-        const ret = this.delegate.walk(deltaTime);
+    update(deltaTime: number): boolean {
+        const ret = this.delegate.update(deltaTime);
         if (ret) {
             this.listeners.forEach(listener => listener.onWalk(deltaTime));
         }

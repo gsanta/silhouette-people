@@ -1,4 +1,4 @@
-import { MeshStore } from "../../../store/MeshStore";
+import { GameObjectStore } from "../../../store/GameObjectStore";
 import { ActivePlayerService } from "../../ActivePlayerService";
 import { PlayerStore } from "../../player/PlayerStore";
 import { RenderGuiService } from "../RenderGuiService";

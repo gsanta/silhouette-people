@@ -1,5 +1,5 @@
 import { InjectProperty } from "../../di/diDecorators";
-import { MeshStore } from "../../store/MeshStore";
+import { GameObjectStore } from "../../store/GameObjectStore";
 import { lookup } from "../Lookup";
 import { PlayerStore } from "../player/PlayerStore";
 
@@ -7,7 +7,7 @@ export class RenderGuiService {
     private renderer: () => void;
 
     @InjectProperty("MeshStore")
-    private meshStore: MeshStore;
+    private meshStore: GameObjectStore;
 
     @InjectProperty("PlayerStore")
     private playerStore: PlayerStore;

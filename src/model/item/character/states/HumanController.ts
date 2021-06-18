@@ -8,7 +8,7 @@ export class HumanController extends MotionController {
         super(character);
     }
 
-    walk(deltaTime: number) {
+    update(deltaTime: number) {
         if (this.character.routeController && !this.character.routeController.isRunning()) {
             return;
         }

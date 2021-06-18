@@ -40,11 +40,11 @@ export class HumanInputManager extends InputController {
 
     private handleSpeed() {
         if (this.keyboardService.keys.has('w')) {
-            this.character.characterController.setSpeed(this.speedConst);
+            this.character.motionController.setSpeed(this.speedConst);
         } else if (this.keyboardService.keys.has('s')) {
-            this.character.characterController.setSpeed(-this.speedConst);
+            this.character.motionController.setSpeed(-this.speedConst);
         } else {
-            this.character.characterController.setSpeed(0);
+            this.character.motionController.setSpeed(0);
         }
     }
 }

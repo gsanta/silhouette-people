@@ -1,5 +1,5 @@
 import { InjectProperty } from "../../../di/diDecorators";
-import { MeshStore } from "../../../store/MeshStore";
+import { GameObjectStore } from "../../../store/GameObjectStore";
 import { KeyboardListener, KeyboardService } from "../keyboard/KeyboardService";
 import { lookup } from "../../Lookup";
 import { ToolService } from "../../edit/ToolService";
@@ -13,7 +13,7 @@ export class UpdateService implements KeyboardListener {
     private worldProvider: WorldProvider;
 
     @InjectProperty("MeshStore")
-    private meshStore: MeshStore;
+    private meshStore: GameObjectStore;
 
     @InjectProperty("ToolService")
     private toolService: ToolService;
@@ -41,18 +41,20 @@ export class UpdateService implements KeyboardListener {
 
     onKeyUp(e: KeyboardEvent): void {}
 
-    beforeRender() {
+    update() {
         this.quarterUpdater.updateQuarterBasedOnPlayerPosition();
 
-        const activePlayer = this.meshStore.getById('player2');
-
-        if (!activePlayer) { return; }
-
         const deltaTime = this.worldProvider.world.engine.getDeltaTime();
+        this.meshStore.getAll().forEach(gameObject => gameObject.update(deltaTime));
 
-        const selectedTool = this.toolService.getSelectedTool();
-        if (selectedTool) {
-            selectedTool.beforeRender();
-        }
+        // const activePlayer = this.meshStore.getById('player2');
+
+        // if (!activePlayer) { return; }
+
+
+        // const selectedTool = this.toolService.getSelectedTool();
+        // if (selectedTool) {
+        //     selectedTool.beforeRender();
+        // }
     }
 }

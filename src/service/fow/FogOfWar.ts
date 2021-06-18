@@ -1,5 +1,6 @@
-import { Color3, DynamicTexture, Mesh, MeshBuilder, Scene, StandardMaterial, TargetCamera, Vector3 } from "babylonjs";
+import { Color3, DynamicTexture, InputBlock, Mesh, MeshBuilder, NodeMaterial, Scene, SceneLoader, StandardMaterial, TargetCamera, Vector3 } from "babylonjs";
 import { GameObject } from "../../model/objects/game_object/GameObject";
+import fowMaterial from "../../../assets/shaders/fow_shader.json";
 
 export interface FogOfWarConfig {
     width: number;
@@ -58,6 +59,7 @@ class FogOfWarInit {
         canvas.width = textureSize.width;
         canvas.height = textureSize.height;
 
+
         return canvas;
     }
 }
@@ -70,30 +72,65 @@ export class FogOfWar {
     private mesh: Mesh;
     private texture: DynamicTexture;
     private canvas: HTMLCanvasElement;
+    private readonly scene: Scene;
+
+    private material: NodeMaterial;
 
     constructor(scene: Scene, camera: TargetCamera, target: GameObject, config: FogOfWarConfig) {
+        this.scene = scene;
         this.camera = camera;
         this.target = target;
         this.config = config;
         
-        const [mesh, texture, canvas] = new FogOfWarInit(scene, camera, this.resolution, config).init();
-        this.mesh = mesh;
-        this.texture = texture;
-        this.canvas = canvas;
+        // const [mesh, texture, canvas] = new FogOfWarInit(scene, camera, this.resolution, config).init();
+        // this.mesh = mesh;
+        // this.texture = texture;
+        // this.canvas = canvas;
+
+        this.loadMaterial();
+    }
+
+    private async loadMaterial() {
+        this.material = new NodeMaterial('fow-material', this.scene);
+        this.material.loadFromSerialization(fowMaterial);
+        this.mesh = MeshBuilder.CreateGround("ground", {width: 200, height: 200}, this.scene);
+        const material = await NodeMaterial.ParseFromSnippetAsync("4750E2#8", this.scene);
+
+        // this.mesh.scaling.x = this.config.width;
+        // this.mesh.scaling.z = this.config.height;
+        this.mesh.position.y += this.config.positionY;
+        this.mesh.material = material;
+        (<InputBlock> material.getBlockByName('radius')).value = 0.7;
+
+        
+    this.scene.onPointerMove = (evt) => {
+        var pickResult = this.scene.pick(evt.offsetX, evt.offsetY);
+        if (pickResult.pickedPoint) {
+            const groundWidth = this.mesh.getBoundingInfo().boundingBox.extendSizeWorld.x;
+            const groundHeight = this.mesh.getBoundingInfo().boundingBox.extendSizeWorld.z;
+            const groundPos = this.mesh.getAbsolutePosition();
+
+            const circleOffsetX = (pickResult.pickedPoint.x - groundPos.x) / groundWidth;
+            const circleOffsetZ = (pickResult.pickedPoint.z - groundPos.z) / groundHeight;
+
+            (<InputBlock> material.getBlockByName('offsetX')).value = circleOffsetX;
+            (<InputBlock> material.getBlockByName('offsetY')).value = circleOffsetZ;
+        }
+    }
     }
 
     update() {
         // this.mesh.position = this.camera.target.clone();
-        this.mesh.position.x = this.config.width / 4;
-        this.mesh.position.z = - this.config.height / 4;
-        this.mesh.position.y += this.config.positionY;
-        const textureContext = this.texture.getContext();
+        // this.mesh.position.x = this.config.width / 4;
+        // this.mesh.position.z = - this.config.height / 4;
+        // this.mesh.position.y += this.config.positionY;
+        // const textureContext = this.texture.getContext();
 
-        this.clearRect();
-        this.createVisibleArea();
+        // this.clearRect();
+        // this.createVisibleArea();
 
-        textureContext.save();
-        this.texture.update();
+        // textureContext.save();
+        // this.texture.update();
     }
 
     private createVisibleArea() {

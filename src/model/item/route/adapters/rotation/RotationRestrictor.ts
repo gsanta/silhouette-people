@@ -33,7 +33,7 @@ export class RotationRestrictor {
         if (edge) {
             const character = this.routeWalker.getCharacter();
             const initialAngle = route.isReversed(edge) ? edge.oppositeAngle : edge.angle;
-            character.characterController.velocity = initialAngle.worldAngle().toVector3();
+            character.motionController.velocity = initialAngle.worldAngle().toVector3();
         }
     }
 
@@ -45,7 +45,7 @@ export class RotationRestrictor {
     private restrictToDirection(direction: number) {
         const character = this.routeWalker.getCharacter();
         // character.instance.setRotation(direction);
-        character.characterController.velocity = rotToVec(direction);
+        character.motionController.velocity = rotToVec(direction);
         character.inputController.disableDirection();
     }
 
