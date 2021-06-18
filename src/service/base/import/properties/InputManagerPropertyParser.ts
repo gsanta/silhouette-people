@@ -1,6 +1,6 @@
 
 
-import { HumanInputController } from "../../../../model/item/game_object/input/HumanInputController";
+import { HumanInputController } from "../../../../model/objects/game_object/types/human/HumanInputController";
 import { GameObject } from "../../../../model/objects/game_object/GameObject";
 import { GraphService } from "../../../graph/GraphService";
 import { KeyboardService } from "../../keyboard/KeyboardService";

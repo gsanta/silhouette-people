@@ -2,7 +2,7 @@ import { Vector3 } from "babylonjs";
 import { toVector2 } from "../../../helpers";
 import { GameObject } from "../../../model/objects/game_object/GameObject";
 import { RouteController } from "../../../model/objects/game_object/controller_route/RouteController";
-import { VertexInjector } from "../../../model/item/route/VertexInjector";
+import { VertexInjector } from "../../../model/objects/route/VertexInjector";
 import { Rotation } from "../../../model/math/Rotation";
 import { GraphVertex } from "../../graph/GraphImpl";
 import { CollisionSensor } from "./CollisionSensor";

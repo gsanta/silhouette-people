@@ -1,12 +1,12 @@
-import { MotionController } from "../../../controller_motion/MotionController";
+import { MotionController } from "../../../MotionController";
 import { GameObject } from "../../../GameObject";
-import { MeshState } from "../../../../../item/mesh/MeshState";
+import { GameObjectState } from "../../../GameObjectState";
 import { BikeStateInfo } from "../BikeStateInfo";
 import { SpeedupSystem } from "../physics/SpeedupSystem";
 import { BikeBrakingState } from "./BikeBrakingState";
 import { BikeIdleState } from "./BikeIdleState";
 
-export class BikeSpeedUpState extends MeshState {
+export class BikeSpeedUpState extends GameObjectState {
     private readonly bike: GameObject;
     private readonly mover: MotionController;
     private readonly speedUpSystem: SpeedupSystem;

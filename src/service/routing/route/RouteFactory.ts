@@ -1,5 +1,5 @@
 import { InjectProperty } from "../../../di/diDecorators";
-import { PathItem } from "../../../model/item/PathItem";
+import { PathItem } from "../../../model/objects/PathItem";
 import { RouteItem, RouteStoryConfig } from "../../../model/objects/route/RouteItem";
 import { RouteControllerImpl } from "../../../model/objects/game_object/controller_route/RouteControllerImpl";
 import { RouteStore } from "../../../store/RouteStore";

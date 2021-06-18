@@ -1,4 +1,4 @@
-import { QuarterItem } from "../model/item/quarter/QuarterItem";
+import { QuarterItem } from "../model/objects/game_object/types/quarter/QuarterItem";
 
 export class QuarterStore {
     private quarters: QuarterItem[] = [];

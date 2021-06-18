@@ -1,5 +1,5 @@
 import { WorldProvider } from "../../../../../../service/WorldProvider";
-import { MotionController } from "../../../controller_motion/MotionController";
+import { MotionController } from "../../../MotionController";
 import { GameObject } from "../../../GameObject";
 import { BrakingParticleSystem } from "./BrakingParticleSystem";
 

@@ -2,7 +2,7 @@ import { ArcRotateCamera, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { lookup } from "../../../service/Lookup";
 import { QuarterStore } from "../../../store/QuarterStore";
-import { WorldObj } from "../../item/WorldObj";
+import { WorldObj } from "../WorldObj";
 
 
 export class CameraObject {

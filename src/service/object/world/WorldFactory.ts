@@ -1,7 +1,7 @@
 import { ArcRotateCamera, Axis, Color3, MeshBuilder, PhysicsImpostor, Scene, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { CameraObject } from "../../../model/objects/camera/CameraObject";
-import { WorldObj } from "../../../model/item/WorldObj";
+import { WorldObj } from "../../../model/objects/WorldObj";
 import { QuarterStore } from "../../../store/QuarterStore";
 import { GroundJson } from "../../base/import/map/WorldMap";
 import { CameraService } from "../../edit/camera/CameraService";

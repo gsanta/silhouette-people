@@ -1,6 +1,6 @@
 import { Mesh, Scene, Vector3 } from "babylonjs";
-import { HumanController } from "../../src/model/item/character/states/HumanController";
 import { GameObject } from "../../src/model/objects/game_object/GameObject";
+import { HumanController } from "../../src/model/objects/game_object/types/human/HumanController";
 
 export class CharacterBuilder {
     private index = 0;

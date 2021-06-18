@@ -1,6 +1,6 @@
 import { Vector2 } from 'babylonjs';
 import regression from 'regression';
-import { MotionController } from '../../../controller_motion/MotionController';
+import { MotionController } from '../../../MotionController';
 import { BikeController } from '../BikeController';
 import { AbstractBikePhysics } from './AbstractBikePhysics';
 

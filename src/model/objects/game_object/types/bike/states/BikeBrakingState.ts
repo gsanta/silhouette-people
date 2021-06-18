@@ -1,13 +1,13 @@
 import { lookup } from "../../../../../../service/Lookup";
-import { MotionController } from "../../../controller_motion/MotionController";
+import { MotionController } from "../../../MotionController";
 import { GameObject } from "../../../GameObject";
-import { MeshState } from "../../../../../item/mesh/MeshState";
+import { GameObjectState } from "../../../GameObjectState";
 import { BikeStateInfo } from "../BikeStateInfo";
 import { BrakingSystem } from "../physics/BrakingSystem";
 import { BikeIdleState } from "./BikeIdleState";
 import { BikeSpeedUpState } from "./BikeSpeedUpState";
 
-export class BikeBrakingState extends MeshState {
+export class BikeBrakingState extends GameObjectState {
     private readonly bike: GameObject;
     private readonly mover: MotionController;
     private readonly brakeSystem: BrakingSystem;

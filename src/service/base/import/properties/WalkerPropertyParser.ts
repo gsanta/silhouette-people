@@ -1,6 +1,6 @@
 import { BikeController } from "../../../../model/objects/game_object/types/bike/BikeController";
-import { HumanController } from "../../../../model/item/character/states/HumanController";
-import { MotionController } from "../../../../model/objects/game_object/controller_motion/MotionController";
+import { HumanController } from "../../../../model/objects/game_object/types/human/HumanController";
+import { MotionController } from "../../../../model/objects/game_object/MotionController";
 import { GameObject } from "../../../../model/objects/game_object/GameObject";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 

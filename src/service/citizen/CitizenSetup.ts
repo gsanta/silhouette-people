@@ -1,10 +1,10 @@
 import { InjectProperty } from "../../di/diDecorators";
-import { HumanController } from "../../model/item/character/states/HumanController";
+import { HumanController } from "../../model/objects/game_object/types/human/HumanController";
 import { GameObject } from "../../model/objects/game_object/GameObject";
-import { RotationRestrictorAdapter } from "../../model/item/route/adapters/rotation/RotationRestrictorAdapter";
-import { ReversingRouter } from "../../model/item/route/adapters/routing/ReversingRouter";
-import { RouterAdapter } from "../../model/item/route/adapters/routing/RouterAdapter";
-import { ActiveEdgeUpdaterAdapter } from "../../model/item/route/adapters/walking/ActiveEdgeUpdaterAdapter";
+import { RotationRestrictorAdapter } from "../../model/objects/route/rotation/RotationRestrictorAdapter";
+import { ReversingRouter } from "../../model/objects/route/routing/ReversingRouter";
+import { RouterAdapter } from "../../model/objects/route/routing/RouterAdapter";
+import { ActiveEdgeUpdaterAdapter } from "../../model/objects/route/edge_update/ActiveEdgeUpdaterAdapter";
 import { RouteControllerImpl } from "../../model/objects/game_object/controller_route/RouteControllerImpl";
 import { RouteControllerListenerDecorator } from "../../model/objects/game_object/controller_route/RouteControllerListenerDecorator";
 import { CitizenStore } from "../../store/CitizenStore";

@@ -1,6 +1,6 @@
 import { Vector3 } from "babylonjs";
 import { BikeController } from "../../../model/objects/game_object/types/bike/BikeController";
-import { CharacterBikingState } from "../../../model/item/character/states/CharacterBikingState";
+import { HumanBikingState } from "../../../model/objects/game_object/types/human/states/HumanBikingState";
 import { BikeIdleState } from "../../../model/objects/game_object/types/bike/states/BikeIdleState";
 import { GameObject } from "../../../model/objects/game_object/GameObject";
 
@@ -19,6 +19,6 @@ export class BikeParenter {
         });
 
         bike.stateController.state = new BikeIdleState(bike, bikeWalker);
-        player.stateController.state = new CharacterBikingState(player);
+        player.stateController.state = new HumanBikingState(player);
     }
 }

@@ -2,13 +2,13 @@ import { Axis, Quaternion, Skeleton, Vector2, Vector3 } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/index";
 import { AnimationHandler } from "../../AnimationHandler";
 import { TagHandler } from "../../TagHandler";
-import { GameItem } from "../../item/GameItem";
+import { GameItem } from "../GameItem";
 import { CharacterBehaviour } from "./CharacterBehaviour";
-import { InputController } from "./controller_input/InputController";
-import { StateController } from "./controller_state/StateController";
+import { InputController } from "./InputController";
+import { StateController } from "./StateController";
 import { MonoBehaviour } from "../../behaviours/MonoBehaviour";
 import { RouteController } from "./controller_route/RouteController";
-import { MotionController } from "./controller_motion/MotionController";
+import { MotionController } from "./MotionController";
 import { RouteControllerImpl } from "./controller_route/RouteControllerImpl";
 
 export enum GameObjectType {

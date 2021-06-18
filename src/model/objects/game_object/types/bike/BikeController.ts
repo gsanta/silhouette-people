@@ -1,6 +1,6 @@
 import { Vector3 } from "babylonjs";
 import { rotateVec, vector3ToRotation } from "../../../../../helpers";
-import { MotionController } from "../../controller_motion/MotionController";
+import { MotionController } from "../../MotionController";
 import { GameObject } from "../../GameObject";
 
 export type PedalDirection = 'forward' | 'backward';

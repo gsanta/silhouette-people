@@ -1,4 +1,4 @@
-import { BikeBehaviour } from "../../../model/item/game_object/behaviour/BikeBehaviour";
+import { BikeBehaviour } from "../../../model/objects/game_object/types/bike/BikeBehaviour";
 import { GameObjectConfig, GameObject, GameObjectTag, GameObjectType } from "../../../model/objects/game_object/GameObject";
 import { AbstractPropertyParser } from "../../base/import/AbstractPropertyParser";
 

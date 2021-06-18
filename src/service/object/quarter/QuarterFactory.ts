@@ -1,6 +1,6 @@
 import { Axis, Color3, Color4, MeshBuilder, Space, StandardMaterial, Vector2, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { QuarterItem } from "../../../model/item/quarter/QuarterItem";
+import { QuarterItem } from "../../../model/objects/game_object/types/quarter/QuarterItem";
 import { QuarterStore } from "../../../store/QuarterStore";
 import { lookup } from "../../Lookup";
 import { WorldProvider } from "../../WorldProvider";
