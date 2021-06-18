@@ -1,6 +1,5 @@
-import { ArcRotateCamera, Vector3 } from "babylonjs";
+import { ArcRotateCamera, FollowCamera, Vector3 } from "babylonjs";
 import { CameraObject } from "../../model/objects/camera/CameraObject";
-import { WorldObj } from "../../model/objects/WorldObj";
 import { WorldProvider } from "../WorldProvider";
 
 
@@ -21,4 +20,20 @@ export class CameraFactory {
         return cameraOj;
     }
 
+
+    createFollowCamera() {
+        const camera = new FollowCamera("camera-follow", new Vector3(0, 10, -10), this.worldProvider.scene);
+        // camera.attachControl(true);
+
+        camera.radius = 30;
+
+        camera.heightOffset = 20;
+        camera.rotationOffset = Math.PI / 2;
+        camera.cameraAcceleration = 0.005;
+        camera.maxCameraSpeed = 10;
+
+        const cameraOj = new CameraObject(camera, this.worldProvider.world);
+
+        return cameraOj;
+    }
 }

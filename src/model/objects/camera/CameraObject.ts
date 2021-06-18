@@ -1,4 +1,4 @@
-import { ArcRotateCamera, Vector2, Vector3 } from "babylonjs";
+import { TargetCamera, Vector2, Vector3 } from "babylonjs";
 import { MonoBehaviour } from "../../behaviours/MonoBehaviour";
 import { InputController } from "../game_object/InputController";
 import { WorldObj } from "../WorldObj";
@@ -9,9 +9,9 @@ export class CameraObject {
 
     private _behaviours: Map<string, MonoBehaviour> = new Map();
 
-    private readonly camera: ArcRotateCamera;
+    private readonly camera: TargetCamera;
 
-    constructor(camera: ArcRotateCamera, worldObj: WorldObj) {
+    constructor(camera: TargetCamera, worldObj: WorldObj) {
         this.camera = camera;
         this.worldObj = worldObj;
     }
@@ -28,14 +28,9 @@ export class CameraObject {
         return this.camera;
     }
 
-    setPosition(vector: Vector3) {
-        this.camera.setPosition(vector);
-    }
-
     setTarget(vector: Vector3) {
         this.camera.setTarget(vector);
     }
-
 
     screenToCanvasPoint(screenPoint: Vector2, pos: Vector3 = new Vector3(0, 0, 0)): Vector3 {
         const scene = this.worldObj.scene;

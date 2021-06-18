@@ -1,4 +1,4 @@
-import { Vector2, Vector3 } from "babylonjs";
+import { ArcRotateCamera, Vector2, Vector3 } from "babylonjs";
 import { QuarterStore } from "../../../store/QuarterStore";
 import { MonoBehaviour } from "../../behaviours/MonoBehaviour";
 import { MonoBehaviourName } from "../../behaviours/MonoBehaviourName";
@@ -67,7 +67,7 @@ export class StaticCameraPosController extends MonoBehaviour {
 
         pos3D = new Vector3(pos2D.x, height, pos2D.y);
 
-        this.camera.setPosition(pos3D);
+        (<ArcRotateCamera> this.camera.getCamera()).setPosition(pos3D);
         this.camera.setTarget(center);
     }
 }

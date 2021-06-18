@@ -53,19 +53,19 @@ export class PointerService {
     }
 
     private updatePointerData(info: PointerInfo, eventInfo: { isDown: boolean }) {
-        if (this.cameraService.hasActiveCamera()) {
-            const camera = this.cameraService.getActiveCamera();
-            const curr = camera.screenToCanvasPoint(new Vector2(info.event.clientX, info.event.clientY));
-            const curr2D = new Vector2(curr.x, curr.z);
+        // if (this.cameraService.hasActiveCamera()) {
+        //     const camera = this.cameraService.getActiveCamera();
+        //     const curr = camera.screenToCanvasPoint(new Vector2(info.event.clientX, info.event.clientY));
+        //     const curr2D = new Vector2(curr.x, curr.z);
     
-            if (eventInfo.isDown) {
-                this.pointer.down = curr;
-                this.pointer.down2D = curr2D;
-            } else {
-                this.pointer.curr = curr;
-                this.pointer.curr2D = curr2D;
-            }    
-        }
+        //     if (eventInfo.isDown) {
+        //         this.pointer.down = curr;
+        //         this.pointer.down2D = curr2D;
+        //     } else {
+        //         this.pointer.curr = curr;
+        //         this.pointer.curr2D = curr2D;
+        //     }    
+        // }
 
         switch(info.event.button) {
             case 0:
