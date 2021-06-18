@@ -22,7 +22,7 @@ export class AppComponent extends React.Component<AppComponentProps> {
                     onKeyDown={e => this.props.world.keyboard.keyDown(e.nativeEvent)}
                     onKeyUp={e => this.props.world.keyboard.keyUp(e.nativeEvent)}
                 />
-                <BikePanelComponent world={this.props.world} />
+                {/* <BikePanelComponent world={this.props.world} /> */}
             </div>
         );
     }

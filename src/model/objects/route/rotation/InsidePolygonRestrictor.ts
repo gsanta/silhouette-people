@@ -6,17 +6,25 @@ import { RouteController } from "../../game_object/controller_route/RouteControl
 
 export class InsidePolygonRestrictor {
     private readonly routeWalker: RouteController;
+    private readonly respawnTimeLimit = 1000;
+    private respawnTimer = 0;
 
     constructor(routeWalker: RouteController) {
         this.routeWalker = routeWalker;
     }
 
-    restrict(edge: GraphEdge): number | null {
+    update(deltaTime: number): number | null {
+        const edge = this.routeWalker.getEdge();
         const character = this.routeWalker.getCharacter();
         const route = this.routeWalker.getRoute();
         const inPolygon = this.testPointInPolyon(character.position, edge.dimensions);
 
         if (!inPolygon) {
+            this.respawnTimer += deltaTime;
+
+            if (this.respawnTimer >= this.respawnTimeLimit) {
+                this.routeWalker.set
+            }
             return route.isReversed(edge) ? edge.oppositeAngle.worldAngle().rad : edge.angle.worldAngle().rad;
         }
 

@@ -8,13 +8,14 @@ export class RotationRestrictor {
     private exactDirectionRestrictor: ExactDirectionRestrictor;
     private insidePolygonRestrictor: InsidePolygonRestrictor;
 
+
     constructor(routeWalker: RouteController) {
         this.routeWalker = routeWalker;
         this.exactDirectionRestrictor = new ExactDirectionRestrictor(this.routeWalker);
         this.insidePolygonRestrictor = new InsidePolygonRestrictor(routeWalker);
     }
 
-    positionChanged() {
+    update(deltaTime: number) {
         if (this.routeWalker.isRunning()) {
 
             const direction = this.getDirectionIfRestricted();
@@ -32,14 +33,24 @@ export class RotationRestrictor {
         const route = this.routeWalker.getRoute();
         if (edge) {
             const character = this.routeWalker.getCharacter();
-            const initialAngle = route.isReversed(edge) ? edge.oppositeAngle : edge.angle;
-            character.motionController.velocity = initialAngle.worldAngle().toVector3();
+            const angle = route.isReversed(edge) ? edge.oppositeAngle : edge.angle;
+            character.motionController.velocity = angle.worldAngle().toVector3();
         }
     }
 
-    private getDirectionIfRestricted(): number | null {
+    directionChanged() {
         const edge = this.routeWalker.getEdge();
-        return edge.thickness ? this.insidePolygonRestrictor.restrict(edge) : this.exactDirectionRestrictor.restrict(edge);
+        const route = this.routeWalker.getRoute();
+        if (edge) {
+            const character = this.routeWalker.getCharacter();
+            const angle = route.isReversed(edge) ? edge.oppositeAngle : edge.angle;
+            character.rotation = angle.worldAngle().rad;
+        }
+    }
+
+    private getDirectionIfRestricted(deltaTime: number): number | null {
+        const edge = this.routeWalker.getEdge();
+        return edge.thickness ? this.insidePolygonRestrictor.update(deltaTime) : this.exactDirectionRestrictor.restrict(edge);
     }
 
     private restrictToDirection(direction: number) {

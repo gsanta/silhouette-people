@@ -6,7 +6,7 @@ import { GameObject } from "../../GameObject";
 export type PedalDirection = 'forward' | 'backward';
 
 export class BikeController extends MotionController {
-    readonly rotationConst = Math.PI / 30;
+    readonly rotationConst = Math.PI / 60;
 
     private bike: GameObject;
 

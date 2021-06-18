@@ -70,9 +70,9 @@ export class BikeInputController extends InputController {
     private handleSteering(info: BikeStateInfo, downKeys: Set<KeyName>): BikeStateInfo {
         if (!this.isDirectionDisabled) {
             if (downKeys.has(KeyName.LEFT)) {
-                info = info.setSteering(-this.bikeMover.rotationConst);
-            } else if (downKeys.has(KeyName.RIGHT)) {
                 info = info.setSteering(this.bikeMover.rotationConst);
+            } else if (downKeys.has(KeyName.RIGHT)) {
+                info = info.setSteering(-this.bikeMover.rotationConst);
             } else {
                 info = info.setSteering(0);
             }
