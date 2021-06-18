@@ -1,6 +1,6 @@
 
 
-import { HumanInputManager } from "../../../../model/item/game_object/input/HumanInputManager";
+import { HumanInputController } from "../../../../model/item/game_object/input/HumanInputController";
 import { GameObject } from "../../../../model/objects/game_object/GameObject";
 import { GraphService } from "../../../graph/GraphService";
 import { KeyboardService } from "../../keyboard/KeyboardService";
@@ -30,7 +30,7 @@ export class InputManagerPropertyParser extends AbstractPropertyParser<string> {
     processProperty(character: GameObject, inputManager: string): void {
         switch(inputManager) {
             case InputManagerType.CharacterInputManager:
-                character.inputController = new HumanInputManager(character, this.keyboardService);
+                // character.inputController = new HumanInputController(character, this.keyboardService);
             break;
             // case InputManagerType.BikeInputManager:
             //     character.inputManager = new BikeInputManager(<BikeWalker> character.walker, character, this.keyboardService, this.graphService);

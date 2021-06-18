@@ -15,10 +15,8 @@ import { LightFactory } from "./object/light/LightFactory";
 import { ActivePlayerService } from "./ActivePlayerService";
 import { MaterialStore } from "../store/MaterialStore";
 import { RouteStore } from "../store/RouteStore";
-import { ToolService } from "./edit/ToolService";
 import { AssetContainerStore } from "../store/AssetContainerStore";
 import { CameraService } from "./edit/camera/CameraService";
-import { StageController } from "./ui/stage/StageController";
 import { RoutePool } from "./citizen/RoutePool";
 import { EventService } from "./base/EventService";
 import { CitizenStore } from "../store/CitizenStore";
@@ -61,9 +59,6 @@ export class Lookup {
     assetContainerStore: AssetContainerStore;
     lightStore: LightStore;
     routeStore: RouteStore;
-    toolService: ToolService;
-
-    stageController: StageController;
 
     routePool: RoutePool;
 
@@ -111,8 +106,6 @@ export class Lookup {
         
         this.renderGui = new RenderGuiService();
         lookup.renderGui = this.renderGui;
-        this.toolService = new ToolService();
-        lookup.toolService = this.toolService;
         this.cameraService = new CameraService();
         lookup.cameraService = this.cameraService;
 
@@ -131,10 +124,7 @@ export class Lookup {
         this.meshFactory = new MeshFactory();
         lookup.meshFactory = this.meshFactory;
 
-        this.stageController = new StageController();
-        lookup.stageController = this.stageController;
-
-        this.setup = new SetupService(this.cameraService);
+        this.setup = new SetupService(this.activePlayerService);
         this.update = new UpdateService();
     }
 

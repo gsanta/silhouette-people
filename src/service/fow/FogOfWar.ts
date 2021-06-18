@@ -1,91 +1,23 @@
-import { Color3, DynamicTexture, InputBlock, Mesh, MeshBuilder, NodeMaterial, Scene, SceneLoader, StandardMaterial, TargetCamera, Vector3 } from "babylonjs";
-import { GameObject } from "../../model/objects/game_object/GameObject";
+import { InputBlock, Mesh, MeshBuilder, NodeMaterial, Scene } from "babylonjs";
 import fowMaterial from "../../../assets/shaders/fow_shader.json";
+import { MonoBehaviour } from "../../model/behaviours/MonoBehaviour";
+import { MonoBehaviourName } from "../../model/behaviours/MonoBehaviourName";
+import { GameObject } from "../../model/objects/game_object/GameObject";
 
-export interface FogOfWarConfig {
-    width: number;
-    height: number;
-    positionY: number;
-}
-
-class FogOfWarInit {
+export class FogOfWar extends MonoBehaviour {
     private readonly scene: Scene;
-    private readonly camera: TargetCamera;
-    private readonly resolution: number;
-    private readonly config: FogOfWarConfig;
-
-    constructor(scene: Scene, camera: TargetCamera, resolution: number, config: FogOfWarConfig) {
-        this.scene = scene;
-        this.camera = camera;
-        this.resolution = resolution;
-        this.config = config;
-    }
-
-    init(): [Mesh, DynamicTexture, HTMLCanvasElement] {
-        const mesh = this.createMesh();
-        const texture = this.createMaterial(mesh);
-        const canvas = this.createCanvas(texture);
-
-        return [mesh, texture, canvas];
-    }
-
-    private createMesh() {
-        const mesh = MeshBuilder.CreateGround("plane-fow", {width: 1, height: 1, subdivisions: 2 }, this.scene);
-        // mesh.position = this.camera.target.clone();
-        mesh.scaling.x = this.config.width;
-        mesh.scaling.z = this.config.height;
-        mesh.position.y += this.config.positionY;
-
-        return mesh;
-    }
-
-    private createMaterial(mesh: Mesh): DynamicTexture {
-        const texture = new DynamicTexture("texture-fow", this.resolution, this.scene, true);
-
-        const material = new StandardMaterial("material-fow", this.scene);
-        material.specularColor = new Color3(0, 0, 0);
-        material.diffuseTexture = texture;
-        material.diffuseTexture.hasAlpha = true;
-        material.useAlphaFromDiffuseTexture = true;
-
-        mesh.material = material;
-
-        return texture;
-    }
-
-    private createCanvas(texture: DynamicTexture) {
-        const canvas = document.createElement('canvas');
-        const textureSize = texture.getSize();
-        canvas.width = textureSize.width;
-        canvas.height = textureSize.height;
-
-
-        return canvas;
-    }
-}
-
-export class FogOfWar {
-    private readonly resolution = 1024;
-    private readonly camera: TargetCamera;
-    private readonly target: GameObject;
-    private readonly config: FogOfWarConfig;
+    private readonly width = 200;
+    private readonly height = 200;
+    private readonly positionY = 10;
+    private readonly character: GameObject;
+    
     private mesh: Mesh;
-    private texture: DynamicTexture;
-    private canvas: HTMLCanvasElement;
-    private readonly scene: Scene;
-
     private material: NodeMaterial;
 
-    constructor(scene: Scene, camera: TargetCamera, target: GameObject, config: FogOfWarConfig) {
+    constructor(scene: Scene, character: GameObject) {
+        super(MonoBehaviourName.FOG_OF_WAR);
         this.scene = scene;
-        this.camera = camera;
-        this.target = target;
-        this.config = config;
-        
-        // const [mesh, texture, canvas] = new FogOfWarInit(scene, camera, this.resolution, config).init();
-        // this.mesh = mesh;
-        // this.texture = texture;
-        // this.canvas = canvas;
+        this.character = character;
 
         this.loadMaterial();
     }
@@ -93,95 +25,23 @@ export class FogOfWar {
     private async loadMaterial() {
         this.material = new NodeMaterial('fow-material', this.scene);
         this.material.loadFromSerialization(fowMaterial);
-        this.mesh = MeshBuilder.CreateGround("ground", {width: 200, height: 200}, this.scene);
-        const material = await NodeMaterial.ParseFromSnippetAsync("4750E2#8", this.scene);
+        this.mesh = MeshBuilder.CreateGround("ground", {width: this.width, height: this.height}, this.scene);
+        this.material = await NodeMaterial.ParseFromSnippetAsync("4750E2#8", this.scene);
 
-        // this.mesh.scaling.x = this.config.width;
-        // this.mesh.scaling.z = this.config.height;
-        this.mesh.position.y += this.config.positionY;
-        this.mesh.material = material;
-        (<InputBlock> material.getBlockByName('radius')).value = 0.7;
-
-        
-    this.scene.onPointerMove = (evt) => {
-        var pickResult = this.scene.pick(evt.offsetX, evt.offsetY);
-        if (pickResult.pickedPoint) {
-            const groundWidth = this.mesh.getBoundingInfo().boundingBox.extendSizeWorld.x;
-            const groundHeight = this.mesh.getBoundingInfo().boundingBox.extendSizeWorld.z;
-            const groundPos = this.mesh.getAbsolutePosition();
-
-            const circleOffsetX = (pickResult.pickedPoint.x - groundPos.x) / groundWidth;
-            const circleOffsetZ = (pickResult.pickedPoint.z - groundPos.z) / groundHeight;
-
-            (<InputBlock> material.getBlockByName('offsetX')).value = circleOffsetX;
-            (<InputBlock> material.getBlockByName('offsetY')).value = circleOffsetZ;
-        }
-    }
+        this.mesh.position.y += this.positionY;
+        this.mesh.material = this.material;
+        (<InputBlock> this.material.getBlockByName('radius')).value = 0.7;
     }
 
     update() {
-        // this.mesh.position = this.camera.target.clone();
-        // this.mesh.position.x = this.config.width / 4;
-        // this.mesh.position.z = - this.config.height / 4;
-        // this.mesh.position.y += this.config.positionY;
-        // const textureContext = this.texture.getContext();
+        const groundWidth = this.mesh.getBoundingInfo().boundingBox.extendSizeWorld.x;
+        const groundHeight = this.mesh.getBoundingInfo().boundingBox.extendSizeWorld.z;
+        const groundPos = this.mesh.getAbsolutePosition();
 
-        // this.clearRect();
-        // this.createVisibleArea();
+        const circleOffsetX = (this.character.position2D.x - groundPos.x) / groundWidth;
+        const circleOffsetZ = (this.character.position2D.y - groundPos.z) / groundHeight;
 
-        // textureContext.save();
-        // this.texture.update();
-    }
-
-    private createVisibleArea() {
-        const textureSize = this.texture.getSize();
-        const textureContext = this.texture.getContext();
-
-        const offsets = this.calculateRelativePosFromOrigin(this.target.position.clone(), this.camera.position.clone(), this.mesh.position.y);
-        let x = 0//offsets.x;
-        let z = 0//offsets.z;
-
-        var r1 = (this.resolution * 0.075);
-        var r2 = r1 * 1.1;
-
-        const meshX = 0// this.mesh.position.x;
-        const meshY = 0 //this.mesh.position.y;
-        const w = this.config.width;
-        const h = this.config.height;
-        const textureW = textureSize.width;
-        const textureH = textureSize.height;
-
-        x = (((x + (w / 2)) - meshX) / w) * textureW / 2;
-        z = ((((h / 2) - z) + meshY) / h) * textureH / 2;
-
-        var brush = this.canvas.getContext("2d").createRadialGradient( x, z, r1, x, z, r2 );
-            brush.addColorStop(  0, 'rgba( 0, 0, 0,  1 )' );
-            brush.addColorStop( .75, 'rgba( 0, 0, 0, .1 )' );
-            brush.addColorStop(  1, 'rgba( 0, 0, 0,  0 )' );
-        
-        textureContext.fillStyle = brush;
-        textureContext.fillRect( x - r2, z - r2, r2*2, r2*2 );
-    }
-
-    private clearRect() {
-        const textureContext = this.texture.getContext();
-
-        textureContext.globalCompositeOperation = 'source-over';
-        textureContext.clearRect(0,0,this.config.width,this.config.height);
-        textureContext.fillStyle = 'rgba( 0, 0, 0, 1 )';
-        textureContext.fillRect(0,0,this.config.width,this.config.height);
-        textureContext.globalCompositeOperation = 'destination-out';
-    }
-
-    private calculateRelativePosFromOrigin(pointA: Vector3, pointB: Vector3, height: number){
-        var pointC = new Vector3(0, height, 0);
-    
-        var direction = pointB.subtract( pointA );
-        direction.normalize();
-    
-        pointC.x = pointA.x + (direction.x * pointC.y);
-        pointC.z = pointA.z + (direction.z * pointC.y);
-    
-        return pointC;
+        (<InputBlock> this.material.getBlockByName('offsetX')).value = circleOffsetX;
+        (<InputBlock> this.material.getBlockByName('offsetY')).value = circleOffsetZ;
     }
 }

@@ -2,7 +2,7 @@ import { KeyboardService } from "../../../../service/base/keyboard/KeyboardServi
 import { GameObject } from "../../../objects/game_object/GameObject";
 import { InputController } from "../../../objects/game_object/controller_input/InputController";
 
-export class HumanInputManager extends InputController {
+export class HumanInputController extends InputController {
     readonly speedConst = 0.04;
     readonly rotationConst = Math.PI / 30;
     
@@ -10,7 +10,7 @@ export class HumanInputManager extends InputController {
     private character: GameObject;
 
     constructor(character: GameObject, keyboardService: KeyboardService) {
-        super();
+        super(keyboardService);
         this.keyboardService = keyboardService;
         this.character = character;
     }

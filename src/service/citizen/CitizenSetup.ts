@@ -10,18 +10,13 @@ import { RouteControllerListenerDecorator } from "../../model/objects/game_objec
 import { CitizenStore } from "../../store/CitizenStore";
 import { MaterialStore } from "../../store/MaterialStore";
 import { RouteStore } from "../../store/RouteStore";
-import { ToolService } from "../edit/ToolService";
 import { GraphService } from "../graph/GraphService";
 import { lookup } from "../Lookup";
 import { CollisionAvoidanceAdapter } from "../motion/collision/CollisionAvoidanceAdapter";
 import { WorldProvider } from "../WorldProvider";
-import { CitizenExecutor } from "./CitizenExecutor";
 import { RoutePool } from "./RoutePool";
 
 export class CitizenSetup {
-
-    @InjectProperty('ToolService')
-    private toolService: ToolService;
 
     @InjectProperty('WorldProvider')
     private worldProvider: WorldProvider;
@@ -36,19 +31,16 @@ export class CitizenSetup {
     private citizenStore: CitizenStore;
 
     private readonly routePool: RoutePool;
-    private readonly citizenExecutor: CitizenExecutor;
     private readonly graphService: GraphService;
 
     constructor(graphService: GraphService) {
         this.worldProvider = lookup.worldProvider;
-        this.toolService = lookup.toolService;
         this.routeStore = lookup.routeStore;
         this.materialStore = lookup.materialStore;
         this.citizenStore = lookup.citizenStore;
         this.graphService = graphService;
 
         this.routePool = new RoutePool();
-        this.citizenExecutor = new CitizenExecutor(this.citizenStore, this.routePool, this.routeStore, this.worldProvider, this.materialStore)
     }
 
     async setup() {

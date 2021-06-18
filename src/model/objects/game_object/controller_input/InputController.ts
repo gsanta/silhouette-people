@@ -1,8 +1,16 @@
+import { KeyboardService } from "../../../../service/base/keyboard/KeyboardService";
 
 
 export abstract class InputController {
     protected isSpeedDisabled = false;
     protected isDirectionDisabled = false;
+
+    constructor(keyboardService: KeyboardService) {
+        keyboardService.addListener({
+            onKeyDown: (e) => this.keyboard(keyboardService.keyNames),
+            onKeyUp: () => this.keyboard(keyboardService.keyNames)
+        });
+    }
     
     abstract keyboard(downKeys: Set<string>);
 

@@ -1,7 +1,6 @@
 
 import * as React from 'react';
 import { BikePanelComponent } from './BikePanelComponent';
-import { StageComponent } from './StageComponent';
 import { ComponentProps } from './ComponentProps';
 
 export interface AppComponentProps extends ComponentProps {
@@ -24,7 +23,6 @@ export class AppComponent extends React.Component<AppComponentProps> {
                     onKeyUp={e => this.props.world.keyboard.keyUp(e.nativeEvent)}
                 />
                 <BikePanelComponent world={this.props.world} />
-                <StageComponent/>
             </div>
         );
     }

@@ -85,7 +85,10 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
 
     update(deltaTime: number) {
         this._behaviours.forEach((val) => val.update(deltaTime));
-        // this.behaviours.forEach(behaviour => behaviour.update());
+    }
+
+    addBehaviour(behaviour: MonoBehaviour) {
+        this._behaviours.set(behaviour.name, behaviour);
     }
 
     get routeController(): RouteController {

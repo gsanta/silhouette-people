@@ -15,7 +15,7 @@ export class BikeInputController extends InputController {
     private readonly bike: GameObject;
 
     constructor(bikeWalker: BikeController, bike: GameObject, character: GameObject,  keyboardService: KeyboardService, graphService: GraphService) {
-        super();
+        super(keyboardService);
         this.bikeMover = bikeWalker;
         this.bike = bike;
         this.keyboardService = keyboardService;

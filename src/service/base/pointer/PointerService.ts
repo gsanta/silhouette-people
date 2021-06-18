@@ -3,7 +3,6 @@ import { PointerInfo } from "babylonjs/Events/pointerEvents";
 import { InjectProperty } from "../../../di/diDecorators";
 import { WorldProvider } from "../../WorldProvider";
 import { lookup } from "../../Lookup";
-import { ToolService } from "../../edit/ToolService";
 
 export enum MouseButtonType {
     LEFT = 'LEFT',
@@ -25,13 +24,9 @@ export class PointerService {
     @InjectProperty("WorldProvider")
     private worldProvider: WorldProvider;
 
-    @InjectProperty("ToolService")
-    private toolService: ToolService;
-
     constructor() {
         this.pointer = new PointerData();
         this.worldProvider = lookup.worldProvider;
-        this.toolService = lookup.toolService;
     }
 
     listen() {
@@ -51,18 +46,10 @@ export class PointerService {
 
     pointerDown(info: PointerInfo) {
         this.updatePointerData(info, { isDown: true });
-
-        if (this.toolService.getSelectedTool()) {
-            this.toolService.getSelectedTool().pointerDown(this.pointer);
-        }
     }
 
     pointerMove(info: PointerInfo) {
         this.updatePointerData(info, { isDown: false });
-
-        if (this.toolService.getSelectedTool()) {
-            this.toolService.getSelectedTool().pointerMove(this.pointer);
-        }
     }
 
     private updatePointerData(info: PointerInfo, eventInfo: { isDown: boolean }) {

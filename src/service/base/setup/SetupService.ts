@@ -1,12 +1,9 @@
 import { Scene } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
-import { CitizenStore } from "../../../store/CitizenStore";
 import { RouteStore } from "../../../store/RouteStore";
 import { CitizenSetup } from "../../citizen/CitizenSetup";
-import { ToolService } from "../../edit/ToolService";
 import { lookup } from "../../Lookup";
 import { FactorySetup } from "../../object/mesh/FactorySetup";
-import { MeshFactory } from "../../object/mesh/MeshFactory";
 import { RouteFactory } from "../../routing/route/RouteFactory";
 import { WorldFactory } from "../../object/world/WorldFactory";
 import { WorldImporter } from "../import/WorldImporter";
@@ -15,8 +12,6 @@ import { PlayerStore } from "../../player/PlayerStore";
 import { StorySetup } from "../../story/StorySetup";
 import { StoryTracker } from "../../story/StoryTracker";
 import { RenderGuiService } from "../../ui/RenderGuiService";
-import { StageController } from "../../ui/stage/StageController";
-import { StageSetup } from "../../ui/stage/StageSetup";
 import { DebugPanel } from "../debug/DebugPanel";
 import { DebugService } from "../debug/DebugService";
 import { KeyboardService } from "../keyboard/KeyboardService";
@@ -24,8 +19,7 @@ import { PointerService } from "../pointer/PointerService";
 import { RouteSetup } from "../../routing/route/RouteSetup";
 import { GraphService } from "../../graph/GraphService";
 import { PlayerSetup } from "../../player/PlayerSetup";
-import { FogOfWarSetup } from "../../fow/FogOfWarSetup";
-import { CameraService } from "../../edit/camera/CameraService";
+import { ActivePlayerService } from "../../ActivePlayerService";
 
 export class SetupService {
 
@@ -41,23 +35,14 @@ export class SetupService {
     @InjectProperty("PlayerStore")
     private playerStore: PlayerStore;
 
-    @InjectProperty("ToolService")
-    private toolService: ToolService;
-
     @InjectProperty("KeyboardService")
     private keyboardService: KeyboardService;
 
     @InjectProperty("RenderGuiService")
     private renderGuiService: RenderGuiService;
 
-    @InjectProperty("StageController")
-    private stageController: StageController;
-
     @InjectProperty("RouteFactory")
     private routeFactory: RouteFactory;
-
-    @InjectProperty("MeshFactory")
-    private meshFactory: MeshFactory;
 
     @InjectProperty("Backlog")
     private backlog: StoryTracker;
@@ -67,9 +52,6 @@ export class SetupService {
 
     @InjectProperty("GraphService")
     private graphService: GraphService;
-
-    @InjectProperty("CitizenStore")
-    private citizenStore: CitizenStore;
 
     private readonly worldFactory: WorldFactory;
 
@@ -82,24 +64,18 @@ export class SetupService {
     private playerSetup: PlayerSetup;
     private storySetup: StorySetup;
     private citizenSetup: CitizenSetup;
-    private stageSetup: StageSetup;
-    private fogOfWarSetup: FogOfWarSetup;
 
-    constructor(cameraService: CameraService) {
+    constructor(activePlayerService: ActivePlayerService) {
         this.worldProvider = lookup.worldProvider;
         this.debugService = lookup.debugService;
         this.pointerService = lookup.pointer;
         this.playerStore = lookup.playerStore;
-        this.toolService = lookup.toolService;
         this.keyboardService = lookup.keyboard;
         this.renderGuiService = lookup.renderGui;
-        this.stageController = lookup.stageController;
         this.routeFactory = lookup.routeFactory;
-        this.meshFactory = lookup.meshFactory;
         this.backlog = lookup.backlog;
         this.routeStore = lookup.routeStore;
         this.graphService = lookup.graphService;
-        this.citizenStore = lookup.citizenStore;
         
         this.worldMapParser = new WorldImporter(this.worldProvider, this.routeFactory, this.routeStore, this.backlog);
         this.worldFactory = new WorldFactory();
@@ -107,10 +83,8 @@ export class SetupService {
 
         this.factorySetup = new FactorySetup();
         this.routeSetup = new RouteSetup(this.worldProvider, this.graphService, this.routeStore);
-        this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.keyboardService);
+        this.playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.keyboardService, activePlayerService);
         this.storySetup = new StorySetup();
-        this.stageSetup = new StageSetup();
-        this.fogOfWarSetup = new FogOfWarSetup(this.worldProvider, cameraService, this.playerStore);
     }
 
     isReady() {
@@ -121,7 +95,6 @@ export class SetupService {
         await this.worldMapParser.parse();
         this.factorySetup.setup();
         this.storySetup.setup();
-        this.stageSetup.setup();
 
         this.worldProvider.world = await this.worldFactory.createWorldObj(scene);
         await this.backlog.processor.process();
@@ -132,17 +105,10 @@ export class SetupService {
         this.debugService.render();
         this.pointerService.listen();
 
-        this.fogOfWarSetup.setup();
-
         await this.citizenSetup.setup();
         
         this._isReady = true;
         
-        this.toolService.setSelectedTool(this.toolService.path, true);
-
-        this.stageController.stages.forEach(stage => stage.resetStage());
-        this.stageController.getActiveStage().enterStage();
-
         this.renderGuiService.render();
     }
 }
