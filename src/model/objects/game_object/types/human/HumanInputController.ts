@@ -1,4 +1,4 @@
-import { KeyboardService } from "../../../../../service/base/keyboard/KeyboardService";
+import { KeyboardService } from "../../../../../service/input/KeyboardService";
 import { GameObject } from "../../GameObject";
 import { InputController } from "../../InputController";
 

@@ -1,4 +1,4 @@
-import { KeyboardService, KeyName } from "../../../service/base/keyboard/KeyboardService";
+import { KeyboardService, KeyName } from "../../../service/input/KeyboardService";
 import { InputController } from "../game_object/InputController";
 import { StaticCameraPosController } from "./StaticCameraPosController";
 

@@ -23,12 +23,11 @@ export class CameraFactory {
 
     createFollowCamera() {
         const camera = new FollowCamera("camera-follow", new Vector3(0, 10, -10), this.worldProvider.scene);
-        // camera.attachControl(true);
 
         camera.radius = 30;
 
         camera.heightOffset = 20;
-        camera.rotationOffset = Math.PI / 2;
+        camera.rotationOffset = 180;
         camera.cameraAcceleration = 0.005;
         camera.maxCameraSpeed = 10;
 

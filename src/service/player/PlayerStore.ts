@@ -1,18 +1,15 @@
-import { InjectProperty } from "../../di/diDecorators";
 import { GameObject, GameObjectTag } from "../../model/objects/game_object/GameObject";
 import { GameObjectStore } from "../../store/GameObjectStore";
-import { lookup } from "../Lookup";
 
 export class PlayerStore {
-    @InjectProperty('MeshStore')
-    private meshStore: GameObjectStore;
+    private readonly gameObjectStore: GameObjectStore;
 
-    constructor() {
-        this.meshStore = lookup.meshStore;
+    constructor(gameObjectStore: GameObjectStore) {
+        this.gameObjectStore = gameObjectStore;
     }
 
     addItem(item: GameObject) {
-        this.meshStore.addItem(item);
+        this.gameObjectStore.addItem(item);
     }
 
     getActivePlayer(): GameObject {
@@ -20,18 +17,18 @@ export class PlayerStore {
     }
 
     getPlayerById(id: string): GameObject {
-        return <GameObject> this.meshStore.getById(id);
+        return <GameObject> this.gameObjectStore.getById(id);
     }
 
     getPlayers(): GameObject[] {
-        return <GameObject[]> this.meshStore.getByTag(GameObjectTag.Player);
+        return <GameObject[]> this.gameObjectStore.getByTag(GameObjectTag.Player);
     }
 
     getBikes(): GameObject[] {
-        return <GameObject[]> this.meshStore.getByTag(GameObjectTag.Bicycle);
+        return <GameObject[]> this.gameObjectStore.getByTag(GameObjectTag.Bicycle);
     }
 
     removeItem(citizen: GameObject, disposeMesh = false) {
-        this.meshStore.removeItem(citizen, disposeMesh);
+        this.gameObjectStore.removeItem(citizen, disposeMesh);
     }
 }

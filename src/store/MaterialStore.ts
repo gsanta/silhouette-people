@@ -1,6 +1,4 @@
 import { Color3, StandardMaterial } from "babylonjs";
-import { InjectProperty } from "../di/diDecorators";
-import { lookup } from "../service/Lookup";
 import { WorldProvider } from "../service/WorldProvider";
 
 export class MaterialStore {
@@ -10,11 +8,10 @@ export class MaterialStore {
     private ribbonMaterial: StandardMaterial;
     private activePathMaterial: StandardMaterial;
 
-    @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
+    private readonly worldProvider: WorldProvider;
 
-    constructor() {
-        this.worldProvider = lookup.worldProvider;
+    constructor(worldProvider: WorldProvider) {
+        this.worldProvider = worldProvider;
     }
 
     getTileMaterial(): StandardMaterial {

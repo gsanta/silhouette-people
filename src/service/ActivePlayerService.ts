@@ -1,19 +1,17 @@
-import { InjectProperty } from "../di/diDecorators";
 import { HighlightHelper } from "../model/HighlightHelper";
 import { GameObject } from "../model/objects/game_object/GameObject";
-import { lookup } from "./Lookup";
+import { LightStore } from "../store/LightStore";
+import { LightFactory } from "./object/LightFactory";
 import { PlayerStore } from "./player/PlayerStore";
 
 export class ActivePlayerService {
 
-    @InjectProperty("MeshStore")
-    private playerStore: PlayerStore;
+    private readonly playerStore: PlayerStore;
+    private readonly highlightHelper: HighlightHelper;
 
-    private highlightHelper: HighlightHelper;
-
-    constructor() {
-        this.playerStore = lookup.playerStore;
-        this.highlightHelper = new HighlightHelper();
+    constructor(playerStore: PlayerStore, lightStore: LightStore, lightFactory: LightFactory) {
+        this.playerStore = playerStore;
+        this.highlightHelper = new HighlightHelper(lightStore, lightFactory);
     }
 
     activate(player: GameObject) {

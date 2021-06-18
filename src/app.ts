@@ -2,13 +2,13 @@ import { CannonJSPlugin, Color3, Color4, CubeTexture, Engine, HemisphericLight, 
 import 'babylonjs-loaders';
 import React from "react";
 import * as ReactDOM from 'react-dom';
-import { Lookup } from "./service/Lookup";
+import { DependencyResolver } from "./service/DependencyResolver";
 import { AppComponent } from './component/AppComponent';
 
 export function createGame() {
     const root = <HTMLCanvasElement> document.getElementById("root");
     
-    const world = new Lookup();
+    const world = new DependencyResolver();
     (window as any).world = world;
 
     ReactDOM.render(
@@ -17,7 +17,7 @@ export function createGame() {
     );
 }
 
-function initGame(lookup: Lookup) {
+function initGame(lookup: DependencyResolver) {
     const canvas = <HTMLCanvasElement> document.getElementById("game-canvas");
 
     const engine = new Engine(canvas, true);
@@ -84,7 +84,7 @@ function initGame(lookup: Lookup) {
         
         scene.render();
         
-        if (lookup.setup.isReady()) {
+        if (lookup.setupService.isReady()) {
             lookup.update.update();
         }
 
@@ -95,6 +95,6 @@ function initGame(lookup: Lookup) {
         engine.resize();
     });
 
-    lookup.setup.setup(scene);
+    lookup.setupService.setup();
     lookup.debugService.render();
 }

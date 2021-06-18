@@ -1,6 +1,6 @@
 import { BikeBehaviour } from "../../../model/objects/game_object/types/bike/BikeBehaviour";
 import { GameObjectConfig, GameObject, GameObjectTag, GameObjectType } from "../../../model/objects/game_object/GameObject";
-import { AbstractPropertyParser } from "../../base/import/AbstractPropertyParser";
+import { AbstractPropertyParser } from "../../import/AbstractPropertyParser";
 
 export class MeshFactory {
     private readonly indexesByType: Map<string, number> = new Map();

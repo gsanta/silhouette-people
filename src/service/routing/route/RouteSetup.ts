@@ -1,10 +1,11 @@
 import { RouteItem } from "../../../model/objects/route/RouteItem";
 import { RouteStore } from "../../../store/RouteStore";
-import { GraphParser } from "../../base/import/map/parse/GraphParser";
+import { GraphParser } from "../../import/map/GraphParser";
+import { ISetup } from "../../setup/ISetup";
 import { GraphService } from "../../graph/GraphService";
 import { WorldProvider } from "../../WorldProvider";
 
-export class RouteSetup {
+export class RouteSetup implements ISetup {
     private readonly worldProvider: WorldProvider;
     private readonly graphParser: GraphParser;
     private readonly graphService: GraphService;
@@ -17,7 +18,7 @@ export class RouteSetup {
         this.graphParser = new GraphParser();
     }
 
-    setup() {
+    async setup(): Promise<void> {
         const graph = this.graphParser.parse(this.worldProvider.worldMap);
         this.graphService.setGraph(graph);
 

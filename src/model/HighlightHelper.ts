@@ -1,7 +1,5 @@
 import { Vector3 } from "babylonjs";
-import { InjectProperty } from "../di/diDecorators";
-import { LightFactory } from "../service/object/light/LightFactory";
-import { lookup } from "../service/Lookup";
+import { LightFactory } from "../service/object/LightFactory";
 import { LightStore } from "../store/LightStore";
 import { LightObject } from "./objects/light/LightObject";
 import { GameObject } from "./objects/game_object/GameObject";
@@ -10,15 +8,12 @@ export class HighlightHelper {
     private pending = false;
     private pendingMeshObj: GameObject;
 
-    @InjectProperty("LightStore")
-    private lightStore: LightStore;
+    private readonly lightStore: LightStore;
+    private readonly lightFactory: LightFactory;
 
-    @InjectProperty("LightFactory")
-    private lightFactory: LightFactory;
-
-    constructor() {
-        this.lightStore = lookup.lightStore;
-        this.lightFactory = lookup.lightFactory;
+    constructor(lightStore: LightStore, lightFactory: LightFactory) {
+        this.lightStore = lightStore;
+        this.lightFactory = lightFactory;
     }
 
     attachHighlightTo(meshObj: GameObject) {

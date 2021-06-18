@@ -8,16 +8,17 @@ import { WorldProvider } from "../WorldProvider";
 import { PlayerParser } from "./PlayerParser";
 import { PlayerStore } from "./PlayerStore";
 import { RouterAdapter } from "../../model/objects/route/routing/RouterAdapter";
-import { BikeParenter } from "../base/setup/BikeParenter";
-import { KeyboardService } from "../base/keyboard/KeyboardService";
+import { BikeParenter } from "../setup/BikeParenter";
+import { KeyboardService } from "../input/KeyboardService";
 import { BikeInputController } from "../../model/objects/game_object/types/bike/BikeInputController";
 import { BikeController } from "../../model/objects/game_object/types/bike/BikeController";
 import { DynamicRouter } from "../../model/objects/route/routing/DynamicRouter";
 import { GameObject } from "../../model/objects/game_object/GameObject";
 import { FogOfWar } from "../fow/FogOfWar";
 import { ActivePlayerService } from "../ActivePlayerService";
+import { ISetup } from "../setup/ISetup";
 
-export class PlayerSetup {
+export class PlayerSetup implements ISetup {
 
     private readonly worldProvider: WorldProvider;
     private readonly playerStore: PlayerStore;
@@ -45,7 +46,7 @@ export class PlayerSetup {
         this.bikeParenter = new BikeParenter();
     }
 
-    setup() {
+    async setup(): Promise<void> {
         const player = this.playerStore.getActivePlayer();
         this.activePlayerService.activate(player);
 

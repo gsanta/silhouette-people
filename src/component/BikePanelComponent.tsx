@@ -2,7 +2,7 @@ import React from "react";
 import { ComponentProps } from './ComponentProps';
 import './../../assets/css/action-panel.scss'
 import { InjectProperty } from "../di/diDecorators";
-import { lookup } from "../service/Lookup";
+import { lookup } from "../service/DependencyResolver";
 import { PlayerStore } from "../service/player/PlayerStore";
 import { GameObject } from "../model/objects/game_object/GameObject";
 

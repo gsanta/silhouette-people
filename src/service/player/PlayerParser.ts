@@ -1,5 +1,5 @@
 import { RouteItem } from "../../model/objects/route/RouteItem";
-import { WorldMap } from "../base/import/map/WorldMap";
+import { WorldMap } from "../import/WorldMap";
 import { GraphService } from "../graph/GraphService";
 
 export class PlayerParser {

@@ -1,6 +1,4 @@
-import { InjectProperty } from "../../di/diDecorators";
 import { MaterialStore } from "../../store/MaterialStore";
-import { lookup } from "../Lookup";
 import { WorldProvider } from "../WorldProvider";
 import { Graph } from "./Graph";
 import { GraphEdge } from "./GraphEdge";
@@ -8,18 +6,15 @@ import { GraphVertex } from "./GraphImpl";
 import { GraphVisualizer } from "./GraphVisualizer";
 
 export class GraphService {
-    @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
-
-    @InjectProperty("MaterialStore")
-    private materialStore: MaterialStore;
+    private readonly worldProvider: WorldProvider;
+    private readonly materialStore: MaterialStore;
 
     private graph: Graph<GraphVertex, GraphEdge>;
     private visualizer: GraphVisualizer;
 
-    constructor() {
-        this.worldProvider = lookup.worldProvider;
-        this.materialStore = lookup.materialStore;
+    constructor(worldProvider: WorldProvider, materialStore: MaterialStore) {
+        this.worldProvider = worldProvider;
+        this.materialStore = materialStore;
     }
 
     setGraph(graph: Graph<GraphVertex, GraphEdge>) {

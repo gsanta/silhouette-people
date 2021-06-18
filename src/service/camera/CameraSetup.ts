@@ -1,15 +1,14 @@
 import { StaticCameraInputController } from "../../model/objects/camera/StaticCameraInputController";
 import { StaticCameraPosController } from "../../model/objects/camera/StaticCameraPosController";
-import { GameObjectStore } from "../../store/GameObjectStore";
 import { QuarterStore } from "../../store/QuarterStore";
-import { ActivePlayerService } from "../ActivePlayerService";
-import { KeyboardService } from "../base/keyboard/KeyboardService";
+import { KeyboardService } from "../input/KeyboardService";
+import { ISetup } from "../setup/ISetup";
 import { PlayerStore } from "../player/PlayerStore";
 import { WorldProvider } from "../WorldProvider";
 import { CameraFactory } from "./CameraFactory";
 import { CameraService } from "./CameraService";
 
-export class CameraSetup {
+export class CameraSetup implements ISetup {
     private readonly cameraFactory: CameraFactory;
     private readonly worldProvider: WorldProvider;
     private readonly quarterStore: QuarterStore;
@@ -32,7 +31,7 @@ export class CameraSetup {
         this.cameraFactory = new CameraFactory(worldProvider);
     }
 
-    setup() {
+    async setup(): Promise<void> {
         const staticCamera = this.cameraFactory.createStaticCamera()
         const staticCameraPosController = new StaticCameraPosController(this.worldProvider.world, staticCamera, this.quarterStore);1
         staticCamera.addBehaviour(staticCameraPosController);

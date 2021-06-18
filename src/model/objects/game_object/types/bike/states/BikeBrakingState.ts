@@ -1,4 +1,4 @@
-import { lookup } from "../../../../../../service/Lookup";
+import { lookup } from "../../../../../../service/DependencyResolver";
 import { MotionController } from "../../../MotionController";
 import { GameObject } from "../../../GameObject";
 import { GameObjectState } from "../../../GameObjectState";

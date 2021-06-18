@@ -1,5 +1,5 @@
-import { Lookup } from "../service/Lookup";
+import { DependencyResolver } from "../service/DependencyResolver";
 
 export interface ComponentProps {
-    world: Lookup;
+    world: DependencyResolver;
 }

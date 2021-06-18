@@ -1,4 +1,4 @@
-import { KeyboardService, KeyName } from "../../../../../service/base/keyboard/KeyboardService";
+import { KeyboardService, KeyName } from "../../../../../service/input/KeyboardService";
 import { GraphImpl } from "../../../../../service/graph/GraphImpl";
 import { GraphService } from "../../../../../service/graph/GraphService";
 import { InputController } from "../../InputController";

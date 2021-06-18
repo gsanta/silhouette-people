@@ -1,7 +1,7 @@
 import { Mesh, Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
 import { InjectProperty } from "../../../../../di/diDecorators";
-import { lookup } from "../../../../../service/Lookup";
+import { lookup } from "../../../../../service/DependencyResolver";
 import { WorldProvider } from "../../../../../service/WorldProvider";
 import { QuarterMap } from "./QuarterMap";
 import { Rect } from "../../../../math/shapes/Rect";

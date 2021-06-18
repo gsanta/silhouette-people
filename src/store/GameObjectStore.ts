@@ -1,16 +1,13 @@
-import { InjectProperty } from "../di/diDecorators";
 import { GameObject, GameObjectTag } from "../model/objects/game_object/GameObject";
-import { lookup } from "../service/Lookup";
 import { QuarterStore } from "./QuarterStore";
 
 export class GameObjectStore {
     private items: GameObject[] = [];
 
-    @InjectProperty("QuarterStore")
-    private quarterStore: QuarterStore;
+    private readonly quarterStore: QuarterStore;
 
-    constructor() {
-        this.quarterStore = lookup.quarterStore;
+    constructor(quarterStore: QuarterStore) {
+        this.quarterStore = quarterStore;
     }
 
     addItem(meshItem: GameObject) {

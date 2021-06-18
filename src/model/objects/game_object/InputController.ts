@@ -1,4 +1,4 @@
-import { KeyboardService } from "../../../service/base/keyboard/KeyboardService";
+import { KeyboardService } from "../../../service/input/KeyboardService";
 
 
 export abstract class InputController {
