@@ -1,37 +1,36 @@
 import { lookup } from "../../../../../../service/DependencyResolver";
-import { MotionController } from "../../../MotionController";
 import { GameObject } from "../../../GameObject";
 import { GameObjectState } from "../../../GameObjectState";
-import { BikeStateInfo } from "../BikeStateInfo";
+import { BikeController } from "../BikeController";
 import { BrakingSystem } from "../physics/BrakingSystem";
 import { BikeIdleState } from "./BikeIdleState";
 import { BikeSpeedUpState } from "./BikeSpeedUpState";
 
 export class BikeBrakingState extends GameObjectState {
     private readonly bike: GameObject;
-    private readonly mover: MotionController;
+    private readonly motionController: BikeController;
     private readonly brakeSystem: BrakingSystem;
     private powerBrake = false;
 
-    constructor(bike: GameObject, mover: MotionController) {
+    constructor(bike: GameObject, motionController: BikeController) {
         super(bike);
         this.bike = bike;
-        this.mover = mover;
-        this.brakeSystem = new BrakingSystem(lookup.worldProvider, bike, this.mover, 1.5);
+        this.motionController = motionController;
+        this.brakeSystem = new BrakingSystem(lookup.worldProvider, bike, this.motionController, 1.5);
     }
 
     update(deltaTime: number) {
-        this.updateInfo(this.bike.behaviour.info);
+        this.updateInfo();
         this.brakeSystem.break(deltaTime, this.powerBrake);
     }
 
-    private updateInfo(bikeStateInfo: BikeStateInfo): void {
-        this.powerBrake = bikeStateInfo.isPowerBrakeOn;
-        if (!bikeStateInfo.isBraking) {
-            if (bikeStateInfo.isPedalling) {
-                this.bike.stateController.state = new BikeSpeedUpState(this.bike, this.mover);
+    private updateInfo(): void {
+        this.powerBrake = this.motionController.isPowerBrakeOn;
+        if (!this.motionController.isBraking) {
+            if (this.motionController.isPedalling) {
+                this.bike.stateController.state = new BikeSpeedUpState(this.bike, this.motionController);
             } else {
-                this.bike.stateController.state = new BikeIdleState(this.bike, this.mover);
+                this.bike.stateController.state = new BikeIdleState(this.bike, this.motionController);
             }
         }
     }

@@ -70,7 +70,7 @@ export class PlayerSetup implements ISetup {
         walker.addListener(new RouteVisualizerAdapter(walker, this.graphService));
         
         const bike = <GameObject> player.getParent();
-        player.inputController = new BikeInputController(<BikeController> player.motionController, bike, player, this.keyboardService, this.graphService);
+        player.inputController = new BikeInputController(<BikeController> player.motionController, player, this.keyboardService, this.graphService);
         bike.inputController = player.inputController;
     
         player.routeController.setStarted(true);

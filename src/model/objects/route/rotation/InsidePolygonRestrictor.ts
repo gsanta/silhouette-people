@@ -1,34 +1,52 @@
 import { Vector3 } from "babylonjs";
 import pointInPolygon from "point-in-polygon";
-import { GraphEdge } from "../../../../service/graph/GraphEdge";
+import { rotToVec, vector3ToRotation } from "../../../../helpers";
+import { LineSideCalc } from "../../../math/LineSideCalc";
+import { Rotation } from "../../../math/Rotation";
 import { Quad } from "../../../math/shapes/Quad";
 import { RouteController } from "../../game_object/controller_route/RouteController";
+import { MotionFilter } from "../../game_object/MotionController";
 
-export class InsidePolygonRestrictor {
+export class InsidePolygonRestrictor extends MotionFilter {
     private readonly routeWalker: RouteController;
-    private readonly respawnTimeLimit = 1000;
-    private respawnTimer = 0;
 
     constructor(routeWalker: RouteController) {
+        super();
         this.routeWalker = routeWalker;
     }
 
-    update(deltaTime: number): number | null {
+    filterDirection(direction: Vector3) {
         const edge = this.routeWalker.getEdge();
         const character = this.routeWalker.getCharacter();
         const route = this.routeWalker.getRoute();
         const inPolygon = this.testPointInPolyon(character.position, edge.dimensions);
 
-        if (!inPolygon) {
-            this.respawnTimer += deltaTime;
+        if (inPolygon) {
+            return direction;
+        } else {
+            const side = new LineSideCalc(edge.line.equation).getSide(character.position2D);
+            const rotation = edge.angle;
 
-            if (this.respawnTimer >= this.respawnTimeLimit) {
-                this.routeWalker.set
+            if (side > 0) {
+                const angle2 = edge.angle.add(Math.PI);
+                const characterRotation = new Rotation(vector3ToRotation(direction)).standardAngle().norm();
+                if (rotation.isBetween(angle2.rad, characterRotation)) {
+                    return direction;
+                } else {
+                    const rot = route.isReversed(edge) ? edge.oppositeAngle.worldAngle().rad : edge.angle.worldAngle().rad;
+                    return rotToVec(rot);
+                }
+            } else {
+                const angle2 = edge.angle.add(-Math.PI);
+                const characterRotation = vector3ToRotation(direction);
+                if (rotation.isBetween(angle2.rad, characterRotation)) {
+                    return direction;
+                } else {
+                    const rot = route.isReversed(edge) ? edge.oppositeAngle.worldAngle().rad : edge.angle.worldAngle().rad;
+                    return rotToVec(rot);
+                }
             }
-            return route.isReversed(edge) ? edge.oppositeAngle.worldAngle().rad : edge.angle.worldAngle().rad;
         }
-
-        return null;
     }
 
     private testPointInPolyon(point: Vector3, polygon: Quad): boolean {

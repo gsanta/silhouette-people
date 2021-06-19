@@ -3,6 +3,7 @@ import { BikeIdleState } from "../../bike/states/BikeIdleState";
 import { GameObject } from "../../../GameObject";
 import { GameObjectState } from "../../../GameObjectState";
 import { HumanIdleState } from "./HumanIdleState";
+import { BikeController } from "../../bike/BikeController";
 
 export class HumanGetOffBikeState extends GameObjectState {
     
@@ -17,7 +18,7 @@ export class HumanGetOffBikeState extends GameObjectState {
         const bike = <GameObject> player.getParent();
         player.setParent(undefined);
 
-        bike.stateController.state = new BikeIdleState(bike, bike.motionController);
+        bike.stateController.state = new BikeIdleState(bike, <BikeController> bike.motionController);
         player.stateController.state = new HumanIdleState(player);
         player.mesh.parent = bike.mesh.parent;
         player.position = bike.position;

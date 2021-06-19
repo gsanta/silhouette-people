@@ -1,35 +1,34 @@
-import { MotionController } from "../../../MotionController";
 import { GameObject } from "../../../GameObject";
 import { GameObjectState } from "../../../GameObjectState";
-import { BikeStateInfo } from "../BikeStateInfo";
 import { SpeedupSystem } from "../physics/SpeedupSystem";
 import { BikeBrakingState } from "./BikeBrakingState";
 import { BikeIdleState } from "./BikeIdleState";
+import { BikeController } from "../BikeController";
 
 export class BikeSpeedUpState extends GameObjectState {
     private readonly bike: GameObject;
-    private readonly mover: MotionController;
+    private readonly motionController: BikeController;
     private readonly speedUpSystem: SpeedupSystem;
 
-    constructor(bike: GameObject, mover: MotionController) {
+    constructor(bike: GameObject, motionController: BikeController) {
         super(bike);
         this.bike = bike;
-        this.mover = mover;
-        this.speedUpSystem = new SpeedupSystem(this.mover);
+        this.motionController = motionController;
+        this.speedUpSystem = new SpeedupSystem(this.motionController);
     }
 
     update(deltaTime: number) {
-        this.updateInfo(this.bike.behaviour.info);
+        this.updateInfo();
         this.speedUpSystem.update(deltaTime);
     }
 
-    private updateInfo(bikeStateInfo: BikeStateInfo): void {
-        if (!bikeStateInfo.isBraking && !bikeStateInfo.isPedalling) {
-            this.bike.stateController.state = new BikeIdleState(this.bike, this.mover);
-        } else if (bikeStateInfo.isBraking) {
-            this.bike.stateController.state = new BikeBrakingState(this.bike, this.mover);
+    private updateInfo(): void {
+        if (!this.motionController.isBraking && !this.motionController.isPedalling) {
+            this.bike.stateController.state = new BikeIdleState(this.bike, this.motionController);
+        } else if (this.motionController.isBraking) {
+            this.bike.stateController.state = new BikeBrakingState(this.bike, this.motionController);
         } else {
-            this.speedUpSystem.setGear(bikeStateInfo.gear);
+            this.speedUpSystem.setGear(this.motionController.gear);
         }
     }
 }

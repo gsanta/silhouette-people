@@ -16,7 +16,7 @@ export class HumanController extends MotionController {
         const deltaTimeSec = deltaTime / 1000;
         const displacement = this.speed * deltaTimeSec;
         const displacementVec = new Vector3(displacement, displacement, displacement);
-        const vel = this.velocity.multiply(displacementVec)
+        const vel = this.direction.multiply(displacementVec)
         this.character.moveWithCollision(vel);
         this.character.rotation = vector3ToRotation(vel);
     }

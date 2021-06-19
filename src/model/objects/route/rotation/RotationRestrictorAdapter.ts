@@ -12,16 +12,12 @@ export class RotationRestrictorAdapter extends RouteControllerListener {
         this.restrictor = new RotationRestrictor(routeWalker);
     }
 
-    onWalk(deltaTime: number) {
-        this.restrictor.update();
-    }
-
     onEnterEdge() {
         this.restrictor.edgeChanged();
     }
 
     onDirectionChanged() {
-        this.restrictor.edgeChanged();
+        this.restrictor.directionChanged();
     }
 
     onStarted() {

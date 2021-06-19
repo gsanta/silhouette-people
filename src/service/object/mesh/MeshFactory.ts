@@ -1,4 +1,3 @@
-import { BikeBehaviour } from "../../../model/objects/game_object/types/bike/BikeBehaviour";
 import { GameObjectConfig, GameObject, GameObjectTag, GameObjectType } from "../../../model/objects/game_object/GameObject";
 import { AbstractPropertyParser } from "../../import/AbstractPropertyParser";
 
@@ -16,7 +15,6 @@ export class MeshFactory {
         
         if (meshConfig.type === GameObjectType.Bicycle1) {
             const character = new GameObject(id);
-            character.behaviour = new BikeBehaviour();
             meshItem = character;
         } else if (meshConfig.props.tags && meshConfig.props.tags.includes(GameObjectTag.Citizen)) {
             const character = new GameObject(id);

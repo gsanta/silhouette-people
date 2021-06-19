@@ -42,8 +42,23 @@ export class Rotation {
         return new Rotation(this.rad - Math.PI / 2);
     }
 
+    standardAngle(): Rotation {
+        return new Rotation(this.rad + Math.PI / 2);
+    }
+
     add(rad: number): Rotation {
         return new Rotation(this.rad + rad);
+    }
+
+    isBetween(otherAngle: number, testedAngle): boolean {
+        if (otherAngle >= this.rad) {
+            return testedAngle >= this.rad && testedAngle <=otherAngle;
+        } else {
+            return (
+                testedAngle >= this.rad && testedAngle <= 2 * Math.PI ||
+                testedAngle <= otherAngle && testedAngle >= 0
+            );
+        }
     }
 
     middle(otherRad: number): Rotation {

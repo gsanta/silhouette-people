@@ -23,7 +23,7 @@ export class CollisionAvoidance {
 
         if (angles) {
             const character = this.walker.getCharacter();
-            const characterRot = Rotation.FromVector(toVector2(character.motionController.velocity));
+            const characterRot = Rotation.FromVector(toVector2(character.motionController.direction));
             const angle = new Rotation(angles.angle1);
             const steeringPos = new Rotation(angles.angle2).toVector3().multiply(new Vector3(3, 1, 3));
             const targetPos = character.position.add(steeringPos);

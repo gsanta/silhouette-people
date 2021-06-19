@@ -22,7 +22,7 @@ export class HumanIdleState extends GameObjectState {
 
         if (!walker) { return; }
 
-        if (walker.getRotation() !== 0 || walker.getSpeed() !== 0) {
+        if (walker.getSpeed() !== 0) {
             this.character.stateController.state = new HumanWalkingState(this.character); 
         }
     }

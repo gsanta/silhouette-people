@@ -23,7 +23,7 @@ export class CollisionVecVisualizer extends MonoBehaviour {
     }
 
     private createOrUpdateMesh() {
-        const vec = this.character.motionController.velocity.multiply(numToVector3(this.character.collisionSensorDistance));
+        const vec = this.character.motionController.direction.multiply(numToVector3(this.character.collisionSensorDistance));
         const startPos = this.character.position.clone();
         const endPos = startPos.add(vec);
         startPos.y = meshAttachmentHeight;

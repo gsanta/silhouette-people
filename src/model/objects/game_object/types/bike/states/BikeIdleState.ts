@@ -1,33 +1,32 @@
-import { MotionController } from "../../../MotionController";
 import { GameObject } from "../../../GameObject";
 import { GameObjectState } from "../../../GameObjectState";
-import { BikeStateInfo } from "../BikeStateInfo";
 import { RollingSystem } from "../physics/RollingSystem";
 import { BikeBrakingState } from "./BikeBrakingState";
 import { BikeSpeedUpState } from "./BikeSpeedUpState";
+import { BikeController } from "../BikeController";
 
 export class BikeIdleState extends GameObjectState {
     private readonly bike: GameObject;
-    private readonly mover: MotionController;
+    private readonly motionController: BikeController;
     private readonly rollingSystem: RollingSystem;
 
-    constructor(bike: GameObject, mover: MotionController) {
+    constructor(bike: GameObject, motionController: BikeController) {
         super(bike);
         this.bike = bike;
-        this.mover = mover;
+        this.motionController = motionController;
         this.rollingSystem = new RollingSystem(this.bike.motionController, 1)
     }
     
     update(deltaTime: number) {
-        this.updateInfo(this.bike.behaviour.info);
+        this.updateInfo();
         this.rollingSystem.update(deltaTime);
     }
 
-    private updateInfo(bikeStateInfo: BikeStateInfo): void {
-        if (bikeStateInfo.isBraking) {
-            this.bike.stateController.state = new BikeBrakingState(this.bike, this.mover);
-        } else if (bikeStateInfo.isPedalling) {
-            this.bike.stateController.state = new BikeSpeedUpState(this.bike, this.mover);
+    private updateInfo(): void {
+        if (this.motionController.isBraking) {
+            this.bike.stateController.state = new BikeBrakingState(this.bike, this.motionController);
+        } else if (this.motionController.isPedalling) {
+            this.bike.stateController.state = new BikeSpeedUpState(this.bike, this.motionController);
         }
     }
 }

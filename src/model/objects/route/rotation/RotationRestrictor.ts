@@ -1,41 +1,20 @@
-import { rotToVec } from "../../../../helpers";
 import { RouteController } from "../../game_object/controller_route/RouteController";
 import { ExactDirectionRestrictor } from "./ExactDirectionRestrictor";
 import { InsidePolygonRestrictor } from "./InsidePolygonRestrictor";
 
 export class RotationRestrictor {
     private routeWalker: RouteController;
-    private exactDirectionRestrictor: ExactDirectionRestrictor;
-    private insidePolygonRestrictor: InsidePolygonRestrictor;
-
+    private lineRotationFilter: ExactDirectionRestrictor;
+    private areaRotationFilter: InsidePolygonRestrictor;
 
     constructor(routeWalker: RouteController) {
         this.routeWalker = routeWalker;
-        this.exactDirectionRestrictor = new ExactDirectionRestrictor(this.routeWalker);
-        this.insidePolygonRestrictor = new InsidePolygonRestrictor(routeWalker);
-    }
-
-    update(deltaTime: number) {
-        if (this.routeWalker.isRunning()) {
-
-            const direction = this.getDirectionIfRestricted();
-
-            if (direction !== null) {
-                this.restrictToDirection(direction)
-            } else {
-                this.routeWalker.getCharacter().inputController.enableDirection();
-            }
-        }
+        this.lineRotationFilter = new ExactDirectionRestrictor(this.routeWalker);
+        this.areaRotationFilter = new InsidePolygonRestrictor(routeWalker);
     }
 
     edgeChanged() {
-        const edge = this.routeWalker.getEdge();
-        const route = this.routeWalker.getRoute();
-        if (edge) {
-            const character = this.routeWalker.getCharacter();
-            const angle = route.isReversed(edge) ? edge.oppositeAngle : edge.angle;
-            character.motionController.velocity = angle.worldAngle().toVector3();
-        }
+        this.setRotationFilter();
     }
 
     directionChanged() {
@@ -48,29 +27,26 @@ export class RotationRestrictor {
         }
     }
 
-    private getDirectionIfRestricted(deltaTime: number): number | null {
+    private setRotationFilter() {
+        this.removeRotationFilter();
+        
         const edge = this.routeWalker.getEdge();
-        return edge.thickness ? this.insidePolygonRestrictor.update(deltaTime) : this.exactDirectionRestrictor.restrict(edge);
+        const character = this.routeWalker.getCharacter();
+        const filter = edge.thickness ? this.areaRotationFilter : this.lineRotationFilter;
+        character.motionController.addFilter(filter);
     }
 
-    private restrictToDirection(direction: number) {
+    private removeRotationFilter() {
         const character = this.routeWalker.getCharacter();
-        // character.instance.setRotation(direction);
-        character.motionController.velocity = rotToVec(direction);
-        character.inputController.disableDirection();
+        character.motionController.removeFilter(this.areaRotationFilter);
+        character.motionController.removeFilter(this.lineRotationFilter);
     }
 
     on() {
-        const character = this.routeWalker.getCharacter();
-        if (character && character.inputController) {
-            character.inputController.disableDirection();
-        }
+        this.setRotationFilter();
     }
 
     off() {
-        const character = this.routeWalker.getCharacter();
-        if (character && character.inputController) {
-            character.inputController.enableDirection();
-        }
+        this.removeRotationFilter();
     }
 }

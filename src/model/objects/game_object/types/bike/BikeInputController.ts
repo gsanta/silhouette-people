@@ -3,21 +3,18 @@ import { GraphImpl } from "../../../../../service/graph/GraphImpl";
 import { GraphService } from "../../../../../service/graph/GraphService";
 import { InputController } from "../../InputController";
 import { NextEdgeSelector } from "../../../route/routing/NextEdgeSelector";
-import { BikeStateInfo } from "./BikeStateInfo";
 import { BikeController } from "./BikeController";
 import { GameObject } from "../../GameObject";
 
 export class BikeInputController extends InputController {
     private keyboardService: KeyboardService;
-    private bikeMover: BikeController;
+    private motionController: BikeController;
     private readonly character: GameObject;
     private readonly nextEdgeSelector: NextEdgeSelector;
-    private readonly bike: GameObject;
 
-    constructor(bikeWalker: BikeController, bike: GameObject, character: GameObject,  keyboardService: KeyboardService, graphService: GraphService) {
+    constructor(motionController: BikeController, character: GameObject,  keyboardService: KeyboardService, graphService: GraphService) {
         super(keyboardService);
-        this.bikeMover = bikeWalker;
-        this.bike = bike;
+        this.motionController = motionController;
         this.keyboardService = keyboardService;
         this.character = character;
         this.nextEdgeSelector = new NextEdgeSelector(character.routeController, <GraphImpl> graphService.getGraph());
@@ -25,8 +22,6 @@ export class BikeInputController extends InputController {
     }
 
     onKeyDown(key: KeyName) {
-        let info = this.bike.behaviour.info;
-
         switch(key) {
             case KeyName.FORWARD1:
                 this.nextEdgeSelector.chooseNextEdge();
@@ -38,53 +33,36 @@ export class BikeInputController extends InputController {
                 this.character.routeController.reverseRoute();
             break;
             case KeyName.FORWARD2:
-                const nextGear = info.gear === info.maxGear ? info.maxGear : info.gear + 1; 
-                info = this.bike.behaviour.info.setGear(nextGear);
+                const nextGear = this.motionController.gear === this.motionController.maxGear ? this.motionController.maxGear : this.motionController.gear + 1; 
+                this.motionController.gear = nextGear;
             break;
             case KeyName.BACKWARD2:
-                const prevGear = info.gear === 0 ? 0 : info.gear - 1; 
-                info = this.bike.behaviour.info.setGear(prevGear);
+                const prevGear = this.motionController.gear === 0 ? 0 : this.motionController.gear - 1;
+                this.motionController.gear = prevGear;
             break;
         }
-
-        this.updateStateIfBikeInfoChanged(info);
     }
 
-    keyboard(downKeys: Set<KeyName>) {
-        let info: BikeStateInfo = this.bike.behaviour.info;
-        
-        info = this.handleSpeed(info, downKeys);
-        info = this.handleSteering(info, downKeys);
-
-        this.updateStateIfBikeInfoChanged(info);
+    keyboard(downKeys: Set<KeyName>) {        
+        this.handleSpeed(downKeys);
+        this.handleSteering(downKeys);
     }
 
-    private handleSpeed(info: BikeStateInfo, downKeys: Set<KeyName>): BikeStateInfo {
-        info = info.setPowerBrakeOn(downKeys.has(KeyName.SHIFT));
-        info = info.setPedalling(downKeys.has(KeyName.UP));
-        info = info.setBraking(downKeys.has(KeyName.DOWN));
-
-        return info;
+    private handleSpeed(downKeys: Set<KeyName>) {
+        this.motionController.powerBrakeOn = downKeys.has(KeyName.SHIFT);
+        this.motionController.pedalling = downKeys.has(KeyName.UP);
+        this.motionController.braking = downKeys.has(KeyName.DOWN);
     }
 
-    private handleSteering(info: BikeStateInfo, downKeys: Set<KeyName>): BikeStateInfo {
+    private handleSteering(downKeys: Set<KeyName>) {
         if (!this.isDirectionDisabled) {
             if (downKeys.has(KeyName.LEFT)) {
-                info = info.setSteering(this.bikeMover.rotationConst);
+                this.motionController.steering = this.motionController.rotationConst; 
             } else if (downKeys.has(KeyName.RIGHT)) {
-                info = info.setSteering(-this.bikeMover.rotationConst);
+                this.motionController.steering = -this.motionController.rotationConst; 
             } else {
-                info = info.setSteering(0);
+                this.motionController.steering = 0; 
             }
-        }
-
-        return info;
-    }
-
-    private updateStateIfBikeInfoChanged(bikeInfo: BikeStateInfo) {
-        if (this.bike.behaviour.info !== bikeInfo) {
-            this.bike.behaviour.info = bikeInfo;
-            // this.bike.animationState.updateInfo(bikeInfo);
         }
     }
 }

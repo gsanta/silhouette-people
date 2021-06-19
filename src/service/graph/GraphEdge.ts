@@ -1,5 +1,6 @@
-import { toVector2, vector3ToRotation } from "../../helpers";
+import { toVector2 } from "../../helpers";
 import { Rotation } from "../../model/math/Rotation";
+import { Line } from "../../model/math/shapes/Line";
 import { Quad } from "../../model/math/shapes/Quad";
 import { GraphVertex } from "./GraphImpl";
 
@@ -8,6 +9,7 @@ export class GraphEdge {
     readonly v2: GraphVertex;
     thickness: number = 0;
     dimensions: Quad;
+    line: Line;
 
     private _angle: Rotation;
     private _oppositeAngle: Rotation;
@@ -16,6 +18,7 @@ export class GraphEdge {
         this.v1 = v1;
         this.v2 = v2;
 
+        this.line = new Line(toVector2(v1.p), toVector2(v2.p));
         this.setAngles();
     }
 

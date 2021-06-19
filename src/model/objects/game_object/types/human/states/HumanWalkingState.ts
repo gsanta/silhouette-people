@@ -19,7 +19,7 @@ export class HumanWalkingState extends GameObjectState {
 
     private changeStateIfNeeded() {
         const { motionController: walker } = this.character;
-        if (walker.getRotation() === 0 && walker.getSpeed() === 0) {
+        if (walker.getSpeed() === 0) {
             this.character.stateController.state = new HumanIdleState(this.character);
             return true;
         }
