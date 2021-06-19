@@ -1,31 +1,31 @@
 import { Tools, Vector2 } from "babylonjs";
-import { DIRECTION, Rotation } from "../src/model/math/Rotation";
+import { DIRECTION2, Rotation } from "../src/model/math/Rotation";
 
 describe('diffRad', () => {
     it ('compare EAST to NORTH', () => {
-        const east = Rotation.FromVector(DIRECTION.E());
-        const north = Rotation.FromVector(DIRECTION.N());
+        const east = Rotation.FromVector(DIRECTION2.E());
+        const north = Rotation.FromVector(DIRECTION2.N());
 
         expect(east.diff(north.rad).rad).toBeCloseTo(Math.PI / 2);
     });
 
     it ('compare EAST to SOUTH', () => {
-        const east = Rotation.FromVector(DIRECTION.E());
-        const south = Rotation.FromVector(DIRECTION.S());
+        const east = Rotation.FromVector(DIRECTION2.E());
+        const south = Rotation.FromVector(DIRECTION2.S());
 
         expect(east.diff(south.rad).rad).toBeCloseTo(-Math.PI / 2);
     });
 
     it ('compare EAST to NORTWEST', () => {
-        const east = Rotation.FromVector(DIRECTION.E());
-        const northWest = Rotation.FromVector(DIRECTION.NW());
+        const east = Rotation.FromVector(DIRECTION2.E());
+        const northWest = Rotation.FromVector(DIRECTION2.NW());
 
         expect(east.diff(northWest.rad).rad).toBeCloseTo(2.356);
     });
 
     it ('compare WEST to NORTHEAST', () => {
-        const west = Rotation.FromVector(DIRECTION.W());
-        const northEast = Rotation.FromVector(DIRECTION.NE());
+        const west = Rotation.FromVector(DIRECTION2.W());
+        const northEast = Rotation.FromVector(DIRECTION2.NE());
         expect(west.diff(northEast.rad).rad).toBeCloseTo(-2.356);
     });
 });

@@ -19,12 +19,18 @@
 
 import { Vector2 } from "babylonjs";
 import { LineEquation } from "./LineEquation";
+import { Rotation } from "./Rotation";
 
 export class LineSideCalc {
     private readonly line: LineEquation;
+    readonly leftSideSign: number;
     
-    constructor(line: LineEquation) {
+    constructor(line: LineEquation, lineAngle?: Rotation) {
         this.line = line;
+
+        if (lineAngle) {
+            this.leftSideSign = lineAngle.rad >= 0 && lineAngle.rad <= Math.PI ? -1 : 1;
+        }
     }
 
     getSide(P: Vector2): number {

@@ -2,6 +2,7 @@ import { toVector2 } from "../../helpers";
 import { Rotation } from "../../model/math/Rotation";
 import { Line } from "../../model/math/shapes/Line";
 import { Quad } from "../../model/math/shapes/Quad";
+import { EdgeDimensionCalc } from "../import/map/EdgeDimensionCalc";
 import { GraphVertex } from "./GraphImpl";
 
 export class GraphEdge {
@@ -20,6 +21,7 @@ export class GraphEdge {
 
         this.line = new Line(toVector2(v1.p), toVector2(v2.p));
         this.setAngles();
+        this.dimensions = new EdgeDimensionCalc().calc(this);
     }
 
     hasVertex(v: GraphVertex) {
@@ -54,7 +56,7 @@ export class GraphEdge {
 
     private setAngles(): void {
         this._angle = Rotation.FromVectors(toVector2(this.v1.p), toVector2(this.v2.p));
-        const oppisiteAngle = new Rotation(this._angle.rad + Math.PI).norm(); 
+        const oppisiteAngle = new Rotation(this._angle.rad + Math.PI).norm().rad;
         this._oppositeAngle = new Rotation(oppisiteAngle);
     }
 

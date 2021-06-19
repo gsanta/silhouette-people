@@ -3,7 +3,7 @@ import { rotToVec } from "../../../../helpers";
 import { RouteController } from "../../game_object/controller_route/RouteController";
 import { MotionFilter } from "../../game_object/MotionController";
 
-export class ExactDirectionRestrictor extends MotionFilter {
+export class MoveOnLine extends MotionFilter {
     private readonly routeWalker: RouteController;
 
     constructor(routeWalker: RouteController) {

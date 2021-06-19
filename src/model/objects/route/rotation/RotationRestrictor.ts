@@ -1,16 +1,16 @@
 import { RouteController } from "../../game_object/controller_route/RouteController";
-import { ExactDirectionRestrictor } from "./ExactDirectionRestrictor";
-import { InsidePolygonRestrictor } from "./InsidePolygonRestrictor";
+import { MoveOnLine } from "./MoveOnLine";
+import { MoveInArea } from "./MoveInArea";
 
 export class RotationRestrictor {
     private routeWalker: RouteController;
-    private lineRotationFilter: ExactDirectionRestrictor;
-    private areaRotationFilter: InsidePolygonRestrictor;
+    private moveOnLine: MoveOnLine;
+    private moveInArea: MoveInArea;
 
     constructor(routeWalker: RouteController) {
         this.routeWalker = routeWalker;
-        this.lineRotationFilter = new ExactDirectionRestrictor(this.routeWalker);
-        this.areaRotationFilter = new InsidePolygonRestrictor(routeWalker);
+        this.moveOnLine = new MoveOnLine(this.routeWalker);
+        this.moveInArea = new MoveInArea(routeWalker);
     }
 
     edgeChanged() {
@@ -31,15 +31,18 @@ export class RotationRestrictor {
         this.removeRotationFilter();
         
         const edge = this.routeWalker.getEdge();
-        const character = this.routeWalker.getCharacter();
-        const filter = edge.thickness ? this.areaRotationFilter : this.lineRotationFilter;
-        character.motionController.addFilter(filter);
+
+        if (edge) {
+            const character = this.routeWalker.getCharacter();
+            const filter = edge.thickness ? this.moveInArea : this.moveOnLine;
+            character.motionController.addFilter(filter);
+        }
     }
 
     private removeRotationFilter() {
         const character = this.routeWalker.getCharacter();
-        character.motionController.removeFilter(this.areaRotationFilter);
-        character.motionController.removeFilter(this.lineRotationFilter);
+        character.motionController.removeFilter(this.moveInArea);
+        character.motionController.removeFilter(this.moveOnLine);
     }
 
     on() {

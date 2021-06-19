@@ -52,9 +52,11 @@ export class ActiveEdgeUpdater {
 
     updateSide() {
         const edge = this.routeWalker.getEdge();
-        const character = this.routeWalker.getCharacter();
-        this.lineSideCalc = new LineSideCalc(this.routeWalker.getRoute().getBorderLine(edge));
-        this.currentSide = this.lineSideCalc.getSide(character.position2D);
+        if (edge) {
+            const character = this.routeWalker.getCharacter();
+            this.lineSideCalc = new LineSideCalc(this.routeWalker.getRoute().getBorderLine(edge));
+            this.currentSide = this.lineSideCalc.getSide(character.position2D);
+        }
     }
 
     private isEdgeFinished() {

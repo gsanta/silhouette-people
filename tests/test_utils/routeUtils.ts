@@ -15,9 +15,16 @@ export function checkVertexEqual(v1: GraphVertex, v2: GraphVertex) {
 
 export class RouteBuilder {
     private points: Vector3[] = [];
+    private edgeThicknessMap: Map<number, number> = new Map();
 
     addPoint(x: number, y: number): RouteBuilder {
         this.points.push(new Vector3(x, 0, y));
+        return this;
+    }
+
+    addEdgeThickness(index: number, thickness: number) {
+        this.edgeThicknessMap.set(index, thickness);
+
         return this;
     }
 
@@ -25,7 +32,11 @@ export class RouteBuilder {
         const vertices = this.points.map((p, i) => new GraphVertex(`${i}`, p));
         const edges: GraphEdge[] = [];
         for (let i = 0; i < this.points.length - 1; i++) {
-            edges.push(new GraphEdge(vertices[i], vertices[i + 1]));
+            const edge = new GraphEdge(vertices[i], vertices[i + 1]);
+            if (this.edgeThicknessMap.has(i)) {
+                edge.thickness = this.edgeThicknessMap.get(i);
+            }
+            edges.push(edge);
         }
 
         return new RouteItem(edges);

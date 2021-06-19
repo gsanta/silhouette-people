@@ -1,7 +1,6 @@
 import { Matrix, Vector2, Vector3 } from "babylonjs";
-import { toVector2, vector2ToRotation } from "../../helpers";
 
-export class DIRECTION {
+export class DIRECTION2 {
     static N() {
         return new Vector2(0, 1);
     }
@@ -27,6 +26,32 @@ export class DIRECTION {
     }
 }
 
+export class DIRECTION3 {
+    static N() {
+        return new Vector3(0, 0, 1);
+    }
+
+    static S() {
+        return new Vector3(0, 0, -1);
+    }
+
+    static W() {
+        return new Vector3(-1, 0, 0);
+    }
+
+    static E() {
+        return new Vector3(1, 0, 0);
+    }
+
+    static NW() {
+        return new Vector3(-1, 0, 1);
+    }
+
+    static NE() {
+        return new Vector3(1, 0, 1);
+    }
+}
+
 export class Rotation {
     readonly rad: number;
 
@@ -34,8 +59,9 @@ export class Rotation {
         this.rad = angle;
     }
 
-    norm(): number {
-        return this.rad >= 2 * Math.PI ? this.rad - 2 * Math.PI : this.rad < 0 ? 2 * Math.PI + this.rad : this.rad;
+    norm(): Rotation {
+        const rad = this.rad >= 2 * Math.PI ? this.rad - 2 * Math.PI : this.rad < 0 ? 2 * Math.PI + this.rad : this.rad;
+        return new Rotation(rad);
     }
 
     worldAngle(): Rotation {
@@ -50,14 +76,21 @@ export class Rotation {
         return new Rotation(this.rad + rad);
     }
 
-    isBetween(otherAngle: number, testedAngle): boolean {
-        if (otherAngle >= this.rad) {
-            return testedAngle >= this.rad && testedAngle <=otherAngle;
+    isBetween(otherAngle: number, testedAngle: number): boolean {
+        let start: number, end: number;
+
+        if (this.diff(otherAngle).rad < 0) {
+            start = otherAngle;
+            end = this.rad;
         } else {
-            return (
-                testedAngle >= this.rad && testedAngle <= 2 * Math.PI ||
-                testedAngle <= otherAngle && testedAngle >= 0
-            );
+            start = this.rad;
+            end = otherAngle;
+        }
+        
+        if (start >= end) {
+            return testedAngle >= start || testedAngle <= end;
+        } else {
+            return testedAngle >= start && testedAngle <= end;
         }
     }
 
@@ -116,6 +149,11 @@ export class Rotation {
         let angle = Math.atan2(vec.y, vec.x);
         angle = angle >= 0 ? angle : 2 * Math.PI + angle;
         return new Rotation(angle);
+    }
+
+    static FromVector3(vec: Vector3): Rotation {
+    let angle = Math.atan2(vec.z, vec.x);
+        return new Rotation(angle).norm();
     }
 
     static FromVectors(ve1: Vector2, vec2: Vector2): Rotation {

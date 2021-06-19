@@ -370,6 +370,14 @@
         {
             "edgeRef": "A2-B1",
             "thickness": 2
+        },
+        {
+            "edgeRef": "B5-B6",
+            "thickness": 2
+        },
+        {
+            "edgeRef": "C1-C2",
+            "thickness": 2
         }
     ],
     "playerRoute": ["A1", "A2"]
