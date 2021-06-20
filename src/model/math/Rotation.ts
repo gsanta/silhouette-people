@@ -48,7 +48,11 @@ export class DIRECTION3 {
     }
 
     static NE() {
-        return new Vector3(1, 0, 1);
+        return new Vector3(1, 0, 1).normalize();
+    }
+
+    static SE() {
+        return new Vector3(1, 0, -1);
     }
 }
 

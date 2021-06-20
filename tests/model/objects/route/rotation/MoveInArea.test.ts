@@ -1,7 +1,5 @@
-import { toVector3 } from "../../../../../src/helpers";
-import { DIRECTION2, DIRECTION3 } from "../../../../../src/model/math/Rotation";
+import { DIRECTION3 } from "../../../../../src/model/math/Rotation";
 import { RouteControllerImpl } from "../../../../../src/model/objects/game_object/controller_route/RouteControllerImpl";
-import { RouteControllerListenerDecorator } from "../../../../../src/model/objects/game_object/controller_route/RouteControllerListenerDecorator";
 import { GameObject } from "../../../../../src/model/objects/game_object/GameObject";
 import { MoveInArea } from "../../../../../src/model/objects/route/rotation/MoveInArea";
 import { RouteItem } from "../../../../../src/model/objects/route/RouteItem";
@@ -110,7 +108,7 @@ describe('filterDirection', () => {
         let moveInArea: MoveInArea;
 
         beforeEach(() => {
-            char = charBuilder.pos(5, 0, 5).build();
+            char = charBuilder.pos(5, 0, 7).build();
             route = routeBuilder.addPoint(2, 3).addPoint(10, 11).addEdgeThickness(0, 2).build();
             moveInArea = new MoveInArea(new RouteControllerImpl(route, char));
         });
@@ -120,19 +118,19 @@ describe('filterDirection', () => {
         });
 
         it ('west direction - restricted', () => {
-            checkVector3Equal(moveInArea.filterDirection(DIRECTION3.W()), DIRECTION3.N());
+            checkVector3Equal(moveInArea.filterDirection(DIRECTION3.W()), DIRECTION3.NE());
         });
 
         it ('south direction - restricted', () => {
-            checkVector3Equal(moveInArea.filterDirection(DIRECTION3.S()), DIRECTION3.N());
+            checkVector3Equal(moveInArea.filterDirection(DIRECTION3.S()), DIRECTION3.NE());
         });
 
         it ('north-west direction - restricted', () => {
-            checkVector3Equal(moveInArea.filterDirection(DIRECTION3.NW()), DIRECTION3.N());
+            checkVector3Equal(moveInArea.filterDirection(DIRECTION3.NW()), DIRECTION3.NE());
         });
 
-        it ('north direction - not restricted', () => {
-            checkVector3Equal(moveInArea.filterDirection(DIRECTION3.N()), DIRECTION3.N());
+        it ('north-east direction - not restricted', () => {
+            checkVector3Equal(moveInArea.filterDirection(DIRECTION3.NE()), DIRECTION3.NE());
         });
 
         it ('east direction - not restricted', () => {

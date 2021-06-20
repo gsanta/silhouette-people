@@ -2,6 +2,7 @@ import { Vector3 } from "babylonjs";
 import pointInPolygon from "point-in-polygon";
 import { rotToVec } from "../../../../helpers";
 import { GraphEdge } from "../../../../service/graph/GraphEdge";
+import { LineEquationSideCalc } from "../../../math/LineEquationSideCalc";
 import { LineSideCalc } from "../../../math/LineSideCalc";
 import { Rotation } from "../../../math/Rotation";
 import { Quad } from "../../../math/shapes/Quad";
@@ -48,13 +49,14 @@ export class MoveInArea extends MotionFilter {
     private getAngle2(angle1: Rotation, edge: GraphEdge, isEdgeReversed: boolean) {
         const character = this.routeController.getCharacter();
 
-        const lineSideCalc = new LineSideCalc(edge.line.equation, edge.line.angle);
-        const side = lineSideCalc.getSide(character.position2D);
+        const lineSideCalc = new LineSideCalc(edge.line);
+        const side = lineSideCalc.determineSide(character.position2D);
 
-        const reversedSign = isEdgeReversed ? -1 : 1;
-        const sideSign = side < 0 ? -1 * lineSideCalc.leftSideSign : 1 * lineSideCalc.leftSideSign;
+        const reversedSign = isEdgeReversed ? 1 : -1;
+        const negativeLineSign  = edge.angle.rad > Math.PI ? -1 : 1;
+        // const sideSign = side < 0 ? -1 * lineSideCalc.leftSideSign : 1 * lineSideCalc.leftSideSign;
 
-        const deltaAngle = Math.PI / 2 * reversedSign * sideSign;
+        const deltaAngle = Math.PI / 2 * reversedSign * negativeLineSign * side;
 
         return angle1.add(deltaAngle).norm();
     }

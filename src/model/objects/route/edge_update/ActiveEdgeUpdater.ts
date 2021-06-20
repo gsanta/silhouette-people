@@ -1,12 +1,12 @@
 import { Vector3 } from "babylonjs";
 import { GraphEdge } from "../../../../service/graph/GraphEdge";
-import { LineSideCalc } from "../../../math/LineSideCalc";
+import { LineEquationSideCalc } from "../../../math/LineEquationSideCalc";
 import { RouteController } from "../../game_object/controller_route/RouteController";
 
 export class ActiveEdgeUpdater {
     private readonly routeWalker: RouteController;
     private currentSide: number = undefined;
-    private lineSideCalc: LineSideCalc;
+    private lineSideCalc: LineEquationSideCalc;
     
     constructor(routeWalker: RouteController) {
         this.routeWalker = routeWalker;
@@ -54,15 +54,15 @@ export class ActiveEdgeUpdater {
         const edge = this.routeWalker.getEdge();
         if (edge) {
             const character = this.routeWalker.getCharacter();
-            this.lineSideCalc = new LineSideCalc(this.routeWalker.getRoute().getBorderLine(edge));
-            this.currentSide = this.lineSideCalc.getSide(character.position2D);
+            this.lineSideCalc = new LineEquationSideCalc(this.routeWalker.getRoute().getBorderLine(edge));
+            this.currentSide = this.lineSideCalc.determineSide(character.position2D);
         }
     }
 
     private isEdgeFinished() {
         const character = this.routeWalker.getCharacter();
 
-        const side = this.lineSideCalc.getSide(character.position2D);
+        const side = this.lineSideCalc.determineSide(character.position2D);
         return side !== this.currentSide;
     }
 }

@@ -1,47 +1,192 @@
 import { Vector2 } from "babylonjs";
-import { LineEquation } from "../../../src/model/math/LineEquation";
 import { LineSideCalc } from "../../../src/model/math/LineSideCalc";
+import { Line } from "../../../src/model/math/shapes/Line";
 
 
-describe('getSide', () => {
-
-    it ('horizontal line', () => {
-
-        const lineSideCalc = new LineSideCalc(new LineEquation(0, 3));
-
-        expect(lineSideCalc.getSide(new Vector2(6, 5))).toBeLessThan(0);
-        expect(lineSideCalc.getSide(new Vector2(-1, 4))).toBeLessThan(0);
-        expect(lineSideCalc.getSide(new Vector2(1, 2))).toBeGreaterThan(0);
-        expect(lineSideCalc.getSide(new Vector2(4, -1))).toBeGreaterThan(0);
+describe('determineSide', () => {
+    describe('vertical line', () => {
+        it ('coords not flipped - left side', () => {
+            const line = new Line(new Vector2(2, 1), new Vector2(2, 10));
+            const side = new LineSideCalc(line).determineSide(new Vector2(1, 5));
+    
+            expect(side).toBeGreaterThan(0);
+        });
+    
+        it ('coords flipped - left side', () => {
+            const line = new Line(new Vector2(2, 10), new Vector2(2, 1));
+            const side = new LineSideCalc(line).determineSide(new Vector2(1, 5));
+        
+            expect(side).toBeGreaterThan(0);
+        });
+    
+        it ('coords not flipped - right side', () => {
+            const line = new Line(new Vector2(2, 1), new Vector2(2, 10));
+            const side = new LineSideCalc(line).determineSide(new Vector2(3, 5));
+        
+            expect(side).toBeLessThan(0);
+        });
+    
+        it ('coords flipped - right side', () => {
+            const line = new Line(new Vector2(2, 10), new Vector2(2, 1));
+            const side = new LineSideCalc(line).determineSide(new Vector2(3, 5));
+        
+            expect(side).toBeLessThan(0);
+        });
     });
 
-    it ('vertical line', () => {
-
-        const lineSideCalc = new LineSideCalc(LineEquation.Vertical(2));
-
-        expect(lineSideCalc.getSide(new Vector2(1, 1))).toBeLessThan(0);
-        expect(lineSideCalc.getSide(new Vector2(-1, 4))).toBeLessThan(0);
-        expect(lineSideCalc.getSide(new Vector2(3, 2))).toBeGreaterThan(0);
-        expect(lineSideCalc.getSide(new Vector2(4, -1))).toBeGreaterThan(0);
+    describe('horizontal line', () => {
+        it ('coords not flipped - left side', () => {
+            const line = new Line(new Vector2(-2, 1), new Vector2(10, 1));
+            const side = new LineSideCalc(line).determineSide(new Vector2(1, 2));
+    
+            expect(side).toBeGreaterThan(0);
+        });
+    
+        it ('coords flipped - left side', () => {
+            const line = new Line(new Vector2(-1, -1), new Vector2(-5, -1));
+            const side = new LineSideCalc(line).determineSide(new Vector2(-3, 2));
+        
+            expect(side).toBeGreaterThan(0);
+        });
+    
+        it ('coords not flipped - right side', () => {
+            const line = new Line(new Vector2(-2, -1), new Vector2(10, -1));
+            const side = new LineSideCalc(line).determineSide(new Vector2(0, -1.1));
+    
+            expect(side).toBeLessThan(0);
+        });
+    
+        it ('coords flipped - right side', () => {
+            const line = new Line(new Vector2(10, -1), new Vector2(-2, -1));
+            const side = new LineSideCalc(line).determineSide(new Vector2(0, -1.1));
+        
+            expect(side).toBeLessThan(0);
+        });
     });
 
-    it ('45 deg line', () => {
 
-        const lineSideCalc = new LineSideCalc(new LineEquation(1, 2));
+    describe('positive diagonal line', () => {
 
-        expect(lineSideCalc.getSide(new Vector2(0, 3))).toBeLessThan(0);
-        expect(lineSideCalc.getSide(new Vector2(5, 10))).toBeLessThan(0);
-        expect(lineSideCalc.getSide(new Vector2(0, 0))).toBeGreaterThan(0);
-        expect(lineSideCalc.getSide(new Vector2(5, 1))).toBeGreaterThan(0);
+        describe('only positive coordinates', () => {
+            it ('coords not flipped - left side', () => {
+                const line = new Line(new Vector2(2, 2), new Vector2(8, 8));
+                const side = new LineSideCalc(line).determineSide(new Vector2(4, 5));
+            
+                expect(side).toBeGreaterThan(0);
+            });
+        
+            it ('coords flipped - left side', () => {
+                const line = new Line(new Vector2(8, 8), new Vector2(2, 2));
+                const side = new LineSideCalc(line).determineSide(new Vector2(4, 5));
+            
+                expect(side).toBeGreaterThan(0);
+            });
+        
+            it ('coords not flipped - right side', () => {
+                const line = new Line(new Vector2(2, 2), new Vector2(8, 8));
+                const side = new LineSideCalc(line).determineSide(new Vector2(4, 3));
+            
+                expect(side).toBeLessThan(0);
+            });
+        
+            it ('coords flipped - right side', () => {
+                const line = new Line(new Vector2(8, 8), new Vector2(2, 2));
+                const side = new LineSideCalc(line).determineSide(new Vector2(4, 3));
+            
+                expect(side).toBeLessThan(0);
+            });
+        });
     });
 
-    it ('-45 deg line', () => {
+    describe('negative diagonal line', () => {
+        describe('only positive coordinates', () => {
+            it ('coords not flipped - left side', () => {
+                const line = new Line(new Vector2(2, 8), new Vector2(7, 3));
+                const side = new LineSideCalc(line).determineSide(new Vector2(3, 6));
+            
+                expect(side).toBeGreaterThan(0);
+            });
+        
+            it ('coords flipped - left side', () => {
+                const line = new Line(new Vector2(7, 3), new Vector2(2, 8));
+                const side = new LineSideCalc(line).determineSide(new Vector2(3, 6));
+            
+                expect(side).toBeGreaterThan(0);
+            });
 
-        const lineSideCalc = new LineSideCalc(new LineEquation(-1, 2));
+            it ('coords not flipped - right side', () => {
+                const line = new Line(new Vector2(2, 8), new Vector2(7, 3));
+                const side = new LineSideCalc(line).determineSide(new Vector2(3, 8));
+            
+                expect(side).toBeLessThan(0);
+            });
+        
+            it ('coords flipped - right side', () => {
+                const line = new Line(new Vector2(7, 3), new Vector2(2, 8));
+                const side = new LineSideCalc(line).determineSide(new Vector2(3, 8));
+            
+                expect(side).toBeLessThan(0);
+            });
+        });
 
-        expect(lineSideCalc.getSide(new Vector2(0, 3))).toBeGreaterThan(0);
-        expect(lineSideCalc.getSide(new Vector2(5, -2))).toBeGreaterThan(0);
-        expect(lineSideCalc.getSide(new Vector2(0, 0))).toBeLessThan(0);
-        expect(lineSideCalc.getSide(new Vector2(-5, 5))).toBeLessThan(0);
+        describe('only negative coordinates', () => {
+            it ('coords not flipped - left side', () => {
+                const line = new Line(new Vector2(-7, -8), new Vector2(-3, -2));
+                const side = new LineSideCalc(line).determineSide(new Vector2(-5, -3));
+            
+                expect(side).toBeGreaterThan(0);
+            });
+        
+            it ('coords flipped - left side', () => {
+                const line = new Line(new Vector2(-3, -2), new Vector2(-7, -8));
+                const side = new LineSideCalc(line).determineSide(new Vector2(-5, -3));
+            
+                expect(side).toBeGreaterThan(0);
+            });
+
+            it ('coords not flipped - right side', () => {
+                const line = new Line(new Vector2(-7, -8), new Vector2(-3, -2));
+                const side = new LineSideCalc(line).determineSide(new Vector2(-4, -5));
+            
+                expect(side).toBeLessThan(0);
+            });
+        
+            it ('coords flipped - right side', () => {
+                const line = new Line(new Vector2(-3, -2), new Vector2(-7, -8));
+                const side = new LineSideCalc(line).determineSide(new Vector2(-4, -5));
+            
+                expect(side).toBeLessThan(0);
+            });
+        });
+
+        describe('mixed positive and negative coordinates', () => {
+            it ('coords not flipped - left side', () => {
+                const line = new Line(new Vector2(-7, -8), new Vector2(3, 2));
+                const side = new LineSideCalc(line).determineSide(new Vector2(-4, -1));
+            
+                expect(side).toBeGreaterThan(0);
+            });
+        
+            it ('coords flipped - left side', () => {
+                const line = new Line(new Vector2(-1, 2), new Vector2(-7, -8));
+                const side = new LineSideCalc(line).determineSide(new Vector2(-4, -1));
+            
+                expect(side).toBeGreaterThan(0);
+            });
+
+            it ('coords not flipped - right side', () => {
+                const line = new Line(new Vector2(-7, -8), new Vector2(3, 2));
+                const side = new LineSideCalc(line).determineSide(new Vector2(3, 0));
+            
+                expect(side).toBeLessThan(0);
+            });
+        
+            it ('coords flipped - right side', () => {
+                const line = new Line(new Vector2(-1, 2), new Vector2(-7, -8));
+                const side = new LineSideCalc(line).determineSide(new Vector2(-1, 1));
+            
+                expect(side).toBeLessThan(0);
+            });
+        });
     });
 });

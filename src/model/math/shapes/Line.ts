@@ -20,7 +20,7 @@ export class Line {
 
     get angle(): Rotation {
         if (this._angle === undefined) {
-            this._angle = Rotation.FromVectors(this.p1, this.p2).worldAngle();
+            this._angle = Rotation.FromVectors(this.p1, this.p2);
         }
 
         return this._angle;
