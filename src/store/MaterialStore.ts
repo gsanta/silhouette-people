@@ -1,4 +1,4 @@
-import { Color3, StandardMaterial } from "babylonjs";
+import { Color3, Material, StandardMaterial } from "babylonjs";
 import { WorldProvider } from "../service/WorldProvider";
 
 export class MaterialStore {
@@ -7,11 +7,20 @@ export class MaterialStore {
     private hoverTileMaterial: StandardMaterial;
     private ribbonMaterial: StandardMaterial;
     private activePathMaterial: StandardMaterial;
+    private materials: Map<string, Material> = new Map();
 
     private readonly worldProvider: WorldProvider;
 
     constructor(worldProvider: WorldProvider) {
         this.worldProvider = worldProvider;
+    }
+
+    addMaterial(id: string, material: Material) {
+        this.materials.set(id, material);
+    }
+
+    getMaterialById(id: string): Material {
+        return this.materials.get(id);
     }
 
     getTileMaterial(): StandardMaterial {
@@ -46,11 +55,11 @@ export class MaterialStore {
         return this.hoverTileMaterial;
     }
 
-    getRibbonMaterial(): StandardMaterial {
+    getPathMaterial(): StandardMaterial {
         if (!this.ribbonMaterial) {
             var mat = new StandardMaterial("mat1", this.worldProvider.scene);
-            mat.alpha = 0.5;
-            mat.diffuseColor = Color3.Green();
+            mat.alpha = 0.2;
+            mat.diffuseColor = Color3.Red();
             mat.emissiveColor = Color3.Black();
             mat.backFaceCulling = false;
             this.ribbonMaterial = mat;
@@ -59,11 +68,11 @@ export class MaterialStore {
         return this.ribbonMaterial;
     }
 
-    getActivePathMaterial() {
+    getActivePathMaterial(): StandardMaterial {
         if (!this.activePathMaterial) {
-            var mat = new StandardMaterial("active-path-material", this.worldProvider.scene);
+            var mat = new StandardMaterial("mat1", this.worldProvider.scene);
             mat.alpha = 1;
-            mat.diffuseColor = Color3.Blue();
+            mat.diffuseColor = Color3.Red();
             mat.emissiveColor = Color3.Black();
             mat.backFaceCulling = false;
             this.ribbonMaterial = mat;

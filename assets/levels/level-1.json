@@ -16,7 +16,8 @@
                 "color": "#9e9e9e"
             },
             {
-                "color": "#9e9e9e"
+                "color": "#9e9e9e",
+                "materialId": "material-terrain-1"
             }
         ],
         [
@@ -27,10 +28,12 @@
                 "color": "#9e9e9e"
             },
             {
-                "color": "#32CD32"
+                "color": "#32CD32",
+                "materialId": "material-terrain-1"
             },
             {
-                "color": "#32CD32"
+                "color": "#32CD32",
+                "materialId": "material-terrain-1"
             }
 
         ],
@@ -42,10 +45,13 @@
                 "color": "#9e9e9e"
             },
             {
-                "color": "#32CD32"
+                "color": "#32CD32",
+                "materialId": "material-terrain-1"
+
             },
             {
-                "color": "#32CD32"
+                "color": "#32CD32",
+                "materialId": "material-terrain-1"
             }
         ],
         [
@@ -105,11 +111,11 @@
             "properties": {
                 "model": {
                     "path": "tree1",
-                    "mainMeshIndex": 0,
+                    "mainMeshIndex": 1,
                     "removeRoot": true
                 },
                 "collider": {
-                    "dimension": "0.5:5:0.5"
+                    "dimension": "0.5:0:0.5"
                 }
             }
         },
@@ -121,7 +127,7 @@
                     "removeRoot": true
                 },
                 "collider": {
-                    "dimension": "0.5:5:0.5"
+                    "dimension": "0.5:0:0.5"
                 }
             }
         },
@@ -133,7 +139,7 @@
                     "removeRoot": true
                 },
                 "collider": {
-                    "dimension": "0.5:5:0.5"
+                    "dimension": "0.5:0:0.5"
                 }
             }
         },
@@ -145,7 +151,7 @@
                     "removeRoot": true
                 },
                 "collider": {
-                    "dimension": "0.3:5:0.3"
+                    "dimension": "0.3:0:0.3"
                 }
             }
         },
@@ -157,7 +163,7 @@
                     "removeRoot": true
                 },
                 "collider": {
-                    "dimension": "0.3:5:0.3"
+                    "dimension": "0.3:0:0.3"
                 }
             }
         },
@@ -169,7 +175,7 @@
                     "removeRoot": true
                 },
                 "collider": {
-                    "dimension": "0.3:5:0.3"
+                    "dimension": "0.3:0:0.3"
                 }
             }
         },
@@ -181,7 +187,7 @@
                     "canUseOriginalInstance": false
                 },
                 "collider": {
-                    "dimension": "1:3.5:1"
+                    "dimension": "1:2:1"
                 },
                 "physics": {
                     "mass": 1
@@ -198,7 +204,7 @@
                     "canUseOriginalInstance": false
                 },
                 "collider": {
-                    "dimension": "1:3.5:1"
+                    "dimension": "1:2:1"
                 },
                 "physics": {
                     "mass": 1
@@ -220,7 +226,7 @@
                     "path": "palette.jpg"
                 },
                 "collider": {
-                    "dimension": "1:1:1"
+                    "dimension": "1:0:1"
                 }
             }
         },
@@ -235,7 +241,7 @@
                     "path": "palette.jpg"
                 },
                 "collider": {
-                    "dimension": "1:1:1"
+                    "dimension": "1:0:1"
                 }
             }
         },
@@ -250,7 +256,7 @@
                     "path": "palette.jpg"
                 },                
                 "collider": {
-                    "dimension": "1:1:1"
+                    "dimension": "1:0:1"
                 }
             }
         },
@@ -265,7 +271,7 @@
                     "path": "palette.jpg"
                 },
                 "collider": {
-                    "dimension": "1:1:1"
+                    "dimension": "1:2:1"
                 },
                 "physics": {
                     "mass": 1

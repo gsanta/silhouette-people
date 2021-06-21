@@ -26,6 +26,7 @@ import { TagPropertyParser } from "../import/parsers/TagPropertyParser";
 import { TexturePropertyParser } from "../import/parsers/TexturePropertyParser";
 import { WalkerPropertyParser } from "../import/parsers/WalkerPropertyParser";
 import { QuarterStore } from "../../store/QuarterStore";
+import { MaterialStore } from "../../store/MaterialStore";
 
 export class WorldSetup implements ISetup {
     private readonly worldProvider: WorldProvider;
@@ -50,7 +51,8 @@ export class WorldSetup implements ISetup {
         graphService: GraphService,
         storyTracker: StoryTracker,
         gameObjectStore: GameObjectStore,
-        quarterStore: QuarterStore
+        quarterStore: QuarterStore,
+        materialStore: MaterialStore
     ) {
         this.storyTracker = storyTracker;
         this.gameObjectStore = gameObjectStore;
@@ -64,7 +66,7 @@ export class WorldSetup implements ISetup {
         this.graphService = graphService;
 
         this.worldImporter = new WorldImporter(this.worldProvider, this.storyTracker);
-        this.worldFactory = new WorldFactory(this.worldProvider, quarterStore);
+        this.worldFactory = new WorldFactory(this.worldProvider, quarterStore, materialStore);
     }
 
     async setup(): Promise<void> {

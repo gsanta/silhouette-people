@@ -4,7 +4,6 @@ import { AssetContainerStore } from "../../../store/AssetContainerStore";
 import { WorldProvider } from "../../WorldProvider";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
-
 export interface ModelPropertyConfig {
     path: string;
     mainMeshIndex?: number;
@@ -24,13 +23,13 @@ export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyCon
         this.assetContainerStore = assetContainerStore;
     }
 
-
     isAsync(): boolean {
         return true;
     }
 
     async processPropertyAsync(meshItem: GameObject, props: ModelPropertyConfig): Promise<void> {
         const removeRoot = props.removeRoot;
+        meshItem.mainMeshIndex = props.mainMeshIndex;
         // TODO for static objects there is a problem when using original instances, check it
         const canUseOriginalInstance = props.canUseOriginalInstance === false ? false : true
 
@@ -40,7 +39,7 @@ export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyCon
 
         result.animationGroups.forEach(animationGroup => animationGroup.stop());
 
-        const mainMesh = props.mainMeshIndex !== undefined ? meshes[props.mainMeshIndex] : this.findMainMesh(meshes);
+        const mainMesh = meshes[0]; //props.mainMeshIndex !== undefined ? meshes[props.mainMeshIndex] : this.findMainMesh(meshes);
         const otherMeshes = meshes.filter(mesh => mesh !== mainMesh);
 
         meshItem.meshes = <Mesh[]> [mainMesh, ...otherMeshes];
@@ -52,23 +51,12 @@ export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyCon
     }
 
     private removeRoot(meshes: AbstractMesh[]): AbstractMesh[] {
-        if (meshes[0].id.indexOf('__root__') !== -1 && meshes[0].getChildMeshes().length > 0) {
+        if (meshes[0].id.indexOf('__root__') !== -1 && meshes[0].getChildren().length === 1) {
             const root = meshes[0];
-            const oneChildMesh = root.getChildMeshes()[0];
-
-            let newRoot: AbstractMesh;
-            if (oneChildMesh.parent === root) {
-                oneChildMesh.setParent(null);
-                newRoot = <AbstractMesh> oneChildMesh;
-            } else if (oneChildMesh.parent.parent === root) {
-                (<AbstractMesh> oneChildMesh.parent).setParent(null);
-                newRoot = <AbstractMesh> oneChildMesh.parent;
-            }
-
-            if (newRoot) {
-                root.dispose();
-                return [newRoot];
-            }
+            const newRoot = <AbstractMesh> meshes[0].getChildren()[0];
+            newRoot.setParent(null);
+            root.dispose();
+            return [newRoot];
         }
 
         return meshes;

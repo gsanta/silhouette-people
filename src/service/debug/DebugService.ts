@@ -3,7 +3,6 @@ import { CitizenStore } from "../../store/CitizenStore";
 import { MaterialStore } from "../../store/MaterialStore";
 import { GameObjectStore } from "../../store/GameObjectStore";
 import { WorldProvider } from "../WorldProvider";
-import { CitizenRouteDebugger } from "./CitizenRouteDebugger";
 import { IGUIComponent } from "./IGUIComponent";
 import { QuarterMapDebugger } from "./QuarterMapDebugger";
 import { WorldAxisHelper } from "./WorldAxisHelper";
@@ -11,7 +10,6 @@ import { WorldAxisHelper } from "./WorldAxisHelper";
 export class DebugService {
     private worldAxisHelper: WorldAxisHelper;
     private texture: AdvancedDynamicTexture;
-    private readonly citizenRouteDebugger: CitizenRouteDebugger;
     areaMapDebugger: QuarterMapDebugger;
     
     private readonly meshStore: GameObjectStore;
@@ -26,7 +24,6 @@ export class DebugService {
         this.worldProvider = worldProvider;
         this.materialStore = materialStore;
         this.citizenStore = citizenStore;
-        this.citizenRouteDebugger = new CitizenRouteDebugger(this.worldProvider, this.materialStore, this.citizenStore);
         this.worldAxisHelper = new WorldAxisHelper();
         this.areaMapDebugger = new QuarterMapDebugger();
     }
@@ -46,18 +43,11 @@ export class DebugService {
         isVisible ? this.worldAxisHelper.show(yPos) : this.worldAxisHelper.hide();
     }
 
-    setRouteDebuggerVisibility(isVisible: boolean) {
-        if (isVisible) {
-            this.citizenRouteDebugger.visualize();
-        } else {
-        }
-    }
-
     setColliderMeshVisibility(isVisible: boolean) {
-        this.meshStore.getAll().forEach(meshObj => meshObj.mesh.showBoundingBox = isVisible);
+        this.meshStore.getAll().forEach(meshObj =>  meshObj.collisionMesh && (meshObj.collisionMesh.showBoundingBox = isVisible));
     }
 
     setMeshBoundingBoxVisibility(isVisible: boolean) {
-        this.meshStore.getAll().forEach(meshObj => meshObj.mesh.showBoundingBox = isVisible);
+        this.meshStore.getAll().forEach(meshObj =>  meshObj.collisionMesh && (meshObj.collisionMesh.showBoundingBox = isVisible));
     }
 }

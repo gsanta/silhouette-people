@@ -1,5 +1,5 @@
 import { Axis, Quaternion, Skeleton, Vector2, Vector3 } from "babylonjs";
-import { Mesh } from "babylonjs/Meshes/index";
+import { AbstractMesh, Mesh } from "babylonjs/Meshes/index";
 import { AnimationHandler } from "../../AnimationHandler";
 import { TagHandler } from "../../TagHandler";
 import { GameItem } from "../GameItem";
@@ -10,6 +10,7 @@ import { MonoBehaviour } from "../../behaviours/MonoBehaviour";
 import { RouteController } from "./controller_route/RouteController";
 import { MotionController } from "./MotionController";
 import { RouteControllerImpl } from "./controller_route/RouteControllerImpl";
+import { BoundingInfo } from "babylonjs/Culling/index";
 
 export enum GameObjectType {
     Player = 'player',
@@ -48,6 +49,7 @@ export interface GameObjectConfig {
 
 export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
     id: string;
+    mainMeshIndex: number = 0;
 
     collisionSensorDistance = 2;
     private _stateController: StateController;
@@ -119,7 +121,7 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
     }
 
     moveWithCollision(displacement: Vector3) {
-        this.mesh.moveWithCollisions(displacement);
+        this.collisionMesh.moveWithCollisions(displacement);
 
         this.emitPositionChange();
         this.attachments.forEach(attachment => attachment.onItemPositionChanged());
@@ -165,7 +167,7 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
     }
 
     get mesh(): Mesh {
-        return this.collisionMesh ? this.collisionMesh : this.meshes[0];
+        return this.collisionMesh ? this.collisionMesh : this.getMainMesh();
     }
 
     get meshes(): Mesh[] {
@@ -209,6 +211,22 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
         this.meshes.forEach(mesh => mesh.dispose());
         if (this.collisionMesh) {
             this.collisionMesh.dispose();
+        }
+    }
+
+    private getMainMesh(): Mesh {
+        return this.meshes[0];
+        // if (this.meshes[0].getBoundingInfo) {
+        // } else {
+        //     return (<Mesh> this.meshes[0].getChildren()[this.mainMeshIndex]);
+        // }
+    }
+
+    getBoundingInfo(): BoundingInfo {
+        if (this.meshes[0].getBoundingInfo && this.meshes[0].getBoundingInfo().boundingBox.extendSizeWorld.y !== 0) {
+            return this.meshes[0].getBoundingInfo();
+        } else {
+            return (<AbstractMesh> this.meshes[0].getChildMeshes()[this.mainMeshIndex]).getBoundingInfo();
         }
     }
 }

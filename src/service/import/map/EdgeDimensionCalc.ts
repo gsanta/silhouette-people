@@ -8,7 +8,7 @@ export class EdgeDimensionCalc {
         const angle = this.getAngle(edge.v1.p, edge.v2.p);
         const angelPlus = angle + Math.PI / 2;
         const angelMinus = angle - Math.PI / 2;
-        const radius = edge.thickness ? edge.thickness / 2 : 0.2;
+        const radius = edge.thickness ? edge.thickness / 2 : 0.05;
         
         const [start, end] = [edge.v1.p, edge.v2.p];
 

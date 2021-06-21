@@ -27,6 +27,7 @@ import { RouteSetup } from "./routing/route/RouteSetup";
 import { StoryTracker } from "./story/StoryTracker";
 import { RenderGuiService } from "./RenderGuiService";
 import { WorldProvider } from "./WorldProvider";
+import { MaterialSetup } from "./material/MaterialSetup";
 
 export class DependencyResolver {
     eventService: EventService;
@@ -119,6 +120,9 @@ export class DependencyResolver {
         lookup.activePlayerService = this.activePlayerService;
 
         this.debugService = new DebugService(this.meshStore, this.worldProvider, this.materialStore, this.citizenStore);
+        if (window) {
+            (<any> window).debugService = this.debugService;
+        }
         lookup.debugService = this.debugService;
 
         this.meshFactory = new MeshFactory();
@@ -141,13 +145,16 @@ export class DependencyResolver {
             this.graphService,
             this.backlog,
             this.meshStore,
-            this.quarterStore
+            this.quarterStore,
+            this.materialStore
         );
         const routeSetup = new RouteSetup(this.worldProvider, this.graphService, this.routeStore);
-        const playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.keyboard, this.activePlayerService);
+        const playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.keyboard, this.activePlayerService, this.materialStore);
         const cameraSetup = new CameraSetup(this.worldProvider, this.quarterStore, this.keyboard, this.cameraService, this.playerStore);
         const citizenSetup = new CitizenSetup(this.routeStore, this.citizenStore, this.graphService);
+        const materialSetup = new MaterialSetup(this.worldProvider, this.materialStore);
 
+        this.setupService.addSetup(materialSetup);
         this.setupService.addSetup(worldSetup);
         this.setupService.addSetup(routeSetup);
         this.setupService.addSetup(playerSetup);

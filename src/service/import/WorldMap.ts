@@ -2,17 +2,14 @@ import { RouteStoryConfig } from "../../model/objects/route/RouteItem";
 
 export interface GroundJson {
     color: string;
-}
-
-export interface QuarterJson {
-    color: string;
+    materialId: string;
 }
 
 export interface WorldMap {
     id: string;
     relativePos: string;
     cameraLocation: number;
-    grounds: QuarterJson[][];
+    grounds: GroundJson[][];
     charToType: { [key: string]: string };
     models: string[];
     textures: { [key: string]: string };

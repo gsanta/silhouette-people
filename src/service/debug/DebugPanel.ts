@@ -5,7 +5,6 @@ import { FPSComponent } from "./FPSComponent";
 import { IGUIComponent } from "./IGUIComponent";
 import { MeshBoundingBoxCheckbox } from "./MeshBoundingBoxCheckbox";
 import { PlayerRadioButtonGroup } from "./PlayerRadioButtonGroup";
-import { RouteDebuggerCheckbox } from "./RouteDebuggerCheckbox";
 import { WorldAxisCheckbox } from "./WorldAxisCheckbox";
 
 export class DebugPanel implements IGUIComponent {
@@ -13,7 +12,6 @@ export class DebugPanel implements IGUIComponent {
 
     constructor() {
         this.children.push(new FPSComponent());
-        this.children.push(new RouteDebuggerCheckbox());
         this.children.push(new ColliderCheckbox());
         this.children.push(new WorldAxisCheckbox());
         this.children.push(new MeshBoundingBoxCheckbox());

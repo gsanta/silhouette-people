@@ -1,5 +1,6 @@
 import { Axis, Color3, MeshBuilder, PhysicsImpostor, Scene, Space, StandardMaterial, Vector2 } from "babylonjs";
 import { WorldObj } from "../../model/objects/WorldObj";
+import { MaterialStore } from "../../store/MaterialStore";
 import { QuarterStore } from "../../store/QuarterStore";
 import { GroundJson } from "../import/WorldMap";
 import { WorldProvider } from "../WorldProvider";
@@ -12,11 +13,13 @@ export class WorldFactory {
     private readonly quarterStore: QuarterStore;
     private readonly quarterFactory: QuarterFactory;
     private readonly modelLoader: ModelLoader;
+    private readonly materialStore: MaterialStore;
     
-    constructor(worldProvider: WorldProvider, quarterStore: QuarterStore) {
+    constructor(worldProvider: WorldProvider, quarterStore: QuarterStore, materialStore: MaterialStore) {
         this.quarterStore = quarterStore;
         this.worldProvider = worldProvider;
-        this.quarterFactory = new QuarterFactory(this.worldProvider, this.quarterStore);
+        this.materialStore = materialStore;
+        this.quarterFactory = new QuarterFactory(this.worldProvider, this.quarterStore, this.materialStore);
         
         this.modelLoader = new ModelLoader();
     }
@@ -71,7 +74,12 @@ export class WorldFactory {
                 const x = j - cols / 2;
                 const y = (rows - i) - rows / 2;
                 
-                const config: QuarterObjConfig = { color: grounds[i][j].color, position: new Vector2(x, y), size: quarterSize };
+                const config: QuarterObjConfig = { 
+                    color: grounds[i][j].color,
+                    position: new Vector2(x, y),
+                    size: quarterSize,
+                    materialId: grounds[i][j].materialId
+                };
                 this.quarterFactory.createQuarter(config);
             }
         }

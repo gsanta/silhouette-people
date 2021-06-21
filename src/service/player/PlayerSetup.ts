@@ -17,6 +17,7 @@ import { GameObject } from "../../model/objects/game_object/GameObject";
 import { FogOfWar } from "../fow/FogOfWar";
 import { ActivePlayerService } from "../ActivePlayerService";
 import { ISetup } from "../setup/ISetup";
+import { MaterialStore } from "../../store/MaterialStore";
 
 export class PlayerSetup implements ISetup {
 
@@ -26,6 +27,7 @@ export class PlayerSetup implements ISetup {
     private readonly bikeParenter: BikeParenter;
     private readonly keyboardService: KeyboardService;
     private readonly activePlayerService: ActivePlayerService;
+    private readonly materialStore: MaterialStore;
 
     private readonly playerParser: PlayerParser;
     private fogOfWar: FogOfWar;
@@ -35,13 +37,15 @@ export class PlayerSetup implements ISetup {
         playerStore: PlayerStore,
         graphService: GraphService,
         keyboardService: KeyboardService,
-        activePlayerService: ActivePlayerService
+        activePlayerService: ActivePlayerService,
+        mateiralStore: MaterialStore
     ) {
         this.worldProvider = worldProvider;
         this.playerStore = playerStore;
         this.graphService = graphService;
         this.keyboardService = keyboardService;
         this.activePlayerService = activePlayerService;
+        this.materialStore = mateiralStore;
         this.playerParser = new PlayerParser(this.graphService);
         this.bikeParenter = new BikeParenter();
     }
@@ -67,7 +71,7 @@ export class PlayerSetup implements ISetup {
         walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
         walker.addListener(new RotationRestrictorAdapter(walker));
         walker.addListener(new RouterAdapter(new DynamicRouter(walker, graph)));
-        walker.addListener(new RouteVisualizerAdapter(walker, this.graphService));
+        walker.addListener(new RouteVisualizerAdapter(walker, this.graphService, this.materialStore));
         
         const bike = <GameObject> player.getParent();
         player.inputController = new BikeInputController(<BikeController> player.motionController, player, this.keyboardService, this.graphService);

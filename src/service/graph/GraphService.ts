@@ -23,8 +23,8 @@ export class GraphService {
         }
 
         this.graph = graph;
-        this.visualizer = new GraphVisualizer(this.worldProvider, this.materialStore);
-        this.visualizer.visualizeEdge(...graph.edges);
+        this.visualizer = new GraphVisualizer(this.worldProvider);
+        this.visualizer.visualizeEdges(graph.edges, this.materialStore.getPathMaterial());
     }
 
     getVisualizer(): GraphVisualizer {
