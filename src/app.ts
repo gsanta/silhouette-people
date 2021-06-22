@@ -82,7 +82,7 @@ function initGame(lookup: DependencyResolver) {
     engine.runRenderLoop(function () {
         if (!scene.activeCamera) { return; }
         
-        scene.render();
+        scene.render(); 
         
         if (lookup.setupService.isReady()) {
             lookup.update.update();

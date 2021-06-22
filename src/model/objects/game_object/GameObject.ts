@@ -178,6 +178,17 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
         this._meshes = meshes;
     }
 
+    get dimensionalMesh() {
+        if (this.meshes[0].getBoundingInfo && this.meshes[0].getBoundingInfo().boundingBox.extendSizeWorld.x !== 0) {
+            return this.meshes[0];
+        } else if (this.meshes[0].getChildMeshes().length > 0) {
+            const firstChildMesh = this.meshes[0].getChildMeshes()[0];
+            if (firstChildMesh.getBoundingInfo && firstChildMesh.getBoundingInfo().boundingBox.extendSizeWorld.x !== 0) {
+                return this.meshes[0].getChildMeshes()[0];
+            }
+        }
+    }
+
     set visibility(visibility: boolean) {
         this.meshes.forEach(mesh => mesh.isVisible = visibility);
     }

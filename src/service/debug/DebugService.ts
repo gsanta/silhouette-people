@@ -6,6 +6,7 @@ import { WorldProvider } from "../WorldProvider";
 import { IGUIComponent } from "./IGUIComponent";
 import { QuarterMapDebugger } from "./QuarterMapDebugger";
 import { WorldAxisHelper } from "./WorldAxisHelper";
+import { Vector3 } from "babylonjs";
 
 export class DebugService {
     private worldAxisHelper: WorldAxisHelper;
@@ -49,5 +50,9 @@ export class DebugService {
 
     setMeshBoundingBoxVisibility(isVisible: boolean) {
         this.meshStore.getAll().forEach(meshObj =>  meshObj.collisionMesh && (meshObj.collisionMesh.showBoundingBox = isVisible));
+    }
+
+    applyImpulse() {
+        this.meshStore.getById('bicycle1-0').mesh.physicsImpostor.applyImpulse(new Vector3(1, 1, 0), new Vector3(0, 0.3, 0));
     }
 }

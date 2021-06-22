@@ -39,12 +39,12 @@ export class CameraSetup implements ISetup {
         const staticCameraInputController = new StaticCameraInputController(staticCameraPosController, this.keyboardService);
         staticCamera.inputController = staticCameraInputController;
 
-        // this.cameraService.addCamera(staticCamera, true);
+        this.cameraService.addCamera(staticCamera, true);
 
-        const followCamera = this.cameraFactory.createFollowCamera();
-        followCamera.getCamera().lockedTarget = this.playerStore.getActivePlayer().mesh;
+        // const followCamera = this.cameraFactory.createFollowCamera();
+        // followCamera.getCamera().lockedTarget = this.playerStore.getActivePlayer().mesh;
 
-        this.cameraService.addCamera(followCamera, true);
+        // this.cameraService.addCamera(followCamera, true);
 
     }
 }

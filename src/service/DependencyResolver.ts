@@ -28,6 +28,8 @@ import { StoryTracker } from "./story/StoryTracker";
 import { RenderGuiService } from "./RenderGuiService";
 import { WorldProvider } from "./WorldProvider";
 import { MaterialSetup } from "./material/MaterialSetup";
+import { EditorSetup } from "./editor/EditorSetup";
+import { MeshStore } from "../store/MeshStore";
 
 export class DependencyResolver {
     eventService: EventService;
@@ -55,9 +57,10 @@ export class DependencyResolver {
 
     worldProvider: WorldProvider;
 
+    private readonly meshStore: MeshStore;
     materialStore: MaterialStore;
     quarterStore: QuarterStore;
-    meshStore: GameObjectStore;
+    gameObjecStore: GameObjectStore;
     citizenStore: CitizenStore;
     playerStore: PlayerStore;
     assetContainerStore: AssetContainerStore;
@@ -87,15 +90,16 @@ export class DependencyResolver {
 
         this.routePool = new RoutePool();
         lookup.routePool = this.routePool;
+        this.meshStore = new MeshStore();
         this.materialStore = new MaterialStore(this.worldProvider);
         lookup.materialStore = this.materialStore;
         this.quarterStore = new QuarterStore();
         lookup.quarterStore = this.quarterStore;
-        this.meshStore = new GameObjectStore(this.quarterStore);
-        lookup.meshStore = this.meshStore;
-        this.citizenStore = new CitizenStore(this.meshStore);
+        this.gameObjecStore = new GameObjectStore(this.quarterStore);
+        lookup.gameObjecStore = this.gameObjecStore;
+        this.citizenStore = new CitizenStore(this.gameObjecStore);
         lookup.citizenStore = this.citizenStore;
-        this.playerStore = new PlayerStore(this.meshStore);
+        this.playerStore = new PlayerStore(this.gameObjecStore);
         lookup.playerStore = this.playerStore;
         this.assetContainerStore = new AssetContainerStore();
         lookup.assetContainerStore = this.assetContainerStore;
@@ -119,16 +123,16 @@ export class DependencyResolver {
         this.activePlayerService = new ActivePlayerService(this.playerStore, this.lightStore, this.lightFactory);
         lookup.activePlayerService = this.activePlayerService;
 
-        this.debugService = new DebugService(this.meshStore, this.worldProvider, this.materialStore, this.citizenStore);
+        this.debugService = new DebugService(this.gameObjecStore, this.worldProvider, this.materialStore, this.citizenStore);
         if (window) {
             (<any> window).debugService = this.debugService;
         }
         lookup.debugService = this.debugService;
 
-        this.meshFactory = new MeshFactory();
+        this.meshFactory = new MeshFactory(this.meshStore);
         lookup.meshFactory = this.meshFactory;
 
-        this.update = new UpdateService(this.worldProvider, this.meshStore, this.playerStore, this.quarterStore, this.keyboard, this.cameraService);
+        this.update = new UpdateService(this.worldProvider, this.gameObjecStore, this.playerStore, this.quarterStore, this.keyboard, this.cameraService);
         this.resolveSetups();
     }
 
@@ -144,7 +148,7 @@ export class DependencyResolver {
             this.routeStore,
             this.graphService,
             this.backlog,
-            this.meshStore,
+            this.gameObjecStore,
             this.quarterStore,
             this.materialStore
         );
@@ -153,6 +157,7 @@ export class DependencyResolver {
         const cameraSetup = new CameraSetup(this.worldProvider, this.quarterStore, this.keyboard, this.cameraService, this.playerStore);
         const citizenSetup = new CitizenSetup(this.routeStore, this.citizenStore, this.graphService);
         const materialSetup = new MaterialSetup(this.worldProvider, this.materialStore);
+        const editorSetup = new EditorSetup(this.worldProvider, this.gameObjecStore, this.meshStore, this.keyboard);
 
         this.setupService.addSetup(materialSetup);
         this.setupService.addSetup(worldSetup);
@@ -160,6 +165,7 @@ export class DependencyResolver {
         this.setupService.addSetup(playerSetup);
         this.setupService.addSetup(cameraSetup);
         this.setupService.addSetup(citizenSetup);
+        this.setupService.addSetup(editorSetup);
     }
 
     setScene(scene: Scene) {

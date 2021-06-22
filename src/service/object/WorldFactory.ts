@@ -31,9 +31,6 @@ export class WorldFactory {
         worldObj.scene = scene;
         worldObj.engine = scene.getEngine();
 
-        const testMesh = MeshBuilder.CreateBox('test-mesh', { size: 3 }, scene);
-        testMesh.position.y = 3;
-
         this.createGround(worldObj);
         this.createQuarters(json.grounds);
         await this.loadModels(json.models);

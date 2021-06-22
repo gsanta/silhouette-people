@@ -23,6 +23,11 @@ export class MeshConfigParser {
         const typeProps = worldJson.objects[type] ? worldJson.objects[type].properties || {} : {};
         const charProps = worldJson.objects[parsedItem.str] ? worldJson.objects[parsedItem.str].properties || {} : {};
         const props = {...typeProps, ...charProps};
+        
+        if (props.positionY) {
+            parsedItem.pos.y = props.positionY
+        }
+        
         props.position = toStrVector(parsedItem.pos);
 
         return {

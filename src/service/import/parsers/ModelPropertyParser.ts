@@ -30,8 +30,6 @@ export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyCon
     async processPropertyAsync(meshItem: GameObject, props: ModelPropertyConfig): Promise<void> {
         const removeRoot = props.removeRoot;
         meshItem.mainMeshIndex = props.mainMeshIndex;
-        // TODO for static objects there is a problem when using original instances, check it
-        const canUseOriginalInstance = props.canUseOriginalInstance === false ? false : true
 
         const result = await this.assetContainerStore.instantiate(props.path, false);
                 
@@ -39,7 +37,7 @@ export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyCon
 
         result.animationGroups.forEach(animationGroup => animationGroup.stop());
 
-        const mainMesh = meshes[0]; //props.mainMeshIndex !== undefined ? meshes[props.mainMeshIndex] : this.findMainMesh(meshes);
+        const mainMesh = meshes[0];
         const otherMeshes = meshes.filter(mesh => mesh !== mainMesh);
 
         meshItem.meshes = <Mesh[]> [mainMesh, ...otherMeshes];
@@ -47,7 +45,6 @@ export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyCon
         meshItem.skeleton = result.skeletons.length > 0 ? result.skeletons[0] : undefined;
         meshItem.animation.setAnimations(result.animationGroups);
         meshItem.mesh.translate(Axis.Y, 0.2, Space.WORLD);
-        meshItem.mesh.parent = this.worldProvider.world.ground;
     }
 
     private removeRoot(meshes: AbstractMesh[]): AbstractMesh[] {
@@ -60,9 +57,5 @@ export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyCon
         }
 
         return meshes;
-    }
-
-    private findMainMesh(meshes: AbstractMesh[]) {
-        return meshes.find(mesh => mesh.getBoundingInfo().boundingBox.extendSize.x > 0) || meshes[0];
     }
 }

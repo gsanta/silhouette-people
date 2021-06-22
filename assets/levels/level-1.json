@@ -262,19 +262,20 @@
         },
         "bicycle1": {
             "properties": {
+                "positionY": 25,
                 "model": {
                     "path": "bicycle1",
                     "mainMeshIndex": 0,
                     "canUseOriginalInstance": false
                 },
                 "texture": {
-                    "path": "palette.jpg"
+                    "path": "palette.jpg" 
                 },
                 "collider": {
-                    "dimension": "1:2:1"
+                    "dimension": "0.4:1:1"
                 },
                 "physics": {
-                    "mass": 1
+                    "mass": 20
                 },
                 "tags": ["Bicycle"],
                 "state": "BikeIdleState",
@@ -284,6 +285,7 @@
         },
         "road1": {
             "properties": {
+                "positionY": -0.195,
                 "model": {
                     "path": "road1",
                     "mainMeshIndex": 0,

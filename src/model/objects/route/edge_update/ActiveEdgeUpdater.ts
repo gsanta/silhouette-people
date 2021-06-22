@@ -18,7 +18,7 @@ export class ActiveEdgeUpdater {
         const edge = route.getEdges()[0];
         this.routeWalker.setEdge(edge);
         const source = this.routeWalker.getSource().p;
-        character.position = new Vector3(source.x, 0, source.z);
+        character.position = new Vector3(source.x, character.position.y, source.z);
 
         this.updateSide();
     }
