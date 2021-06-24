@@ -1,4 +1,4 @@
-import { MAP_CONVERSION_RATIO } from "./MapParser";
+import { MAP_CONVERSION_RATIO } from "./SceneParser";
 
 export class MapData {
     private map: string[][];

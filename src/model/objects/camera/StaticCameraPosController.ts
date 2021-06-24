@@ -21,10 +21,10 @@ export class StaticCameraPosController extends MonoBehaviour {
     }
 
     update() {
-        if (this.world.activeQuarterIndex !== -1 && this.world.activeQuarterIndex !== this.currentQuarterIndex) {
-            this.currentQuarterIndex = this.world.activeQuarterIndex;
-            this.updateCameraPosition();
-        }
+        // if (this.world.activeQuarterIndex !== -1 && this.world.activeQuarterIndex !== this.currentQuarterIndex) {
+        //     this.currentQuarterIndex = this.world.activeQuarterIndex;
+        //     this.updateCameraPosition();
+        // }
     }
 
     increaseCornerIndex() {

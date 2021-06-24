@@ -22,7 +22,7 @@ export class CollisionPropertyParser extends AbstractPropertyParser<CollisionPro
         return false;
     }
 
-    processProperty(gameObj: GameObject, props: CollisionPropertyConfig) {
+    async processPropertyAsync(gameObj: GameObject, props: CollisionPropertyConfig) {
         const dimensions = parseStrVector(props.dimension);
         const position = gameObj.position.clone();
 

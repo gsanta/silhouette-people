@@ -16,6 +16,7 @@ export enum KeyName {
     R = 'R',
     M = 'M',
     T = 'T',
+    L = 'L',
     NONE = 'NONE',
     FORWARD1 = 'FORWARD1',
     BACKWARD1 = 'BACKWARD1',
@@ -102,6 +103,8 @@ export class KeyboardService {
                 return KeyName.T;
             case 'c':
                 return KeyName.FORWARD2;
+            case 'l':
+                return KeyName.L;
             case 'x':
                 return KeyName.BACKWARD2;
             case 'shift':

@@ -4,16 +4,16 @@ import { MeshConfigParser } from "./MeshConfigParser";
 import { RouteStoryParser } from "./RouteStoryParser";
 import { WorldMap } from "./WorldMap";
 import { WorldProvider } from "../WorldProvider";
-import { MapParser } from "./map/MapParser";
+import { SceneParser } from "./map/SceneParser";
 import { IndexPosition } from "./map/ItemParser";
 import { GraphParser } from "./map/GraphParser";
 
-export class WorldImporter {
+export class SceneImporter {
     readonly routeParser: RouteParser;
     readonly meshConfigParser: MeshConfigParser;
     readonly routeStoryParser: RouteStoryParser;
     
-    private readonly mapParser: MapParser;
+    private readonly mapParser: SceneParser;
     private readonly storyTracker: StoryTracker;
 
     private readonly assetsPath = 'assets/levels';
@@ -22,7 +22,7 @@ export class WorldImporter {
     constructor(worldProvider: WorldProvider, storyTracker: StoryTracker) {
         this.worldProvider = worldProvider;
         this.storyTracker = storyTracker;
-        this.mapParser = new MapParser();
+        this.mapParser = new SceneParser();
         this.routeParser = new RouteParser();
         this.meshConfigParser = new MeshConfigParser(this.mapParser);
         this.routeStoryParser = new RouteStoryParser(storyTracker);
@@ -44,9 +44,7 @@ export class WorldImporter {
         this.worldProvider.worldSize = mapResult.size;
         this.worldProvider.quarterNum = mapResult.quarterNum;
 
-        const routeConfigs = this.routeParser.parse(json);
         new GraphParser().parse(json);
-        // routes.forEach(route => this.routeStore.addRoute(route));
 
         const meshConfigs = this.meshConfigParser.parse(json);
         meshConfigs.forEach(meshConfig => this.storyTracker.producer.createMeshStory(meshConfig));

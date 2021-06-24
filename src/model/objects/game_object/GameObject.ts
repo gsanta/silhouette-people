@@ -11,6 +11,8 @@ import { RouteController } from "./controller_route/RouteController";
 import { MotionController } from "./MotionController";
 import { RouteControllerImpl } from "./controller_route/RouteControllerImpl";
 import { BoundingInfo } from "babylonjs/Culling/index";
+import { ModelPropertyConfig } from "../../../service/import/parsers/ModelPropertyParser";
+import { CollisionPropertyConfig } from "../../../service/import/parsers/CollisionPropertyParser";
 
 export enum GameObjectType {
     Player = 'player',
@@ -40,10 +42,10 @@ export enum GameObjectTag {
 }
 
 export interface GameObjectConfig {
-    id?: string;
-    ch: string;
-    type: GameObjectType;
-
+    type?: GameObjectType;
+    model: ModelPropertyConfig;
+    collider?: CollisionPropertyConfig;
+    position?: string;
     props: {[key: string]: any};
 }
 

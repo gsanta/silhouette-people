@@ -3,7 +3,7 @@ import { GameObjectStore } from "../../store/GameObjectStore";
 import { RouteStore } from "../../store/RouteStore";
 import { ActivePlayerService } from "../ActivePlayerService";
 import { ActivePlayerPropertyParser } from "../import/parsers/ActivePlayerPropertyParser";
-import { WorldImporter } from "../import/WorldImporter";
+import { SceneImporter } from "../import/SceneImporter";
 import { KeyboardService } from "../input/KeyboardService";
 import { ISetup } from "../setup/ISetup";
 import { GraphService } from "../graph/GraphService";
@@ -38,7 +38,7 @@ export class WorldSetup implements ISetup {
     private readonly graphService: GraphService;
     private readonly storyTracker: StoryTracker;
     private readonly gameObjectStore: GameObjectStore;
-    private readonly worldImporter: WorldImporter;
+    private readonly worldImporter: SceneImporter;
     private readonly worldFactory: WorldFactory;
 
     constructor(
@@ -65,7 +65,7 @@ export class WorldSetup implements ISetup {
         this.routeStore = routeStore;
         this.graphService = graphService;
 
-        this.worldImporter = new WorldImporter(this.worldProvider, this.storyTracker);
+        this.worldImporter = new SceneImporter(this.worldProvider, this.storyTracker);
         this.worldFactory = new WorldFactory(this.worldProvider, quarterStore, materialStore);
     }
 

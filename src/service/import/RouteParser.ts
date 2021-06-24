@@ -2,7 +2,7 @@ import { Vector3 } from "babylonjs";
 import { PathItem } from "../../model/objects/PathItem";
 import { RouteItem } from "../../model/objects/route/RouteItem";
 import { IndexPosition } from "./map/ItemParser";
-import { MapParser, ParsedItem } from "./map/MapParser";
+import { SceneParser, ParsedItem } from "./map/SceneParser";
 import { WorldMap } from "./WorldMap";
 
 export interface RouteConfig {
@@ -14,11 +14,11 @@ export interface RouteConfig {
 }
 
 export class RouteParser {
-    private readonly mapParser: MapParser;
+    private readonly mapParser: SceneParser;
     private readonly charRegexp = /(?<char>[^\d]+)(?<num>\d+)/;
 
     constructor() {
-        this.mapParser = new MapParser(['#']);
+        this.mapParser = new SceneParser(['#']);
     }
     
     parse(json: WorldMap): RouteConfig[] {

@@ -1,0 +1,23 @@
+
+
+.dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background-color: grey;
+    width: 500px;
+    height: 500px;
+
+    .input-field {
+        width: 200px;
+    }
+
+    .input-row {
+        display: flex;
+        
+    }
+}

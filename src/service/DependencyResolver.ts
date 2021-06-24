@@ -30,6 +30,10 @@ import { WorldProvider } from "./WorldProvider";
 import { MaterialSetup } from "./material/MaterialSetup";
 import { EditorSetup } from "./editor/EditorSetup";
 import { MeshStore } from "../store/MeshStore";
+import { EditorService } from "./editor/EditorService";
+import { ModelPropertyParser } from "./import/parsers/ModelPropertyParser";
+import { CollisionPropertyParser } from "./import/parsers/CollisionPropertyParser";
+import { PositionPropertyParser } from "./import/parsers/PositionPropertyParser";
 
 export class DependencyResolver {
     eventService: EventService;
@@ -68,6 +72,8 @@ export class DependencyResolver {
     routeStore: RouteStore;
 
     routePool: RoutePool;
+
+    editorService: EditorService;
 
     private isReady: boolean = false;
     private onReadyFuncs: (() => void)[] = [];
@@ -129,8 +135,15 @@ export class DependencyResolver {
         }
         lookup.debugService = this.debugService;
 
-        this.meshFactory = new MeshFactory(this.meshStore);
+        this.meshFactory = new MeshFactory(
+            this.meshStore,
+            new ModelPropertyParser(this.worldProvider, this.assetContainerStore),
+            new CollisionPropertyParser(this.worldProvider),
+            new PositionPropertyParser()
+        );
         lookup.meshFactory = this.meshFactory;
+
+        this.editorService = new EditorService();
 
         this.update = new UpdateService(this.worldProvider, this.gameObjecStore, this.playerStore, this.quarterStore, this.keyboard, this.cameraService);
         this.resolveSetups();
@@ -157,7 +170,7 @@ export class DependencyResolver {
         const cameraSetup = new CameraSetup(this.worldProvider, this.quarterStore, this.keyboard, this.cameraService, this.playerStore);
         const citizenSetup = new CitizenSetup(this.routeStore, this.citizenStore, this.graphService);
         const materialSetup = new MaterialSetup(this.worldProvider, this.materialStore);
-        const editorSetup = new EditorSetup(this.worldProvider, this.gameObjecStore, this.meshStore, this.keyboard);
+        const editorSetup = new EditorSetup(this.worldProvider, this.gameObjecStore, this.meshStore, this.keyboard, this.renderGui, this.editorService, this.meshFactory);
 
         this.setupService.addSetup(materialSetup);
         this.setupService.addSetup(worldSetup);

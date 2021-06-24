@@ -1,13 +1,13 @@
 import { GameObjectConfig, GameObjectType } from "../../model/objects/game_object/GameObject";
 import { toStrVector } from "./AbstractPropertyParser";
 import { IndexPosition } from "./map/ItemParser";
-import { MapParser, ParsedItem } from "./map/MapParser";
+import { SceneParser, ParsedItem } from "./map/SceneParser";
 import { WorldMap } from "./WorldMap";
 
 export class MeshConfigParser {
-    private mapParser: MapParser;
+    private mapParser: SceneParser;
 
-    constructor(mapParser: MapParser) {
+    constructor(mapParser: SceneParser) {
         this.mapParser = mapParser;
     }
 
@@ -23,17 +23,21 @@ export class MeshConfigParser {
         const typeProps = worldJson.objects[type] ? worldJson.objects[type].properties || {} : {};
         const charProps = worldJson.objects[parsedItem.str] ? worldJson.objects[parsedItem.str].properties || {} : {};
         const props = {...typeProps, ...charProps};
+        const model = props.model;
+        const collider = props.collider;
+        delete props.collider;
+        delete props.model;
         
         if (props.positionY) {
             parsedItem.pos.y = props.positionY
         }
         
-        props.position = toStrVector(parsedItem.pos);
-
         return {
             type: <GameObjectType> type,
-            ch: parsedItem.str,
-            props: props
+            props: props,
+            model,
+            collider,
+            position: toStrVector(parsedItem.pos)
         };
     }
 }

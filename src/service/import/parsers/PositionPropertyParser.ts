@@ -9,7 +9,7 @@ export class PositionPropertyParser extends AbstractPropertyParser<string> {
         return false;
     }
 
-    processProperty(gameObj: GameObject, position: string) {
+    async processPropertyAsync(gameObj: GameObject, position: string) {
         const pos = parseStrVector(position.trim());
 
         gameObj.meshes[0].translate(Axis.X, pos.x, Space.WORLD);

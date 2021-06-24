@@ -1,6 +1,6 @@
 import { Vector3 } from "babylonjs";
 import { MapData } from "./MapData";
-import { ParsedItem, MAP_CONVERSION_RATIO } from "./MapParser";
+import { ParsedItem, MAP_CONVERSION_RATIO } from "./SceneParser";
 
 export enum IndexPosition {
     LEFT = 'LEFT',

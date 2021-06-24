@@ -18,7 +18,7 @@ export interface MapResult {
     items: ParsedItem[];
 }
 
-export class MapParser {
+export class SceneParser {
     private map: string[][] = [];
     
     private readonly mapSplitter: MapSplitter;
