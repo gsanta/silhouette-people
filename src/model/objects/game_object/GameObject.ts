@@ -38,7 +38,8 @@ export enum GameObjectTag {
     Citizen = 'Citizen',
     Enemy = 'Enemy',
     Bicycle = 'Bicycle',
-    ActiveVehicle = 'ActiveVehicle'
+    ActiveVehicle = 'ActiveVehicle',
+    _UI_CREATED = '_UI_CRETAED'
 }
 
 export interface GameObjectConfig {
@@ -46,6 +47,7 @@ export interface GameObjectConfig {
     model: ModelPropertyConfig;
     collider?: CollisionPropertyConfig;
     position?: string;
+    tags: string[];
     props: {[key: string]: any};
 }
 

@@ -13,6 +13,7 @@ export class FogOfWarService extends BaseService {
     private character: GameObject;
     private mesh: Mesh;
     private material: NodeMaterial;
+    private _visible = false;
 
     constructor(worldProvider: SceneService) {
         super();
@@ -27,6 +28,21 @@ export class FogOfWarService extends BaseService {
         this.loadMaterial();
     }
 
+    set visible(visible: boolean) {
+        this._visible = visible;
+
+        if (this.mesh) {
+            if (visible) {
+                this.mesh.visibility = 1;
+            } else {
+                this.mesh.visibility = 0;
+            }
+        }
+    }
+
+    get visible() {
+        return this._visible;
+    }
     
     private async loadMaterial() {
         this.material = new NodeMaterial('fow-material', this.worldProvider.scene);

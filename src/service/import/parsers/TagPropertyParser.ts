@@ -8,7 +8,7 @@ export class TagPropertyParser extends AbstractPropertyParser<string[]> {
         return false;
     }
 
-    processProperty(gameObject: GameObject, tags: string[]) {
+    async processPropertyAsync(gameObject: GameObject, tags: string[]) {
         gameObject.tag.add(...(tags as GameObjectTag[]));
     }
 }

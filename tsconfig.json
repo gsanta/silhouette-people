@@ -23,7 +23,7 @@
     "include": [
         "src/**/*.ts",
         "tests/**/*.ts"
-, "tests/test_utils/setup.ts", "src/component/editor/EditorComponent.tsx"    ],
+, "tests/test_utils/setup.ts", "src/component/editor/EditorComponent.tsx", "src/component/editor/ToolControllerPanel.tsx", "src/component/editor/SceneExportPanel.tsx"    ],
     "exclude": [
         "node_modules"
     ]

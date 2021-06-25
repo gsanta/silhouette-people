@@ -1,14 +1,18 @@
 import fs from 'fs';
+import { GameObjectTag } from '../../../model/objects/game_object/GameObject';
+import { GameObjectStore } from '../../../store/GameObjectStore';
 
 export class SceneExporter {
 
+    private readonly gameObjectStore: GameObjectStore;
+
+    constructor(gameObjectStore: GameObjectStore) {
+        this.gameObjectStore = gameObjectStore;
+    }
 
     async export(): Promise<void> {
         
-        return
-        
-        fs.writeFile('test.json', JSON.stringify({ a:1, b:2, c:3 }, null, 4), () => {
-
-        });
+        const gameObjects = this.gameObjectStore.getByTag(GameObjectTag._UI_CREATED);
+        debugger;
     }
 }

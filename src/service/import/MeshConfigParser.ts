@@ -25,8 +25,10 @@ export class MeshConfigParser {
         const props = {...typeProps, ...charProps};
         const model = props.model;
         const collider = props.collider;
+        const tags = props.tags;
         delete props.collider;
         delete props.model;
+        delete props.tags;
         
         if (props.positionY) {
             parsedItem.pos.y = props.positionY
@@ -37,7 +39,8 @@ export class MeshConfigParser {
             props: props,
             model,
             collider,
-            position: toStrVector(parsedItem.pos)
+            position: toStrVector(parsedItem.pos),
+            tags: tags || []
         };
     }
 }

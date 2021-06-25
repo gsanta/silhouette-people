@@ -37,6 +37,13 @@ import { PositionPropertyParser } from "./import/parsers/PositionPropertyParser"
 import { CameraController } from "./editor/controllers/CameraController";
 import { MeshLoaderController } from "./editor/controllers/MeshLoaderController";
 import { FogOfWarService } from "./fow/FogOfWarService";
+import { FogOfWarController } from "./editor/controllers/FogOfWarController";
+import { TagPropertyParser } from "./import/parsers/TagPropertyParser";
+import { SceneExportController } from "./editor/controllers/SceneExportController";
+import { SceneExporter } from "./editor/export/SceneExporter";
+import { ToolController } from "./editor/controllers/ToolController";
+import { TransformTool } from "./editor/tools/TransformTool";
+import { ToolType } from "./editor/controllers/TransformController";
 
 export class DependencyResolver {
     eventService: EventService;
@@ -75,6 +82,7 @@ export class DependencyResolver {
     routeStore: RouteStore;
 
     fogOfWarService: FogOfWarService;
+    sceneExporter: SceneExporter;
 
     routePool: RoutePool;
 
@@ -144,16 +152,21 @@ export class DependencyResolver {
             this.meshStore,
             new ModelPropertyParser(this.sceneService, this.assetContainerStore),
             new CollisionPropertyParser(this.sceneService),
-            new PositionPropertyParser()
+            new PositionPropertyParser(),
+            new TagPropertyParser()
         );
         lookup.meshFactory = this.meshFactory;
 
         this.fogOfWarService = new FogOfWarService(this.sceneService);
+        this.sceneExporter = new SceneExporter(this.gameObjecStore);
         this.sceneService.addBaseService(this.fogOfWarService);
 
         this.editorService = new EditorService(
             new MeshLoaderController(this.keyboard, this.renderGui, this.meshFactory),
-            new CameraController(this.cameraService, this.renderGui)
+            new CameraController(this.cameraService, this.renderGui),
+            new FogOfWarController(this.fogOfWarService, this.renderGui),
+            new SceneExportController(this.sceneExporter),
+            new ToolController(this.renderGui)
         );
 
         this.update = new UpdateService(this.sceneService, this.gameObjecStore, this.playerStore, this.quarterStore, this.keyboard, this.cameraService);

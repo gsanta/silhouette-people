@@ -1,5 +1,5 @@
 import { Vector3 } from "babylonjs/Maths/math.vector";
-import { GameObjectConfig } from "../../../model/objects/game_object/GameObject";
+import { GameObjectConfig, GameObjectTag } from "../../../model/objects/game_object/GameObject";
 import { KeyboardService, KeyName } from "../../input/KeyboardService";
 import { MeshFactory } from "../../object/mesh/MeshFactory";
 import { RenderGuiService } from "../../RenderGuiService";
@@ -47,7 +47,8 @@ export class MeshLoaderController {
                 path: this.modelName
             },
             collider: this.collision ? { dimension: '0:0:0' } : undefined,
-            props: []
+            props: [],
+            tags: [GameObjectTag._UI_CREATED]
         }
         this.meshFactory.createFromConfig(gameObjectConfig);
     }

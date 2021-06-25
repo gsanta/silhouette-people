@@ -5,6 +5,7 @@ import { AbstractPropertyParser } from "../../import/AbstractPropertyParser";
 import { CollisionPropertyParser } from "../../import/parsers/CollisionPropertyParser";
 import { ModelPropertyParser } from "../../import/parsers/ModelPropertyParser";
 import { PositionPropertyParser } from "../../import/parsers/PositionPropertyParser";
+import { TagPropertyParser } from "../../import/parsers/TagPropertyParser";
 
 export class MeshFactory {
     private readonly meshStore: MeshStore;
@@ -13,16 +14,19 @@ export class MeshFactory {
     private readonly modelPropertyParser: ModelPropertyParser;
     private readonly collisionPropertyParser: CollisionPropertyParser;
     private readonly positionPropertyParser: PositionPropertyParser;
+    private readonly tagPropertyParser: TagPropertyParser;
 
     constructor(
         meshStore: MeshStore, 
         modelPropertyParser: ModelPropertyParser,
         collisionPropertyParser: CollisionPropertyParser,
-        positionPropertyParser: PositionPropertyParser
+        positionPropertyParser: PositionPropertyParser,
+        tagPropertyParser: TagPropertyParser
     ) {
         this.modelPropertyParser = modelPropertyParser;
         this.collisionPropertyParser = collisionPropertyParser;
         this.positionPropertyParser = positionPropertyParser;
+        this.tagPropertyParser = tagPropertyParser;
         this.meshStore = meshStore;
     }
 
@@ -53,6 +57,8 @@ export class MeshFactory {
         if (gameObjectConfig.collider) {
             await this.collisionPropertyParser.processPropertyAsync(gameObject, gameObjectConfig.collider);
         }
+
+        await this.tagPropertyParser.processPropertyAsync(gameObject, gameObjectConfig.tags);
 
         if (gameObjectConfig.props) {
             await this.applyProperties(gameObject, gameObjectConfig);

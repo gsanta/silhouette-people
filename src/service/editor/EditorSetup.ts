@@ -1,23 +1,22 @@
 import { GameObjectStore } from "../../store/GameObjectStore";
 import { MeshStore } from "../../store/MeshStore";
-import { CameraService } from "../camera/CameraService";
 import { KeyboardService } from "../input/KeyboardService";
-import { MeshFactory } from "../object/mesh/MeshFactory";
-import { RenderGuiService } from "../RenderGuiService";
-import { ISetup } from "../setup/ISetup";
 import { SceneService } from "../SceneService";
-import { MeshLoaderController } from "./controllers/MeshLoaderController";
+import { ISetup } from "../setup/ISetup";
+import { ToolType } from "./controllers/TransformController";
 import { EditorService } from "./EditorService";
-import { TransformTool } from "./TransformTool";
+import { GizmoManagerAdapter } from "./tools/GizmoManagerAdapter";
+import { TransformTool } from "./tools/TransformTool";
 
 export class EditorSetup implements ISetup {
 
-    private readonly worldProvider: SceneService;
+    private readonly sceneService: SceneService;
     private readonly gameObjectStore: GameObjectStore;
     private readonly keyboardService: KeyboardService;
     private readonly meshStore: MeshStore;
     private readonly editorService: EditorService;
-    private transformTool: TransformTool;
+
+    private gizmoManagerAdapter: GizmoManagerAdapter;
 
     constructor(
         worldProvider: SceneService,
@@ -26,7 +25,7 @@ export class EditorSetup implements ISetup {
         keyboardService: KeyboardService,
         editorService: EditorService,
     ) {
-        this.worldProvider = worldProvider;
+        this.sceneService = worldProvider;
         this.gameObjectStore = gameObjectStore;
         this.meshStore = meshStore;
         this.keyboardService = keyboardService;
@@ -34,10 +33,10 @@ export class EditorSetup implements ISetup {
     }
 
     async setup(): Promise<void> {
-        if (!this.transformTool) {
-            this.transformTool = new TransformTool(this.worldProvider, this.gameObjectStore, this.meshStore, this.keyboardService);
-            this.transformTool.updateAttachableMeshes();
-        }
+        this.gizmoManagerAdapter = new GizmoManagerAdapter(this.sceneService, this.gameObjectStore, this.meshStore);
+
+        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, ToolType.TRANSFORM));
+        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, ToolType.ROTATE));
 
         this.editorService.isEditorOpen = true;
     }
