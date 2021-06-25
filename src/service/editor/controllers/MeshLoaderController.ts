@@ -84,7 +84,7 @@ export class MeshLoaderController {
         }
         const gameObject = await this.meshFactory.createFromConfig(gameObjectConfig);
         this.gameObjectStore.addItem(gameObject);
-        this.eventService.guiEvents.emitonGameObjectCreated();
+        this.eventService.guiEvents.emitGameObjectCreated();
     }
 
     private onKeyDown(keyName: KeyName) {

@@ -45,6 +45,10 @@ export class KeyboardService {
         this.keydownHandlers.push(handler);
     }
 
+    removeOnKeydown(handler: (keyName: KeyName) => void) {
+        this.keydownHandlers = this.keydownHandlers.filter(h => h !== handler);
+    }
+
     removeListener(l: KeyboardListener) {
         this.handlers = this.handlers.filter(listener => listener !== l);
     }

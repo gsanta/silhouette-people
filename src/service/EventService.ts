@@ -1,18 +1,32 @@
+import { GameObject } from "../model/objects/game_object/GameObject";
 
 
 export class GUIEvents {
     private gameObjectCreatedCallbacks: (() => void)[] = [];
+    private gameObjectSelectedCallbacks: ((gameObject: GameObject) => void)[] = [];
 
     onGameObjectCreated(callback: () => void) {
         this.gameObjectCreatedCallbacks.push(callback);
     }
 
-    removeonGameObjectCreated(callback: () => void) {
+    removeGameObjectCreated(callback: () => void) {
         this.gameObjectCreatedCallbacks = this.gameObjectCreatedCallbacks.filter(cb => cb !== callback);
     }
 
-    emitonGameObjectCreated() {
+    emitGameObjectCreated() {
         this.gameObjectCreatedCallbacks.forEach(callback => callback());
+    }
+
+    onGameObjectSelected(callback: (gameObject: GameObject) => void) {
+        this.gameObjectSelectedCallbacks.push(callback);
+    }
+
+    removeGameObjectSelected(callback: (gameObject: GameObject) => void) {
+        this.gameObjectSelectedCallbacks = this.gameObjectSelectedCallbacks.filter(cb => cb !== callback);
+    }
+
+    emitGameObjectSelected(gameObject: GameObject) {
+        this.gameObjectSelectedCallbacks.forEach(callback => callback(gameObject));
     }
 }
 

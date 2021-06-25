@@ -4,6 +4,8 @@ import { FogOfWarController } from "./controllers/FogOfWarController";
 import { MeshLoaderController } from "./controllers/MeshLoaderController";
 import { SceneExportController } from "./controllers/SceneExportController";
 import { ToolController } from "./controllers/ToolController";
+import { HotkeyController } from "./hotkeys/HotkeyController";
+import { SelectionStore } from "./SelectionStore";
 
 
 export class EditorService {
@@ -15,6 +17,8 @@ export class EditorService {
     readonly fogOfWarController: FogOfWarController;
     readonly sceneExportController: SceneExportController;
     readonly toolController: ToolController;
+    readonly selectionStore: SelectionStore;
+    readonly hotkeyController: HotkeyController;
 
     constructor(
         meshLoaderController: MeshLoaderController,
@@ -28,5 +32,7 @@ export class EditorService {
         this.fogOfWarController = fogOfWarController;
         this.sceneExportController = sceneExportController;
         this.toolController = toolController;
+        this.selectionStore = new SelectionStore();
+        this.hotkeyController = new HotkeyController();
     }
 }

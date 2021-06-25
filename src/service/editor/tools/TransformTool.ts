@@ -20,8 +20,9 @@ export class TransformTool {
         this.diableGizmos();
         if (this.toolType === ToolType.TRANSFORM) {
             this.gizmoManagerAdapter.manager.positionGizmoEnabled = true;
-    } else if (this.toolType === ToolType.ROTATE) {
+        } else if (this.toolType === ToolType.ROTATE) {
             this.gizmoManagerAdapter.manager.rotationGizmoEnabled = true;
+            this.gizmoManagerAdapter.manager.gizmos.rotationGizmo.updateGizmoRotationToMatchAttachedMesh = true;
         }
     }
 

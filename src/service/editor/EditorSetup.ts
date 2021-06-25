@@ -6,9 +6,9 @@ import { SceneService } from "../SceneService";
 import { ISetup } from "../setup/ISetup";
 import { ToolType } from "./controllers/TransformController";
 import { EditorService } from "./EditorService";
+import { EraseHotkey } from "./hotkeys/EraseHotkey";
+import { SelectionStore } from "./SelectionStore";
 import { GizmoManagerAdapter } from "./tools/GizmoManagerAdapter";
-import { PositionTool } from "./tools/PositionTool";
-import { RotationTool } from "./tools/RotationTool";
 import { TransformTool } from "./tools/TransformTool";
 
 export class EditorSetup implements ISetup {
@@ -19,7 +19,6 @@ export class EditorSetup implements ISetup {
     private readonly meshStore: MeshStore;
     private readonly editorService: EditorService;
     private readonly eventService: EventService;
-
 
     private gizmoManagerAdapter: GizmoManagerAdapter;
 
@@ -40,10 +39,13 @@ export class EditorSetup implements ISetup {
     }
 
     async setup(): Promise<void> {
-        this.gizmoManagerAdapter = new GizmoManagerAdapter(this.sceneService, this.gameObjectStore, this.meshStore, this.eventService);
+        this.gizmoManagerAdapter = new GizmoManagerAdapter(this.sceneService, this.gameObjectStore, this.meshStore, this.eventService, this.editorService.selectionStore);
 
-        this.editorService.toolController.addTool(new PositionTool(this.gizmoManagerAdapter));
-        this.editorService.toolController.addTool(new RotationTool(this.gizmoManagerAdapter));
+        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, ToolType.TRANSFORM));
+        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, ToolType.ROTATE));
+
+        this.editorService.hotkeyController.addHotkey(new EraseHotkey(this.keyboardService, this.editorService.selectionStore, this.gameObjectStore));
+        this.editorService.hotkeyController.enable();
 
         this.editorService.isEditorOpen = true;
     }

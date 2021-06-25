@@ -167,7 +167,11 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
     }
 
     get rotationY() {
-        return this.mesh.rotationQuaternion.toEulerAngles().y;
+        if (this.mesh.rotationQuaternion) {
+            return this.mesh.rotationQuaternion.toEulerAngles().y;
+        } else {
+            return this.mesh.rotation.y;
+        }
     }
 
     set collisionMesh(mesh: Mesh) {
