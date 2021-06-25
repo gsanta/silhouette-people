@@ -4,20 +4,20 @@ import { QuarterStore } from "../../store/QuarterStore";
 import { KeyboardService } from "../input/KeyboardService";
 import { ISetup } from "../setup/ISetup";
 import { PlayerStore } from "../player/PlayerStore";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 import { CameraFactory } from "./CameraFactory";
 import { CameraService } from "./CameraService";
 
 export class CameraSetup implements ISetup {
     private readonly cameraFactory: CameraFactory;
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
     private readonly quarterStore: QuarterStore;
     private readonly keyboardService: KeyboardService;
     private readonly cameraService: CameraService;
     private readonly playerStore: PlayerStore;
 
     constructor(
-        worldProvider: WorldProvider,
+        worldProvider: SceneService,
         quarterStore: QuarterStore,
         keyboardService: KeyboardService,
         cameraService: CameraService,
@@ -41,10 +41,10 @@ export class CameraSetup implements ISetup {
 
         this.cameraService.addCamera(staticCamera, true);
 
-        // const followCamera = this.cameraFactory.createFollowCamera();
-        // followCamera.getCamera().lockedTarget = this.playerStore.getActivePlayer().mesh;
+        const followCamera = this.cameraFactory.createFollowCamera();
+        followCamera.getCamera().lockedTarget = this.playerStore.getActivePlayer().mesh;
 
-        // this.cameraService.addCamera(followCamera, true);
+        this.cameraService.addCamera(followCamera, true);
 
     }
 }

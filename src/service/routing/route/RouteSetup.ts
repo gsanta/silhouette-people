@@ -3,15 +3,15 @@ import { RouteStore } from "../../../store/RouteStore";
 import { GraphParser } from "../../import/map/GraphParser";
 import { ISetup } from "../../setup/ISetup";
 import { GraphService } from "../../graph/GraphService";
-import { WorldProvider } from "../../WorldProvider";
+import { SceneService } from "../../SceneService";
 
 export class RouteSetup implements ISetup {
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
     private readonly graphParser: GraphParser;
     private readonly graphService: GraphService;
     private readonly routeStore: RouteStore;
 
-    constructor(worldProvider: WorldProvider, graphService: GraphService, routeStore: RouteStore) {
+    constructor(worldProvider: SceneService, graphService: GraphService, routeStore: RouteStore) {
         this.worldProvider = worldProvider;
         this.graphService = graphService;
         this.routeStore = routeStore;

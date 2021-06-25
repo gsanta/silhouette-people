@@ -5,13 +5,14 @@ import { WorldObj } from "../WorldObj";
 
 export class CameraObject {
     inputController: InputController;
+    readonly name: string;
     private worldObj: WorldObj;
 
     private _behaviours: Map<string, MonoBehaviour> = new Map();
-
     private readonly camera: TargetCamera;
 
-    constructor(camera: TargetCamera, worldObj: WorldObj) {
+    constructor(name: string, camera: TargetCamera, worldObj: WorldObj) {
+        this.name = name;
         this.camera = camera;
         this.worldObj = worldObj;
     }

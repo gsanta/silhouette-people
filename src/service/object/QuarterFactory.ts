@@ -2,7 +2,7 @@ import { Axis, Color3, Color4, MeshBuilder, Space, StandardMaterial, Vector2, Ve
 import { QuarterItem } from "../../model/objects/game_object/types/quarter/QuarterItem";
 import { MaterialStore } from "../../store/MaterialStore";
 import { QuarterStore } from "../../store/QuarterStore";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 
 export interface QuarterObjConfig {
     color: string;
@@ -13,10 +13,10 @@ export interface QuarterObjConfig {
 
 export class QuarterFactory {
     private readonly quarterStore: QuarterStore;
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
     private readonly materialStore: MaterialStore;
 
-    constructor(worldProvider: WorldProvider, quarterStore: QuarterStore, materialStore: MaterialStore) {
+    constructor(worldProvider: SceneService, quarterStore: QuarterStore, materialStore: MaterialStore) {
         this.quarterStore = quarterStore;
         this.worldProvider = worldProvider;
         this.materialStore = materialStore;

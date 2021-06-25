@@ -1,11 +1,11 @@
 import { NodeMaterial, SpotLight, Tools, Vector3 } from "babylonjs";
 import { LightObject } from "../../model/objects/light/LightObject";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 
 export class LightFactory {
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
 
-    constructor(worldProvider: WorldProvider) {
+    constructor(worldProvider: SceneService) {
         this.worldProvider = worldProvider;
     }
 

@@ -1,18 +1,18 @@
 import { MaterialStore } from "../../store/MaterialStore";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 import { Graph } from "./Graph";
 import { GraphEdge } from "./GraphEdge";
 import { GraphVertex } from "./GraphImpl";
 import { GraphVisualizer } from "./GraphVisualizer";
 
 export class GraphService {
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
     private readonly materialStore: MaterialStore;
 
     private graph: Graph<GraphVertex, GraphEdge>;
     private visualizer: GraphVisualizer;
 
-    constructor(worldProvider: WorldProvider, materialStore: MaterialStore) {
+    constructor(worldProvider: SceneService, materialStore: MaterialStore) {
         this.worldProvider = worldProvider;
         this.materialStore = materialStore;
     }

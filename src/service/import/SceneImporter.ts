@@ -3,7 +3,7 @@ import { RouteParser } from "./RouteParser";
 import { MeshConfigParser } from "./MeshConfigParser";
 import { RouteStoryParser } from "./RouteStoryParser";
 import { WorldMap } from "./WorldMap";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 import { SceneParser } from "./map/SceneParser";
 import { IndexPosition } from "./map/ItemParser";
 import { GraphParser } from "./map/GraphParser";
@@ -17,9 +17,9 @@ export class SceneImporter {
     private readonly storyTracker: StoryTracker;
 
     private readonly assetsPath = 'assets/levels';
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
 
-    constructor(worldProvider: WorldProvider, storyTracker: StoryTracker) {
+    constructor(worldProvider: SceneService, storyTracker: StoryTracker) {
         this.worldProvider = worldProvider;
         this.storyTracker = storyTracker;
         this.mapParser = new SceneParser();

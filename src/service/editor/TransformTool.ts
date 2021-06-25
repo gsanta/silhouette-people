@@ -2,17 +2,17 @@ import { GizmoManager, Mesh, MeshBuilder } from "babylonjs";
 import { GameObjectStore } from "../../store/GameObjectStore";
 import { MeshStore } from "../../store/MeshStore";
 import { KeyboardService, KeyName } from "../input/KeyboardService";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 
 export class TransformTool {
     private readonly gameObjectStore: GameObjectStore;
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
     private readonly meshStore: MeshStore;
     private readonly keyboardService: KeyboardService;
     private gizmoManager: GizmoManager;
     private programmaticEvent = false;
 
-    constructor(worldProvider: WorldProvider, gameObjectStore: GameObjectStore, meshStore: MeshStore, keyboardService: KeyboardService) {
+    constructor(worldProvider: SceneService, gameObjectStore: GameObjectStore, meshStore: MeshStore, keyboardService: KeyboardService) {
         this.worldProvider = worldProvider;
         this.gameObjectStore = gameObjectStore;
         this.meshStore = meshStore;

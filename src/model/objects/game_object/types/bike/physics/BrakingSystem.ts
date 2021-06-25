@@ -1,4 +1,4 @@
-import { WorldProvider } from "../../../../../../service/WorldProvider";
+import { SceneService } from "../../../../../../service/SceneService";
 import { MotionController } from "../../../MotionController";
 import { GameObject } from "../../../GameObject";
 import { BrakingParticleSystem } from "./BrakingParticleSystem";
@@ -7,12 +7,12 @@ export class BrakingSystem {
     private mover: MotionController;
     private readonly slowdown: number;
     private readonly slowdownPowerBrake: number;
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
     private particleSystem: BrakingParticleSystem;
     private bike: GameObject;
     private isPowerBraking = false;
 
-    constructor(worldProvider: WorldProvider, bike: GameObject, mover: MotionController, slowdownFactor: number) {
+    constructor(worldProvider: SceneService, bike: GameObject, mover: MotionController, slowdownFactor: number) {
         this.mover = mover;
         this.worldProvider = worldProvider;
 

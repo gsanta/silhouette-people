@@ -16,7 +16,7 @@ export class BikeBrakingState extends GameObjectState {
         super(bike);
         this.bike = bike;
         this.motionController = motionController;
-        this.brakeSystem = new BrakingSystem(lookup.worldProvider, bike, this.motionController, 1.5);
+        this.brakeSystem = new BrakingSystem(lookup.sceneService, bike, this.motionController, 1.5);
     }
 
     update(deltaTime: number) {

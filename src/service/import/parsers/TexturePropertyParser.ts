@@ -1,6 +1,6 @@
 import { StandardMaterial, Texture } from "babylonjs";
 import { GameObject } from "../../../model/objects/game_object/GameObject";
-import { WorldProvider } from "../../WorldProvider";
+import { SceneService } from "../../SceneService";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export interface TexturePropertyConfig {
@@ -11,9 +11,9 @@ export interface TexturePropertyConfig {
 export class TexturePropertyParser extends AbstractPropertyParser<TexturePropertyConfig> {
     propName = 'texture';
     
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
 
-    constructor(worldProvider: WorldProvider) {
+    constructor(worldProvider: SceneService) {
         super();
         this.worldProvider = worldProvider;
     }

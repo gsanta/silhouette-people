@@ -1,6 +1,6 @@
 import { PhysicsImpostor } from "babylonjs";
 import { GameObject } from "../../../model/objects/game_object/GameObject";
-import { WorldProvider } from "../../WorldProvider";
+import { SceneService } from "../../SceneService";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export interface PhysicsPropertyConfig {
@@ -10,9 +10,9 @@ export interface PhysicsPropertyConfig {
 export class PhysicsPropertyParser extends AbstractPropertyParser<PhysicsPropertyConfig> {
     propName = 'physics';
     
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
 
-    constructor(worldProvider: WorldProvider) {
+    constructor(worldProvider: SceneService) {
         super();
 
         this.worldProvider = worldProvider;

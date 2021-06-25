@@ -2,7 +2,7 @@ import { Mesh, Vector2 } from "babylonjs";
 import { Vector3 } from "babylonjs/Maths/math.vector";
 import { InjectProperty } from "../../../../../di/diDecorators";
 import { lookup } from "../../../../../service/DependencyResolver";
-import { WorldProvider } from "../../../../../service/WorldProvider";
+import { SceneService } from "../../../../../service/SceneService";
 import { QuarterMap } from "./QuarterMap";
 import { Rect } from "../../../../math/shapes/Rect";
 
@@ -12,12 +12,12 @@ export class QuarterItem  {
     readonly mesh: Mesh;
 
     @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
+    private worldProvider: SceneService;
 
     private map: QuarterMap;
 
     constructor(id: string, mesh: Mesh) {
-        this.worldProvider = lookup.worldProvider;
+        this.worldProvider = lookup.sceneService;
         this.mesh = mesh;
         this.id = id;
 

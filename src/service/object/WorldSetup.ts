@@ -8,7 +8,7 @@ import { KeyboardService } from "../input/KeyboardService";
 import { ISetup } from "../setup/ISetup";
 import { GraphService } from "../graph/GraphService";
 import { StoryTracker } from "../story/StoryTracker";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 import { MeshFactory } from "./mesh/MeshFactory";
 import { MeshItemLoader } from "./mesh/MeshItemLoader";
 import { WorldFactory } from "./WorldFactory";
@@ -29,7 +29,7 @@ import { QuarterStore } from "../../store/QuarterStore";
 import { MaterialStore } from "../../store/MaterialStore";
 
 export class WorldSetup implements ISetup {
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
     private readonly assetContainerStore: AssetContainerStore;
     private readonly keyboardService: KeyboardService;
     private readonly activePlayerService: ActivePlayerService;
@@ -42,7 +42,7 @@ export class WorldSetup implements ISetup {
     private readonly worldFactory: WorldFactory;
 
     constructor(
-        worldProvider: WorldProvider,
+        worldProvider: SceneService,
         assetContainerStore: AssetContainerStore,
         keyboardService: KeyboardService,
         activePlayerService: ActivePlayerService,

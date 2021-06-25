@@ -1,6 +1,6 @@
 import { Color3, Mesh, MeshBuilder, StandardMaterial } from "babylonjs";
 import { toVector3 } from "../../../helpers";
-import { WorldProvider } from "../../../service/WorldProvider";
+import { SceneService } from "../../../service/SceneService";
 import { GameObject } from "../../objects/game_object/GameObject";
 import { MonoBehaviour, meshAttachmentHeight } from "../MonoBehaviour";
 import { MonoBehaviourName } from "../MonoBehaviourName";
@@ -8,9 +8,9 @@ import { MonoBehaviourName } from "../MonoBehaviourName";
 export class CollisionRadiusVisualizer extends MonoBehaviour {
     private readonly _character: GameObject;
     private _mesh: Mesh;
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
 
-    constructor(character: GameObject, worldProvider: WorldProvider) {
+    constructor(character: GameObject, worldProvider: SceneService) {
         super(MonoBehaviourName.COLLISION_RADIUS_VISUALIZER);
         this._character = character;
         this.worldProvider = worldProvider;

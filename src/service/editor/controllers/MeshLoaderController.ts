@@ -13,7 +13,7 @@ export class MeshLoaderController {
     private _modelName: string;
     private _collision: boolean = true;
 
-    isDialogOpen = false;
+    isDialogOpen = true;
 
     constructor(keyboardService: KeyboardService, renderGuiService: RenderGuiService, meshFactory: MeshFactory) {
         this.keyboardService = keyboardService;

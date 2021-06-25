@@ -1,7 +1,7 @@
 import { AbstractMesh, Axis, Mesh, Space } from "babylonjs";
 import { GameObject } from "../../../model/objects/game_object/GameObject";
 import { AssetContainerStore } from "../../../store/AssetContainerStore";
-import { WorldProvider } from "../../WorldProvider";
+import { SceneService } from "../../SceneService";
 import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export interface ModelPropertyConfig {
@@ -15,9 +15,9 @@ export class ModelPropertyParser extends AbstractPropertyParser<ModelPropertyCon
     propName = 'model';
 
     private assetContainerStore: AssetContainerStore;
-    private worldProvider: WorldProvider;
+    private worldProvider: SceneService;
 
-    constructor(worldProvider: WorldProvider, assetContainerStore: AssetContainerStore) {
+    constructor(worldProvider: SceneService, assetContainerStore: AssetContainerStore) {
         super();
         this.worldProvider = worldProvider;
         this.assetContainerStore = assetContainerStore;

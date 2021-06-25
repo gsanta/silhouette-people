@@ -4,7 +4,7 @@ import { RouteVisualizerAdapter } from "../../model/objects/route/visualization/
 import { RouteControllerImpl } from "../../model/objects/game_object/controller_route/RouteControllerImpl";
 import { RouteControllerListenerDecorator } from "../../model/objects/game_object/controller_route/RouteControllerListenerDecorator";
 import { GraphService } from "../graph/GraphService";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 import { PlayerParser } from "./PlayerParser";
 import { PlayerStore } from "./PlayerStore";
 import { RouterAdapter } from "../../model/objects/route/routing/RouterAdapter";
@@ -14,31 +14,32 @@ import { BikeInputController } from "../../model/objects/game_object/types/bike/
 import { BikeController } from "../../model/objects/game_object/types/bike/BikeController";
 import { DynamicRouter } from "../../model/objects/route/routing/DynamicRouter";
 import { GameObject } from "../../model/objects/game_object/GameObject";
-import { FogOfWar } from "../fow/FogOfWar";
+import { FogOfWarService } from "../fow/FogOfWarService";
 import { ActivePlayerService } from "../ActivePlayerService";
 import { ISetup } from "../setup/ISetup";
 import { MaterialStore } from "../../store/MaterialStore";
 
 export class PlayerSetup implements ISetup {
 
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
     private readonly playerStore: PlayerStore;
     private readonly graphService: GraphService;
     private readonly bikeParenter: BikeParenter;
     private readonly keyboardService: KeyboardService;
     private readonly activePlayerService: ActivePlayerService;
     private readonly materialStore: MaterialStore;
+    private readonly fogOfWarService: FogOfWarService;
 
     private readonly playerParser: PlayerParser;
-    private fogOfWar: FogOfWar;
 
     constructor(
-        worldProvider: WorldProvider,
+        worldProvider: SceneService,
         playerStore: PlayerStore,
         graphService: GraphService,
         keyboardService: KeyboardService,
         activePlayerService: ActivePlayerService,
-        mateiralStore: MaterialStore
+        mateiralStore: MaterialStore,
+        fogOfWarService: FogOfWarService
     ) {
         this.worldProvider = worldProvider;
         this.playerStore = playerStore;
@@ -46,6 +47,7 @@ export class PlayerSetup implements ISetup {
         this.keyboardService = keyboardService;
         this.activePlayerService = activePlayerService;
         this.materialStore = mateiralStore;
+        this.fogOfWarService = fogOfWarService;
         this.playerParser = new PlayerParser(this.graphService);
         this.bikeParenter = new BikeParenter();
     }
@@ -54,11 +56,7 @@ export class PlayerSetup implements ISetup {
         const player = this.playerStore.getActivePlayer();
         this.activePlayerService.activate(player);
 
-        if (!this.fogOfWar) {
-            this.fogOfWar = new FogOfWar(this.worldProvider.scene, player);
-        }
-
-        player.addBehaviour(this.fogOfWar);
+        this.fogOfWarService.setCharacter(player);
         const route = this.playerParser.parse(this.worldProvider.worldMap);
 
         this.bikeParenter.parentToBike(player, this.playerStore.getBikes()[0]);

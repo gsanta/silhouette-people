@@ -3,19 +3,19 @@ import { WorldObj } from "../../model/objects/WorldObj";
 import { MaterialStore } from "../../store/MaterialStore";
 import { QuarterStore } from "../../store/QuarterStore";
 import { GroundJson } from "../import/WorldMap";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 import { ModelLoader } from "./mesh/ModelLoader";
 import { QuarterFactory, QuarterObjConfig } from "./QuarterFactory";
 
 export class WorldFactory {
 
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
     private readonly quarterStore: QuarterStore;
     private readonly quarterFactory: QuarterFactory;
     private readonly modelLoader: ModelLoader;
     private readonly materialStore: MaterialStore;
     
-    constructor(worldProvider: WorldProvider, quarterStore: QuarterStore, materialStore: MaterialStore) {
+    constructor(worldProvider: SceneService, quarterStore: QuarterStore, materialStore: MaterialStore) {
         this.quarterStore = quarterStore;
         this.worldProvider = worldProvider;
         this.materialStore = materialStore;

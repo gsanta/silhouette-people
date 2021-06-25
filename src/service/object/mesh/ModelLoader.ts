@@ -2,7 +2,7 @@ import { SceneLoader } from "babylonjs";
 import { InjectProperty } from "../../../di/diDecorators";
 import { AssetContainerStore } from "../../../store/AssetContainerStore";
 import { lookup } from "../../DependencyResolver";
-import { WorldProvider } from "../../WorldProvider";
+import { SceneService } from "../../SceneService";
 
 export class ModelLoader {
 
@@ -10,11 +10,11 @@ export class ModelLoader {
     private assetContainerStore: AssetContainerStore;
 
     @InjectProperty('WorldProvider')
-    private worldProvider: WorldProvider;
+    private worldProvider: SceneService;
 
     constructor() {
         this.assetContainerStore = lookup.assetContainerStore;
-        this.worldProvider = lookup.worldProvider;
+        this.worldProvider = lookup.sceneService;
     }
 
     async loadModel(type: string, relativePath: string) {

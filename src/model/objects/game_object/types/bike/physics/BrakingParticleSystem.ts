@@ -1,15 +1,15 @@
 import { GPUParticleSystem, Texture } from "babylonjs";
-import { WorldProvider } from "../../../../../../service/WorldProvider";
+import { SceneService } from "../../../../../../service/SceneService";
 import { GameObject } from "../../../GameObject";
 
 
 export class BrakingParticleSystem {
 
     private readonly item: GameObject;
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
     private particleSystem: GPUParticleSystem;
 
-    constructor(item: GameObject, worldProvider: WorldProvider) {
+    constructor(item: GameObject, worldProvider: SceneService) {
         this.item = item;
         this.worldProvider = worldProvider;
 

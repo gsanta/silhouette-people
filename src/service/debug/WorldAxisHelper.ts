@@ -1,16 +1,16 @@
 import { Color3, Mesh, Vector3 } from "babylonjs";
 import { InjectProperty } from "../../di/diDecorators";
 import { lookup, DependencyResolver } from "../DependencyResolver";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 
 export class WorldAxisHelper {
     private meshes: Mesh[];
 
     @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
+    private worldProvider: SceneService;
 
     constructor() {
-        this.worldProvider = lookup.worldProvider;
+        this.worldProvider = lookup.sceneService;
     }
 
     show(yPos: number) {

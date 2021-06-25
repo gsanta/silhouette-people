@@ -1,5 +1,5 @@
 import { Color3, Material, StandardMaterial } from "babylonjs";
-import { WorldProvider } from "../service/WorldProvider";
+import { SceneService } from "../service/SceneService";
 
 export class MaterialStore {
     private tileMaterial: StandardMaterial; 
@@ -9,9 +9,9 @@ export class MaterialStore {
     private activePathMaterial: StandardMaterial;
     private materials: Map<string, Material> = new Map();
 
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
 
-    constructor(worldProvider: WorldProvider) {
+    constructor(worldProvider: SceneService) {
         this.worldProvider = worldProvider;
     }
 

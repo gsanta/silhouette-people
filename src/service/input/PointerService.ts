@@ -1,7 +1,7 @@
 import { Vector2, Vector3 } from "babylonjs";
 import { PointerInfo } from "babylonjs/Events/pointerEvents";
 import { CameraService } from "../camera/CameraService";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 
 export enum MouseButtonType {
     LEFT = 'LEFT',
@@ -20,10 +20,10 @@ export class PointerData {
 export class PointerService {
     pointer: PointerData;
 
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
     private readonly cameraService: CameraService;
 
-    constructor(worldProvider: WorldProvider, cameraService: CameraService) {
+    constructor(worldProvider: SceneService, cameraService: CameraService) {
         this.pointer = new PointerData();
         this.worldProvider = worldProvider;
         this.cameraService = cameraService;

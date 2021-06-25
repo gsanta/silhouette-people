@@ -1,18 +1,18 @@
 import { Container, Control, StackPanel, TextBlock } from "babylonjs-gui";
 import { InjectProperty } from "../../di/diDecorators";
 import { lookup } from "../DependencyResolver";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 import { IGUIComponent } from "./IGUIComponent";
 
 export class FPSComponent implements IGUIComponent {
 
     @InjectProperty('WorldProvider')
-    worldProvider: WorldProvider;
+    worldProvider: SceneService;
 
     private header: TextBlock;
 
     constructor() {
-        this.worldProvider = lookup.worldProvider;
+        this.worldProvider = lookup.sceneService;
 
         setInterval(() => {
             if (this.header) {

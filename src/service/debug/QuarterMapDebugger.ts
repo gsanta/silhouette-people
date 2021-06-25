@@ -2,7 +2,7 @@ import { StandardMaterial, Axis, Mesh, MeshBuilder, Space, Vector3, InstancedMes
 import { InjectProperty } from "../../di/diDecorators";
 import { lookup, DependencyResolver } from "../DependencyResolver";
 import { QuarterStore } from "../../store/QuarterStore";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 
 export interface AreaVisualizerConfig {
     height: number;
@@ -17,13 +17,13 @@ export class QuarterMapDebugger {
     private visible = false;
 
     @InjectProperty("WorldProvider")
-    private worldProvider: WorldProvider;
+    private worldProvider: SceneService;
 
     @InjectProperty("QuarterStore")
     private quarterStore: QuarterStore;
 
     constructor() {
-        this.worldProvider = lookup.worldProvider;
+        this.worldProvider = lookup.sceneService;
         this.quarterStore = lookup.quarterStore;
     }
 

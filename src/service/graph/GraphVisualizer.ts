@@ -1,12 +1,12 @@
 import { Mesh, MeshBuilder, StandardMaterial, Vector3 } from "babylonjs";
 import { RouteItem } from "../../model/objects/route/RouteItem";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 import { GraphEdge } from "./GraphEdge";
 
 export class GraphVisualizer {
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
 
-    constructor(worldProvider: WorldProvider) {
+    constructor(worldProvider: SceneService) {
         this.worldProvider = worldProvider;
     }
 

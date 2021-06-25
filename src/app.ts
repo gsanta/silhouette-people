@@ -27,8 +27,8 @@ function initGame(lookup: DependencyResolver) {
     scene.clearColor = new Color4(0.52, 0.73, 0.4, 1);
     lookup.setScene(scene);
     lookup.engine = engine;
-    lookup.worldProvider.canvas = canvas;
-    lookup.worldProvider.scene = scene;
+    lookup.sceneService.canvas = canvas;
+    lookup.sceneService.scene = scene;
     lookup.canvas = canvas;
     // var terrainMaterial = new TerrainMaterial("terrainMaterial", scene);
     // terrainMaterial.specularColor = new BABYLON.Color3(0.5, 0.5, 0.5);
@@ -86,6 +86,7 @@ function initGame(lookup: DependencyResolver) {
         
         if (lookup.setupService.isReady()) {
             lookup.update.update();
+            lookup.sceneService.update(lookup.engine.getDeltaTime());
         }
 
         lookup.renderGui.processDirty();
@@ -94,6 +95,8 @@ function initGame(lookup: DependencyResolver) {
     window.addEventListener("resize", function () {
         engine.resize();
     });
+
+    lookup.sceneService.awake();
 
     lookup.setupService.setup();
     lookup.debugService.render();

@@ -1,13 +1,13 @@
 import { ArcRotateCamera, FollowCamera, Vector3 } from "babylonjs";
 import { CameraObject } from "../../model/objects/camera/CameraObject";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 
 
 export class CameraFactory {
 
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
 
-    constructor(worldProvider: WorldProvider) {
+    constructor(worldProvider: SceneService) {
         this.worldProvider = worldProvider;
     }
 
@@ -15,7 +15,7 @@ export class CameraFactory {
         const camera = new ArcRotateCamera("camera-static", Math.PI + Math.PI / 3, Math.PI / 3, 120, new Vector3(0, 0, 0), this.worldProvider.scene);
         camera.attachControl(this.worldProvider.canvas, true);
 
-        const cameraOj = new CameraObject(camera, this.worldProvider.world);
+        const cameraOj = new CameraObject('static-camera', camera, this.worldProvider.world);
 
         return cameraOj;
     }
@@ -31,7 +31,7 @@ export class CameraFactory {
         camera.cameraAcceleration = 0.005;
         camera.maxCameraSpeed = 10;
 
-        const cameraOj = new CameraObject(camera, this.worldProvider.world);
+        const cameraOj = new CameraObject('follow-camera', camera, this.worldProvider.world);
 
         return cameraOj;
     }

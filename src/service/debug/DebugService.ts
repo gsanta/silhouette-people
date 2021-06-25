@@ -2,7 +2,7 @@ import { AdvancedDynamicTexture } from "babylonjs-gui";
 import { CitizenStore } from "../../store/CitizenStore";
 import { MaterialStore } from "../../store/MaterialStore";
 import { GameObjectStore } from "../../store/GameObjectStore";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 import { IGUIComponent } from "./IGUIComponent";
 import { QuarterMapDebugger } from "./QuarterMapDebugger";
 import { WorldAxisHelper } from "./WorldAxisHelper";
@@ -14,13 +14,13 @@ export class DebugService {
     areaMapDebugger: QuarterMapDebugger;
     
     private readonly meshStore: GameObjectStore;
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
     private readonly materialStore: MaterialStore;
     private readonly citizenStore: CitizenStore;
 
     private guiComponents: IGUIComponent[] = [];
 
-    constructor(meshStore: GameObjectStore, worldProvider: WorldProvider, materialStore: MaterialStore, citizenStore: CitizenStore) {
+    constructor(meshStore: GameObjectStore, worldProvider: SceneService, materialStore: MaterialStore, citizenStore: CitizenStore) {
         this.meshStore = meshStore;
         this.worldProvider = worldProvider;
         this.materialStore = materialStore;

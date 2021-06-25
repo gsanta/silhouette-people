@@ -1,8 +1,9 @@
 
 import * as React from 'react';
 import { ComponentProps } from './ComponentProps';
-import { MeshLoaderComponent } from './editor/MeshLoaderComponent';
 import { EditorComponent } from './editor/EditorComponent';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../../assets/css/main.scss';
 
 export interface AppComponentProps extends ComponentProps {
     onReady: () => void;
@@ -17,7 +18,7 @@ export class AppComponent extends React.Component<AppComponentProps> {
 
     render() {
         return (
-            <div>
+            <div className="main">
                 <canvas 
                     id="game-canvas"
                     onKeyDown={e => this.props.world.keyboard.keyDown(e.nativeEvent)}

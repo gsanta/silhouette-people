@@ -4,11 +4,11 @@ import { CameraService } from "./camera/CameraService";
 import { KeyboardService } from "./input/KeyboardService";
 import { QuarterUpdater } from "./object/QuarterUpdater";
 import { PlayerStore } from "./player/PlayerStore";
-import { WorldProvider } from "./WorldProvider";
+import { SceneService } from "./SceneService";
 
 export class UpdateService {
 
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
     private readonly meshStore: GameObjectStore;
     private readonly keyboardService: KeyboardService;
     private readonly cameraService: CameraService;
@@ -16,7 +16,7 @@ export class UpdateService {
     private quarterUpdater: QuarterUpdater;
 
     constructor(
-        worldProvider: WorldProvider,
+        worldProvider: SceneService,
         gameObjectStore: GameObjectStore,
         playerStore: PlayerStore,
         quarterStore: QuarterStore,

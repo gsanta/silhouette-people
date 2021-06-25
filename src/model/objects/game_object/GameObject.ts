@@ -92,7 +92,9 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
     }
 
     addBehaviour(behaviour: MonoBehaviour) {
-        this._behaviours.set(behaviour.name, behaviour);
+        if (!this._behaviours.has(behaviour.name)) {
+            this._behaviours.set(behaviour.name, behaviour);
+        }
     }
 
     get routeController(): RouteController {

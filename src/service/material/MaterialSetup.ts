@@ -2,13 +2,13 @@ import { Texture } from "babylonjs";
 import { TerrainMaterial } from "babylonjs-materials";
 import { MaterialStore } from "../../store/MaterialStore";
 import { ISetup } from "../setup/ISetup";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 
 export class MaterialSetup implements ISetup {
     private readonly materialStore: MaterialStore;
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
 
-    constructor(worldProvider: WorldProvider, materialStore: MaterialStore) {
+    constructor(worldProvider: SceneService, materialStore: MaterialStore) {
         this.materialStore = materialStore;
         this.worldProvider = worldProvider;
     }

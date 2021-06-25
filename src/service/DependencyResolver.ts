@@ -26,7 +26,7 @@ import { PlayerStore } from "./player/PlayerStore";
 import { RouteSetup } from "./routing/route/RouteSetup";
 import { StoryTracker } from "./story/StoryTracker";
 import { RenderGuiService } from "./RenderGuiService";
-import { WorldProvider } from "./WorldProvider";
+import { SceneService } from "./SceneService";
 import { MaterialSetup } from "./material/MaterialSetup";
 import { EditorSetup } from "./editor/EditorSetup";
 import { MeshStore } from "../store/MeshStore";
@@ -34,6 +34,9 @@ import { EditorService } from "./editor/EditorService";
 import { ModelPropertyParser } from "./import/parsers/ModelPropertyParser";
 import { CollisionPropertyParser } from "./import/parsers/CollisionPropertyParser";
 import { PositionPropertyParser } from "./import/parsers/PositionPropertyParser";
+import { CameraController } from "./editor/controllers/CameraController";
+import { MeshLoaderController } from "./editor/controllers/MeshLoaderController";
+import { FogOfWarService } from "./fow/FogOfWarService";
 
 export class DependencyResolver {
     eventService: EventService;
@@ -59,7 +62,7 @@ export class DependencyResolver {
     meshFactory: MeshFactory;
     lightFactory: LightFactory;
 
-    worldProvider: WorldProvider;
+    sceneService: SceneService;
 
     private readonly meshStore: MeshStore;
     materialStore: MaterialStore;
@@ -71,6 +74,8 @@ export class DependencyResolver {
     lightStore: LightStore;
     routeStore: RouteStore;
 
+    fogOfWarService: FogOfWarService;
+
     routePool: RoutePool;
 
     editorService: EditorService;
@@ -79,8 +84,8 @@ export class DependencyResolver {
     private onReadyFuncs: (() => void)[] = [];
 
     constructor() {
-        this.worldProvider = new WorldProvider();
-        lookup.worldProvider = this.worldProvider;
+        this.sceneService = new SceneService();
+        lookup.sceneService = this.sceneService;
 
         this.eventService = new EventService();
         lookup.eventService = this.eventService;
@@ -97,7 +102,7 @@ export class DependencyResolver {
         this.routePool = new RoutePool();
         lookup.routePool = this.routePool;
         this.meshStore = new MeshStore();
-        this.materialStore = new MaterialStore(this.worldProvider);
+        this.materialStore = new MaterialStore(this.sceneService);
         lookup.materialStore = this.materialStore;
         this.quarterStore = new QuarterStore();
         lookup.quarterStore = this.quarterStore;
@@ -112,24 +117,24 @@ export class DependencyResolver {
         this.lightStore = new LightStore();
         lookup.lightStore = this.lightStore;
 
-        this.graphService = new GraphService(this.worldProvider, this.materialStore);
+        this.graphService = new GraphService(this.sceneService, this.materialStore);
         lookup.graphService = this.graphService;
         
         this.renderGui = new RenderGuiService(this.playerStore);
         lookup.renderGui = this.renderGui;
-        this.cameraService = new CameraService(this.worldProvider);
+        this.cameraService = new CameraService(this.sceneService);
         lookup.cameraService = this.cameraService;
 
-        this.pointer = new PointerService(this.worldProvider, this.cameraService);
+        this.pointer = new PointerService(this.sceneService, this.cameraService);
         lookup.pointer = this.pointer;
 
-        this.lightFactory = new LightFactory(this.worldProvider);
+        this.lightFactory = new LightFactory(this.sceneService);
         lookup.lightFactory = this.lightFactory;
 
         this.activePlayerService = new ActivePlayerService(this.playerStore, this.lightStore, this.lightFactory);
         lookup.activePlayerService = this.activePlayerService;
 
-        this.debugService = new DebugService(this.gameObjecStore, this.worldProvider, this.materialStore, this.citizenStore);
+        this.debugService = new DebugService(this.gameObjecStore, this.sceneService, this.materialStore, this.citizenStore);
         if (window) {
             (<any> window).debugService = this.debugService;
         }
@@ -137,15 +142,21 @@ export class DependencyResolver {
 
         this.meshFactory = new MeshFactory(
             this.meshStore,
-            new ModelPropertyParser(this.worldProvider, this.assetContainerStore),
-            new CollisionPropertyParser(this.worldProvider),
+            new ModelPropertyParser(this.sceneService, this.assetContainerStore),
+            new CollisionPropertyParser(this.sceneService),
             new PositionPropertyParser()
         );
         lookup.meshFactory = this.meshFactory;
 
-        this.editorService = new EditorService();
+        this.fogOfWarService = new FogOfWarService(this.sceneService);
+        this.sceneService.addBaseService(this.fogOfWarService);
 
-        this.update = new UpdateService(this.worldProvider, this.gameObjecStore, this.playerStore, this.quarterStore, this.keyboard, this.cameraService);
+        this.editorService = new EditorService(
+            new MeshLoaderController(this.keyboard, this.renderGui, this.meshFactory),
+            new CameraController(this.cameraService, this.renderGui)
+        );
+
+        this.update = new UpdateService(this.sceneService, this.gameObjecStore, this.playerStore, this.quarterStore, this.keyboard, this.cameraService);
         this.resolveSetups();
     }
 
@@ -153,7 +164,7 @@ export class DependencyResolver {
         this.setupService = new SetupService(this.pointer, this.renderGui);
 
         const worldSetup = new WorldSetup(
-            this.worldProvider,
+            this.sceneService,
             this.assetContainerStore,
             this.keyboard,
             this.activePlayerService,
@@ -165,12 +176,20 @@ export class DependencyResolver {
             this.quarterStore,
             this.materialStore
         );
-        const routeSetup = new RouteSetup(this.worldProvider, this.graphService, this.routeStore);
-        const playerSetup = new PlayerSetup(this.worldProvider, this.playerStore, this.graphService, this.keyboard, this.activePlayerService, this.materialStore);
-        const cameraSetup = new CameraSetup(this.worldProvider, this.quarterStore, this.keyboard, this.cameraService, this.playerStore);
+        const routeSetup = new RouteSetup(this.sceneService, this.graphService, this.routeStore);
+        const playerSetup = new PlayerSetup(
+            this.sceneService,
+            this.playerStore,
+            this.graphService,
+            this.keyboard,
+            this.activePlayerService,
+            this.materialStore,
+            this.fogOfWarService
+        );
+        const cameraSetup = new CameraSetup(this.sceneService, this.quarterStore, this.keyboard, this.cameraService, this.playerStore);
         const citizenSetup = new CitizenSetup(this.routeStore, this.citizenStore, this.graphService);
-        const materialSetup = new MaterialSetup(this.worldProvider, this.materialStore);
-        const editorSetup = new EditorSetup(this.worldProvider, this.gameObjecStore, this.meshStore, this.keyboard, this.renderGui, this.editorService, this.meshFactory);
+        const materialSetup = new MaterialSetup(this.sceneService, this.materialStore);
+        const editorSetup = new EditorSetup(this.sceneService, this.gameObjecStore, this.meshStore, this.keyboard, this.editorService);
 
         this.setupService.addSetup(materialSetup);
         this.setupService.addSetup(worldSetup);

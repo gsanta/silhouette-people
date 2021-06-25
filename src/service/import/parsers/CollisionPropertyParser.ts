@@ -1,6 +1,6 @@
 import { Axis, MeshBuilder, Space, StandardMaterial, Vector3 } from "babylonjs";
 import { GameObject } from "../../../model/objects/game_object/GameObject";
-import { WorldProvider } from "../../WorldProvider";
+import { SceneService } from "../../SceneService";
 import { AbstractPropertyParser, parseStrVector } from "../AbstractPropertyParser";
 
 export interface CollisionPropertyConfig {
@@ -10,9 +10,9 @@ export interface CollisionPropertyConfig {
 export class CollisionPropertyParser extends AbstractPropertyParser<CollisionPropertyConfig> {
     propName = 'collider';
 
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
 
-    constructor(worldProvider: WorldProvider) {
+    constructor(worldProvider: SceneService) {
         super();
 
         this.worldProvider = worldProvider;

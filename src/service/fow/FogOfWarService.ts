@@ -1,39 +1,48 @@
-import { InputBlock, Mesh, MeshBuilder, NodeMaterial, Scene } from "babylonjs";
+import { InputBlock, Mesh, MeshBuilder, NodeMaterial } from "babylonjs";
 import fowMaterial from "../../../assets/shaders/fow_shader.json";
-import { MonoBehaviour } from "../../model/behaviours/MonoBehaviour";
-import { MonoBehaviourName } from "../../model/behaviours/MonoBehaviourName";
 import { GameObject } from "../../model/objects/game_object/GameObject";
+import { BaseService } from "../BaseService";
+import { SceneService } from "../SceneService";
 
-export class FogOfWar extends MonoBehaviour {
-    private readonly scene: Scene;
+export class FogOfWarService extends BaseService {
+    private readonly worldProvider: SceneService;
     private readonly width = 200;
     private readonly height = 200;
     private readonly positionY = 10;
-    private readonly character: GameObject;
-    
+
+    private character: GameObject;
     private mesh: Mesh;
     private material: NodeMaterial;
 
-    constructor(scene: Scene, character: GameObject) {
-        super(MonoBehaviourName.FOG_OF_WAR);
-        this.scene = scene;
-        this.character = character;
+    constructor(worldProvider: SceneService) {
+        super();
+        this.worldProvider = worldProvider;
+    }
 
+    setCharacter(character: GameObject) {
+        this.character = character;
+    }
+
+    awake() {
         this.loadMaterial();
     }
 
+    
     private async loadMaterial() {
-        this.material = new NodeMaterial('fow-material', this.scene);
+        this.material = new NodeMaterial('fow-material', this.worldProvider.scene);
         this.material.loadFromSerialization(fowMaterial);
-        this.mesh = MeshBuilder.CreateGround("ground", {width: this.width, height: this.height}, this.scene);
-        this.material = await NodeMaterial.ParseFromSnippetAsync("4750E2#8", this.scene);
+        this.mesh = MeshBuilder.CreateGround("ground", {width: this.width, height: this.height}, this.worldProvider.scene);
+        this.material = await NodeMaterial.ParseFromSnippetAsync("4750E2#8", this.worldProvider.scene);
 
         this.mesh.position.y += this.positionY;
         this.mesh.material = this.material;
         (<InputBlock> this.material.getBlockByName('radius')).value = 0.7;
     }
 
+
     update() {
+        if (!this.character || !this.mesh) { return; }
+
         const groundWidth = this.mesh.getBoundingInfo().boundingBox.extendSizeWorld.x;
         const groundHeight = this.mesh.getBoundingInfo().boundingBox.extendSizeWorld.z;
         const groundPos = this.mesh.getAbsolutePosition();

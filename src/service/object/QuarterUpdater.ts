@@ -1,14 +1,14 @@
 import { QuarterStore } from "../../store/QuarterStore";
-import { WorldProvider } from "../WorldProvider";
+import { SceneService } from "../SceneService";
 import { PlayerStore } from "../player/PlayerStore";
 import { GameObject } from "../../model/objects/game_object/GameObject";
 
 export class QuarterUpdater {
     private readonly playerStore: PlayerStore;
     private readonly quarterStore: QuarterStore;
-    private readonly worldProvider: WorldProvider;
+    private readonly worldProvider: SceneService;
 
-    constructor(worldProvider: WorldProvider, playerStore: PlayerStore, quarterStore: QuarterStore) {
+    constructor(worldProvider: SceneService, playerStore: PlayerStore, quarterStore: QuarterStore) {
         this.playerStore = playerStore;
         this.quarterStore = quarterStore;
         this.worldProvider = worldProvider;
