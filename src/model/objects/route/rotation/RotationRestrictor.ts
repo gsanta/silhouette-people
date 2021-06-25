@@ -23,7 +23,7 @@ export class RotationRestrictor {
         if (edge) {
             const character = this.routeWalker.getCharacter();
             const angle = route.isReversed(edge) ? edge.oppositeAngle : edge.angle;
-            character.rotation = angle.worldAngle().rad;
+            character.rotationY = angle.worldAngle().rad;
         }
     }
 

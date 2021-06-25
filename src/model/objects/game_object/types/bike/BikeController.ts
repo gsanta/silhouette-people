@@ -73,7 +73,7 @@ export class BikeController extends MotionController {
             let vel = this.direction.multiply(displacementVec);
     
             this.character.moveWithCollision(vel);
-            this.character.rotation = vector3ToRotation(vel);
+            this.character.rotationY = vector3ToRotation(vel);
         }
         
     }

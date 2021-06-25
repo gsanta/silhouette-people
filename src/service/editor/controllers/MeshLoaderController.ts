@@ -15,7 +15,9 @@ export class MeshLoaderController {
     private readonly eventService: EventService;
     
     private _modelName: string;
+    private _textureName: string;
     private _collision: boolean = true;
+    private _removeRoot = false;
 
     isDialogOpen = true;
 
@@ -30,6 +32,15 @@ export class MeshLoaderController {
         this.keyboardService.onKeydown(this.onKeyDown);
     }
 
+    set removeRoot(removeRoot: boolean) {
+        this._removeRoot = removeRoot;
+        this.renderGuiService.render();
+    }
+
+    get removeRoot(): boolean {
+        return this._removeRoot;
+    }
+
     set modelName(name: string) {
         this._modelName = name;
         this.renderGuiService.render();
@@ -37,6 +48,15 @@ export class MeshLoaderController {
 
     get modelName(): string {
         return this._modelName;
+    }
+
+    set textureName(name: string) {
+        this._textureName = name;
+        this.renderGuiService.render();
+    }
+
+    get textureName(): string {
+        return this._textureName;
     }
 
     set collision(collision: boolean) {
@@ -50,8 +70,14 @@ export class MeshLoaderController {
     async load() {
         const gameObjectConfig: GameObjectConfig = {
             model: {
-                path: this.modelName
+                path: this.modelName,
+                removeRoot: this.removeRoot
             },
+            texture: {
+                path: this.textureName,
+
+            },
+            rotate: 0,
             collider: this.collision ? { dimension: '0:0:0' } : undefined,
             props: [],
             tags: [GameObjectTag._UI_CREATED]

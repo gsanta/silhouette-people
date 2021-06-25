@@ -44,6 +44,8 @@ import { SceneExporter } from "./editor/export/SceneExporter";
 import { ToolController } from "./editor/controllers/ToolController";
 import { TransformTool } from "./editor/tools/TransformTool";
 import { ToolType } from "./editor/controllers/TransformController";
+import { TexturePropertyParser } from "./import/parsers/TexturePropertyParser";
+import { RotatePropertyParser } from "./import/parsers/RotatePropertyParser";
 
 export class DependencyResolver {
     eventService: EventService;
@@ -153,7 +155,9 @@ export class DependencyResolver {
             new ModelPropertyParser(this.sceneService, this.assetContainerStore),
             new CollisionPropertyParser(this.sceneService),
             new PositionPropertyParser(),
-            new TagPropertyParser()
+            new TagPropertyParser(),
+            new TexturePropertyParser(this.sceneService),
+            new RotatePropertyParser()
         );
         lookup.meshFactory = this.meshFactory;
 

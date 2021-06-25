@@ -35,7 +35,7 @@ export class CharacterBuilder {
     }
 
     build(): GameObject {
-        const character = new GameObject(`character-${this.index}`);
+        const character = new GameObject(`character-${this.index}`, undefined);
         const mesh = new Mesh(`character-${this.index}-mesh`, this.scene);
         character.radius = this._radius !== undefined ? this._radius : character.radius;
         character.meshes = [mesh];

@@ -18,7 +18,7 @@ export class HumanGetOnBikeState extends GameObjectState {
         const player = this.character;
 
         player.mesh.setAbsolutePosition(new Vector3(0, 0, 0));
-        player.rotation = 0;;
+        player.rotationY = 0;;
         player.mesh.parent = this.bike.mesh;
         player.mesh.checkCollisions = false;
         player.setParent(this.bike);

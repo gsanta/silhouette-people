@@ -7,6 +7,8 @@ import { ISetup } from "../setup/ISetup";
 import { ToolType } from "./controllers/TransformController";
 import { EditorService } from "./EditorService";
 import { GizmoManagerAdapter } from "./tools/GizmoManagerAdapter";
+import { PositionTool } from "./tools/PositionTool";
+import { RotationTool } from "./tools/RotationTool";
 import { TransformTool } from "./tools/TransformTool";
 
 export class EditorSetup implements ISetup {
@@ -40,8 +42,8 @@ export class EditorSetup implements ISetup {
     async setup(): Promise<void> {
         this.gizmoManagerAdapter = new GizmoManagerAdapter(this.sceneService, this.gameObjectStore, this.meshStore, this.eventService);
 
-        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, ToolType.TRANSFORM));
-        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, ToolType.ROTATE));
+        this.editorService.toolController.addTool(new PositionTool(this.gizmoManagerAdapter));
+        this.editorService.toolController.addTool(new RotationTool(this.gizmoManagerAdapter));
 
         this.editorService.isEditorOpen = true;
     }

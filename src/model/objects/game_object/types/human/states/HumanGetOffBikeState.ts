@@ -22,7 +22,7 @@ export class HumanGetOffBikeState extends GameObjectState {
         player.stateController.state = new HumanIdleState(player);
         player.mesh.parent = bike.mesh.parent;
         player.position = bike.position;
-        player.rotation = bike.rotation;
+        player.rotationY = bike.rotationY;
 
         // const dir = player.instance.getRotation().clone();
         // dir.y = 0;

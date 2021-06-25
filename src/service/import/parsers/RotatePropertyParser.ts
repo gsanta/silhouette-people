@@ -9,7 +9,7 @@ export class RotatePropertyParser extends AbstractPropertyParser<number> {
         return false;
     }
 
-    processProperty(gameObj: GameObject, rotate: number) {
+    async processPropertyAsync(gameObj: GameObject, rotate: number) {
         const rotationRad = Tools.ToRadians(rotate);
         
         gameObj.mesh.rotate(Axis.Y, rotationRad, Space.WORLD);

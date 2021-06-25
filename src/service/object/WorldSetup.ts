@@ -52,7 +52,7 @@ export class WorldSetup implements ISetup {
         storyTracker: StoryTracker,
         gameObjectStore: GameObjectStore,
         quarterStore: QuarterStore,
-        materialStore: MaterialStore
+        materialStore: MaterialStore,
     ) {
         this.storyTracker = storyTracker;
         this.gameObjectStore = gameObjectStore;
@@ -65,21 +65,18 @@ export class WorldSetup implements ISetup {
         this.routeStore = routeStore;
         this.graphService = graphService;
 
-        this.worldImporter = new SceneImporter(this.worldProvider, this.storyTracker);
         this.worldFactory = new WorldFactory(this.worldProvider, quarterStore, materialStore);
+        this.worldImporter = new SceneImporter(this.worldProvider, this.storyTracker, this.meshFactory, this.worldFactory, this.gameObjectStore);
     }
 
     async setup(): Promise<void> {
         this.meshFactory.setPropertyParsers(this.setupPropertyParsers());
 
-        await this.worldImporter.parse();
 
         const meshItemLoader = new MeshItemLoader(this.storyTracker, this.gameObjectStore, this.meshFactory);
         this.storyTracker.processor.registerLoader(meshItemLoader);
 
-        this.worldProvider.world = await this.worldFactory.createWorldObj(this.worldProvider.scene);
-
-        await this.storyTracker.processor.process();
+        await this.worldImporter.parse();
     }
 
     private setupPropertyParsers() {

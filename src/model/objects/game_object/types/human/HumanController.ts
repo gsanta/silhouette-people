@@ -18,6 +18,6 @@ export class HumanController extends MotionController {
         const displacementVec = new Vector3(displacement, displacement, displacement);
         const vel = this.direction.multiply(displacementVec)
         this.character.moveWithCollision(vel);
-        this.character.rotation = vector3ToRotation(vel);
+        this.character.rotationY = vector3ToRotation(vel);
     }
 }

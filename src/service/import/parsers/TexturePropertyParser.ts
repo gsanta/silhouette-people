@@ -5,7 +5,7 @@ import { AbstractPropertyParser } from "../AbstractPropertyParser";
 
 export interface TexturePropertyConfig {
     path: string;
-    meshIndex: number;
+    meshIndex?: number;
 }
 
 export class TexturePropertyParser extends AbstractPropertyParser<TexturePropertyConfig> {
@@ -13,16 +13,16 @@ export class TexturePropertyParser extends AbstractPropertyParser<TexturePropert
     
     private readonly worldProvider: SceneService;
 
-    constructor(worldProvider: SceneService) {
+    constructor(sceneService: SceneService) {
         super();
-        this.worldProvider = worldProvider;
+        this.worldProvider = sceneService;
     }
 
     isAsync(): boolean {
         return false;
     }
 
-    processProperty(gameObject: GameObject, config: TexturePropertyConfig) {
+    async processPropertyAsync(gameObject: GameObject, config: TexturePropertyConfig) {
         const index = config.meshIndex !== undefined ? config.meshIndex : 0;
 
         const texture = new Texture(`assets/textures/${config.path}`, this.worldProvider.scene);

@@ -5,7 +5,9 @@ import { AbstractPropertyParser } from "../../import/AbstractPropertyParser";
 import { CollisionPropertyParser } from "../../import/parsers/CollisionPropertyParser";
 import { ModelPropertyParser } from "../../import/parsers/ModelPropertyParser";
 import { PositionPropertyParser } from "../../import/parsers/PositionPropertyParser";
+import { RotatePropertyParser } from "../../import/parsers/RotatePropertyParser";
 import { TagPropertyParser } from "../../import/parsers/TagPropertyParser";
+import { TexturePropertyParser } from "../../import/parsers/TexturePropertyParser";
 
 export class MeshFactory {
     private readonly meshStore: MeshStore;
@@ -15,18 +17,25 @@ export class MeshFactory {
     private readonly collisionPropertyParser: CollisionPropertyParser;
     private readonly positionPropertyParser: PositionPropertyParser;
     private readonly tagPropertyParser: TagPropertyParser;
+    private readonly texturePropertyParser: TexturePropertyParser;
+    private readonly rotationPropertyParser: RotatePropertyParser;
+
 
     constructor(
         meshStore: MeshStore, 
         modelPropertyParser: ModelPropertyParser,
         collisionPropertyParser: CollisionPropertyParser,
         positionPropertyParser: PositionPropertyParser,
-        tagPropertyParser: TagPropertyParser
+        tagPropertyParser: TagPropertyParser,
+        texturePropertyParser: TexturePropertyParser,
+        rotationPropertyParser: RotatePropertyParser
     ) {
         this.modelPropertyParser = modelPropertyParser;
         this.collisionPropertyParser = collisionPropertyParser;
         this.positionPropertyParser = positionPropertyParser;
         this.tagPropertyParser = tagPropertyParser;
+        this.texturePropertyParser = texturePropertyParser;
+        this.rotationPropertyParser = rotationPropertyParser;
         this.meshStore = meshStore;
     }
 
@@ -39,16 +48,20 @@ export class MeshFactory {
         let gameObject: GameObject;
 
         if (gameObjectConfig.type === GameObjectType.Bicycle1) {
-            const character = new GameObject(id);
+            const character = new GameObject(id, gameObjectConfig);
             gameObject = character;
         } else if (gameObjectConfig.props.tags && gameObjectConfig.props.tags.includes(GameObjectTag.Citizen)) {
-            const character = new GameObject(id);
+            const character = new GameObject(id, gameObjectConfig);
             gameObject = character;
         } else {
-            gameObject = new GameObject(id);
+            gameObject = new GameObject(id, gameObjectConfig);
         }
 
         await this.modelPropertyParser.processPropertyAsync(gameObject, gameObjectConfig.model);
+
+        if (gameObjectConfig.texture) {
+            await this.texturePropertyParser.processPropertyAsync(gameObject, gameObjectConfig.texture);
+        }
         
         if (gameObjectConfig.position) {
             await this.positionPropertyParser.processPropertyAsync(gameObject, gameObjectConfig.position);
@@ -58,13 +71,21 @@ export class MeshFactory {
             await this.collisionPropertyParser.processPropertyAsync(gameObject, gameObjectConfig.collider);
         }
 
+        
+        if (gameObjectConfig.rotate) {
+            await this.rotationPropertyParser.processPropertyAsync(gameObject, gameObjectConfig.rotate);
+        }
+
         await this.tagPropertyParser.processPropertyAsync(gameObject, gameObjectConfig.tags);
 
         if (gameObjectConfig.props) {
             await this.applyProperties(gameObject, gameObjectConfig);
         }
 
-        gameObject.meshes.forEach(mesh => this.meshStore.addMesh(gameObject, mesh));
+        gameObject.meshes.forEach(mesh => {
+            this.meshStore.addMesh(gameObject, mesh);
+            mesh.getChildMeshes().forEach(childMesh => this.meshStore.addMesh(gameObject, <Mesh> childMesh));
+        });
         if (gameObject.dimensionalMesh) {
             this.meshStore.addMesh(gameObject, <Mesh> gameObject.dimensionalMesh);
         }

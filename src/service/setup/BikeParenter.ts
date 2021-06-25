@@ -9,7 +9,7 @@ export class BikeParenter {
         player.collisionMesh.physicsImpostor.dispose();
 
         player.mesh.setAbsolutePosition(new Vector3(0, 0, 0));
-        player.rotation = 0;
+        player.rotationY = 0;
         player.mesh.parent = bike.mesh;
 
         player.mesh.checkCollisions = false;

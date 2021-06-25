@@ -13,6 +13,7 @@ import { RouteControllerImpl } from "./controller_route/RouteControllerImpl";
 import { BoundingInfo } from "babylonjs/Culling/index";
 import { ModelPropertyConfig } from "../../../service/import/parsers/ModelPropertyParser";
 import { CollisionPropertyConfig } from "../../../service/import/parsers/CollisionPropertyParser";
+import { TexturePropertyConfig } from "../../../service/import/parsers/TexturePropertyParser";
 
 export enum GameObjectType {
     Player = 'player',
@@ -45,8 +46,10 @@ export enum GameObjectTag {
 export interface GameObjectConfig {
     type?: GameObjectType;
     model: ModelPropertyConfig;
+    texture: TexturePropertyConfig;
     collider?: CollisionPropertyConfig;
     position?: string;
+    rotate: number;
     tags: string[];
     props: {[key: string]: any};
 }
@@ -54,6 +57,8 @@ export interface GameObjectConfig {
 export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
     id: string;
     mainMeshIndex: number = 0;
+
+    readonly config: GameObjectConfig;
 
     collisionSensorDistance = 2;
     private _stateController: StateController;
@@ -82,8 +87,9 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
 
     radius = 3;
 
-    constructor(id: string) {
+    constructor(id: string, config: GameObjectConfig) {
         super();
+        this.config = config;
         this.id = id;
         this.tag = new TagHandler();
         this.animation = new AnimationHandler();
@@ -156,11 +162,11 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
         return new Vector2(pos.x, pos.z);
     }
 
-    set rotation(rotation: number) {
+    set rotationY(rotation: number) {
         this.mesh.rotationQuaternion = Quaternion.RotationAxis(Axis.Y, rotation);
     }
 
-    get rotation() {
+    get rotationY() {
         return this.mesh.rotationQuaternion.toEulerAngles().y;
     }
 
