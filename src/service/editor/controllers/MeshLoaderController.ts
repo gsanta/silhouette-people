@@ -1,5 +1,7 @@
 import { Vector3 } from "babylonjs/Maths/math.vector";
 import { GameObjectConfig, GameObjectTag } from "../../../model/objects/game_object/GameObject";
+import { GameObjectStore } from "../../../store/GameObjectStore";
+import { EventService } from "../../EventService";
 import { KeyboardService, KeyName } from "../../input/KeyboardService";
 import { MeshFactory } from "../../object/mesh/MeshFactory";
 import { RenderGuiService } from "../../RenderGuiService";
@@ -9,16 +11,20 @@ export class MeshLoaderController {
     private readonly keyboardService: KeyboardService;
     private readonly renderGuiService: RenderGuiService;
     private readonly meshFactory: MeshFactory;
+    private readonly gameObjectStore: GameObjectStore;
+    private readonly eventService: EventService;
     
     private _modelName: string;
     private _collision: boolean = true;
 
     isDialogOpen = true;
 
-    constructor(keyboardService: KeyboardService, renderGuiService: RenderGuiService, meshFactory: MeshFactory) {
+    constructor(keyboardService: KeyboardService, renderGuiService: RenderGuiService, meshFactory: MeshFactory, gameObjectStore: GameObjectStore, eventService: EventService) {
         this.keyboardService = keyboardService;
         this.renderGuiService = renderGuiService;
         this.meshFactory = meshFactory;
+        this.gameObjectStore = gameObjectStore;
+        this.eventService = eventService;
         this.onKeyDown = this.onKeyDown.bind(this);
 
         this.keyboardService.onKeydown(this.onKeyDown);
@@ -41,7 +47,7 @@ export class MeshLoaderController {
         return this._collision;
     }
 
-    load() {
+    async load() {
         const gameObjectConfig: GameObjectConfig = {
             model: {
                 path: this.modelName
@@ -50,7 +56,9 @@ export class MeshLoaderController {
             props: [],
             tags: [GameObjectTag._UI_CREATED]
         }
-        this.meshFactory.createFromConfig(gameObjectConfig);
+        const gameObject = await this.meshFactory.createFromConfig(gameObjectConfig);
+        this.gameObjectStore.addItem(gameObject);
+        this.eventService.guiEvents.emitonGameObjectCreated();
     }
 
     private onKeyDown(keyName: KeyName) {

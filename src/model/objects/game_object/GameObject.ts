@@ -243,7 +243,7 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
         if (this.meshes[0].getBoundingInfo && this.meshes[0].getBoundingInfo().boundingBox.extendSizeWorld.y !== 0) {
             return this.meshes[0].getBoundingInfo();
         } else {
-            return (<AbstractMesh> this.meshes[0].getChildMeshes()[this.mainMeshIndex]).getBoundingInfo();
+            return (<AbstractMesh> this.meshes[0].getChildMeshes()[this.mainMeshIndex || 0]).getBoundingInfo();
         }
     }
 }

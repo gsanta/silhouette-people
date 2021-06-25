@@ -1,5 +1,6 @@
 import { GameObjectStore } from "../../store/GameObjectStore";
 import { MeshStore } from "../../store/MeshStore";
+import { EventService } from "../EventService";
 import { KeyboardService } from "../input/KeyboardService";
 import { SceneService } from "../SceneService";
 import { ISetup } from "../setup/ISetup";
@@ -15,6 +16,8 @@ export class EditorSetup implements ISetup {
     private readonly keyboardService: KeyboardService;
     private readonly meshStore: MeshStore;
     private readonly editorService: EditorService;
+    private readonly eventService: EventService;
+
 
     private gizmoManagerAdapter: GizmoManagerAdapter;
 
@@ -24,16 +27,18 @@ export class EditorSetup implements ISetup {
         meshStore: MeshStore,
         keyboardService: KeyboardService,
         editorService: EditorService,
+        eventService: EventService
     ) {
         this.sceneService = worldProvider;
         this.gameObjectStore = gameObjectStore;
         this.meshStore = meshStore;
         this.keyboardService = keyboardService;
         this.editorService = editorService;
+        this.eventService = eventService;
     }
 
     async setup(): Promise<void> {
-        this.gizmoManagerAdapter = new GizmoManagerAdapter(this.sceneService, this.gameObjectStore, this.meshStore);
+        this.gizmoManagerAdapter = new GizmoManagerAdapter(this.sceneService, this.gameObjectStore, this.meshStore, this.eventService);
 
         this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, ToolType.TRANSFORM));
         this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, ToolType.ROTATE));

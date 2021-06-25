@@ -1,19 +1,25 @@
 import { GizmoManager, Mesh, MeshBuilder } from "babylonjs";
 import { GameObjectStore } from "../../../store/GameObjectStore";
 import { MeshStore } from "../../../store/MeshStore";
+import { EventService } from "../../EventService";
 import { SceneService } from "../../SceneService";
 
 export class GizmoManagerAdapter {
     private readonly sceneService: SceneService;
     private readonly gameObjectStore: GameObjectStore;
     private readonly meshStore: MeshStore;
+    private readonly eventService: EventService;
     private _gizmoManager: GizmoManager;
     private programmaticEvent = false;
 
-    constructor(sceneService: SceneService, gameObjectStore: GameObjectStore, meshStore: MeshStore) {
+    constructor(sceneService: SceneService, gameObjectStore: GameObjectStore, meshStore: MeshStore, eventService: EventService) {
         this.sceneService = sceneService;
         this.gameObjectStore = gameObjectStore;
         this.meshStore = meshStore;
+        this.eventService = eventService;
+        this.onGameObjectLoaded = this.onGameObjectLoaded.bind(this);
+
+        this.eventService.guiEvents.onGameObjectCreated(this.onGameObjectLoaded);
     }
 
     get manager() {
@@ -26,18 +32,8 @@ export class GizmoManagerAdapter {
 
     private initGizmoManager() {
         this._gizmoManager = new GizmoManager(this.sceneService.scene);
-        const attachableMeshes: Mesh[] = [];
 
-        this.gameObjectStore.getAll().forEach(gameObject => {
-            if (gameObject.dimensionalMesh) {
-                gameObject.meshes.forEach(mesh => attachableMeshes.push(<Mesh> gameObject.dimensionalMesh));
-            }
-        });
-
-        const testMesh = MeshBuilder.CreateBox('test-mesh', { size: 3 }, this.sceneService.scene);
-        testMesh.position.y = 3;
-
-        this._gizmoManager.attachableMeshes = attachableMeshes;
+        // this._gizmoManager.attachableMeshes = this.getAttachableMeshes();
 
         this._gizmoManager.onAttachedToMeshObservable.add((mesh: Mesh) => {
 
@@ -50,5 +46,21 @@ export class GizmoManagerAdapter {
                 this.programmaticEvent = false;
             }
         });
+    }
+
+    private onGameObjectLoaded() {
+        // this._gizmoManager.attachableMeshes = this.getAttachableMeshes();
+    }
+
+    private getAttachableMeshes(): Mesh[] {
+        const meshes: Mesh[] = [];
+
+        this.gameObjectStore.getAll().forEach(gameObject => {
+            if (gameObject.dimensionalMesh) {
+                meshes.push(<Mesh> gameObject.dimensionalMesh)
+            }
+        });
+
+        return meshes;
     }
 }
