@@ -32,7 +32,7 @@ export class EraseHotkey implements Hotkey {
     private onKeyDown(keyName: KeyName) {
         if (keyName === KeyName.M) {
             this.selectionStore.getAll().forEach(gameObject => {
-                this.gameObjectStore.removeItem(gameObject);
+                this.gameObjectStore.removeItem(gameObject, true);
             });
         }
     }

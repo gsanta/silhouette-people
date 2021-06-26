@@ -86,6 +86,11 @@ export class MeshFactory {
             this.meshStore.addMesh(gameObject, mesh);
             mesh.getChildMeshes().forEach(childMesh => this.meshStore.addMesh(gameObject, <Mesh> childMesh));
         });
+
+        if (gameObject.collisionMesh) {
+            this.meshStore.addMesh(gameObject, gameObject.collisionMesh);
+        }
+        
         if (gameObject.dimensionalMesh) {
             this.meshStore.addMesh(gameObject, <Mesh> gameObject.dimensionalMesh);
         }

@@ -3,17 +3,17 @@ import { GameObject } from "../../model/objects/game_object/GameObject";
 
 export class SelectionStore {
 
-    private selectedItems: GameObject[] = [];
+    private selectedItems: Set<GameObject> = new Set();
 
     add(gameObject: GameObject) {
-        this.selectedItems.push(gameObject);
+        this.selectedItems.add(gameObject);
     }
 
     removeAll() {
-        this.selectedItems = [];
+        this.selectedItems = new Set();
     }
 
-    getAll(): GameObject[] {
+    getAll(): Set<GameObject> {
         return this.selectedItems;
     }
 }
