@@ -1,6 +1,12 @@
 import { Color3, Material, StandardMaterial } from "babylonjs";
 import { SceneService } from "../service/SceneService";
 
+export enum MaterialName {
+    TERRAIN_1 = 'material-terrain-1',
+    ROUTE_EDGE_HOVERED = 'material-route-edge-hovered',
+    ROUTE_EDGE_SELECTED = 'material-route-edge-selected'
+}
+
 export class MaterialStore {
     private tileMaterial: StandardMaterial; 
     private activeTileMaterial: StandardMaterial; 
@@ -15,11 +21,11 @@ export class MaterialStore {
         this.worldProvider = worldProvider;
     }
 
-    addMaterial(id: string, material: Material) {
+    addMaterial(id: MaterialName, material: Material) {
         this.materials.set(id, material);
     }
 
-    getMaterialById(id: string): Material {
+    getMaterialByName(id: string): Material {
         return this.materials.get(id);
     }
 

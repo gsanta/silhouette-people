@@ -61,6 +61,7 @@ export class MeshLoaderController {
 
     set collision(collision: boolean) {
         this._collision = collision;
+        this.renderGuiService.render();
     }
 
     get collision(): boolean {

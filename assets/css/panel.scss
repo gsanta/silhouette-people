@@ -51,3 +51,15 @@
         margin: 0px 0px 5px 0px;
     }
 }
+
+.input-button.btn-group-toggle {
+    .btn.active.btn-secondary {
+        background-color: mediumslateblue;
+    }
+}
+
+.input-field {
+    .custom-checkbox .form-check-input:checked {
+        background-color: green!important;
+    }
+}

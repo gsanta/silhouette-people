@@ -210,7 +210,7 @@ export class DependencyResolver {
         const cameraSetup = new CameraSetup(this.sceneService, this.quarterStore, this.keyboard, this.cameraService, this.playerStore);
         const citizenSetup = new CitizenSetup(this.routeStore, this.citizenStore, this.graphService);
         const materialSetup = new MaterialSetup(this.sceneService, this.materialStore);
-        const editorSetup = new EditorSetup(this.sceneService, this.gameObjecStore, this.meshStore, this.keyboard, this.editorService, this.eventService, this.graphService);
+        const editorSetup = new EditorSetup(this.sceneService, this.gameObjecStore, this.meshStore, this.keyboard, this.editorService, this.eventService, this.graphService, this.materialStore);
 
         this.setupService.addSetup(materialSetup);
         this.setupService.addSetup(worldSetup);

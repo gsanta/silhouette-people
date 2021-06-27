@@ -1,4 +1,5 @@
 import { EventService } from "../../EventService";
+import { SceneService } from "../../SceneService";
 import { ToolType } from "../controllers/TransformController";
 import { GizmoManagerAdapter } from "./GizmoManagerAdapter";
 import { Tool } from "./Tool";
@@ -7,8 +8,8 @@ export class TransformTool extends Tool {
     private readonly gizmoManagerAdapter: GizmoManagerAdapter;
     private readonly eventService: EventService;
 
-    constructor(gizmoManagerAdapter: GizmoManagerAdapter, eventService: EventService, toolType: ToolType) {
-        super(toolType);
+    constructor(gizmoManagerAdapter: GizmoManagerAdapter, eventService: EventService, sceneService: SceneService, toolType: ToolType) {
+        super(sceneService, toolType);
         this.gizmoManagerAdapter = gizmoManagerAdapter;
         this.eventService = eventService;
         this.onGameObjectDeleted = this.onGameObjectDeleted.bind(this);

@@ -1,6 +1,5 @@
 import { RenderGuiService } from "../../RenderGuiService";
 import { Tool } from "../tools/Tool";
-import { TransformTool } from "../tools/TransformTool";
 import { ToolType } from "./TransformController";
 
 export class ToolController {

@@ -33,7 +33,7 @@ export class QuarterFactory {
         
 
         if (config.materialId) {
-            ground.material = this.materialStore.getMaterialById(config.materialId);
+            ground.material = this.materialStore.getMaterialByName(config.materialId);
         } else {
             const material = new StandardMaterial(`${id}-material`, this.worldProvider.scene);
             material.diffuseColor = Color3.FromHexString(color);

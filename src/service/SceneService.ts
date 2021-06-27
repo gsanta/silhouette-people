@@ -29,7 +29,10 @@ export class SceneService {
         this.baseServices.push(baseService);
 
         if (this._awaken) {
-            baseService.awake();
+            // without settimeout baseservice's constructor haven't fully run 
+            setTimeout(() => {
+                baseService.awake();
+            }, 0);
         }
     }
 

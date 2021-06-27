@@ -12,6 +12,7 @@ export enum KeyName {
     DOWN = 'DOWN',
     SHIFT = 'SHIFT',
     DELETE = 'DELETE',
+    ESCAPE = 'ESCAPE',
     E = 'E',
     Q = 'Q',
     R = 'R',
@@ -116,6 +117,8 @@ export class KeyboardService {
                 return KeyName.SHIFT;
             case 'delete':
                 return KeyName.DELETE;
+            case 'escape':
+                return KeyName.ESCAPE;
             case ' ':
                 return KeyName.SPACE;
             default:

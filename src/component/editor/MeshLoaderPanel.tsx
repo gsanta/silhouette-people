@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Form } from "react-bootstrap";
 import { MeshLoaderController } from "../../service/editor/controllers/MeshLoaderController";
 
 export class MeshLoaderPanel extends React.Component<{ meshLoaderController: MeshLoaderController }> {
@@ -19,11 +20,11 @@ export class MeshLoaderPanel extends React.Component<{ meshLoaderController: Mes
                 </div>
                 <div className="input-row">
                     <label htmlFor="collision-checkbox">Collision</label>
-                    <input onChange={() => this.onCollisionChange()} checked={this.props.meshLoaderController.collision} id="collision-checkbox" className="input-field" type="checkbox"/>
+                    <Form.Check checked={this.props.meshLoaderController.collision} onChange={() => this.onCollisionChange()} id="collision-checkbox" className="input-field"/>
                 </div>
                 <div className="input-row">
                     <label htmlFor="removeroot-checkbox">Remove Root</label>
-                    <input onChange={() => this.onRemoveRootChange()} checked={this.props.meshLoaderController.removeRoot} id="removeroot-checkbox" className="input-field" type="checkbox"/>
+                    <Form.Check checked={this.props.meshLoaderController.removeRoot} onChange={() => this.onRemoveRootChange()} id="removeroot-checkbox" className="input-field"/>
                 </div>
                 <div className="button-row">
                     <button onClick={() => this.load()}>Load</button>
