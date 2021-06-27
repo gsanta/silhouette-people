@@ -1,6 +1,7 @@
 import { GameObjectStore } from "../../store/GameObjectStore";
 import { MeshStore } from "../../store/MeshStore";
 import { EventService } from "../EventService";
+import { GraphService } from "../graph/GraphService";
 import { KeyboardService } from "../input/KeyboardService";
 import { SceneService } from "../SceneService";
 import { ISetup } from "../setup/ISetup";
@@ -20,6 +21,7 @@ export class EditorSetup implements ISetup {
     private readonly meshStore: MeshStore;
     private readonly editorService: EditorService;
     private readonly eventService: EventService;
+    private readonly graphService: GraphService;
 
     private gizmoManagerAdapter: GizmoManagerAdapter;
 
@@ -29,7 +31,8 @@ export class EditorSetup implements ISetup {
         meshStore: MeshStore,
         keyboardService: KeyboardService,
         editorService: EditorService,
-        eventService: EventService
+        eventService: EventService,
+        graphService: GraphService
     ) {
         this.sceneService = worldProvider;
         this.gameObjectStore = gameObjectStore;
@@ -37,6 +40,7 @@ export class EditorSetup implements ISetup {
         this.keyboardService = keyboardService;
         this.editorService = editorService;
         this.eventService = eventService;
+        this.graphService = graphService;
     }
 
     async setup(): Promise<void> {
@@ -44,7 +48,7 @@ export class EditorSetup implements ISetup {
 
         this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, ToolType.TRANSFORM));
         this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, ToolType.ROTATE));
-        this.editorService.toolController.addTool(new RouteTool(this.sceneService));
+        this.editorService.toolController.addTool(new RouteTool(this.sceneService, this.graphService));
 
         this.editorService.hotkeyController.addHotkey(new EraseHotkey(this.keyboardService, this.editorService.selectionStore, this.gameObjectStore, this.eventService));
         this.editorService.hotkeyController.enable();

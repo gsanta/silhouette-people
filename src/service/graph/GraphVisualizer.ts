@@ -17,7 +17,7 @@ export class GraphVisualizer {
     }
 
     visualizeEdges(graphEdge: GraphEdge[], material: StandardMaterial) {
-        graphEdge.forEach(edge => this.createPathEdge(edge, material));
+        graphEdge.forEach(edge => edge.mesh = this.createPathEdge(edge, material));
     }
 
     private createPathEdge(edge: GraphEdge, material: StandardMaterial): Mesh {

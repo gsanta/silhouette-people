@@ -1,4 +1,5 @@
 import { PointerInfo } from "babylonjs";
+import { KeyName } from "../../input/KeyboardService";
 import { ToolType } from "../controllers/TransformController";
 
 
@@ -13,4 +14,5 @@ export abstract class Tool {
     deselect() {}
     move(pointerInfo: PointerInfo) {}
     up(pointerInfo: PointerInfo) {}
+    keyDown(key: KeyName) {}
 } 

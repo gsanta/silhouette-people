@@ -1,3 +1,4 @@
+import { Mesh } from "babylonjs/Meshes/mesh";
 import { toVector2 } from "../../helpers";
 import { Rotation } from "../../model/math/Rotation";
 import { Line } from "../../model/math/shapes/Line";
@@ -11,6 +12,7 @@ export class GraphEdge {
     thickness: number = 0;
     dimensions: Quad;
     line: Line;
+    mesh: Mesh;
 
     private _angle: Rotation;
     private _oppositeAngle: Rotation;
