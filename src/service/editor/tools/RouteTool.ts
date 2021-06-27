@@ -52,7 +52,7 @@ export class RouteTool extends Tool {
             return mesh.name.startsWith('ground');
         });
         const p = hit.pickedPoint;
-        const [dist, edge] = this.getClosestLine(toVector2(p));
+        const [dist, edge] = this.findClosestEdge(toVector2(p));
 
         if (dist < 0.5) {
             this.hoverEdge(edge);
@@ -131,7 +131,7 @@ export class RouteTool extends Tool {
         return false;
     }
 
-    private getClosestLine(point: Vector2): [number, GraphEdge] {
+    private findClosestEdge(point: Vector2): [number, GraphEdge] {
         const edges = this.graphService.getGraph().edges;
 
         const edgeDistances: [number, GraphEdge][] = edges.map(edge => [edge.line.getMinDistance(point), edge]);

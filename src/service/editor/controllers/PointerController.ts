@@ -1,4 +1,4 @@
-import { PointerInfo } from "babylonjs/Events/pointerEvents";
+import { Matrix, PointerInfo, Vector3 } from "babylonjs";
 import { BaseService } from "../../BaseService";
 import { KeyboardService, KeyName } from "../../input/KeyboardService";
 import { SceneService } from "../../SceneService";
@@ -27,12 +27,12 @@ export class PointerController extends BaseService {
         switch (pointerInfo.type) {
             case BABYLON.PointerEventTypes.POINTERMOVE:
                 if (this.toolController.activeTool) {
-                    this.toolController.activeTool.move(pointerInfo);
+                    this.toolController.activeTool.move(this.getCursorPos());
                 }
             break;
             case BABYLON.PointerEventTypes.POINTERUP:
                 if (this.toolController.activeTool) {
-                    this.toolController.activeTool.up(pointerInfo);
+                    this.toolController.activeTool.up(this.getCursorPos());
                 }
             break;
         }
@@ -41,6 +41,19 @@ export class PointerController extends BaseService {
     private onKeyDown(keyName: KeyName) {
         if (this.toolController.activeTool) {
             this.toolController.activeTool.keyDown(keyName);
+        }
+    }
+
+    private getCursorPos(): Vector3 {
+        const scene = this.sceneService.scene;
+        
+        let ray = scene.createPickingRay(scene.pointerX, scene.pointerY, Matrix.Identity(), null);
+        let hit = scene.pickWithRay(ray, (mesh) => {
+            return mesh.name.startsWith('ground');
+        });
+
+        if (hit) {
+            return hit.pickedPoint;
         }
     }
 }

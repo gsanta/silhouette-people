@@ -1,6 +1,4 @@
 import { Vector3 } from "babylonjs/Maths/math.vector";
-import { vector3ToRotation } from "../../helpers";
-import { Quad } from "../../model/math/shapes/Quad";
 import { Graph } from "./Graph";
 import { GraphEdge } from "./GraphEdge";
 
@@ -19,17 +17,25 @@ export class GraphVertex {
 }
 
 export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
-    vertices: GraphVertex[];
+    vertices: Set<GraphVertex>;
     edges: GraphEdge[];
 
     private vertexPairs: Map<GraphVertex, Set<GraphVertex>> = new Map();
     private edgeMap: Map<GraphVertex, GraphEdge[]> = new Map();
 
     constructor(vertices: GraphVertex[], edges: GraphEdge[]) {
-        this.vertices = vertices;
+        this.vertices = new Set(vertices);
         this.edges = edges;
 
         this.createEdgeList();
+    }
+
+    addEdge(edge: GraphEdge) {
+        if (!this.edges.includes(edge)) {
+            this.edges.push(edge);
+            this.vertices.add(edge.v1);
+            this.vertices.add(edge.v2);
+        }
     }
     
     edgeBetween(v1: GraphVertex, v2: GraphVertex): GraphEdge {
@@ -39,12 +45,8 @@ export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
         }
     }
 
-    getByPos(pos: Vector3): GraphVertex {
-        return this.vertices.find(vertex => vertex.p === pos);
-    }
-
     getById(id: string): GraphVertex {
-        return this.vertices.find(vertex => vertex.id === id);
+        return Array.from(this.vertices).find(vertex => vertex.id === id);
     }
 
     getEdges(vertex: GraphVertex): GraphEdge[] {
@@ -57,7 +59,7 @@ export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
             if (this.vertexPairs.get(vertex).size <= 1) {
                 this.vertexPairs.delete(vertex);
                 this.edgeMap.delete(vertex);
-                this.vertices = this.vertices.filter(v => v !== vertex);
+                this.vertices.delete(vertex);
             } else {
                 this.vertexPairs.get(vertex).delete(vertex);
                 this.edgeMap.set(vertex, this.edgeMap.get(vertex).filter(edge => edge !== edge));

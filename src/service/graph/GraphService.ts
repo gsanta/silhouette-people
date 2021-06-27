@@ -3,14 +3,14 @@ import { SceneService } from "../SceneService";
 import { Graph } from "./Graph";
 import { GraphEdge } from "./GraphEdge";
 import { GraphVertex } from "./GraphImpl";
-import { GraphVisualizer } from "./GraphVisualizer";
+import { GraphEdgeVisualizer } from "./GraphEdgeVisualizer";
 
 export class GraphService {
     private readonly worldProvider: SceneService;
     private readonly materialStore: MaterialStore;
 
     private graph: Graph<GraphVertex, GraphEdge>;
-    private visualizer: GraphVisualizer;
+    private visualizer: GraphEdgeVisualizer;
 
     constructor(worldProvider: SceneService, materialStore: MaterialStore) {
         this.worldProvider = worldProvider;
@@ -23,11 +23,11 @@ export class GraphService {
         }
 
         this.graph = graph;
-        this.visualizer = new GraphVisualizer(this.worldProvider);
+        this.visualizer = new GraphEdgeVisualizer(this.worldProvider);
         this.visualizer.visualizeEdges(graph.edges, this.materialStore.getPathMaterial());
     }
 
-    getVisualizer(): GraphVisualizer {
+    getVisualizer(): GraphEdgeVisualizer {
         return this.visualizer;
     }
 

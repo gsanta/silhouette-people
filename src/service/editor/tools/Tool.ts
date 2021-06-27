@@ -1,4 +1,4 @@
-import { PointerInfo } from "babylonjs";
+import { Vector3 } from "babylonjs";
 import { BaseService } from "../../BaseService";
 import { KeyName } from "../../input/KeyboardService";
 import { SceneService } from "../../SceneService";
@@ -15,7 +15,7 @@ export abstract class Tool extends BaseService {
 
     select() {}
     deselect() {}
-    move(pointerInfo: PointerInfo) {}
-    up(pointerInfo: PointerInfo) {}
+    move(cursorPos: Vector3) {}
+    up(cursorPos: Vector3) {}
     keyDown(key: KeyName) {}
 } 
