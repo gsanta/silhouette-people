@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ButtonGroup, ToggleButton } from "react-bootstrap";
 import { ToolController } from "../../service/editor/controllers/ToolController";
+import { Tool } from "../../service/editor/tools/Tool";
 import { TransformTool } from "../../service/editor/tools/TransformTool";
 
 export class ToolPanel extends React.Component<{ toolController: ToolController }> {
@@ -17,7 +18,7 @@ export class ToolPanel extends React.Component<{ toolController: ToolController 
         );
     }
 
-    private renderButton(tool: TransformTool) {
+    private renderButton(tool: Tool) {
         const toolController = this.props.toolController;
 
         return (

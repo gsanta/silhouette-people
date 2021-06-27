@@ -9,6 +9,7 @@ import { EditorService } from "./EditorService";
 import { EraseHotkey } from "./hotkeys/EraseHotkey";
 import { SelectionStore } from "./SelectionStore";
 import { GizmoManagerAdapter } from "./tools/GizmoManagerAdapter";
+import { RouteTool } from "./tools/RouteTool";
 import { TransformTool } from "./tools/TransformTool";
 
 export class EditorSetup implements ISetup {
@@ -41,10 +42,11 @@ export class EditorSetup implements ISetup {
     async setup(): Promise<void> {
         this.gizmoManagerAdapter = new GizmoManagerAdapter(this.sceneService, this.gameObjectStore, this.meshStore, this.eventService, this.editorService.selectionStore);
 
-        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, ToolType.TRANSFORM));
-        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, ToolType.ROTATE));
+        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, ToolType.TRANSFORM));
+        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, ToolType.ROTATE));
+        this.editorService.toolController.addTool(new RouteTool(this.sceneService));
 
-        this.editorService.hotkeyController.addHotkey(new EraseHotkey(this.keyboardService, this.editorService.selectionStore, this.gameObjectStore));
+        this.editorService.hotkeyController.addHotkey(new EraseHotkey(this.keyboardService, this.editorService.selectionStore, this.gameObjectStore, this.eventService));
         this.editorService.hotkeyController.enable();
 
         this.editorService.isEditorOpen = true;

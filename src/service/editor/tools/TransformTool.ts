@@ -1,15 +1,19 @@
+import { EventService } from "../../EventService";
 import { ToolType } from "../controllers/TransformController";
 import { GizmoManagerAdapter } from "./GizmoManagerAdapter";
+import { Tool } from "./Tool";
 
-export class TransformTool {
-
+export class TransformTool extends Tool {
     private readonly gizmoManagerAdapter: GizmoManagerAdapter;
-    readonly toolType: ToolType;
+    private readonly eventService: EventService;
 
-    constructor(gizmoManagerAdapter: GizmoManagerAdapter, toolType: ToolType) {
+    constructor(gizmoManagerAdapter: GizmoManagerAdapter, eventService: EventService, toolType: ToolType) {
+        super(toolType);
         this.gizmoManagerAdapter = gizmoManagerAdapter;
+        this.eventService = eventService;
+        this.onGameObjectDeleted = this.onGameObjectDeleted.bind(this);
 
-        this.toolType = toolType;
+        this.eventService.guiEvents.onGameObjectDeleted(this.onGameObjectDeleted);
     }
 
     deselect() {
@@ -29,5 +33,9 @@ export class TransformTool {
     private diableGizmos() {
         this.gizmoManagerAdapter.manager.positionGizmoEnabled = false;
         this.gizmoManagerAdapter.manager.rotationGizmoEnabled = false;
+    }
+
+    private onGameObjectDeleted() {
+        this.gizmoManagerAdapter.manager.attachToMesh(null);
     }
 }

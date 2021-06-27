@@ -46,7 +46,7 @@ export class GizmoManagerAdapter {
                     this.programmaticEvent = true;
                     this._gizmoManager.attachToMesh(gameObject.collisionMesh);
                     this.eventService.guiEvents.emitGameObjectSelected(gameObject);
-                    this.selectionStore.add(gameObject);
+                    this.selectionStore.set(gameObject);
                 }
             } else {
                 this.programmaticEvent = false;

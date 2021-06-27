@@ -46,6 +46,7 @@ import { TransformTool } from "./editor/tools/TransformTool";
 import { ToolType } from "./editor/controllers/TransformController";
 import { TexturePropertyParser } from "./import/parsers/TexturePropertyParser";
 import { RotatePropertyParser } from "./import/parsers/RotatePropertyParser";
+import { PointerController } from "./editor/controllers/PointerController";
 
 export class DependencyResolver {
     eventService: EventService;
@@ -165,12 +166,15 @@ export class DependencyResolver {
         this.sceneExporter = new SceneExporter(this.gameObjecStore);
         this.sceneService.addBaseService(this.fogOfWarService);
 
+        const toolController = new ToolController(this.renderGui);
+
         this.editorService = new EditorService(
             new MeshLoaderController(this.keyboard, this.renderGui, this.meshFactory, this.gameObjecStore, this.eventService),
             new CameraController(this.cameraService, this.renderGui),
             new FogOfWarController(this.fogOfWarService, this.renderGui),
             new SceneExportController(this.sceneExporter),
-            new ToolController(this.renderGui)
+            toolController,
+            new PointerController(this.sceneService, toolController)
         );
 
         this.update = new UpdateService(this.sceneService, this.gameObjecStore, this.playerStore, this.quarterStore, this.keyboard, this.cameraService);

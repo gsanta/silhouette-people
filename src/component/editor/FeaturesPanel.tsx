@@ -2,15 +2,13 @@ import * as React from "react";
 import { ButtonGroup, ToggleButton } from "react-bootstrap";
 import { FogOfWarController } from "../../service/editor/controllers/FogOfWarController";
 
-export class FogOfWarPanel extends React.Component<{ fogOfWarController: FogOfWarController }> {
-
-
+export class FeaturesPanel extends React.Component<{ fogOfWarController: FogOfWarController }> {
     render() {
 
         return (
 
             <div className="panel">
-                <div className="title-row">Fog of War</div>
+                <div className="title-row">Features</div>
                 <div className="button-row">{this.renderButton()}</div>
             </div>  
         );
@@ -25,11 +23,11 @@ export class FogOfWarPanel extends React.Component<{ fogOfWarController: FogOfWa
                 <ToggleButton
                     type="checkbox"
                     variant="secondary"
-                    checked={fogOfWarController.visible}
+                    checked={fogOfWarController.enabled}
                     value="1"
-                    onChange={() => fogOfWarController.visible = !fogOfWarController.visible}
+                    onChange={() => fogOfWarController.enabled = !fogOfWarController.enabled}
                 >
-                    Is visible
+                    Fog of war
                 </ToggleButton>
             </ButtonGroup>
 

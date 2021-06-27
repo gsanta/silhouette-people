@@ -5,7 +5,6 @@ import { BaseService } from "../BaseService";
 import { SceneService } from "../SceneService";
 
 export class FogOfWarService extends BaseService {
-    private readonly worldProvider: SceneService;
     private readonly width = 200;
     private readonly height = 200;
     private readonly positionY = 10;
@@ -13,11 +12,10 @@ export class FogOfWarService extends BaseService {
     private character: GameObject;
     private mesh: Mesh;
     private material: NodeMaterial;
-    private _visible = false;
+    private _isEnabled = true;
 
-    constructor(worldProvider: SceneService) {
-        super();
-        this.worldProvider = worldProvider;
+    constructor(sceneService: SceneService) {
+        super(sceneService);
     }
 
     setCharacter(character: GameObject) {
@@ -25,30 +23,35 @@ export class FogOfWarService extends BaseService {
     }
 
     awake() {
-        this.loadMaterial();
+        // this.loadMaterial();
     }
 
-    set visible(visible: boolean) {
-        this._visible = visible;
+    isEnabled() {
+        return this._isEnabled;
+    }
 
-        if (this.mesh) {
-            if (visible) {
-                this.mesh.visibility = 1;
-            } else {
-                this.mesh.visibility = 0;
-            }
+    enable() {
+        if (!this.isEnabled()) {
+            this._isEnabled = true;
+            this.loadMaterial();
         }
     }
 
-    get visible() {
-        return this._visible;
+    disable() {
+        if (this.isEnabled()) {
+            this._isEnabled = false;
+            this.mesh.dispose();
+            this.material.dispose();
+            this.mesh = undefined;
+            this.material = undefined;
+        }
     }
     
     private async loadMaterial() {
-        this.material = new NodeMaterial('fow-material', this.worldProvider.scene);
+        this.material = new NodeMaterial('fow-material', this.sceneService.scene);
         this.material.loadFromSerialization(fowMaterial);
-        this.mesh = MeshBuilder.CreateGround("ground", {width: this.width, height: this.height}, this.worldProvider.scene);
-        this.material = await NodeMaterial.ParseFromSnippetAsync("4750E2#8", this.worldProvider.scene);
+        this.mesh = MeshBuilder.CreateGround("ground", {width: this.width, height: this.height}, this.sceneService.scene);
+        this.material = await NodeMaterial.ParseFromSnippetAsync("4750E2#8", this.sceneService.scene);
 
         this.mesh.position.y += this.positionY;
         this.mesh.material = this.material;

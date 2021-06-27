@@ -6,7 +6,7 @@
                 "removeRoot": false
             },
             "texture": {},
-            "rotate": 31.563829045110644,
+            "rotate": 89.99999999999999,
             "collider": {
                 "dimension": "0:0:0"
             },
@@ -14,7 +14,223 @@
             "tags": [
                 "_UI_CRETAED"
             ],
-            "position": "0:0.03712034225463867:0"
+            "position": "-47.147247314453125:1.0371196269989014:-27.837841033935547"
+        },
+        {
+            "model": {
+                "path": "house3",
+                "removeRoot": true
+            },
+            "texture": {
+                "path": "palette.jpg"
+            },
+            "rotate": 89.99999999999999,
+            "collider": {
+                "dimension": "0:0:0"
+            },
+            "props": [],
+            "tags": [
+                "_UI_CRETAED"
+            ],
+            "position": "-47.255191802978516:-0.02957916259765625:-40.69404983520508"
+        },
+        {
+            "model": {
+                "path": "house2",
+                "removeRoot": false
+            },
+            "texture": {
+                "path": "palette.jpg"
+            },
+            "rotate": 90.29181820366347,
+            "collider": {
+                "dimension": "0:0:0"
+            },
+            "props": [],
+            "tags": [
+                "_UI_CRETAED"
+            ],
+            "position": "-47.04087448120117:0.6000001430511475:-16.302757263183594"
+        },
+        {
+            "model": {
+                "path": "house2",
+                "removeRoot": false
+            },
+            "texture": {
+                "path": "palette.jpg"
+            },
+            "rotate": 90.29981656099523,
+            "collider": {
+                "dimension": "0:0:0"
+            },
+            "props": [],
+            "tags": [
+                "_UI_CRETAED"
+            ],
+            "position": "-46.96162033081055:0.6000001430511475:-6.003321170806885"
+        },
+        {
+            "model": {
+                "path": "house1",
+                "removeRoot": false
+            },
+            "texture": {
+                "path": "palette.jpg"
+            },
+            "rotate": 179.31720862694593,
+            "collider": {
+                "dimension": "0:0:0"
+            },
+            "props": [],
+            "tags": [
+                "_UI_CRETAED"
+            ],
+            "position": "-29.408771514892578:0.39999961853027344:-14.707576751708984"
+        },
+        {
+            "model": {
+                "path": "house3",
+                "removeRoot": true
+            },
+            "texture": {
+                "path": "palette.jpg"
+            },
+            "rotate": 178.68442413703596,
+            "collider": {
+                "dimension": "0:0:0"
+            },
+            "props": [],
+            "tags": [
+                "_UI_CRETAED"
+            ],
+            "position": "-18.968948364257812:0.6000001430511475:-13.18138599395752"
+        },
+        {
+            "model": {
+                "path": "house2",
+                "removeRoot": true
+            },
+            "texture": {
+                "path": "palette.jpg"
+            },
+            "rotate": -90.87524967885486,
+            "collider": {
+                "dimension": "0:0:0"
+            },
+            "props": [],
+            "tags": [
+                "_UI_CRETAED"
+            ],
+            "position": "-8.652536392211914:0.40000009536743164:-23.61456298828125"
+        },
+        {
+            "model": {
+                "path": "house2",
+                "removeRoot": true
+            },
+            "texture": {
+                "path": "palette.jpg"
+            },
+            "rotate": -90.39362561984969,
+            "collider": {
+                "dimension": "0:0:0"
+            },
+            "props": [],
+            "tags": [
+                "_UI_CRETAED"
+            ],
+            "position": "-8.578157424926758:0.40000009536743164:-33.98520278930664"
+        },
+        {
+            "model": {
+                "path": "house1",
+                "removeRoot": false
+            },
+            "texture": {
+                "path": "palette.jpg"
+            },
+            "rotate": -91.7656359836536,
+            "collider": {
+                "dimension": "0:0:0"
+            },
+            "props": [],
+            "tags": [
+                "_UI_CRETAED"
+            ],
+            "position": "-9.054655075073242:0.39999961853027344:-43.731544494628906"
+        },
+        {
+            "model": {
+                "path": "house2",
+                "removeRoot": true
+            },
+            "texture": {
+                "path": "palette.jpg"
+            },
+            "rotate": -89.78266779317104,
+            "collider": {
+                "dimension": "0:0:0"
+            },
+            "props": [],
+            "tags": [
+                "_UI_CRETAED"
+            ],
+            "position": "-27.812475204467773:0.40000009536743164:-34.31026840209961"
+        },
+        {
+            "model": {
+                "path": "house1",
+                "removeRoot": false
+            },
+            "texture": {
+                "path": "palette.jpg"
+            },
+            "rotate": -90.31489608574326,
+            "collider": {
+                "dimension": "0:0:0"
+            },
+            "props": [],
+            "tags": [
+                "_UI_CRETAED"
+            ],
+            "position": "-28.990524291992188:0.39999961853027344:-43.92550277709961"
+        },
+        {
+            "model": {
+                "path": "road1",
+                "removeRoot": true
+            },
+            "texture": {
+                "path": "palette.jpg"
+            },
+            "rotate": 0,
+            "collider": {
+                "dimension": "0:0:0"
+            },
+            "props": [],
+            "tags": [
+                "_UI_CRETAED"
+            ],
+            "position": "-38.18810272216797:-0.15001054108142853:-44.36129379272461"
+        },
+        {
+            "model": {
+                "path": "road1",
+                "removeRoot": true
+            },
+            "texture": {
+                "path": "palette.jpg"
+            },
+            "rotate": 0,
+            "collider": {
+                "dimension": "0:0:0"
+            },
+            "props": [],
+            "tags": [
+                "_UI_CRETAED"
+            ],
+            "position": "-38.166831970214844:-0.016277894377708435:-34.2952880859375"
         }
     ]
 }

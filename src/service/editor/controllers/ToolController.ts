@@ -1,22 +1,23 @@
 import { RenderGuiService } from "../../RenderGuiService";
+import { Tool } from "../tools/Tool";
 import { TransformTool } from "../tools/TransformTool";
 import { ToolType } from "./TransformController";
 
 export class ToolController {
 
     private readonly renderGuiService: RenderGuiService;
-    private _tools: TransformTool[] = [];
-    private _activeTool: TransformTool;
+    private _tools: Tool[] = [];
+    private _activeTool: Tool;
 
     constructor(renderGuiService: RenderGuiService) {
         this.renderGuiService = renderGuiService;
     }
 
-    addTool(tool: TransformTool) {
+    addTool(tool: Tool) {
         this.tools.push(tool);
     }
 
-    set activeTool(tool: TransformTool) {
+    set activeTool(tool: Tool) {
         if (this.activeTool) {
             this.activeTool.deselect();
         }
@@ -27,7 +28,7 @@ export class ToolController {
         this.renderGuiService.render();
     }
 
-    get activeTool(): TransformTool {
+    get activeTool(): Tool {
         return this._activeTool;
     }
 
@@ -35,7 +36,7 @@ export class ToolController {
         return this._tools;
     }
 
-    getToolByType(toolType: ToolType): TransformTool {
+    getToolByType(toolType: ToolType): Tool {
         return this._tools.find(tool => tool.toolType === toolType);
     }
 }

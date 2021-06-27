@@ -2,7 +2,8 @@ import { RenderGuiService } from "../../RenderGuiService";
 
 export enum ToolType {
     TRANSFORM = 'TRANSFORM',
-    ROTATE = 'ROTATE'
+    ROTATE = 'ROTATE',
+    ROUTE = 'ROUTE'
 }
 
 export class TransformController {

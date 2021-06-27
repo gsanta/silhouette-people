@@ -4,6 +4,7 @@ import { GameObject } from "../model/objects/game_object/GameObject";
 export class GUIEvents {
     private gameObjectCreatedCallbacks: (() => void)[] = [];
     private gameObjectSelectedCallbacks: ((gameObject: GameObject) => void)[] = [];
+    private gameObjectDeletedCallbacks: (() => void)[] = [];
 
     onGameObjectCreated(callback: () => void) {
         this.gameObjectCreatedCallbacks.push(callback);
@@ -27,6 +28,18 @@ export class GUIEvents {
 
     emitGameObjectSelected(gameObject: GameObject) {
         this.gameObjectSelectedCallbacks.forEach(callback => callback(gameObject));
+    }
+
+    onGameObjectDeleted(callback: () => void) {
+        this.gameObjectDeletedCallbacks.push(callback);
+    }
+
+    removeGameObjectDeleted(callback: () => void) {
+        this.gameObjectDeletedCallbacks = this.gameObjectDeletedCallbacks.filter(cb => cb !== callback);
+    }
+
+    emitGameObjectDeleted() {
+        this.gameObjectDeletedCallbacks.forEach(callback => callback());
     }
 }
 

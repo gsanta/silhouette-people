@@ -5,7 +5,8 @@ export class SelectionStore {
 
     private selectedItems: Set<GameObject> = new Set();
 
-    add(gameObject: GameObject) {
+    set(gameObject: GameObject) {
+        this.selectedItems.clear();
         this.selectedItems.add(gameObject);
     }
 

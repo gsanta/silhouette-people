@@ -68,6 +68,7 @@ function initGame(lookup: DependencyResolver) {
     // camera.maxCameraSpeed = 10;
 
     var skybox = MeshBuilder.CreateBox("skyBox", {size:1000.0}, scene);
+    skybox.isPickable = false;
     var skyboxMaterial: StandardMaterial = new StandardMaterial("skyBox", scene);
     skyboxMaterial.backFaceCulling = false;
     skyboxMaterial.reflectionTexture = new CubeTexture("https://BabylonJS.github.io/Assets/environments/toySky/toySky", scene);
@@ -96,7 +97,7 @@ function initGame(lookup: DependencyResolver) {
         engine.resize();
     });
 
-    lookup.sceneService.awake();
+    lookup.sceneService.awakeAll();
 
     lookup.setupService.setup();
     lookup.debugService.render();

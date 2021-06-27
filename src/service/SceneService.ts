@@ -4,7 +4,7 @@ import { WorldObj } from "../model/objects/WorldObj";
 import { BaseService } from "./BaseService";
 import { WorldMap } from "./import/WorldMap";
 
-export class SceneService extends BaseService {
+export class SceneService {
     private worldObj: WorldObj;
     private baseServices: BaseService[] = [];
     private _awaken = false;
@@ -33,7 +33,7 @@ export class SceneService extends BaseService {
         }
     }
 
-    awake() {
+    awakeAll() {
         this._awaken = true;
 
         this.baseServices.forEach(service => service.awake());
