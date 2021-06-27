@@ -33,6 +33,7 @@
 
     .button-row {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
 
         > .input-button {
@@ -41,6 +42,14 @@
             .btn {
                 padding: 0 10px;
             }
+        }
+
+        > .input-button.btn {
+            padding: 0 10px;
+        }
+
+        &.start {
+            justify-content: flex-start;
         }
     }
 

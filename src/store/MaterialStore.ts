@@ -81,9 +81,9 @@ export class MaterialStore {
             mat.diffuseColor = Color3.Red();
             mat.emissiveColor = Color3.Black();
             mat.backFaceCulling = false;
-            this.ribbonMaterial = mat;
+            this.activePathMaterial = mat;
         }
 
-        return this.ribbonMaterial;
+        return this.activePathMaterial;
     }
 }

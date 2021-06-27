@@ -8,4 +8,5 @@ export interface Graph<V, E> {
     getEdges(vertex: V): E[];
     getByPos(pos: Vector3): V;
     getById(id: string): V;
+    removeEdge(edge: E);
 }

@@ -47,6 +47,7 @@ import { ToolType } from "./editor/controllers/TransformController";
 import { TexturePropertyParser } from "./import/parsers/TexturePropertyParser";
 import { RotatePropertyParser } from "./import/parsers/RotatePropertyParser";
 import { PointerController } from "./editor/controllers/PointerController";
+import { GraphController } from "./editor/controllers/GraphController";
 
 export class DependencyResolver {
     eventService: EventService;
@@ -174,7 +175,8 @@ export class DependencyResolver {
             new FogOfWarController(this.fogOfWarService, this.renderGui),
             new SceneExportController(this.sceneExporter),
             toolController,
-            new PointerController(this.sceneService, toolController, this.keyboard)
+            new PointerController(this.sceneService, toolController, this.keyboard),
+            new GraphController(this.renderGui, this.graphService, this.materialStore)
         );
 
         this.update = new UpdateService(this.sceneService, this.gameObjecStore, this.playerStore, this.quarterStore, this.keyboard, this.cameraService);

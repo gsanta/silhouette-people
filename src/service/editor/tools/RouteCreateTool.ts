@@ -1,6 +1,6 @@
-import { Color3, Matrix, StandardMaterial, Vector2 } from "babylonjs";
+import { StandardMaterial, Color3, Matrix, Vector2 } from "babylonjs";
 import { toVector2 } from "../../../helpers";
-import { MaterialName, MaterialStore } from "../../../store/MaterialStore";
+import { MaterialStore, MaterialName } from "../../../store/MaterialStore";
 import { GraphEdge } from "../../graph/GraphEdge";
 import { GraphService } from "../../graph/GraphService";
 import { KeyName } from "../../input/KeyboardService";
@@ -14,7 +14,7 @@ interface EdgeInfo {
     origMaterial: StandardMaterial;
 }
 
-export class RouteTool extends Tool {
+export class RouteCreateTool extends Tool {
     private readonly graphService: GraphService;
     private readonly materialStore: MaterialStore;
     private readonly graphController: GraphController;
@@ -28,7 +28,7 @@ export class RouteTool extends Tool {
     };
 
     constructor(sceneService: SceneService, materialStore: MaterialStore, graphService: GraphService, graphController: GraphController) {
-        super(sceneService, ToolType.ROUTE);
+        super(sceneService, ToolType.ROUTE_CREATE);
         this.materialStore = materialStore;
         this.graphService = graphService;
         this.graphController = graphController;

@@ -20,6 +20,14 @@ export class GraphVisualizer {
         graphEdge.forEach(edge => edge.mesh = this.createPathEdge(edge, material));
     }
 
+    visualizeEdge(graphEdge: GraphEdge, material: StandardMaterial) {
+        if (graphEdge.mesh) {
+            graphEdge.mesh.dispose();
+        }
+
+        graphEdge.mesh = this.createPathEdge(graphEdge, material)
+    }
+
     private createPathEdge(edge: GraphEdge, material: StandardMaterial): Mesh {
         const [v1, v2] = [edge.v1, edge.v2]
         const path1 = [edge.dimensions.p1, edge.dimensions.p2];

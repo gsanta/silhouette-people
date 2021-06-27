@@ -19,8 +19,8 @@ export class GraphVertex {
 }
 
 export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
-    readonly vertices: GraphVertex[];
-    readonly edges: GraphEdge[];
+    vertices: GraphVertex[];
+    edges: GraphEdge[];
 
     private vertexPairs: Map<GraphVertex, Set<GraphVertex>> = new Map();
     private edgeMap: Map<GraphVertex, GraphEdge[]> = new Map();
@@ -49,6 +49,22 @@ export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
 
     getEdges(vertex: GraphVertex): GraphEdge[] {
         return this.edgeMap.get(vertex);
+    }
+
+    removeEdge(edge: GraphEdge) {
+
+        [edge.v1, edge.v2].forEach(vertex => {
+            if (this.vertexPairs.get(vertex).size <= 1) {
+                this.vertexPairs.delete(vertex);
+                this.edgeMap.delete(vertex);
+                this.vertices = this.vertices.filter(v => v !== vertex);
+            } else {
+                this.vertexPairs.get(vertex).delete(vertex);
+                this.edgeMap.set(vertex, this.edgeMap.get(vertex).filter(edge => edge !== edge));
+            }
+        });
+
+        this.edges = this.edges.filter(e => e !== edge);
     }
 
     private createEdgeList() {

@@ -9,7 +9,7 @@ import { GraphVertex } from "./GraphImpl";
 export class GraphEdge {
     readonly v1: GraphVertex;
     readonly v2: GraphVertex;
-    thickness: number = 0;
+    private _thickness: number = 0;
     dimensions: Quad;
     line: Line;
     mesh: Mesh;
@@ -38,6 +38,15 @@ export class GraphEdge {
         }
 
         return undefined;
+    }
+
+    get thickness() {
+        return this._thickness;
+    }
+
+    set thickness(thickness: number) {
+        this._thickness = thickness;
+        this.dimensions = new EdgeDimensionCalc().calc(this);
     }
 
     get angle(): Rotation {
