@@ -2,7 +2,7 @@ import { Mesh } from "babylonjs";
 import { GameObjectConfig, GameObject, GameObjectTag, GameObjectType } from "../../../model/objects/game_object/GameObject";
 import { MeshStore } from "../../../store/MeshStore";
 import { AbstractPropertyParser } from "../../import/AbstractPropertyParser";
-import { CollisionPropertyParser } from "../../import/parsers/CollisionPropertyParser";
+import { CollisionCreator } from "../../import/parsers/CollisionCreator";
 import { ModelPropertyParser } from "../../import/parsers/ModelPropertyParser";
 import { PositionPropertyParser } from "../../import/parsers/PositionPropertyParser";
 import { RotatePropertyParser } from "../../import/parsers/RotatePropertyParser";
@@ -14,7 +14,7 @@ export class MeshFactory {
     private readonly indexesByType: Map<string, number> = new Map();
     private propertyParsers: AbstractPropertyParser<any>[] = [];
     private readonly modelPropertyParser: ModelPropertyParser;
-    private readonly collisionPropertyParser: CollisionPropertyParser;
+    private readonly collisionPropertyParser: CollisionCreator;
     private readonly positionPropertyParser: PositionPropertyParser;
     private readonly tagPropertyParser: TagPropertyParser;
     private readonly texturePropertyParser: TexturePropertyParser;
@@ -24,7 +24,7 @@ export class MeshFactory {
     constructor(
         meshStore: MeshStore, 
         modelPropertyParser: ModelPropertyParser,
-        collisionPropertyParser: CollisionPropertyParser,
+        collisionPropertyParser: CollisionCreator,
         positionPropertyParser: PositionPropertyParser,
         tagPropertyParser: TagPropertyParser,
         texturePropertyParser: TexturePropertyParser,

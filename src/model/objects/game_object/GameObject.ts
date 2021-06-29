@@ -12,7 +12,7 @@ import { MotionController } from "./MotionController";
 import { RouteControllerImpl } from "./controller_route/RouteControllerImpl";
 import { BoundingInfo } from "babylonjs/Culling/index";
 import { ModelPropertyConfig } from "../../../service/import/parsers/ModelPropertyParser";
-import { CollisionPropertyConfig } from "../../../service/import/parsers/CollisionPropertyParser";
+import { CollisionPropertyConfig } from "../../../service/import/parsers/CollisionCreator";
 import { TexturePropertyConfig } from "../../../service/import/parsers/TexturePropertyParser";
 
 export enum GameObjectType {
@@ -133,7 +133,7 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
     }
 
     moveWithCollision(displacement: Vector3) {
-        this.collisionMesh.moveWithCollisions(displacement);
+        this.mesh.moveWithCollisions(displacement);
 
         this.emitPositionChange();
         this.attachments.forEach(attachment => attachment.onItemPositionChanged());
@@ -184,6 +184,10 @@ export class GameObject<B extends CharacterBehaviour = any> extends GameItem {
 
     get mesh(): Mesh {
         return this.collisionMesh ? this.collisionMesh : this.getMainMesh();
+    }
+
+    get mainMesh(): Mesh {
+        return this.getMainMesh();
     }
 
     get meshes(): Mesh[] {

@@ -20,7 +20,7 @@ export class SceneExporter {
 
         const gameObjects = this.gameObjectStore.getByTag(GameObjectTag._UI_CREATED);
         const gameObjectJsons = gameObjects.map(gameObject => gameObject.config);
-        gameObjects.forEach(gameObject => gameObject.config.position = toStrVector(gameObject.meshes[0].getAbsolutePosition()))
+        gameObjects.forEach(gameObject => gameObject.config.position = toStrVector(gameObject.mainMesh.getAbsolutePosition()))
         gameObjects.forEach(gameObject => gameObject.config.rotate = Tools.ToDegrees(gameObject.rotationY));
 
         const json: SceneJson = {

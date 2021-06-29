@@ -12,7 +12,7 @@ export class FogOfWarService extends BaseService {
     private character: GameObject;
     private mesh: Mesh;
     private material: NodeMaterial;
-    private _isEnabled = true;
+    private _isEnabled = false;
 
     constructor(sceneService: SceneService) {
         super(sceneService);

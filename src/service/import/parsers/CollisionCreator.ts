@@ -7,7 +7,7 @@ export interface CollisionPropertyConfig {
     dimension: string;
 }
 
-export class CollisionPropertyParser extends AbstractPropertyParser<CollisionPropertyConfig> {
+export class CollisionCreator extends AbstractPropertyParser<CollisionPropertyConfig> {
     propName = 'collider';
 
     private readonly worldProvider: SceneService;
@@ -34,19 +34,25 @@ export class CollisionPropertyParser extends AbstractPropertyParser<CollisionPro
         collisionMesh.checkCollisions = true;
 
         const mainMesh = gameObj.mesh;
-        mainMesh.parent = null;
-        mainMesh.setAbsolutePosition(new Vector3(0, 0, 0));
-        
-        gameObj.collisionMesh = collisionMesh;
 
-        mainMesh.parent = collisionMesh;
+        mainMesh.computeWorldMatrix(true);
+        const meshPos = mainMesh.getAbsolutePosition().clone();
+
+        gameObj.collisionMesh = collisionMesh;
 
         collisionMesh.translate(Axis.X, position.x, Space.WORLD);
         collisionMesh.translate(Axis.Z, position.z, Space.WORLD);
         collisionMesh.translate(Axis.Y, position.y, Space.WORLD);
         collisionMesh.translate(Axis.Y, height / 2, Space.WORLD);
 
-        mainMesh.translate(Axis.Y, -height / 2, Space.WORLD);
+        mainMesh.parent = collisionMesh;
+
+        collisionMesh.computeWorldMatrix(true);
+        mainMesh.computeWorldMatrix(true);
+
+        mainMesh.setAbsolutePosition(meshPos);
+
+        // mainMesh.translate(Axis.Y, -height / 2, Space.WORLD);
         const colliderMaterial = new StandardMaterial(`${gameObj.id}-collider-material`, this.worldProvider.scene);
         colliderMaterial.alpha = 0;
         collisionMesh.material = colliderMaterial;

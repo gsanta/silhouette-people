@@ -7,7 +7,7 @@ import { MaterialStore } from "../store/MaterialStore";
 import { QuarterStore } from "../store/QuarterStore";
 import { RouteStore } from "../store/RouteStore";
 import { ActivePlayerService } from "./ActivePlayerService";
-import { DebugService } from "./debug/DebugService";
+import { DebugController } from "./editor/controllers/DebugController";
 import { EventService } from "./EventService";
 import { KeyboardService } from "./input/KeyboardService";
 import { PointerService } from "./input/PointerService";
@@ -32,7 +32,7 @@ import { EditorSetup } from "./editor/EditorSetup";
 import { MeshStore } from "../store/MeshStore";
 import { EditorService } from "./editor/EditorService";
 import { ModelPropertyParser } from "./import/parsers/ModelPropertyParser";
-import { CollisionPropertyParser } from "./import/parsers/CollisionPropertyParser";
+import { CollisionCreator } from "./import/parsers/CollisionCreator";
 import { PositionPropertyParser } from "./import/parsers/PositionPropertyParser";
 import { CameraController } from "./editor/controllers/CameraController";
 import { MeshLoaderController } from "./editor/controllers/MeshLoaderController";
@@ -48,6 +48,7 @@ import { TexturePropertyParser } from "./import/parsers/TexturePropertyParser";
 import { RotatePropertyParser } from "./import/parsers/RotatePropertyParser";
 import { PointerController } from "./editor/controllers/PointerController";
 import { GraphController } from "./editor/controllers/GraphController";
+import { GameObjectController } from "./editor/controllers/GameObjectController";
 
 export class DependencyResolver {
     eventService: EventService;
@@ -61,7 +62,7 @@ export class DependencyResolver {
     backlog: StoryTracker;
 
     graphService: GraphService;
-    debugService: DebugService;
+    debugService: DebugController;
     activePlayerService: ActivePlayerService;
 
     renderGui: RenderGuiService;
@@ -118,7 +119,7 @@ export class DependencyResolver {
         lookup.materialStore = this.materialStore;
         this.quarterStore = new QuarterStore();
         lookup.quarterStore = this.quarterStore;
-        this.gameObjecStore = new GameObjectStore(this.quarterStore);
+        this.gameObjecStore = new GameObjectStore(this.quarterStore, this.meshStore);
         lookup.gameObjecStore = this.gameObjecStore;
         this.citizenStore = new CitizenStore(this.gameObjecStore);
         lookup.citizenStore = this.citizenStore;
@@ -146,7 +147,7 @@ export class DependencyResolver {
         this.activePlayerService = new ActivePlayerService(this.playerStore, this.lightStore, this.lightFactory);
         lookup.activePlayerService = this.activePlayerService;
 
-        this.debugService = new DebugService(this.gameObjecStore, this.sceneService, this.materialStore, this.citizenStore);
+        this.debugService = new DebugController(this.gameObjecStore, this.renderGui);
         if (window) {
             (<any> window).debugService = this.debugService;
         }
@@ -155,7 +156,7 @@ export class DependencyResolver {
         this.meshFactory = new MeshFactory(
             this.meshStore,
             new ModelPropertyParser(this.sceneService, this.assetContainerStore),
-            new CollisionPropertyParser(this.sceneService),
+            new CollisionCreator(this.sceneService),
             new PositionPropertyParser(),
             new TagPropertyParser(),
             new TexturePropertyParser(this.sceneService),
@@ -169,6 +170,8 @@ export class DependencyResolver {
 
         const toolController = new ToolController(this.renderGui);
 
+        const debugController = new DebugController(this.gameObjecStore, this.renderGui);
+        
         this.editorService = new EditorService(
             new MeshLoaderController(this.keyboard, this.renderGui, this.meshFactory, this.gameObjecStore, this.eventService),
             new CameraController(this.cameraService, this.renderGui),
@@ -176,7 +179,9 @@ export class DependencyResolver {
             new SceneExportController(this.sceneExporter),
             toolController,
             new PointerController(this.sceneService, toolController, this.keyboard),
-            new GraphController(this.renderGui, this.graphService, this.materialStore)
+            new GraphController(this.renderGui, this.graphService, this.materialStore),
+            debugController,
+            new GameObjectController(new CollisionCreator(this.sceneService), this.renderGui, this.eventService, debugController, this.gameObjecStore),
         );
 
         this.update = new UpdateService(this.sceneService, this.gameObjecStore, this.playerStore, this.quarterStore, this.keyboard, this.cameraService);

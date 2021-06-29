@@ -1,4 +1,5 @@
 import { EventService } from "../../EventService";
+import { KeyName } from "../../input/KeyboardService";
 import { SceneService } from "../../SceneService";
 import { ToolType } from "../controllers/TransformController";
 import { GizmoManagerAdapter } from "./GizmoManagerAdapter";
@@ -28,6 +29,12 @@ export class TransformTool extends Tool {
         } else if (this.toolType === ToolType.ROTATE) {
             this.gizmoManagerAdapter.manager.rotationGizmoEnabled = true;
             this.gizmoManagerAdapter.manager.gizmos.rotationGizmo.updateGizmoRotationToMatchAttachedMesh = true;
+        }
+    }
+
+    keyDown(key: KeyName) {
+        if (key === KeyName.ESCAPE) {
+            this.gizmoManagerAdapter.manager.attachToMesh(null);
         }
     }
 

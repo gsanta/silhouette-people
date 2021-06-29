@@ -1,13 +1,16 @@
 import { GameObject, GameObjectTag } from "../model/objects/game_object/GameObject";
+import { MeshStore } from "./MeshStore";
 import { QuarterStore } from "./QuarterStore";
 
 export class GameObjectStore {
     private items: GameObject[] = [];
 
     private readonly quarterStore: QuarterStore;
+    private readonly meshStore: MeshStore;
 
-    constructor(quarterStore: QuarterStore) {
+    constructor(quarterStore: QuarterStore, meshStore: MeshStore) {
         this.quarterStore = quarterStore;
+        this.meshStore = meshStore;
     }
 
     addItem(meshItem: GameObject) {
@@ -20,6 +23,7 @@ export class GameObjectStore {
     removeItem(item: GameObject, disposeMesh = false) {
         this.items = this.items.filter(i => i !== item);
         if (disposeMesh) {
+            this.meshStore.removeGameObjectMeshes(item);
             item.dispose();
         }
     }

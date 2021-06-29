@@ -1,12 +1,12 @@
 import { Checkbox, Container, Control, StackPanel, TextBlock } from "babylonjs-gui";
 import { InjectProperty } from "../../di/diDecorators";
-import { DebugService } from "./DebugService";
+import { DebugController } from "../editor/controllers/DebugController";
 import { lookup } from "../DependencyResolver";
 import { IGUIComponent } from "./IGUIComponent";
 
 export class ColliderCheckbox implements IGUIComponent {
     @InjectProperty("DebugService")
-    private debugService: DebugService;
+    private debugService: DebugController;
 
     constructor() {
         this.debugService = lookup.debugService;

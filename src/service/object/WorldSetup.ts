@@ -12,7 +12,7 @@ import { SceneService } from "../SceneService";
 import { MeshFactory } from "./mesh/MeshFactory";
 import { MeshItemLoader } from "./mesh/MeshItemLoader";
 import { WorldFactory } from "./WorldFactory";
-import { CollisionPropertyParser } from "../import/parsers/CollisionPropertyParser";
+import { CollisionCreator } from "../import/parsers/CollisionCreator";
 import { HiddenPropertyParser } from "../import/parsers/HiddenPropertyParser";
 import { IdPropertyParser } from "../import/parsers/IdPropertyParser";
 import { InputManagerPropertyParser } from "../import/parsers/InputManagerPropertyParser";
@@ -84,7 +84,7 @@ export class WorldSetup implements ISetup {
             new ModelPropertyParser(this.worldProvider, this.assetContainerStore),
             new TexturePropertyParser(this.worldProvider),
             new PositionPropertyParser(),  
-            new CollisionPropertyParser(this.worldProvider),
+            new CollisionCreator(this.worldProvider),
             new PhysicsPropertyParser(this.worldProvider),
             new StatePropertyParser(),
             new WalkerPropertyParser(),

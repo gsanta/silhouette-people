@@ -49,7 +49,7 @@ export class EditorSetup implements ISetup {
     }
 
     async setup(): Promise<void> {
-        this.gizmoManagerAdapter = new GizmoManagerAdapter(this.sceneService, this.gameObjectStore, this.meshStore, this.eventService, this.editorService.selectionStore);
+        this.gizmoManagerAdapter = new GizmoManagerAdapter(this.sceneService, this.meshStore, this.eventService, this.editorService.selectionStore);
 
         this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, this.sceneService, ToolType.TRANSFORM));
         this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, this.sceneService, ToolType.ROTATE));

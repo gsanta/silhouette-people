@@ -1,30 +1,24 @@
 import { AdvancedDynamicTexture } from "babylonjs-gui";
-import { CitizenStore } from "../../store/CitizenStore";
-import { MaterialStore } from "../../store/MaterialStore";
-import { GameObjectStore } from "../../store/GameObjectStore";
-import { SceneService } from "../SceneService";
-import { IGUIComponent } from "./IGUIComponent";
-import { QuarterMapDebugger } from "./QuarterMapDebugger";
-import { WorldAxisHelper } from "./WorldAxisHelper";
-import { Vector3 } from "babylonjs";
+import { GameObjectStore } from "../../../store/GameObjectStore";
+import { IGUIComponent } from "../../debug/IGUIComponent";
+import { QuarterMapDebugger } from "../../debug/QuarterMapDebugger";
+import { WorldAxisHelper } from "../../debug/WorldAxisHelper";
+import { RenderGuiService } from "../../RenderGuiService";
 
-export class DebugService {
+export class DebugController {
     private worldAxisHelper: WorldAxisHelper;
     private texture: AdvancedDynamicTexture;
     areaMapDebugger: QuarterMapDebugger;
     
     private readonly meshStore: GameObjectStore;
-    private readonly worldProvider: SceneService;
-    private readonly materialStore: MaterialStore;
-    private readonly citizenStore: CitizenStore;
+    private readonly renderGuiService: RenderGuiService;
+    private _boundingBoxVisibility = false;
 
     private guiComponents: IGUIComponent[] = [];
 
-    constructor(meshStore: GameObjectStore, worldProvider: SceneService, materialStore: MaterialStore, citizenStore: CitizenStore) {
+    constructor(meshStore: GameObjectStore, renderGuiService: RenderGuiService) {
         this.meshStore = meshStore;
-        this.worldProvider = worldProvider;
-        this.materialStore = materialStore;
-        this.citizenStore = citizenStore;
+        this.renderGuiService = renderGuiService;
         this.worldAxisHelper = new WorldAxisHelper();
         this.areaMapDebugger = new QuarterMapDebugger();
     }
@@ -48,11 +42,17 @@ export class DebugService {
         this.meshStore.getAll().forEach(meshObj =>  meshObj.collisionMesh && (meshObj.collisionMesh.showBoundingBox = isVisible));
     }
 
-    setMeshBoundingBoxVisibility(isVisible: boolean) {
+    set boundingBoxVisibility(isVisible: boolean) {
+        this._boundingBoxVisibility = isVisible;
         this.meshStore.getAll().forEach(meshObj =>  meshObj.collisionMesh && (meshObj.collisionMesh.showBoundingBox = isVisible));
+        this.renderGuiService.render();
     }
 
-    applyImpulse() {
-        this.meshStore.getById('bicycle1-0').mesh.physicsImpostor.applyImpulse(new Vector3(1, 1, 0), new Vector3(0, 0.3, 0));
+    get boundingBoxVisibility() {
+        return this._boundingBoxVisibility;
+    }
+
+    updateBoundingBoxVisibility() {
+        this.boundingBoxVisibility = this.boundingBoxVisibility;
     }
 }

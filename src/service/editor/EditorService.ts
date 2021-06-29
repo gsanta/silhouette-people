@@ -1,6 +1,8 @@
 import { CameraService } from "../camera/CameraService";
 import { CameraController } from "./controllers/CameraController";
+import { DebugController } from "./controllers/DebugController";
 import { FogOfWarController } from "./controllers/FogOfWarController";
+import { GameObjectController } from "./controllers/GameObjectController";
 import { GraphController } from "./controllers/GraphController";
 import { MeshLoaderController } from "./controllers/MeshLoaderController";
 import { PointerController } from "./controllers/PointerController";
@@ -23,6 +25,8 @@ export class EditorService {
     readonly hotkeyController: HotkeyController;
     readonly pointerController: PointerController;
     readonly graphController: GraphController;
+    readonly debugController: DebugController;
+    readonly gameObjectController: GameObjectController;
 
     constructor(
         meshLoaderController: MeshLoaderController,
@@ -31,7 +35,9 @@ export class EditorService {
         sceneExportController: SceneExportController,
         toolController: ToolController,
         pointerController: PointerController,
-        graphController: GraphController
+        graphController: GraphController,
+        debugController: DebugController,
+        gameObjectController: GameObjectController
     ) {
         this.meshLoaderController = meshLoaderController;
         this.cameraController = cameraController;
@@ -40,6 +46,8 @@ export class EditorService {
         this.toolController = toolController;
         this.pointerController = pointerController;
         this.graphController = graphController;
+        this.debugController = debugController;
+        this.gameObjectController = gameObjectController;
         this.selectionStore = new SelectionStore();
         this.hotkeyController = new HotkeyController();
     }

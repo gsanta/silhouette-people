@@ -4,6 +4,8 @@ import { MeshLoaderPanel } from './MeshLoaderPanel';
 import { CameraPanel } from './CameraPanel';
 import { FeaturesPanel } from './FeaturesPanel';
 import { GraphPanel } from './GraphPanel';
+import { DebugPanel } from './DebugPanel';
+import { GameObjectPanel } from './GameObjectPanel';
 import { SceneExportPanel } from './SceneExportPanel';
 import { ToolPanel } from './ToolPanel';
 import '../../../assets/css/panel.scss';
@@ -16,13 +18,14 @@ export class EditorComponent extends React.Component<{ editor: EditorService }> 
             <div className="editor">
                 Editor
 
-                <MeshLoaderPanel meshLoaderController={this.props.editor.meshLoaderController}/>
-                <CameraPanel cameraController={this.props.editor.cameraController}/>
-                <SceneExportPanel sceneExportController={this.props.editor.sceneExportController}/>
-                <ToolPanel toolController={this.props.editor.toolController}/>
+                <MeshLoaderPanel meshLoaderController={this.props.editor.meshLoaderController} />
+                <GameObjectPanel controller={this.props.editor.gameObjectController} />
+                <CameraPanel cameraController={this.props.editor.cameraController} />
+                <SceneExportPanel sceneExportController={this.props.editor.sceneExportController} />
+                <ToolPanel toolController={this.props.editor.toolController} />
                 <FeaturesPanel fogOfWarController={this.props.editor.fogOfWarController} />
                 <GraphPanel graphController={this.props.editor.graphController} />
-
+                <DebugPanel controller={this.props.editor.debugController} />
             </div>
         )
     }

@@ -5,8 +5,6 @@ export class FogOfWarController {
     private readonly fogOfWarService: FogOfWarService;
     private readonly renderGuiService: RenderGuiService;
 
-    private _enabled = true;
-
     constructor(fogOfWarService: FogOfWarService, renderGuiService: RenderGuiService) {
         this.fogOfWarService = fogOfWarService;
         this.renderGuiService = renderGuiService;
@@ -14,7 +12,6 @@ export class FogOfWarController {
 
 
     set enabled(enabled: boolean) {
-        this._enabled = enabled;
         if (enabled) {
             this.fogOfWarService.enable();
         } else {
@@ -24,6 +21,6 @@ export class FogOfWarController {
     }
 
     get enabled() {
-        return this._enabled;
+        return this.fogOfWarService.isEnabled();
     }
 }
