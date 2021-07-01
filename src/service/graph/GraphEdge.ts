@@ -13,6 +13,7 @@ export class GraphEdge {
     dimensions: Quad;
     line: Line;
     mesh: Mesh;
+    readonly yPos = 0.5;
 
     private _angle: Rotation;
     private _oppositeAngle: Rotation;

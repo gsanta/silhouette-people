@@ -27,12 +27,18 @@ export class PointerController extends BaseService {
         switch (pointerInfo.type) {
             case BABYLON.PointerEventTypes.POINTERMOVE:
                 if (this.toolController.activeTool) {
-                    this.toolController.activeTool.move(this.getCursorPos());
+                    const cursorPos = this.getCursorPos();
+                    if (cursorPos) {
+                        this.toolController.activeTool.move(cursorPos);
+                    }
                 }
             break;
             case BABYLON.PointerEventTypes.POINTERUP:
                 if (this.toolController.activeTool) {
-                    this.toolController.activeTool.up(this.getCursorPos());
+                    const cursorPos = this.getCursorPos();
+                    if (cursorPos) {
+                        this.toolController.activeTool.up(cursorPos);
+                    }
                 }
             break;
         }

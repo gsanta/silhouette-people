@@ -11,6 +11,8 @@ export class GizmoManagerAdapter {
     private readonly selectionStore: SelectionStore;
     private _gizmoManager: GizmoManager;
     private programmaticEvent = false;
+    private filter: (mesh: Mesh) => boolean = () => true;
+    private onAttachHandlers: ((mesh: Mesh) => void)[] = [];
 
     constructor(sceneService: SceneService, meshStore: MeshStore, eventService: EventService, selectionStore: SelectionStore) {
         this.sceneService = sceneService;
@@ -31,13 +33,21 @@ export class GizmoManagerAdapter {
         this._gizmoManager = new GizmoManager(this.sceneService.scene);
 
         this._gizmoManager.onAttachedToMeshObservable.add((mesh: Mesh) => {
-            if (!this.programmaticEvent) {
+            if (!mesh) { return; }
+
+            if (!this.filter(mesh)) {
+                this._gizmoManager.attachToMesh(null);
+                this.onAttachHandlers.forEach(handler => handler(undefined));
+
+            } else if (!this.programmaticEvent) {
+                this.onAttachHandlers.forEach(handler => handler(mesh));
+                
                 const gameObject = this.meshStore.getGameObject(mesh);
-                if (gameObject.collisionMesh) {
-                    this.programmaticEvent = true;
-                    this._gizmoManager.attachToMesh(gameObject.collisionMesh);
-                }
                 if (gameObject) {
+                    if (gameObject.collisionMesh) {
+                        this.programmaticEvent = true;
+                        this._gizmoManager.attachToMesh(gameObject.collisionMesh);
+                    }
                     this.selectionStore.set(gameObject);
                     this.eventService.guiEvents.emitGameObjectSelected(gameObject);
                 }
@@ -45,5 +55,21 @@ export class GizmoManagerAdapter {
                 this.programmaticEvent = false;
             }
         });
+    }
+
+    setMeshFilter(filter: (mesh: Mesh) => boolean) {
+        this.filter = filter;
+    }
+
+    removeMeshFilter() {
+        this.filter = () => true;
+    }
+
+    onAttach(handler: (mesh: Mesh) => void) {
+        this.onAttachHandlers.push(handler);
+    }
+
+    removeOnAttach(handler: (mesh: Mesh) => void) {
+        this.onAttachHandlers = this.onAttachHandlers.filter(h => h !== handler);
     }
 }
