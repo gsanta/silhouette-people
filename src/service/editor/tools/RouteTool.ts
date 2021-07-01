@@ -27,6 +27,8 @@ export class RouteTool extends Tool {
     private activeAnchor: MoveAnchor;
 
     private xObserver: Observer<any>;
+    private yObserver: Observer<any>;
+    private zObserver: Observer<any>;
 
     private hovered: EdgeInfo = {
         edge: undefined,
@@ -50,6 +52,7 @@ export class RouteTool extends Tool {
         this.graphController = graphController;
         this.gizmoManagerAdapter = gizmoManagerAdapter;
         this.onAnchorAttach = this.onAnchorAttach.bind(this);
+        this.dragObservable = this.dragObservable.bind(this);
     }
 
     awake() {
@@ -70,12 +73,19 @@ export class RouteTool extends Tool {
             return mesh.name.startsWith('ground');
         });
         const p = hit.pickedPoint;
-        const [dist, edge] = this.findClosestEdge(toVector2(p));
 
-        if (dist < 0.5) {
-            this.hoverEdge(edge);
-        } else {
-            this.unHoverEdge();
+        const moveAnchor = this.findMoveAnchorWithinRangeIfExists(p);
+
+        if (moveAnchor) {
+            this.hoverEdge(this.selected.edge);
+        } else if (!this.activeAnchor) {
+            const edge = this.findEdgeWithinRangeIfExists(toVector2(p));
+
+            if (edge) {
+                this.hoverEdge(edge);
+            } else {
+                this.unHoverEdge();
+            }
         }
     }
 
@@ -99,10 +109,12 @@ export class RouteTool extends Tool {
     select() {
         this.gizmoManagerAdapter.manager.positionGizmoEnabled = true;
         this.gizmoManagerAdapter.setMeshFilter((mesh: Mesh) => mesh.name.startsWith('anchor'));
-        this.gizmoManagerAdapter.manager.gizmos.positionGizmo.xGizmo.dragBehavior.onDragObservable.add(this.dragObservable);
+        this.xObserver = this.gizmoManagerAdapter.manager.gizmos.positionGizmo.xGizmo.dragBehavior.onDragObservable.add(this.dragObservable);
+        // this.yObserver = this.gizmoManagerAdapter.manager.gizmos.positionGizmo.yGizmo.dragBehavior.onDragObservable.add(this.dragObservable);
+        this.zObserver = this.gizmoManagerAdapter.manager.gizmos.positionGizmo.zGizmo.dragBehavior.onDragObservable.add(this.dragObservable);
+
+        this.gizmoManagerAdapter.manager.gizmos.positionGizmo.yGizmo.isEnabled = false;
         this.gizmoManagerAdapter.onAttach(this.onAnchorAttach);
-        // this.gizmoManagerAdapter.manager.gizmos.positionGizmo.yGizmo.dragBehavior.onDragObservable.add(this.dragObservable);
-        // this.gizmoManagerAdapter.manager.gizmos.positionGizmo.zGizmo.dragBehavior.onDragObservable.add(this.dragObservable);
     }
 
     deselect() {
@@ -110,10 +122,10 @@ export class RouteTool extends Tool {
         this.unSelectEdge();
 
         this.gizmoManagerAdapter.manager.gizmos.positionGizmo.xGizmo.dragBehavior.onDragObservable.remove(this.xObserver);
+        // this.gizmoManagerAdapter.manager.gizmos.positionGizmo.yGizmo.dragBehavior.onDragObservable.remove(this.yObserver);
+        this.gizmoManagerAdapter.manager.gizmos.positionGizmo.zGizmo.dragBehavior.onDragObservable.remove(this.zObserver);
         this.gizmoManagerAdapter.removeOnAttach(this.onAnchorAttach);
 
-        // this.gizmoManagerAdapter.manager.gizmos.positionGizmo.yGizmo.dragBehavior.onDragObservable.remove(this.dragObservable);
-        // this.gizmoManagerAdapter.manager.gizmos.positionGizmo.zGizmo.dragBehavior.onDragObservable.remove(this.dragObservable);
     }
 
     private hoverEdge(edge: GraphEdge) {
@@ -164,12 +176,24 @@ export class RouteTool extends Tool {
         return false;
     }
 
-    private findClosestEdge(point: Vector2): [number, GraphEdge] {
+    private findEdgeWithinRangeIfExists(point: Vector2): GraphEdge {
         const edges = this.graphService.getGraph().edges;
 
         const edgeDistances: [number, GraphEdge][] = edges.map(edge => [edge.line.getMinDistance(point), edge]);
         edgeDistances.sort((a, b) => a[0] - b[0]);
-        return edgeDistances[0];
+        
+        if (edgeDistances[0][0] < 0.5) {
+            return edgeDistances[0][1];
+        }
+
+        return undefined;
+    }
+
+    private findMoveAnchorWithinRangeIfExists(point: Vector3): MoveAnchor {
+        if (!this.selected.edge) { return undefined; }
+
+        const dist = (anchorPos: Vector3) => Math.sqrt(Math.pow(point.x - anchorPos.x, 2) + Math.pow(point.z - anchorPos.z, 2));
+        return [this.vertex1Anchor, this.vertex2Anchor].find(anchor => dist(anchor.mesh.getAbsolutePosition()) < 0.5);
     }
 
     private disposeAnchors() {
@@ -186,13 +210,17 @@ export class RouteTool extends Tool {
     }
 
     private onAnchorAttach(mesh: Mesh) {
-        // if (!mesh) {
-        //     this.activeAnchor = undefined;
-        // } else {
-            if (this.selected.edge) {
-                this.activeAnchor = mesh === this.vertex1Anchor.mesh ? this.vertex1Anchor : this.vertex2Anchor;
+        if (this.selected.edge) {
+            if (mesh === this.vertex1Anchor.mesh) {
+                this.activeAnchor = this.vertex1Anchor;
+                this.unHoverEdge();
+            } else if (mesh === this.vertex2Anchor.mesh) {
+                this.activeAnchor = this.vertex2Anchor;
+                this.unHoverEdge();
+            } else {
+                this.activeAnchor = undefined;
             }
-        // }
+        }
     }
 }
 
@@ -213,14 +241,26 @@ class MoveAnchor {
     }
 
     update() {
-        this.vertex = new GraphVertex(this.vertex.id, this.edge.mesh.getAbsolutePosition());
-        if (this.vertexId === 'v1') {
-            this.edge.v1 = this.vertex;
-        } else {
-            this.edge.v2 = this.vertex;
-        }
+        const meshPos = this.mesh.getAbsolutePosition();
+        const pos = new Vector3(meshPos.x, this.vertex.p.y, meshPos.z);
+        const newVertex = new GraphVertex(this.vertex.id, pos);
 
-        this.graphService.getVisualizer().updateEdge(this.edge);
+        this.updateEdgesForVertex(newVertex);
+    }
+
+    private updateEdgesForVertex(newVertex: GraphVertex) {
+        const edges = this.graphService.getGraph().getEdges(this.vertex);
+
+        edges.forEach(edge => {
+            if (this.vertex === edge.v1) {
+                edge.v1 = newVertex;
+            } else {
+                edge.v2 = newVertex;
+            }
+            this.graphService.getVisualizer().updateEdge(edge);
+        });
+
+        this.vertex = newVertex;
     }
 
     dispose() {
@@ -228,7 +268,7 @@ class MoveAnchor {
     }
 
     private getAnchorMesh(vertex: GraphVertex, name: string) {
-        const mesh = MeshBuilder.CreateSphere(name, { diameter: 0.2 });
+        const mesh = MeshBuilder.CreateSphere(name, { diameter: 0.3 });
         const p = new Vector3(vertex.p.x, this.edge.yPos, vertex.p.z);
         mesh.setAbsolutePosition(p);
         return mesh; 

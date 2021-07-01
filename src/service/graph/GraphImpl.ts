@@ -50,7 +50,7 @@ export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
     }
 
     getEdges(vertex: GraphVertex): GraphEdge[] {
-        return this.edgeMap.get(vertex);
+        return this.edges.filter(edge => edge.v1 === vertex || edge.v2 === vertex);
     }
 
     removeEdge(edge: GraphEdge) {
