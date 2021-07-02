@@ -1,7 +1,7 @@
 import { Graph } from "./Graph";
+import { PriorityQueue } from "./PriorityQueue";
 
 export interface ShortestPathOptions<V> {
-    cost?: boolean;
     avoid: V[];
     reverse?: boolean;
 }

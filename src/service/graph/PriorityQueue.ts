@@ -4,7 +4,7 @@ interface QueueItem<T> {
     priority: number;
 }
 
-class PriorityQueue<T> {
+export class PriorityQueue<T> {
 
     private keys: Set<T> = new Set();
     private queue: QueueItem<T>[] = [];
