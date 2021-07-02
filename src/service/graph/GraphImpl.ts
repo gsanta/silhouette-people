@@ -4,7 +4,7 @@ import { GraphEdge } from "./GraphEdge";
 
 export class GraphVertex {
     readonly p: Vector3;
-    readonly id: string;
+    id: string;
 
     constructor(id: string, p: Vector3) {
         this.id = id;

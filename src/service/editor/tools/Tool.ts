@@ -15,6 +15,7 @@ export abstract class Tool extends BaseService {
 
     select() {}
     deselect() {}
+    cancel() {}
     move(cursorPos: Vector3) {}
     up(cursorPos: Vector3) {}
     keyDown(key: KeyName) {}

@@ -1,39 +1,34 @@
-import { StoryTracker } from "../story/StoryTracker";
 import { RouteParser } from "./RouteParser";
 import { MeshConfigParser } from "./MeshConfigParser";
-import { RouteStoryParser } from "./RouteStoryParser";
 import { WorldMap } from "./WorldMap";
 import { SceneService } from "../SceneService";
 import { SceneParser } from "./map/SceneParser";
 import { IndexPosition } from "./map/ItemParser";
-import { GraphParser } from "./map/GraphParser";
-import { MeshFactory } from "../object/mesh/MeshFactory";
 import { WorldFactory } from "../object/WorldFactory";
-import { GameObjectStore } from "../../store/GameObjectStore";
 import { SceneJson } from "../editor/export/SceneExporter";
+import { RouteImporter } from "./RouteImporter";
+import { GameObjectImporter } from "./GameObjectImporter";
 
 export class SceneImporter {
     readonly routeParser: RouteParser;
     readonly meshConfigParser: MeshConfigParser;
-    readonly routeStoryParser: RouteStoryParser;
     
     private readonly mapParser: SceneParser;
 
     private readonly assetsPath = 'assets/levels';
     private readonly sceneService: SceneService;
-    private readonly meshFactory: MeshFactory;
     private readonly worldFactory: WorldFactory;
-    private readonly gameObjectStore: GameObjectStore;
+    private readonly routeImporter: RouteImporter;
+    private readonly gameObjectImporter: GameObjectImporter;
 
-    constructor(worldProvider: SceneService, storyTracker: StoryTracker, meshFactory: MeshFactory, worldFactory: WorldFactory, gameObjectStore: GameObjectStore) {
+    constructor(worldProvider: SceneService, worldFactory: WorldFactory, gameObjectImporter: GameObjectImporter, routeImporter: RouteImporter) {
         this.sceneService = worldProvider;
-        this.meshFactory = meshFactory;
         this.worldFactory = worldFactory;
-        this.gameObjectStore = gameObjectStore;
+        this.gameObjectImporter = gameObjectImporter;
+        this.routeImporter = routeImporter;
         this.mapParser = new SceneParser();
         this.routeParser = new RouteParser();
         this.meshConfigParser = new MeshConfigParser(this.mapParser);
-        this.routeStoryParser = new RouteStoryParser(storyTracker);
     }
 
     async parse() {
@@ -53,18 +48,10 @@ export class SceneImporter {
         this.sceneService.worldSize = mapResult.size;
         this.sceneService.quarterNum = mapResult.quarterNum;
 
-        new GraphParser().parse(json);
-
-        let meshConfigs = this.meshConfigParser.parse(json);
-        meshConfigs = [...meshConfigs, ...sceneJson.gameObjects];
-
         this.sceneService.world = await this.worldFactory.createWorldObj(this.sceneService.scene);
 
-        for (const config of meshConfigs) {
-            const gameObject = await this.meshFactory.createFromConfig(config);
-            this.gameObjectStore.addItem(gameObject);
-        }
-        this.routeStoryParser.parse(json);
+        this.routeImporter.import(sceneJson.routes);
+        await this.gameObjectImporter.import(sceneJson.gameObjects, json);
     }
 
     private async loadScene(name: string): Promise<SceneJson> {

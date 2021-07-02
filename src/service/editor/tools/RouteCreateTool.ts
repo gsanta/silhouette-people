@@ -71,7 +71,7 @@ export class RouteCreateTool extends Tool {
         this.edge = undefined;
     }
 
-    private cancel() {
+    cancel() {
         if (this.edge) {
             this.edge.mesh.dispose();
             this.edge = undefined;

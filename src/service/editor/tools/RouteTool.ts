@@ -125,7 +125,10 @@ export class RouteTool extends Tool {
         // this.gizmoManagerAdapter.manager.gizmos.positionGizmo.yGizmo.dragBehavior.onDragObservable.remove(this.yObserver);
         this.gizmoManagerAdapter.manager.gizmos.positionGizmo.zGizmo.dragBehavior.onDragObservable.remove(this.zObserver);
         this.gizmoManagerAdapter.removeOnAttach(this.onAnchorAttach);
+    }
 
+    cancel() {
+        this.unSelectEdge();
     }
 
     private hoverEdge(edge: GraphEdge) {

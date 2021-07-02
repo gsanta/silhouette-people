@@ -18,9 +18,10 @@ export class GraphEdge {
     private _angle: Rotation;
     private _oppositeAngle: Rotation;
 
-    constructor(v1: GraphVertex, v2: GraphVertex) {
+    constructor(v1: GraphVertex, v2: GraphVertex, thickness?: number) {
         this._v1 = v1;
         this._v2 = v2;
+        this.thickness = thickness; 
 
         this.reCalc();
     }

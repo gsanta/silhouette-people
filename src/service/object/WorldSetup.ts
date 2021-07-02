@@ -7,10 +7,8 @@ import { SceneImporter } from "../import/SceneImporter";
 import { KeyboardService } from "../input/KeyboardService";
 import { ISetup } from "../setup/ISetup";
 import { GraphService } from "../graph/GraphService";
-import { StoryTracker } from "../story/StoryTracker";
 import { SceneService } from "../SceneService";
 import { MeshFactory } from "./mesh/MeshFactory";
-import { MeshItemLoader } from "./mesh/MeshItemLoader";
 import { WorldFactory } from "./WorldFactory";
 import { CollisionCreator } from "../import/parsers/CollisionCreator";
 import { HiddenPropertyParser } from "../import/parsers/HiddenPropertyParser";
@@ -27,6 +25,9 @@ import { TexturePropertyParser } from "../import/parsers/TexturePropertyParser";
 import { WalkerPropertyParser } from "../import/parsers/WalkerPropertyParser";
 import { QuarterStore } from "../../store/QuarterStore";
 import { MaterialStore } from "../../store/MaterialStore";
+import { RouteImporter } from "../import/RouteImporter";
+import { PlayerSetup } from "../player/PlayerSetup";
+import { GameObjectImporter } from "../import/GameObjectImporter";
 
 export class WorldSetup implements ISetup {
     private readonly worldProvider: SceneService;
@@ -36,10 +37,10 @@ export class WorldSetup implements ISetup {
     private readonly meshFactory: MeshFactory;
     private readonly routeStore: RouteStore;
     private readonly graphService: GraphService;
-    private readonly storyTracker: StoryTracker;
     private readonly gameObjectStore: GameObjectStore;
     private readonly worldImporter: SceneImporter;
     private readonly worldFactory: WorldFactory;
+    private readonly playerSetup: PlayerSetup;
 
     constructor(
         worldProvider: SceneService,
@@ -49,12 +50,11 @@ export class WorldSetup implements ISetup {
         meshFactory: MeshFactory,
         routeStore: RouteStore,
         graphService: GraphService,
-        storyTracker: StoryTracker,
         gameObjectStore: GameObjectStore,
         quarterStore: QuarterStore,
         materialStore: MaterialStore,
+        playerSetup: PlayerSetup
     ) {
-        this.storyTracker = storyTracker;
         this.gameObjectStore = gameObjectStore;
 
         this.worldProvider = worldProvider;
@@ -64,19 +64,22 @@ export class WorldSetup implements ISetup {
         this.meshFactory = meshFactory;
         this.routeStore = routeStore;
         this.graphService = graphService;
+        this.playerSetup = playerSetup;
 
         this.worldFactory = new WorldFactory(this.worldProvider, quarterStore, materialStore);
-        this.worldImporter = new SceneImporter(this.worldProvider, this.storyTracker, this.meshFactory, this.worldFactory, this.gameObjectStore);
+        this.worldImporter = new SceneImporter(
+            this.worldProvider,
+            this.worldFactory,
+            new GameObjectImporter(this.meshFactory, this.gameObjectStore),
+            new RouteImporter(this.graphService)
+        );
     }
 
     async setup(): Promise<void> {
         this.meshFactory.setPropertyParsers(this.setupPropertyParsers());
 
-
-        const meshItemLoader = new MeshItemLoader(this.storyTracker, this.gameObjectStore, this.meshFactory);
-        this.storyTracker.processor.registerLoader(meshItemLoader);
-
         await this.worldImporter.parse();
+        await this.playerSetup.setup();
     }
 
     private setupPropertyParsers() {

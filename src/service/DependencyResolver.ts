@@ -24,7 +24,6 @@ import { WorldSetup } from "./object/WorldSetup";
 import { PlayerSetup } from "./player/PlayerSetup";
 import { PlayerStore } from "./player/PlayerStore";
 import { RouteSetup } from "./routing/route/RouteSetup";
-import { StoryTracker } from "./story/StoryTracker";
 import { RenderGuiService } from "./RenderGuiService";
 import { SceneService } from "./SceneService";
 import { MaterialSetup } from "./material/MaterialSetup";
@@ -58,8 +57,6 @@ export class DependencyResolver {
     scene: Scene;
     engine: Engine;
     canvas: HTMLCanvasElement;
-
-    backlog: StoryTracker;
 
     graphService: GraphService;
     debugService: DebugController;
@@ -105,9 +102,6 @@ export class DependencyResolver {
 
         this.keyboard = new KeyboardService();
         lookup.keyboard = this.keyboard;
-
-        this.backlog = new StoryTracker();
-        lookup.backlog = this.backlog;
 
         this.routeStore = new RouteStore();
         lookup.routeStore = this.routeStore;
@@ -165,7 +159,7 @@ export class DependencyResolver {
         lookup.meshFactory = this.meshFactory;
 
         this.fogOfWarService = new FogOfWarService(this.sceneService);
-        this.sceneExporter = new SceneExporter(this.gameObjecStore);
+        this.sceneExporter = new SceneExporter(this.gameObjecStore, this.graphService);
         this.sceneService.addBaseService(this.fogOfWarService);
 
         const toolController = new ToolController(this.renderGui);
@@ -179,7 +173,7 @@ export class DependencyResolver {
             new SceneExportController(this.sceneExporter),
             toolController,
             new PointerController(this.sceneService, toolController, this.keyboard),
-            new GraphController(this.renderGui, this.graphService, this.materialStore),
+            new GraphController(this.renderGui, this.graphService, this.materialStore, toolController),
             debugController,
             new GameObjectController(new CollisionCreator(this.sceneService), this.renderGui, this.eventService, debugController, this.gameObjecStore),
         );
@@ -191,20 +185,6 @@ export class DependencyResolver {
     private async resolveSetups() {
         this.setupService = new SetupService(this.pointer, this.renderGui);
 
-        const worldSetup = new WorldSetup(
-            this.sceneService,
-            this.assetContainerStore,
-            this.keyboard,
-            this.activePlayerService,
-            this.meshFactory,
-            this.routeStore,
-            this.graphService,
-            this.backlog,
-            this.gameObjecStore,
-            this.quarterStore,
-            this.materialStore
-        );
-        const routeSetup = new RouteSetup(this.sceneService, this.graphService, this.routeStore);
         const playerSetup = new PlayerSetup(
             this.sceneService,
             this.playerStore,
@@ -214,6 +194,22 @@ export class DependencyResolver {
             this.materialStore,
             this.fogOfWarService
         );
+
+        const worldSetup = new WorldSetup(
+            this.sceneService,
+            this.assetContainerStore,
+            this.keyboard,
+            this.activePlayerService,
+            this.meshFactory,
+            this.routeStore,
+            this.graphService,
+            this.gameObjecStore,
+            this.quarterStore,
+            this.materialStore,
+            playerSetup
+        );
+        const routeSetup = new RouteSetup(this.sceneService, this.graphService, this.routeStore);
+
         const cameraSetup = new CameraSetup(this.sceneService, this.quarterStore, this.keyboard, this.cameraService, this.playerStore);
         const citizenSetup = new CitizenSetup(this.routeStore, this.citizenStore, this.graphService);
         const materialSetup = new MaterialSetup(this.sceneService, this.materialStore);
@@ -222,7 +218,7 @@ export class DependencyResolver {
         this.setupService.addSetup(materialSetup);
         this.setupService.addSetup(worldSetup);
         this.setupService.addSetup(routeSetup);
-        this.setupService.addSetup(playerSetup);
+        // this.setupService.addSetup(playerSetup);
         this.setupService.addSetup(cameraSetup);
         this.setupService.addSetup(citizenSetup);
         this.setupService.addSetup(editorSetup);

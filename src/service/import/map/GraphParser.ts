@@ -44,7 +44,7 @@ export class GraphParser {
     }
 
     private parseRouteConfigs(routeConfigs: RouteConfig[]) {
-        routeConfigs.forEach(routeConfig => this.parseRouteConfig(routeConfig));
+    routeConfigs.forEach(routeConfig => this.parseRouteConfig(routeConfig));
     }
 
     private parseRouteConfig(routeConfig: RouteConfig) {

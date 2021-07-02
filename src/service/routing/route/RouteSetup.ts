@@ -19,10 +19,10 @@ export class RouteSetup implements ISetup {
     }
 
     async setup(): Promise<void> {
-        const graph = this.graphParser.parse(this.worldProvider.worldMap);
-        this.graphService.setGraph(graph);
+        // const graph = this.graphParser.parse(this.worldProvider.worldMap);
+        // this.graphService.setGraph(graph);
 
-        this.routeStore.addRoute(this.createRoute1());
+        // this.routeStore.addRoute(this.createRoute1());
     }
     
     private createRoute1(): RouteItem {
