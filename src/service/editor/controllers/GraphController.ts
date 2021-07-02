@@ -68,7 +68,7 @@ export class GraphController {
         if (this.edge) {
             this.toolController.getToolByType(ToolType.ROUTE).cancel();
             this.edge.mesh.dispose();
-            this.graphService.getGraph().removeEdge(this.edge);
+            this.graphService.getGraph().removeEdge(this.edge, true);
         }
     }
 }

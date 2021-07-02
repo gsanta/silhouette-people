@@ -2,14 +2,14 @@ import { MaterialStore } from "../../store/MaterialStore";
 import { SceneService } from "../SceneService";
 import { Graph } from "./Graph";
 import { GraphEdge } from "./GraphEdge";
-import { GraphVertex } from "./GraphImpl";
+import { GraphImpl, GraphVertex } from "./GraphImpl";
 import { GraphEdgeVisualizer } from "./GraphEdgeVisualizer";
 
 export class GraphService {
     private readonly worldProvider: SceneService;
     private readonly materialStore: MaterialStore;
 
-    private graph: Graph<GraphVertex, GraphEdge>;
+    private graph: GraphImpl;
     private visualizer: GraphEdgeVisualizer;
 
     constructor(worldProvider: SceneService, materialStore: MaterialStore) {
@@ -17,7 +17,7 @@ export class GraphService {
         this.materialStore = materialStore;
     }
 
-    setGraph(graph: Graph<GraphVertex, GraphEdge>) {
+    setGraph(graph: GraphImpl) {
         if (this.graph) {
             throw new Error('Graph already set for GraphService');
         }
@@ -31,7 +31,7 @@ export class GraphService {
         return this.visualizer;
     }
 
-    getGraph(): Graph<GraphVertex, GraphEdge> {
+    getGraph(): GraphImpl {
         return this.graph;
     }
 }

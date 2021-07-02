@@ -108,7 +108,7 @@ describe('filterDirection', () => {
         let moveInArea: MoveInArea;
 
         beforeEach(() => {
-            char = charBuilder.pos(5, 0, 7).build();
+            char = charBuilder.pos(5, 0, 8).build();
             route = routeBuilder.addPoint(2, 3).addPoint(10, 11).addEdgeThickness(0, 2).build();
             moveInArea = new MoveInArea(new RouteControllerImpl(route, char));
         });

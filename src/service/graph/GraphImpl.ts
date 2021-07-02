@@ -1,4 +1,5 @@
 import { Vector3 } from "babylonjs/Maths/math.vector";
+import { GenericGraph, GenericGraphConfig } from "./GenericGraph";
 import { Graph } from "./Graph";
 import { GraphEdge } from "./GraphEdge";
 
@@ -17,32 +18,22 @@ export class GraphVertex {
 }
 
 export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
-    vertices: Set<GraphVertex>;
-    edges: GraphEdge[];
-
-    private vertexPairs: Map<GraphVertex, Set<GraphVertex>> = new Map();
-    private edgeMap: Map<GraphVertex, GraphEdge[]> = new Map();
+    private genericGraph: GenericGraph<GraphVertex, GraphEdge>;
 
     constructor(vertices: GraphVertex[], edges: GraphEdge[]) {
-        this.vertices = new Set(vertices);
-        this.edges = edges;
 
-        this.createEdgeList();
+        const genericGraphConfig: GenericGraphConfig<GraphVertex, GraphEdge> = {
+            getVertices: (edge) => [edge.v1, edge.v2]
+        }
+        this.genericGraph = new GenericGraph(vertices, edges, genericGraphConfig);
     }
 
     addEdge(edge: GraphEdge) {
-        if (!this.edges.includes(edge)) {
-            this.edges.push(edge);
-            this.vertices.add(edge.v1);
-            this.vertices.add(edge.v2);
-        }
+        this.genericGraph.addEdge(edge);
     }
     
     edgeBetween(v1: GraphVertex, v2: GraphVertex): GraphEdge {
-        if (this.vertexPairs.get(v1).has(v2)) {
-            const edges = this.edgeMap.get(v1);
-            return edges.find(edge => edge.getOtherVertex(v1) === v2);
-        }
+        return this.genericGraph.edgeBetween(v1, v2);
     }
 
     getById(id: string): GraphVertex {
@@ -50,43 +41,26 @@ export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
     }
 
     getNeighbours(vertex: GraphVertex): Set<GraphVertex> {
-        return this.vertexPairs.get(vertex);
+        return this.genericGraph.getNeighbours(vertex);
     }
 
     getEdges(vertex: GraphVertex): GraphEdge[] {
-        return this.edges.filter(edge => edge.v1 === vertex || edge.v2 === vertex);
+        return this.genericGraph.getEdges(vertex);
     }
 
-    removeEdge(edge: GraphEdge) {
+    removeEdge(edge: GraphEdge, removeIsolatedVertex: boolean) {
+        this.genericGraph.removeEdge(edge, removeIsolatedVertex);
+    }
 
-        [edge.v1, edge.v2].forEach(vertex => {
-            if (this.vertexPairs.get(vertex).size <= 1) {
-                this.vertexPairs.delete(vertex);
-                this.edgeMap.delete(vertex);
-                this.vertices.delete(vertex);
-            } else {
-                this.vertexPairs.get(vertex).delete(vertex);
-                this.edgeMap.set(vertex, this.edgeMap.get(vertex).filter(edge => edge !== edge));
-            }
-        });
+    get vertices() {
+        return this.genericGraph.vertices;
+    }
 
-        this.edges = this.edges.filter(e => e !== edge);
+    get edges() {
+        return this.genericGraph.edges;
     }
 
     size(): number {
         return this.edges.length;
-    }
-
-    private createEdgeList() {
-        this.vertices.forEach(vertex => this.vertexPairs.set(vertex, new Set()));
-        this.vertices.forEach(vertex => this.edgeMap.set(vertex, []));
-
-        this.edges.forEach(edge => {
-            const {v1, v2} = edge;
-            this.vertexPairs.get(v1).add(v2);
-            this.vertexPairs.get(v2).add(v1);
-            this.edgeMap.get(edge.v1).push(edge);
-            this.edgeMap.get(edge.v2).push(edge);
-        });
     }
 }
