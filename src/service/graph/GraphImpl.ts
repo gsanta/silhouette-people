@@ -49,6 +49,10 @@ export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
         return Array.from(this.vertices).find(vertex => vertex.id === id);
     }
 
+    getNeighbours(vertex: GraphVertex): Set<GraphVertex> {
+        return this.vertexPairs.get(vertex);
+    }
+
     getEdges(vertex: GraphVertex): GraphEdge[] {
         return this.edges.filter(edge => edge.v1 === vertex || edge.v2 === vertex);
     }
@@ -67,6 +71,10 @@ export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
         });
 
         this.edges = this.edges.filter(e => e !== edge);
+    }
+
+    size(): number {
+        return this.edges.length;
     }
 
     private createEdgeList() {

@@ -225,6 +225,24 @@
                 "_UI_CRETAED"
             ],
             "position": "-38.166831970214844:-0.20367243885993958:-34.2952880859375"
+        },
+        {
+            "model": {
+                "path": "bicycle1",
+                "removeRoot": false
+            },
+            "texture": {
+                "path": "palette.jpg"
+            },
+            "rotate": 1.6663831405113454,
+            "collider": {
+                "dimension": "0:0:0"
+            },
+            "props": [],
+            "tags": [
+                "_UI_CRETAED"
+            ],
+            "position": "-17.23650550842285:0.010583817958831787:10.493062973022461"
         }
     ],
     "routes": {
