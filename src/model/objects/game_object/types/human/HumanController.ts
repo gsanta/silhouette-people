@@ -13,11 +13,23 @@ export class HumanController extends MotionController {
             return;
         }
 
-        const deltaTimeSec = deltaTime / 1000;
-        const displacement = this.speed * deltaTimeSec;
-        const displacementVec = new Vector3(displacement, displacement, displacement);
-        const vel = this.direction.multiply(displacementVec)
-        this.character.moveWithCollision(vel);
-        this.character.rotationY = vector3ToRotation(vel);
+        
+        if (this.speed > 0) {
+            this.direction = this.updateDirection(deltaTime);
+            const deltaTimeSec = deltaTime / 1000;
+            const displacement = this.speed * deltaTimeSec;
+            const displacementVec = new Vector3(displacement, displacement, displacement);
+            let vel = this.direction.multiply(displacementVec);
+    
+            this.character.moveWithCollision(vel);
+            this.character.rotationY = vector3ToRotation(vel);
+        }
+
+        // const deltaTimeSec = deltaTime / 1000;
+        // const displacement = this.speed * deltaTimeSec;
+        // const displacementVec = new Vector3(displacement, displacement, displacement);
+        // const vel = this.direction.multiply(displacementVec)
+        // this.character.moveWithCollision(vel);
+        // this.character.rotationY = vector3ToRotation(vel);
     }
 }

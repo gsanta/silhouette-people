@@ -46,7 +46,8 @@ export class MeshConfigParser {
             position: toStrVector(parsedItem.pos),
             tags: tags || [],
             texture,
-            rotate
+            rotate,
+            id: undefined
         };
     }
 }

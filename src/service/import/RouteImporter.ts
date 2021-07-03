@@ -1,37 +1,16 @@
-import { Vector3 } from "babylonjs";
-import { GraphEdge } from "../graph/GraphEdge";
-import { GraphImpl, GraphVertex } from "../graph/GraphImpl";
-import { GraphService } from "../graph/GraphService";
+import { RouteJson } from "../../model/objects/route/RouteItem";
+import { RouteStore } from "../../store/RouteStore";
 
-
-export interface EdgeJson {
-    v1: number;
-    v2: number;
-    thickness: number;
-}
-
-export interface RouteJson {
-    vertices: {
-        x: number;
-        y: number;
-        id: string;
-    }[];
-    edges: EdgeJson[];
-}
 
 export class RouteImporter {
 
-    private readonly graphService: GraphService;
+    private readonly routeStore: RouteStore;
 
-    constructor(graphService: GraphService) {
-        this.graphService = graphService;
+    constructor(routeStore: RouteStore) {
+        this.routeStore = routeStore;
     }
 
-    import(routeJson: RouteJson) {
-        const vertices = routeJson.vertices.map(vertex => new GraphVertex(vertex.id, new Vector3(vertex.x, 0, vertex.y)));
-        const edges = routeJson.edges.map(edge => new GraphEdge(vertices[edge.v1], vertices[edge.v2], edge.thickness));
-
-        this.graphService.setGraph(new GraphImpl(vertices, edges));
-
+    import(routeJson: RouteJson[]) {
+        routeJson.forEach(route => this.routeStore.addRoute(route));
     }
 }

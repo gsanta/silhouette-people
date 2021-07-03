@@ -26,19 +26,19 @@ export class RenderGuiService {
     private processDirtyObjs(): boolean {
         let dirtyFound = false;
 
-        this.playerStore.getPlayers().forEach(player => {
-            if (player.stateController.state.isDirty()) {
-                player.stateController.state.clearDirty();
-                dirtyFound = true;
-            }
-        });
+        // this.playerStore.getPlayers().forEach(player => {
+        //     if (player.stateController.state.isDirty()) {
+        //         player.stateController.state.clearDirty();
+        //         dirtyFound = true;
+        //     }
+        // });
 
-        this.playerStore.getBikes().forEach(bike => {
-            if (bike.stateController.state.isDirty()) {
-                bike.stateController.state.clearDirty();
-                dirtyFound = true;
-            }
-        })
+        // this.playerStore.getBikes().forEach(bike => {
+        //     if (bike.stateController.state.isDirty()) {
+        //         bike.stateController.state.clearDirty();
+        //         dirtyFound = true;
+        //     }
+        // })
 
         return dirtyFound;
     }

@@ -2,17 +2,20 @@ import { EventService } from "../../EventService";
 import { KeyName } from "../../input/KeyboardService";
 import { SceneService } from "../../SceneService";
 import { ToolType } from "../controllers/TransformController";
+import { SelectionStore } from "../SelectionStore";
 import { GizmoManagerAdapter } from "./GizmoManagerAdapter";
 import { Tool } from "./Tool";
 
 export class TransformTool extends Tool {
     private readonly gizmoManagerAdapter: GizmoManagerAdapter;
     private readonly eventService: EventService;
+    private readonly selectionStore: SelectionStore;
 
-    constructor(gizmoManagerAdapter: GizmoManagerAdapter, eventService: EventService, sceneService: SceneService, toolType: ToolType) {
+    constructor(gizmoManagerAdapter: GizmoManagerAdapter, eventService: EventService, sceneService: SceneService, selectionStore: SelectionStore, toolType: ToolType) {
         super(sceneService, toolType);
         this.gizmoManagerAdapter = gizmoManagerAdapter;
         this.eventService = eventService;
+        this.selectionStore = selectionStore;
         this.onGameObjectDeleted = this.onGameObjectDeleted.bind(this);
 
         this.eventService.guiEvents.onGameObjectDeleted(this.onGameObjectDeleted);
@@ -35,6 +38,7 @@ export class TransformTool extends Tool {
     keyDown(key: KeyName) {
         if (key === KeyName.ESCAPE) {
             this.gizmoManagerAdapter.manager.attachToMesh(null);
+            this.selectionStore.removeAll();
         }
     }
 

@@ -3,14 +3,14 @@ import { GameObjectConfig, GameObjectTag } from "../../../model/objects/game_obj
 import { GameObjectStore } from "../../../store/GameObjectStore";
 import { EventService } from "../../EventService";
 import { KeyboardService, KeyName } from "../../input/KeyboardService";
-import { MeshFactory } from "../../object/mesh/MeshFactory";
+import { GameObjectFactory } from "../../object/mesh/GameObjectFactory";
 import { RenderGuiService } from "../../RenderGuiService";
 
 export class MeshLoaderController {
 
     private readonly keyboardService: KeyboardService;
     private readonly renderGuiService: RenderGuiService;
-    private readonly meshFactory: MeshFactory;
+    private readonly meshFactory: GameObjectFactory;
     private readonly gameObjectStore: GameObjectStore;
     private readonly eventService: EventService;
     
@@ -21,7 +21,7 @@ export class MeshLoaderController {
 
     isDialogOpen = true;
 
-    constructor(keyboardService: KeyboardService, renderGuiService: RenderGuiService, meshFactory: MeshFactory, gameObjectStore: GameObjectStore, eventService: EventService) {
+    constructor(keyboardService: KeyboardService, renderGuiService: RenderGuiService, meshFactory: GameObjectFactory, gameObjectStore: GameObjectStore, eventService: EventService) {
         this.keyboardService = keyboardService;
         this.renderGuiService = renderGuiService;
         this.meshFactory = meshFactory;
@@ -81,7 +81,8 @@ export class MeshLoaderController {
             rotate: 0,
             collider: this.collision ? { dimension: '0:0:0' } : undefined,
             props: [],
-            tags: [GameObjectTag._UI_CREATED]
+            tags: [GameObjectTag._UI_CREATED],
+            id: undefined
         }
         const gameObject = await this.meshFactory.createFromConfig(gameObjectConfig);
         this.gameObjectStore.addItem(gameObject);

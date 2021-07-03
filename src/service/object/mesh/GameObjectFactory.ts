@@ -1,5 +1,7 @@
 import { Mesh } from "babylonjs";
 import { GameObjectConfig, GameObject, GameObjectTag, GameObjectType } from "../../../model/objects/game_object/GameObject";
+import { StateController } from "../../../model/objects/game_object/StateController";
+import { BikeIdleState } from "../../../model/objects/game_object/types/bike/states/BikeIdleState";
 import { MeshStore } from "../../../store/MeshStore";
 import { AbstractPropertyParser } from "../../import/AbstractPropertyParser";
 import { CollisionCreator } from "../../import/parsers/CollisionCreator";
@@ -9,7 +11,7 @@ import { RotatePropertyParser } from "../../import/parsers/RotatePropertyParser"
 import { TagPropertyParser } from "../../import/parsers/TagPropertyParser";
 import { TexturePropertyParser } from "../../import/parsers/TexturePropertyParser";
 
-export class MeshFactory {
+export class GameObjectFactory {
     private readonly meshStore: MeshStore;
     private readonly indexesByType: Map<string, number> = new Map();
     private propertyParsers: AbstractPropertyParser<any>[] = [];
@@ -44,18 +46,20 @@ export class MeshFactory {
     }
 
     async createFromConfig(gameObjectConfig: GameObjectConfig): Promise<GameObject> {
-        const id = this.generateId(gameObjectConfig.type);
+        const id = gameObjectConfig.id ? gameObjectConfig.id : this.generateId(gameObjectConfig.type);
         let gameObject: GameObject;
 
         if (gameObjectConfig.type === GameObjectType.Bicycle1) {
             const character = new GameObject(id, gameObjectConfig);
             gameObject = character;
+            gameObject.stateController = new StateController();
         } else if (gameObjectConfig.props.tags && gameObjectConfig.props.tags.includes(GameObjectTag.Citizen)) {
             const character = new GameObject(id, gameObjectConfig);
             gameObject = character;
         } else {
             gameObject = new GameObject(id, gameObjectConfig);
         }
+
 
         await this.modelPropertyParser.processPropertyAsync(gameObject, gameObjectConfig.model);
 

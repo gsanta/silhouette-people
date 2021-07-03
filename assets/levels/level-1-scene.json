@@ -227,6 +227,7 @@
             "position": "-38.166831970214844:-0.20367243885993958:-34.2952880859375"
         },
         {
+            "id": "bike-1",
             "model": {
                 "path": "bicycle1",
                 "removeRoot": false
@@ -242,10 +243,11 @@
             "tags": [
                 "_UI_CRETAED"
             ],
+            "type": "bicycle1",
             "position": "-17.23650550842285:0.010583817958831787:10.493062973022461"
         }
     ],
-    "routes": {
+    "routeMap": {
         "vertices": [
             {
                 "x": -40,
@@ -342,7 +344,7 @@
             {
                 "v1": 0,
                 "v2": 1,
-                "thickness": 2
+                "thickness": 0
             },
             {
                 "v1": 2,
@@ -425,5 +427,12 @@
                 "thickness": 0
             }
         ]
-    }
+    },
+    "routes": [
+        {
+            "toVertex": "A3",
+            "fromVertex": "C2",
+            "gameObjectId": "bike-1"
+        }
+    ]
 }

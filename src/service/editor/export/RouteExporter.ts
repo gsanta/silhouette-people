@@ -1,39 +1,15 @@
-import { GraphService } from "../../graph/GraphService";
-import { EdgeJson, RouteJson } from "../../import/RouteImporter";
-
+import { RouteJson } from "../../../model/objects/route/RouteItem";
+import { RouteStore } from "../../../store/RouteStore";
 
 export class RouteExporter {
 
-    private readonly graphService: GraphService;
+    private readonly routeStore: RouteStore;
 
-    constructor(graphService: GraphService) {
-        this.graphService = graphService;
+    constructor(routeStore: RouteStore) {
+        this.routeStore = routeStore;
     }
 
-    export(): RouteJson {
-        const graph = this.graphService.getGraph();
-
-        const vertexArr = Array.from(graph.vertices)
-
-        const vertices: {x: number, y: number, id: string}[] = vertexArr.map(vertex => {
-            return {
-                x: vertex.p.x,
-                y: vertex.p.z,
-                id: vertex.id
-            }
-        });
-
-        const edges: EdgeJson[] = Array.from(graph.edges).map(edge => {
-            return {
-                v1: vertexArr.indexOf(edge.v1),
-                v2: vertexArr.indexOf(edge.v2),
-                thickness: edge.thickness
-            }
-        });
-
-        return {
-            vertices,
-            edges
-        }
+    export(): RouteJson[] {
+        return this.routeStore.getRoutes();
     }
 }

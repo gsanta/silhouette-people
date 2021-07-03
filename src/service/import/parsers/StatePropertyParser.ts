@@ -16,8 +16,8 @@ export class StatePropertyParser extends AbstractPropertyParser<string> {
     processProperty(mesh: GameObject, stateName: string) {
         const state = this.createState(mesh, stateName as GameObjectStateName);
         
-        mesh.stateController = new StateController();
-        mesh.stateController.state = state;
+        // mesh.stateController = new StateController();
+        // mesh.stateController.state = state;
     }
 
     private createState(gameObj: GameObject, stateName: GameObjectStateName): GameObjectState {

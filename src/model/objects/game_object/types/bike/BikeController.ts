@@ -58,7 +58,7 @@ export class BikeController extends MotionController {
     }
 
     update(deltaTime: number) {
-        const character = this.character.children[0];
+        const character = this.character;
         if (character.routeController && !character.routeController.isRunning()) {
             return;
         }

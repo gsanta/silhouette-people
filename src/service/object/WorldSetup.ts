@@ -8,7 +8,7 @@ import { KeyboardService } from "../input/KeyboardService";
 import { ISetup } from "../setup/ISetup";
 import { GraphService } from "../graph/GraphService";
 import { SceneService } from "../SceneService";
-import { MeshFactory } from "./mesh/MeshFactory";
+import { GameObjectFactory } from "./mesh/GameObjectFactory";
 import { WorldFactory } from "./WorldFactory";
 import { CollisionCreator } from "../import/parsers/CollisionCreator";
 import { HiddenPropertyParser } from "../import/parsers/HiddenPropertyParser";
@@ -25,16 +25,17 @@ import { TexturePropertyParser } from "../import/parsers/TexturePropertyParser";
 import { WalkerPropertyParser } from "../import/parsers/WalkerPropertyParser";
 import { QuarterStore } from "../../store/QuarterStore";
 import { MaterialStore } from "../../store/MaterialStore";
-import { RouteImporter } from "../import/RouteImporter";
+import { RouteMapImporter } from "../import/RouteMapImporter";
 import { PlayerSetup } from "../player/PlayerSetup";
 import { GameObjectImporter } from "../import/GameObjectImporter";
+import { RouteImporter } from "../import/RouteImporter";
 
 export class WorldSetup implements ISetup {
     private readonly worldProvider: SceneService;
     private readonly assetContainerStore: AssetContainerStore;
     private readonly keyboardService: KeyboardService;
     private readonly activePlayerService: ActivePlayerService;
-    private readonly meshFactory: MeshFactory;
+    private readonly meshFactory: GameObjectFactory;
     private readonly routeStore: RouteStore;
     private readonly graphService: GraphService;
     private readonly gameObjectStore: GameObjectStore;
@@ -47,7 +48,7 @@ export class WorldSetup implements ISetup {
         assetContainerStore: AssetContainerStore,
         keyboardService: KeyboardService,
         activePlayerService: ActivePlayerService,
-        meshFactory: MeshFactory,
+        meshFactory: GameObjectFactory,
         routeStore: RouteStore,
         graphService: GraphService,
         gameObjectStore: GameObjectStore,
@@ -71,7 +72,8 @@ export class WorldSetup implements ISetup {
             this.worldProvider,
             this.worldFactory,
             new GameObjectImporter(this.meshFactory, this.gameObjectStore),
-            new RouteImporter(this.graphService)
+            new RouteMapImporter(this.graphService),
+            new RouteImporter(this.routeStore)
         );
     }
 

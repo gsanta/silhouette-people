@@ -6,8 +6,9 @@ import { SceneParser } from "./map/SceneParser";
 import { IndexPosition } from "./map/ItemParser";
 import { WorldFactory } from "../object/WorldFactory";
 import { SceneJson } from "../editor/export/SceneExporter";
-import { RouteImporter } from "./RouteImporter";
+import { RouteMapImporter } from "./RouteMapImporter";
 import { GameObjectImporter } from "./GameObjectImporter";
+import { RouteImporter } from "./RouteImporter";
 
 export class SceneImporter {
     readonly routeParser: RouteParser;
@@ -18,13 +19,15 @@ export class SceneImporter {
     private readonly assetsPath = 'assets/levels';
     private readonly sceneService: SceneService;
     private readonly worldFactory: WorldFactory;
+    private readonly routeMapImporter: RouteMapImporter;
     private readonly routeImporter: RouteImporter;
     private readonly gameObjectImporter: GameObjectImporter;
 
-    constructor(worldProvider: SceneService, worldFactory: WorldFactory, gameObjectImporter: GameObjectImporter, routeImporter: RouteImporter) {
+    constructor(worldProvider: SceneService, worldFactory: WorldFactory, gameObjectImporter: GameObjectImporter, routeMapImporter: RouteMapImporter, routeImporter: RouteImporter) {
         this.sceneService = worldProvider;
         this.worldFactory = worldFactory;
         this.gameObjectImporter = gameObjectImporter;
+        this.routeMapImporter = routeMapImporter;
         this.routeImporter = routeImporter;
         this.mapParser = new SceneParser();
         this.routeParser = new RouteParser();
@@ -50,8 +53,9 @@ export class SceneImporter {
 
         this.sceneService.world = await this.worldFactory.createWorldObj(this.sceneService.scene);
 
-        this.routeImporter.import(sceneJson.routes);
+        this.routeMapImporter.import(sceneJson.routeMap);
         await this.gameObjectImporter.import(sceneJson.gameObjects, json);
+        this.routeImporter.import(sceneJson.routes);
     }
 
     private async loadScene(name: string): Promise<SceneJson> {

@@ -120,7 +120,7 @@ export class RouteTool extends Tool {
     deselect() {
         this.unHoverEdge();
         this.unSelectEdge();
-
+        this.gizmoManagerAdapter.removeMeshFilter();
         this.gizmoManagerAdapter.manager.gizmos.positionGizmo.xGizmo.dragBehavior.onDragObservable.remove(this.xObserver);
         // this.gizmoManagerAdapter.manager.gizmos.positionGizmo.yGizmo.dragBehavior.onDragObservable.remove(this.yObserver);
         this.gizmoManagerAdapter.manager.gizmos.positionGizmo.zGizmo.dragBehavior.onDragObservable.remove(this.zObserver);

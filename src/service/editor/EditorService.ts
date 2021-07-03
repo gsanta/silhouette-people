@@ -1,4 +1,5 @@
 import { CameraService } from "../camera/CameraService";
+import { EventService } from "../EventService";
 import { CameraController } from "./controllers/CameraController";
 import { DebugController } from "./controllers/DebugController";
 import { FogOfWarController } from "./controllers/FogOfWarController";
@@ -6,6 +7,7 @@ import { GameObjectController } from "./controllers/GameObjectController";
 import { GraphController } from "./controllers/GraphController";
 import { MeshLoaderController } from "./controllers/MeshLoaderController";
 import { PointerController } from "./controllers/PointerController";
+import { RouteController } from "./controllers/RouteController";
 import { SceneExportController } from "./controllers/SceneExportController";
 import { ToolController } from "./controllers/ToolController";
 import { HotkeyController } from "./hotkeys/HotkeyController";
@@ -27,6 +29,7 @@ export class EditorService {
     readonly graphController: GraphController;
     readonly debugController: DebugController;
     readonly gameObjectController: GameObjectController;
+    readonly routeController: RouteController;
 
     constructor(
         meshLoaderController: MeshLoaderController,
@@ -37,7 +40,9 @@ export class EditorService {
         pointerController: PointerController,
         graphController: GraphController,
         debugController: DebugController,
-        gameObjectController: GameObjectController
+        gameObjectController: GameObjectController,
+        routeController: RouteController,
+        eventService: EventService
     ) {
         this.meshLoaderController = meshLoaderController;
         this.cameraController = cameraController;
@@ -48,7 +53,8 @@ export class EditorService {
         this.graphController = graphController;
         this.debugController = debugController;
         this.gameObjectController = gameObjectController;
-        this.selectionStore = new SelectionStore();
+        this.routeController = routeController;
+        this.selectionStore = new SelectionStore(eventService);
         this.hotkeyController = new HotkeyController();
     }
 }

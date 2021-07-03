@@ -10,6 +10,7 @@ import { ISetup } from "../setup/ISetup";
 import { ToolType } from "./controllers/TransformController";
 import { EditorService } from "./EditorService";
 import { EraseHotkey } from "./hotkeys/EraseHotkey";
+import { SelectionStore } from "./SelectionStore";
 import { GizmoManagerAdapter } from "./tools/GizmoManagerAdapter";
 import { RouteCreateTool } from "./tools/RouteCreateTool";
 import { RouteTool } from "./tools/RouteTool";
@@ -25,6 +26,7 @@ export class EditorSetup implements ISetup {
     private readonly eventService: EventService;
     private readonly graphService: GraphService;
     private readonly materialStore: MaterialStore;
+    private readonly renderGuiService: RenderGuiService;
 
     private gizmoManagerAdapter: GizmoManagerAdapter;
 
@@ -37,6 +39,7 @@ export class EditorSetup implements ISetup {
         eventService: EventService,
         graphService: GraphService,
         materialStore: MaterialStore,
+        renderGuiService: RenderGuiService
     ) {
         this.sceneService = worldProvider;
         this.gameObjectStore = gameObjectStore;
@@ -46,13 +49,14 @@ export class EditorSetup implements ISetup {
         this.eventService = eventService;
         this.graphService = graphService;
         this.materialStore = materialStore;
+        this.renderGuiService = renderGuiService;
     }
 
     async setup(): Promise<void> {
         this.gizmoManagerAdapter = new GizmoManagerAdapter(this.sceneService, this.meshStore, this.eventService, this.editorService.selectionStore);
 
-        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, this.sceneService, ToolType.TRANSFORM));
-        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, this.sceneService, ToolType.ROTATE));
+        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, this.sceneService, this.editorService.selectionStore, ToolType.TRANSFORM));
+        this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, this.sceneService, this.editorService.selectionStore, ToolType.ROTATE));
         this.editorService.toolController.addTool(new RouteTool(this.sceneService, this.materialStore, this.graphService, this.editorService.graphController, this.gizmoManagerAdapter));
         this.editorService.toolController.addTool(new RouteCreateTool(this.sceneService, this.materialStore, this.graphService));
 

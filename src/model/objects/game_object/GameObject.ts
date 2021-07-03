@@ -9,7 +9,6 @@ import { StateController } from "./StateController";
 import { MonoBehaviour } from "../../behaviours/MonoBehaviour";
 import { RouteController } from "./controller_route/RouteController";
 import { MotionController } from "./MotionController";
-import { RouteControllerImpl } from "./controller_route/RouteControllerImpl";
 import { BoundingInfo } from "babylonjs/Culling/index";
 import { ModelPropertyConfig } from "../../../service/import/parsers/ModelPropertyParser";
 import { CollisionPropertyConfig } from "../../../service/import/parsers/CollisionCreator";
@@ -45,6 +44,7 @@ export enum GameObjectTag {
 
 export interface GameObjectConfig {
     type?: GameObjectType;
+    id: string,
     model: ModelPropertyConfig;
     texture: TexturePropertyConfig;
     collider?: CollisionPropertyConfig;

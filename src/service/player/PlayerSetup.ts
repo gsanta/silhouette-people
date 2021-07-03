@@ -18,6 +18,7 @@ import { FogOfWarService } from "../fow/FogOfWarService";
 import { ActivePlayerService } from "../ActivePlayerService";
 import { ISetup } from "../setup/ISetup";
 import { MaterialStore } from "../../store/MaterialStore";
+import { BikeIdleState } from "../../model/objects/game_object/types/bike/states/BikeIdleState";
 
 export class PlayerSetup implements ISetup {
 
@@ -59,10 +60,10 @@ export class PlayerSetup implements ISetup {
         this.fogOfWarService.setCharacter(player);
         const route = this.playerParser.parse(this.worldProvider.worldMap);
 
-        this.bikeParenter.parentToBike(player, this.playerStore.getBikes()[0]);
+        // this.bikeParenter.parentToBike(player, this.playerStore.getBikes()[0]);
 
         const graph = this.graphService.getGraph();
-        const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, <GameObject> player.getParent()));
+        const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, player));
 
         player.routeController = walker;
         
@@ -71,10 +72,9 @@ export class PlayerSetup implements ISetup {
         walker.addListener(new RouterAdapter(new DynamicRouter(walker, graph)));
         walker.addListener(new RouteVisualizerAdapter(walker, this.graphService, this.materialStore));
         
-        const bike = <GameObject> player.getParent();
+        player.motionController = new BikeController(player);
+        player.stateController.state = new BikeIdleState(player, <BikeController> player.motionController);
         player.inputController = new BikeInputController(<BikeController> player.motionController, player, this.keyboardService, this.graphService);
-        bike.inputController = player.inputController;
-    
         player.routeController.setStarted(true);
     }
 }

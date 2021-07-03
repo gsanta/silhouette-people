@@ -268,6 +268,7 @@
                     "mainMeshIndex": 0,
                     "canUseOriginalInstance": false
                 },
+                "activePlayer": true,
                 "texture": {
                     "path": "palette.jpg" 
                 },
@@ -277,7 +278,7 @@
                 "physics": {
                     "mass": 20
                 },
-                "tags": ["Bicycle"],
+                "tags": ["Bicycle", "Player"],
                 "state": "BikeIdleState",
                 "inputManager": "BikeInputManager",
                 "walker": "BikeWalker"
@@ -336,7 +337,6 @@
             "properties": {
                 "id": "player1",
                 "addons": ["Highlight"],
-                "activePlayer": true,
                 "tags": ["Player"],
                 "walker": "CharacterWalker"
             }

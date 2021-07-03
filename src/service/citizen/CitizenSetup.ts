@@ -38,40 +38,42 @@ export class CitizenSetup implements ISetup {
     }
 
     private setupCitizen1(): GameObject {
-        const character = this.citizenStore.getById('C');
-        const route = this.routeStore.getById('route-1');
+        // const character = this.citizenStore.getById('C');
+        // const route = this.routeStore.getById('route-1');
 
-        character.motionController = new HumanController(character);
-        character.motionController.setSpeed(1);
+        // character.motionController = new HumanController(character);
+        // character.motionController.setSpeed(1);
 
-        const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, character));
+        // const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, character));
 
-        character.routeController = walker;
+        // character.routeController = walker;
         
-        walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
-        walker.addListener(new RotationRestrictorAdapter(walker));
-        walker.addListener(new RouterAdapter(new ReversingRouter(walker)));
-        walker.addListener(new CollisionAvoidanceAdapter(walker, this.citizenStore));
+        // walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
+        // walker.addListener(new RotationRestrictorAdapter(walker));
+        // walker.addListener(new RouterAdapter(new ReversingRouter(walker)));
+        // walker.addListener(new CollisionAvoidanceAdapter(walker, this.citizenStore));
 
-        return character;
+        // return character;
+        return null;
     }
 
     private setupCitizen2(): GameObject {
-        const character = this.citizenStore.getById('C2');
-        const route = this.routeStore.getById('route-1').reverse();
+        // const character = this.citizenStore.getById('C2');
+        // // const route = this.routeStore.getById('route-1').reverse();
 
-        character.motionController = new HumanController(character);
-        character.motionController.setSpeed(1);
+        // character.motionController = new HumanController(character);
+        // character.motionController.setSpeed(1);
 
-        const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, character));
+        // const walker = new RouteControllerListenerDecorator(new RouteControllerImpl(route, character));
 
-        character.routeController = walker;
+        // character.routeController = walker;
         
-        walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
-        walker.addListener(new RotationRestrictorAdapter(walker));
-        walker.addListener(new RouterAdapter(new ReversingRouter(walker)));
+        // walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
+        // walker.addListener(new RotationRestrictorAdapter(walker));
+        // walker.addListener(new RouterAdapter(new ReversingRouter(walker)));
 
-        return character;
+        // return character;
+        return null;
     }
 
     private applyDebugAttachments(character: GameObject) {

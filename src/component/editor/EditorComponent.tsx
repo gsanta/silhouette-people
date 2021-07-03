@@ -9,6 +9,7 @@ import { GameObjectPanel } from './GameObjectPanel';
 import { SceneExportPanel } from './SceneExportPanel';
 import { ToolPanel } from './ToolPanel';
 import '../../../assets/css/panel.scss';
+import { RoutePanel } from "./RoutePanel";
 
 export class EditorComponent extends React.Component<{ editor: EditorService }> {
     render() {
@@ -20,6 +21,7 @@ export class EditorComponent extends React.Component<{ editor: EditorService }> 
 
                 <MeshLoaderPanel meshLoaderController={this.props.editor.meshLoaderController} />
                 <GameObjectPanel controller={this.props.editor.gameObjectController} />
+                <RoutePanel controller={this.props.editor.routeController} />
                 <CameraPanel cameraController={this.props.editor.cameraController} />
                 <SceneExportPanel sceneExportController={this.props.editor.sceneExportController} />
                 <ToolPanel toolController={this.props.editor.toolController} />

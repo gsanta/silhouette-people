@@ -1,23 +1,24 @@
-import { RouteItem } from "../model/objects/route/RouteItem";
+import { GameObject } from "../model/objects/game_object/GameObject";
+import { RouteJson } from "../model/objects/route/RouteItem";
 
 
 export class RouteStore {
 
-    private routes: RouteItem[] = [];
+    private routes: RouteJson[] = [];
 
-    addRoute(route: RouteItem) {
+    addRoute(route: RouteJson) {
         this.routes.push(route);
     }
 
-    getRoutes(): RouteItem[] {
+    getRoutes(): RouteJson[] {
         return this.routes;
     }
 
-    getById(name: string) {
-        return this.routes.find(route => route.id === name);
+    getByGameObject(gameObject: GameObject) {
+        return this.routes.find(route => route.gameObjectId === gameObject.id);
     }
     
-    deleteRoute(route: RouteItem) {
+    deleteRoute(route: RouteJson) {
         this.routes = this.getRoutes().filter(r => r !== route);
     }
 }

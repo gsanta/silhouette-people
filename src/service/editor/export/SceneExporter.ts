@@ -1,48 +1,40 @@
 import { Tools } from 'babylonjs';
 import { GameObjectConfig, GameObjectTag } from '../../../model/objects/game_object/GameObject';
+import { RouteJson } from '../../../model/objects/route/RouteItem';
 import { GameObjectStore } from '../../../store/GameObjectStore';
-import { GraphService } from '../../graph/GraphService';
 import { toStrVector } from '../../import/AbstractPropertyParser';
-import { RouteJson } from '../../import/RouteImporter';
+import { RouteMapJson } from '../../import/RouteMapImporter';
+import { GameObjectExporter } from './GameObjectExporter';
 import { RouteExporter } from './RouteExporter';
+import { RouteMapExporter } from './RouteMapExporter';
 
 export interface SceneJson {
 
     gameObjects: GameObjectConfig[];
-    routes: RouteJson;
+    routeMap: RouteMapJson;
+    routes: RouteJson[];
 }
 
 export class SceneExporter {
 
-    private readonly gameObjectStore: GameObjectStore;
-    private readonly graphService: GraphService;
+    private readonly gameObjectExporter: GameObjectExporter;
+    private readonly routeMapExporter: RouteMapExporter;
     private readonly routeExporter: RouteExporter;
 
-    constructor(gameObjectStore: GameObjectStore, graphService: GraphService) {
-        this.gameObjectStore = gameObjectStore;
-        this.graphService = graphService;
+    constructor(gameObjectExporter: GameObjectExporter, routeMapExporter: RouteMapExporter, routeExporter: RouteExporter) {
+        this.gameObjectExporter = gameObjectExporter;
 
-        this.routeExporter = new RouteExporter(graphService);
+        this.routeMapExporter = routeMapExporter;
+        this.routeExporter = routeExporter;
     }
 
     async export(): Promise<void> {
+        const gameObjects = this.gameObjectExporter.export();
+        const routeMap = this.routeMapExporter.export();
+        const routes = this.routeExporter.export();
 
-        const gameObjects = this.gameObjectStore.getByTag(GameObjectTag._UI_CREATED);
-        const gameObjectJsons = gameObjects.map(gameObject => gameObject.config);
-        gameObjects.forEach(gameObject => gameObject.config.position = toStrVector(gameObject.mainMesh.getAbsolutePosition()))
-        gameObjects.forEach(gameObject => gameObject.config.rotate = Tools.ToDegrees(gameObject.rotationY));
-
-        const routeJson = this.routeExporter.export();
-
-        const json: SceneJson = {
-            gameObjects: gameObjectJsons,
-            routes: routeJson
-        }
+        const json: SceneJson = { gameObjects, routeMap, routes }
 
         console.log(JSON.stringify(json, null, 2))
-    }
-
-    private exportRoutes() {
-
     }
 }

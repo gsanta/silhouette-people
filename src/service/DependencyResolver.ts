@@ -19,7 +19,7 @@ import { CitizenSetup } from "./citizen/CitizenSetup";
 import { RoutePool } from "./citizen/RoutePool";
 import { GraphService } from "./graph/GraphService";
 import { LightFactory } from "./object/LightFactory";
-import { MeshFactory } from "./object/mesh/MeshFactory";
+import { GameObjectFactory } from "./object/mesh/GameObjectFactory";
 import { WorldSetup } from "./object/WorldSetup";
 import { PlayerSetup } from "./player/PlayerSetup";
 import { PlayerStore } from "./player/PlayerStore";
@@ -48,6 +48,11 @@ import { RotatePropertyParser } from "./import/parsers/RotatePropertyParser";
 import { PointerController } from "./editor/controllers/PointerController";
 import { GraphController } from "./editor/controllers/GraphController";
 import { GameObjectController } from "./editor/controllers/GameObjectController";
+import { RouteController } from "./editor/controllers/RouteController";
+import { RouteFactory } from "./routing/RouteFactory";
+import { RouteMapExporter } from "./editor/export/RouteMapExporter";
+import { RouteExporter } from "./editor/export/RouteExporter";
+import { GameObjectExporter } from "./editor/export/GameObjectExporter";
 
 export class DependencyResolver {
     eventService: EventService;
@@ -68,8 +73,9 @@ export class DependencyResolver {
 
     cameraService: CameraService;
     
-    meshFactory: MeshFactory;
+    meshFactory: GameObjectFactory;
     lightFactory: LightFactory;
+    routeFactory: RouteFactory;
 
     sceneService: SceneService;
 
@@ -138,6 +144,8 @@ export class DependencyResolver {
         this.lightFactory = new LightFactory(this.sceneService);
         lookup.lightFactory = this.lightFactory;
 
+        this.routeFactory = new RouteFactory(this.gameObjecStore, this.routeStore, this.graphService);
+
         this.activePlayerService = new ActivePlayerService(this.playerStore, this.lightStore, this.lightFactory);
         lookup.activePlayerService = this.activePlayerService;
 
@@ -147,7 +155,7 @@ export class DependencyResolver {
         }
         lookup.debugService = this.debugService;
 
-        this.meshFactory = new MeshFactory(
+        this.meshFactory = new GameObjectFactory(
             this.meshStore,
             new ModelPropertyParser(this.sceneService, this.assetContainerStore),
             new CollisionCreator(this.sceneService),
@@ -159,7 +167,7 @@ export class DependencyResolver {
         lookup.meshFactory = this.meshFactory;
 
         this.fogOfWarService = new FogOfWarService(this.sceneService);
-        this.sceneExporter = new SceneExporter(this.gameObjecStore, this.graphService);
+        this.sceneExporter = new SceneExporter(new GameObjectExporter(this.gameObjecStore), new RouteMapExporter(this.graphService), new RouteExporter(this.routeStore));
         this.sceneService.addBaseService(this.fogOfWarService);
 
         const toolController = new ToolController(this.renderGui);
@@ -176,6 +184,8 @@ export class DependencyResolver {
             new GraphController(this.renderGui, this.graphService, this.materialStore, toolController),
             debugController,
             new GameObjectController(new CollisionCreator(this.sceneService), this.renderGui, this.eventService, debugController, this.gameObjecStore),
+            new RouteController(this.renderGui, this.eventService, this.graphService, this.routeStore, this.routeFactory),
+            this.eventService
         );
 
         this.update = new UpdateService(this.sceneService, this.gameObjecStore, this.playerStore, this.quarterStore, this.keyboard, this.cameraService);
@@ -208,12 +218,12 @@ export class DependencyResolver {
             this.materialStore,
             playerSetup
         );
-        const routeSetup = new RouteSetup(this.sceneService, this.graphService, this.routeStore);
+        const routeSetup = new RouteSetup(this.routeStore, this.routeFactory);
 
         const cameraSetup = new CameraSetup(this.sceneService, this.quarterStore, this.keyboard, this.cameraService, this.playerStore);
         const citizenSetup = new CitizenSetup(this.routeStore, this.citizenStore, this.graphService);
         const materialSetup = new MaterialSetup(this.sceneService, this.materialStore);
-        const editorSetup = new EditorSetup(this.sceneService, this.gameObjecStore, this.meshStore, this.keyboard, this.editorService, this.eventService, this.graphService, this.materialStore);
+        const editorSetup = new EditorSetup(this.sceneService, this.gameObjecStore, this.meshStore, this.keyboard, this.editorService, this.eventService, this.graphService, this.materialStore, this.renderGui);
 
         this.setupService.addSetup(materialSetup);
         this.setupService.addSetup(worldSetup);

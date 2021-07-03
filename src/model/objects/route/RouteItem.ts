@@ -1,11 +1,16 @@
 import { toVector2 } from "../../../helpers";
 import { GraphEdge } from "../../../service/graph/GraphEdge";
-import { GraphVertex } from "../../../service/graph/GraphImpl";
 import { LineEquation } from "../../math/LineEquation";
 
 export interface RouteStoryConfig {
     routeId: string;
     characterId: string;
+}
+
+export interface RouteJson {
+    fromVertex: string;
+    toVertex: string;
+    gameObjectId: string;
 }
 
 export interface RouteItemConfig {
