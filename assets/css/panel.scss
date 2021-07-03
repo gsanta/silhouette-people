@@ -1,6 +1,7 @@
 
 .editor {
     position: absolute;
+    overflow-y: auto;
     color: white;
     top: 0;
     right: 0;
@@ -44,10 +45,6 @@
             }
         }
 
-        > .input-button.btn {
-            padding: 0 10px;
-        }
-
         &.start {
             justify-content: flex-start;
         }
@@ -59,6 +56,21 @@
         font-style: italic;
         margin: 0px 0px 5px 0px;
     }
+
+    .panel-divider {
+        padding: 5px;
+        font-style: italic;
+    }
+}
+
+.dropdown-button {
+    .btn {
+        padding: 0 10px;
+    }
+}
+
+.input-button.btn {
+    padding: 0 10px;
 }
 
 .input-button.btn-group-toggle {

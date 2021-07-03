@@ -35,4 +35,8 @@ export class TagHandler {
     addPlayer() {
         this.add(GameObjectTag.Player);
     }
+
+    getAll(): Set<GameObjectTag> {
+        return this.tags;
+    }
 }

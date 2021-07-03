@@ -49,8 +49,9 @@ export class RouteFactory {
         const v1 = graph.getById(routeJson.fromVertex);
         const v2 = graph.getById(routeJson.toVertex);
 
-        character.motionController = new BikeController(character);
-        character.motionController.setSpeed(1);
+        const motionController = new BikeController(character)
+        character.motionController = motionController;
+        motionController.pedalling = true;
 
         character.stateController.state = new BikeIdleState(character, <BikeController> character.motionController);
 

@@ -42,6 +42,20 @@ export enum GameObjectTag {
     _UI_CREATED = '_UI_CRETAED'
 }
 
+export namespace GameObjectTag {
+
+    export function getAllTags(): string[] {
+        const tags: string[] = [];
+        for (let item in GameObjectTag) {
+            if (isNaN(Number(item))) {
+                tags.push(item);
+            }
+        }
+
+        return tags;
+    }
+}
+
 export interface GameObjectConfig {
     type?: GameObjectType;
     id: string,

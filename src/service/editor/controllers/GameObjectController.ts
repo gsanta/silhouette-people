@@ -1,4 +1,4 @@
-import { GameObject } from "../../../model/objects/game_object/GameObject";
+import { GameObject, GameObjectTag } from "../../../model/objects/game_object/GameObject";
 import { GameObjectStore } from "../../../store/GameObjectStore";
 import { EventService } from "../../EventService";
 import { CollisionCreator } from "../../import/parsers/CollisionCreator";
@@ -24,6 +24,28 @@ export class GameObjectController {
         this.gameObjectStore = gameObjectStore;
 
         this.eventService.guiEvents.onGameObjectSelected(gameObject => this.setGameObject(gameObject));
+    }
+
+    get tags(): Set<GameObjectTag> {
+        if (this.gameObject) {
+            return this.gameObject.tag.getAll();
+        }
+
+        return new Set();
+    }
+
+    addTag(tag: GameObjectTag) {
+        if (this.gameObject) {
+            this.gameObject.tag.add(tag);
+            this.renderGuiServic.render();
+        }
+    }
+
+    deleteTag(tag: GameObjectTag) {
+        if (this.gameObject) {
+            this.gameObject.tag.remove(tag);
+            this.renderGuiServic.render();
+        }
     }
 
     delete() {

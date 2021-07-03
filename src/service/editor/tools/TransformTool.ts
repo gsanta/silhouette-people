@@ -23,6 +23,8 @@ export class TransformTool extends Tool {
 
     deselect() {
         this.diableGizmos();
+        this.gizmoManagerAdapter.manager.attachToMesh(null);
+        this.selectionStore.removeAll();
     }
 
     select() {
