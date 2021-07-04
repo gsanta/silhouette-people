@@ -21,7 +21,7 @@ export class MaterialStore {
         this.worldProvider = worldProvider;
     }
 
-    addMaterial(id: MaterialName, material: Material) {
+    addMaterial(id: string, material: Material) {
         this.materials.set(id, material);
     }
 

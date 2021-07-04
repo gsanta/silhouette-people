@@ -70,7 +70,7 @@ export class PlayerSetup implements ISetup {
         walker.addListener(new ActiveEdgeUpdaterAdapter(walker));
         walker.addListener(new RotationRestrictorAdapter(walker));
         walker.addListener(new RouterAdapter(new DynamicRouter(walker, graph)));
-        walker.addListener(new RouteVisualizerAdapter(walker, this.graphService, this.materialStore));
+        walker.addListener(new RouteVisualizerAdapter(walker, this.graphService));
         
         player.motionController = new BikeController(player);
         player.stateController.state = new BikeIdleState(player, <BikeController> player.motionController);

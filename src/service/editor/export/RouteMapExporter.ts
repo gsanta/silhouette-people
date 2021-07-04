@@ -1,3 +1,4 @@
+import { EdgeDirection } from "../../graph/GraphEdge";
 import { GraphService } from "../../graph/GraphService";
 import { EdgeJson, RouteMapJson } from "../../import/RouteMapImporter";
 
@@ -27,7 +28,9 @@ export class RouteMapExporter {
             return {
                 v1: vertexArr.indexOf(edge.v1),
                 v2: vertexArr.indexOf(edge.v2),
-                thickness: edge.thickness
+                thickness: edge.thickness,
+                color: edge.color,
+                direction: EdgeDirection.getEnumDirection(edge)
             }
         });
 

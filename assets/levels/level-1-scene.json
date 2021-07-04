@@ -197,36 +197,6 @@
             "position": "-28.990524291992188:-0.04256463050842285:-43.92550277709961"
         },
         {
-            "model": {
-                "path": "road1",
-                "removeRoot": true
-            },
-            "texture": {
-                "path": "palette.jpg"
-            },
-            "rotate": 0,
-            "props": [],
-            "tags": [
-                "_UI_CRETAED"
-            ],
-            "position": "-38.18810272216797:-0.15001054108142853:-44.36129379272461"
-        },
-        {
-            "model": {
-                "path": "road1",
-                "removeRoot": true
-            },
-            "texture": {
-                "path": "palette.jpg"
-            },
-            "rotate": 0,
-            "props": [],
-            "tags": [
-                "_UI_CRETAED"
-            ],
-            "position": "-38.166831970214844:-0.20367243885993958:-34.2952880859375"
-        },
-        {
             "id": "bike-1",
             "model": {
                 "path": "bicycle1",
@@ -235,7 +205,7 @@
             "texture": {
                 "path": "palette.jpg"
             },
-            "rotate": 1.6663831405113454,
+            "rotate": -8.130102957865134,
             "collider": {
                 "dimension": "0:0:0"
             },
@@ -244,7 +214,7 @@
                 "_UI_CRETAED"
             ],
             "type": "bicycle1",
-            "position": "-17.23650550842285:0.010583817958831787:10.493062973022461"
+            "position": "-39.92998123168945:0.010583817958831787:19.774738311767578"
         }
     ],
     "routeMap": {
@@ -338,93 +308,151 @@
                 "x": -18,
                 "y": -38,
                 "id": "A4"
+            },
+            {
+                "x": -14.924358413703992,
+                "y": 6.200038292469312,
+                "id": "v-19"
+            },
+            {
+                "x": -16.485244585368015,
+                "y": 33.45785488152112,
+                "id": "v-19"
+            },
+            {
+                "x": -35.46916146204499,
+                "y": 33.292204744263145,
+                "id": "v-21"
+            },
+            {
+                "x": -35.65621097743495,
+                "y": 43.80657726596937,
+                "id": "v-22"
             }
         ],
         "edges": [
             {
                 "v1": 0,
                 "v2": 1,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 2,
                 "v2": 3,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 3,
                 "v2": 4,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 4,
                 "v2": 5,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 5,
                 "v2": 6,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 6,
                 "v2": 7,
-                "thickness": 2
+                "thickness": 2,
+                "direction": "undirected"
             },
             {
                 "v1": 7,
                 "v2": 8,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 8,
                 "v2": 9,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 9,
                 "v2": 10,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 10,
                 "v2": 11,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 11,
                 "v2": 12,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 14,
                 "v2": 15,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 15,
                 "v2": 16,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 16,
                 "v2": 17,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 15,
                 "v2": 2,
-                "thickness": 2
+                "thickness": 2,
+                "direction": "undirected"
             },
             {
                 "v1": 2,
                 "v2": 0,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
             },
             {
                 "v1": 15,
                 "v2": 13,
-                "thickness": 0
+                "thickness": 0,
+                "direction": "undirected"
+            },
+            {
+                "v1": 18,
+                "v2": 19,
+                "thickness": 0,
+                "color": "green",
+                "direction": "undirected"
+            },
+            {
+                "v1": 19,
+                "v2": 20,
+                "thickness": 0,
+                "color": "green",
+                "direction": "undirected"
+            },
+            {
+                "v1": 20,
+                "v2": 21,
+                "thickness": 0,
+                "color": "green",
+                "direction": "undirected"
             }
         ]
     },

@@ -10,7 +10,38 @@ import { GraphVertex } from "./GraphImpl";
 export enum EdgeColor {
     RED = 'red',
     GREEN = 'green',
-    GRAY = 'gray'
+    GRAY = 'gray',
+}
+
+export enum EdgeDirection {
+    V1_V2 = 'v1 to v2',
+    V2_V1 = 'v2 to v1',
+    UNDIRECTED = 'undirected'
+}
+
+export namespace EdgeDirection {
+
+    export function getEnumDirection(edge: GraphEdge) {
+        const direction = edge.direction;
+
+        if (!direction) {
+            return EdgeDirection.UNDIRECTED;
+        } else if (direction[0] === edge.v1) {
+            return EdgeDirection.V1_V2;
+        } else {
+            return EdgeDirection.V2_V1;
+        }
+    }
+
+    export function getDirectionFromEnum(direction: EdgeDirection, edge: GraphEdge): [GraphVertex, GraphVertex] {
+        if (direction === undefined || direction === EdgeDirection.UNDIRECTED) {
+            return undefined;
+        } else if (direction === EdgeDirection.V2_V1) {
+            return [edge.v2, edge.v1];
+        } else {
+            return [edge.v1, edge.v1];
+        }
+    }
 }
 
 export class GraphEdge {
@@ -21,7 +52,7 @@ export class GraphEdge {
     dimensions: Quad;
     line: Line;
     mesh: Mesh;
-    readonly yPos = 0.2;
+    readonly yPos = 0.05;
 
     private _angle: Rotation;
     private _oppositeAngle: Rotation;

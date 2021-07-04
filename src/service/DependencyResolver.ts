@@ -218,7 +218,7 @@ export class DependencyResolver {
             this.materialStore,
             playerSetup
         );
-        const routeSetup = new RouteSetup(this.routeStore, this.routeFactory);
+        const routeSetup = new RouteSetup(this.routeStore, this.routeFactory, this.materialStore, this.sceneService);
 
         const cameraSetup = new CameraSetup(this.sceneService, this.quarterStore, this.keyboard, this.cameraService, this.playerStore);
         const citizenSetup = new CitizenSetup(this.routeStore, this.citizenStore, this.graphService);

@@ -10,13 +10,11 @@ import { Tool } from "./Tool";
 
 export class RouteCreateTool extends Tool {
     private readonly graphService: GraphService;
-    private readonly materialStore: MaterialStore;
 
     private edge: GraphEdge;
 
-    constructor(sceneService: SceneService, materialStore: MaterialStore, graphService: GraphService) {
+    constructor(sceneService: SceneService, graphService: GraphService) {
         super(sceneService, ToolType.ROUTE_CREATE);
-        this.materialStore = materialStore;
         this.graphService = graphService;
     }
 
@@ -50,7 +48,7 @@ export class RouteCreateTool extends Tool {
     private startEdge(cursorPos: Vector3) {
         if (cursorPos) {
             this.edge = new GraphEdge(new GraphVertex('tmp-v1', cursorPos), new GraphVertex('tmp-v2', cursorPos));
-            this.graphService.getVisualizer().visualizeEdge(this.edge, this.materialStore.getPathMaterial(), true);
+            this.graphService.getVisualizer().visualizeEdge(this.edge, true, edge => edge.color);
         }
     }
 
@@ -60,14 +58,22 @@ export class RouteCreateTool extends Tool {
 
         if (closestVertForV1[0] < 0.5) {
             this.edge.v1 = closestVertForV1[1];
+        } else {
+            this.edge.v1.id = this.generateVertexId();
         }
 
         if (closestVertForV2[0] < 0.5) {
             this.edge.v2 = closestVertForV2[1];
+        } else {
+            this.edge.v2.id = this.generateVertexId();
+
         }
 
-        this.graphService.getVisualizer().updateEdge(this.edge);
-        this.graphService.getGraph().addEdge(this.edge);
+        const edge = new GraphEdge(this.edge.v1, this.edge.v2, this.graphService.getGraph(), 0);
+
+        this.graphService.getVisualizer().visualizeEdge(edge, true, edge => edge.color);
+        this.graphService.getGraph().addEdge(edge);
+        this.edge.mesh.dispose();
         this.edge = undefined;
     }
 
@@ -76,6 +82,10 @@ export class RouteCreateTool extends Tool {
             this.edge.mesh.dispose();
             this.edge = undefined;
         }
+    }
+
+    private generateVertexId() {
+        return `v-${this.graphService.getGraph().vertices.size + 1}`;
     }
 
     private findClosestVertex(vertex: Vector3): [number, GraphVertex] {

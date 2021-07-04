@@ -1,16 +1,9 @@
 import { MaterialStore } from "../../../store/MaterialStore";
-import { EdgeColor, GraphEdge } from "../../graph/GraphEdge";
+import { EdgeColor, EdgeDirection, GraphEdge } from "../../graph/GraphEdge";
 import { GraphService } from "../../graph/GraphService";
 import { RenderGuiService } from "../../RenderGuiService";
 import { ToolController } from "./ToolController";
 import { ToolType } from "./TransformController";
-
-
-export enum EdgeDirection {
-    V1_V2 = 'v1 to v2',
-    V2_V1 = 'v2 to v1',
-    UNDIRECTED = 'undirected'
-}
 
 export class GraphController {
 
@@ -41,7 +34,7 @@ export class GraphController {
     set thickness(thickness: number) {
         if (this.edge) {
             this.edge.thickness = thickness;
-            this.graphService.getVisualizer().visualizeEdge(this.edge, this.materialStore.getPathMaterial());
+            this.graphService.getVisualizer().visualizeEdge(this.edge, true, edge => edge.color);
             this.renderGuiService.render();
         }
     }

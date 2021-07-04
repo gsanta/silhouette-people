@@ -1,7 +1,7 @@
 import { Color3, Matrix, Mesh, StandardMaterial, Vector2, MeshBuilder, Vector3, PointerDragBehavior, Observer } from "babylonjs";
 import { toVector2 } from "../../../helpers";
 import { MaterialName, MaterialStore } from "../../../store/MaterialStore";
-import { GraphEdge } from "../../graph/GraphEdge";
+import { EdgeColor, EdgeDirection, GraphEdge } from "../../graph/GraphEdge";
 import { GraphVertex } from "../../graph/GraphImpl";
 import { GraphService } from "../../graph/GraphService";
 import { KeyName } from "../../input/KeyboardService";
@@ -58,11 +58,10 @@ export class RouteTool extends Tool {
     awake() {
         const materialHovered = new StandardMaterial(MaterialName.ROUTE_EDGE_HOVERED, this.sceneService.scene);
         materialHovered.diffuseColor = Color3.Yellow();
+        this.materialStore.addMaterial(MaterialName.ROUTE_EDGE_HOVERED, materialHovered);
 
         const materialSelected = new StandardMaterial(MaterialName.ROUTE_EDGE_SELECTED, this.sceneService.scene);
-        materialSelected.diffuseColor = Color3.Green();
-
-        this.materialStore.addMaterial(MaterialName.ROUTE_EDGE_HOVERED, materialHovered);
+        materialSelected.diffuseColor = Color3.Blue();
         this.materialStore.addMaterial(MaterialName.ROUTE_EDGE_SELECTED, materialSelected);
     }
 

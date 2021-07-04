@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, Dropdown } from "react-bootstrap";
-import { EdgeDirection, GraphController } from "../../service/editor/controllers/GraphController";
-import { EdgeColor } from "../../service/graph/GraphEdge";
+import { GraphController } from "../../service/editor/controllers/GraphController";
+import { EdgeColor, EdgeDirection } from "../../service/graph/GraphEdge";
 
 export class GraphPanel extends React.Component<{ controller: GraphController }> {
 

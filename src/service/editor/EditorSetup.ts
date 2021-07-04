@@ -58,7 +58,7 @@ export class EditorSetup implements ISetup {
         this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, this.sceneService, this.editorService.selectionStore, ToolType.TRANSFORM));
         this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, this.sceneService, this.editorService.selectionStore, ToolType.ROTATE));
         this.editorService.toolController.addTool(new RouteTool(this.sceneService, this.materialStore, this.graphService, this.editorService.graphController, this.gizmoManagerAdapter));
-        this.editorService.toolController.addTool(new RouteCreateTool(this.sceneService, this.materialStore, this.graphService));
+        this.editorService.toolController.addTool(new RouteCreateTool(this.sceneService, this.graphService));
 
         this.editorService.hotkeyController.addHotkey(new EraseHotkey(this.keyboardService, this.editorService.selectionStore, this.gameObjectStore, this.eventService));
         this.editorService.hotkeyController.enable();

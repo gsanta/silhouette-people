@@ -8,25 +8,23 @@ export class RouteVisualizerAdapter extends RouteControllerListener {
 
     private readonly routeWalker: RouteController;
     private readonly graphService: GraphService;
-    private readonly materialStore: MaterialStore;
 
     private meshes: Mesh[] = [];
 
-    constructor(routeWalker: RouteController, graphService: GraphService, materialStore: MaterialStore) {
+    constructor(routeWalker: RouteController, graphService: GraphService) {
         super();
 
         this.routeWalker = routeWalker;
         this.graphService = graphService;
-        this.materialStore = materialStore;
     }
 
     onEnterEdge() {
         this.meshes.forEach(mesh => mesh.dispose());
-        this.meshes = this.graphService.getVisualizer().visualizeRoute(this.routeWalker.getRoute(), this.materialStore.getActivePathMaterial());
+        this.meshes = this.graphService.getVisualizer().visualizeRoute(this.routeWalker.getRoute(), edge => `${edge.color}-highlight`);
     }
 
     onRouteChanged() {
         this.meshes.forEach(mesh => mesh.dispose());
-        this.meshes = this.graphService.getVisualizer().visualizeRoute(this.routeWalker.getRoute(), this.materialStore.getActivePathMaterial());
+        this.meshes = this.graphService.getVisualizer().visualizeRoute(this.routeWalker.getRoute(), edge => `${edge.color}-highlight`);
     }
 }
