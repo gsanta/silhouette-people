@@ -2,6 +2,7 @@ import { Graph } from "./Graph";
 
 export interface GenericGraphConfig<V, E> {
     getVertices(edge: E): [V, V];
+    isBidirectional(edge: E): boolean;
 }
 
 export class GenericGraph<V, E> implements Graph<V, E> {
@@ -26,25 +27,32 @@ export class GenericGraph<V, E> implements Graph<V, E> {
             this.edges.push(edge);
 
             const [v1, v2] = this.config.getVertices(edge);
-            this.addEdgeVertex(v1, v2, edge);
-            this.addEdgeVertex(v2, v1, edge);
+            this.addEdgeVertex(v1, v2, edge, true);
+            this.addEdgeVertex(v2, v1, edge, this.config.isBidirectional(edge));
         }
     }
 
-    private addEdgeVertex(v1: V, v2: V, edge: E) {
+    private addEdgeVertex(v1: V, v2: V, edge: E, validDirection: boolean) {
         this.vertices.add(v1);
 
-        if (!this.vertexPairs.has(v1)) {
-            this.vertexPairs.set(v1, new Set());
+        if (validDirection) {
+            if (!this.vertexPairs.has(v1)) {
+                this.vertexPairs.set(v1, new Set());
+            }
+    
+            this.vertexPairs.get(v1).add(v2);
         }
-
-        this.vertexPairs.get(v1).add(v2);
 
         if (!this.edgeMap.has(v1)) {
             this.edgeMap.set(v1, []);
         }
 
         this.edgeMap.get(v1).push(edge);
+    }
+
+    updateDirection(edge: E) {
+        this.removeEdge(edge, false);
+        this.addEdge(edge);
     }
     
     edgeBetween(v1: V, v2: V): E {
@@ -97,6 +105,10 @@ export class GenericGraph<V, E> implements Graph<V, E> {
         return this.edges.length;
     }
 
+    setup(vertices: V[], edges: E[]) {
+        
+    }
+
     private createEdgeList() {
         this.vertices.forEach(vertex => this.vertexPairs.set(vertex, new Set()));
         this.vertices.forEach(vertex => this.edgeMap.set(vertex, []));
@@ -104,7 +116,10 @@ export class GenericGraph<V, E> implements Graph<V, E> {
         this.edges.forEach(edge => {
             const [v1, v2] = this.config.getVertices(edge);
             this.vertexPairs.get(v1).add(v2);
-            this.vertexPairs.get(v2).add(v1);
+
+            if (this.config.isBidirectional(edge)) {
+                this.vertexPairs.get(v2).add(v1);
+            }
             this.edgeMap.get(v1).push(edge);
             this.edgeMap.get(v2).push(edge);
         });

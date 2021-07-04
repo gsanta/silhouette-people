@@ -5,7 +5,7 @@ import { Graph } from "../../../src/service/graph/Graph";
 it ('finds edges between two vertices', () => {
     const vertices = [0, 1, 2, 3, 4, 5];
     const edges: [number, number][] = [[0, 1], [0, 3], [1, 4], [4, 5]];
-    const config: GenericGraphConfig<number, [number, number]> = { getVertices: (e) => e }
+    const config: GenericGraphConfig<number, [number, number]> = { getVertices: (e) => e, isBidirectional: () => true }
 
     const graph: Graph<number, [number, number]> = new GenericGraph<number, [number, number]>(vertices, edges, config);
 
@@ -17,7 +17,7 @@ it ('finds edges between two vertices', () => {
 it ('finds neighbours of vertices', () => {
     const vertices = [0, 1, 2, 3, 4, 5];
     const edges: [number, number][] = [[0, 1], [0, 3], [1, 4], [4, 5]];
-    const config: GenericGraphConfig<number, [number, number]> = { getVertices: (e) => e }
+    const config: GenericGraphConfig<number, [number, number]> = { getVertices: (e) => e, isBidirectional: () => true }
 
     const graph: Graph<number, [number, number]> = new GenericGraph<number, [number, number]>(vertices, edges, config);
 
@@ -30,7 +30,7 @@ it ('finds neighbours of vertices', () => {
 it ('removes edge', () => {
     const vertices = [0, 1, 2, 3, 4, 5];
     const edges: [number, number][] = [[0, 1], [0, 3], [1, 4], [4, 5]];
-    const config: GenericGraphConfig<number, [number, number]> = { getVertices: (e) => e }
+    const config: GenericGraphConfig<number, [number, number]> = { getVertices: (e) => e, isBidirectional: () => true }
 
     const graph: Graph<number, [number, number]> = new GenericGraph<number, [number, number]>(vertices, edges, config);
 
@@ -67,7 +67,7 @@ it ('removes edge', () => {
 it ('adds edge', () => {
     const vertices = [0, 1, 2, 3, 4, 5];
     const edges: [number, number][] = [[0, 1], [1, 4]];
-    const config: GenericGraphConfig<number, [number, number]> = { getVertices: (e) => e }
+    const config: GenericGraphConfig<number, [number, number]> = { getVertices: (e) => e, isBidirectional: () => true }
 
     const graph: Graph<number, [number, number]> = new GenericGraph<number, [number, number]>(vertices, edges, config);
 

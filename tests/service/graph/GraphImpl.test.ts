@@ -43,3 +43,58 @@ it('general test for GraphImpl', () => {
     expect(graph.vertices.has(vertices[0])).toBeFalsy();
     expect(Array.from(graph.getNeighbours(vertices[3]))).toEqual([vertices[2], newVertex]);
 });
+
+describe('edge directions in graph', () => {
+    let vertices: GraphVertex[];
+    let edges: GraphEdge[];
+    let graph: GraphImpl;
+
+    beforeEach(() => {
+        vertices = [
+            new GraphVertex('1', new Vector3(1, 0, 1)),
+            new GraphVertex('2', new Vector3(5, 0, 1)),
+            new GraphVertex('3', new Vector3(5, 0, 10)),
+            new GraphVertex('4', new Vector3(10, 0, 10)),
+        ];
+    
+        edges = [
+            new GraphEdge(vertices[0], vertices[1], undefined, 1, true),
+            new GraphEdge(vertices[1], vertices[2], undefined, 1, true),
+            new GraphEdge(vertices[2], vertices[3], undefined, 1, true),
+            new GraphEdge(vertices[0], vertices[3], undefined, 1, false)
+        ];
+
+        graph = new GraphImpl(vertices, edges);
+    });
+
+    it ('initializing graph with directed edges', () => {
+        expect(graph.edgeBetween(vertices[0], vertices[1])).toBe(edges[0]);
+        expect(graph.edgeBetween(vertices[1], vertices[0])).toBeFalsy();
+        expect(Array.from(graph.getNeighbours(vertices[0]))).toEqual([vertices[1], vertices[3]]);
+        expect(Array.from(graph.getNeighbours(vertices[1]))).toEqual([vertices[2]]);
+
+        expect(graph.edgeBetween(vertices[0], vertices[3])).toBe(edges[3]);
+        expect(graph.edgeBetween(vertices[3], vertices[0])).toBe(edges[3]);
+        expect(Array.from(graph.getNeighbours(vertices[3]))).toEqual([vertices[0]]);
+
+
+    });
+
+    it ('clearing edge direction', () => {
+        edges[0].direction = undefined;
+    
+        expect(graph.edgeBetween(vertices[0], vertices[1])).toBe(edges[0]);
+        expect(graph.edgeBetween(vertices[1], vertices[0])).toBe(edges[0]);
+        expect(Array.from(graph.getNeighbours(vertices[0]))).toEqual([vertices[3], vertices[1]]);
+        expect(Array.from(graph.getNeighbours(vertices[1]))).toEqual([vertices[2], vertices[0]]);
+    });
+
+    it ('setting edge direction', () => {
+        edges[3].direction = [edges[3].v2, edges[3].v1];
+    
+        expect(graph.edgeBetween(vertices[0], vertices[3])).toBeFalsy();
+        expect(graph.edgeBetween(vertices[3], vertices[0])).toBe(edges[3]);
+        expect(Array.from(graph.getNeighbours(vertices[0]))).toEqual([vertices[1]]);
+        expect(Array.from(graph.getNeighbours(vertices[3]))).toEqual([vertices[0]]);
+    });
+});

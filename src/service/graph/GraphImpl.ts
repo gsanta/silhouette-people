@@ -23,9 +23,12 @@ export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
     constructor(vertices: GraphVertex[], edges: GraphEdge[]) {
 
         const genericGraphConfig: GenericGraphConfig<GraphVertex, GraphEdge> = {
-            getVertices: (edge) => [edge.v1, edge.v2]
+            getVertices: (edge) => edge.direction ? edge.direction : [edge.v1, edge.v2],
+            isBidirectional: (edge) => !edge.direction
         }
         this.genericGraph = new GenericGraph(vertices, edges, genericGraphConfig);
+
+        this.edges.forEach(edge => edge.graph = this);
     }
 
     addEdge(edge: GraphEdge) {
@@ -50,6 +53,10 @@ export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
 
     removeEdge(edge: GraphEdge, removeIsolatedVertex: boolean) {
         this.genericGraph.removeEdge(edge, removeIsolatedVertex);
+    }
+
+    updateDirection(edge: GraphEdge) {
+        this.genericGraph.updateDirection(edge);
     }
 
     get vertices() {

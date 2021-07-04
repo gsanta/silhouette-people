@@ -26,7 +26,7 @@ export class EditorComponent extends React.Component<{ editor: EditorService }> 
                 <SceneExportPanel sceneExportController={this.props.editor.sceneExportController} />
                 <ToolPanel toolController={this.props.editor.toolController} />
                 <FeaturesPanel fogOfWarController={this.props.editor.fogOfWarController} />
-                <GraphPanel graphController={this.props.editor.graphController} />
+                <GraphPanel controller={this.props.editor.graphController} />
                 <DebugPanel controller={this.props.editor.debugController} />
             </div>
         )

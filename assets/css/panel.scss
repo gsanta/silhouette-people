@@ -84,3 +84,39 @@
         background-color: green!important;
     }
 }
+
+.dropdown-toggle, .dropdown-toggle:hover, .dropdown-toggle:focus, .dropdown-toggle.active, .dropdown-toggle:active {
+    &.btn-secondary {
+        &.red {
+            background-color: lightcoral;
+            color: white;
+        }
+    
+        &.green {
+            background-color: lightgreen;
+            color: black;
+        }
+    
+        &.gray {
+            background-color: lightgray;
+            color: black;
+        }
+    }
+}
+
+.dropdown-item, .dropdown-item:hover, .dropdown-item.active {
+    &.red {
+        background-color: lightcoral;
+        color: white;
+    }
+
+    &.green {
+        background-color: lightgreen;
+        color: black;
+    }
+
+    &.gray {
+        background-color: lightgray;
+        color: black;
+    }
+}

@@ -8,5 +8,6 @@ export interface Graph<V, E> {
     getEdges(vertex: V): E[];
     getNeighbours(vertex: V): Set<V>;
     removeEdge(edge: E, removeIsolatedVertex: boolean);
+    updateDirection(edge: E);
     size(): number;
 }
