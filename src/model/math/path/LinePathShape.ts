@@ -1,10 +1,34 @@
 import { Vector3 } from "babylonjs";
-import { Quad } from "../../../model/math/shapes/Quad";
-import { GraphEdge } from "../../graph/GraphEdge";
+import { GraphEdge } from "../../../service/graph/GraphEdge";
+import { Quad } from "../shapes/Quad";
+import { PathShape } from "./PathShape";
 
-export class EdgeDimensionCalc {
+export class LinePathShape implements PathShape {
+    
+    private _bounds: Quad;
+    private _pathes: Vector3[][];
 
-    calc(edge: GraphEdge): Quad {
+    constructor(points: Quad) {
+        this._bounds = points;
+        this.calcPath();
+    }
+
+    get path(): Vector3[][] {
+        return this._pathes;
+    }
+    
+    get bounds(): Quad {
+        return this._bounds;
+    }
+
+    private calcPath() {
+        const path1 = [this._bounds.p1, this._bounds.p2];
+        const path2 = [this._bounds.p4, this._bounds.p3];
+
+        this._pathes = [path1, path2];
+    }
+
+    static FromEdge(edge: GraphEdge): Quad {
         const angle = this.getAngle(edge.v1.p, edge.v2.p);
         const angelPlus = angle + Math.PI / 2;
         const angelMinus = angle - Math.PI / 2;
@@ -21,7 +45,7 @@ export class EdgeDimensionCalc {
     }
 
     
-    private getAngle(startPoint: Vector3, endPoint) {
+    private static getAngle(startPoint: Vector3, endPoint) {
         const vector = endPoint.subtract(startPoint);
         return Math.atan2(vector.z, vector.x);
     }

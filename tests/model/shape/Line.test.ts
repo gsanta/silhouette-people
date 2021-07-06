@@ -107,3 +107,35 @@ describe('getMinDistance', () => {
         });
     });
 });
+
+describe('Line bisector', () => {
+    it ('bisector for vertical line', () => {
+        const line = new Line(new Vector2(1, 1), new Vector2(1, 9));
+
+        const bisector = line.getBisector(10);
+        expect(bisector.p1.x).toBeCloseTo(-4);
+        expect(bisector.p1.y).toBeCloseTo(5);
+        expect(bisector.p2.x).toBeCloseTo(6);
+        expect(bisector.p2.y).toBeCloseTo(5);
+    });
+
+    it ('bisector for horizontal line', () => {
+        const line = new Line(new Vector2(1, 1), new Vector2(9, 1));
+
+        const bisector = line.getBisector(10);
+        expect(bisector.p1.x).toBeCloseTo(5);
+        expect(bisector.p1.y).toBeCloseTo(6);
+        expect(bisector.p2.x).toBeCloseTo(5);
+        expect(bisector.p2.y).toBeCloseTo(-4);
+    });
+
+    it ('bisector for 45 deg', () => {
+        const line = new Line(new Vector2(1, 1), new Vector2(10, 10));
+
+        const bisector = line.getBisector(10);
+        expect(bisector.p1.x).toBeCloseTo(1.964);
+        expect(bisector.p1.y).toBeCloseTo(9.035);
+        expect(bisector.p2.x).toBeCloseTo(9.035);
+        expect(bisector.p2.y).toBeCloseTo(1.964);
+    });
+});

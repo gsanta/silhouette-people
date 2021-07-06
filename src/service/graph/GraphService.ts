@@ -3,7 +3,7 @@ import { SceneService } from "../SceneService";
 import { Graph } from "./Graph";
 import { GraphEdge } from "./GraphEdge";
 import { GraphImpl, GraphVertex } from "./GraphImpl";
-import { GraphEdgeVisualizer } from "./GraphEdgeVisualizer";
+import { GraphEdgeVisualizer } from "./visualizer/GraphEdgeVisualizer";
 
 export class GraphService {
     private readonly worldProvider: SceneService;

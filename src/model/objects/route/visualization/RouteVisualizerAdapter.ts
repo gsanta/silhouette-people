@@ -1,6 +1,5 @@
 import { Mesh } from "babylonjs";
 import { GraphService } from "../../../../service/graph/GraphService";
-import { MaterialStore } from "../../../../store/MaterialStore";
 import { RouteController } from "../../game_object/controller_route/RouteController";
 import { RouteControllerListener } from "../../game_object/controller_route/RouteControllerListener";
 

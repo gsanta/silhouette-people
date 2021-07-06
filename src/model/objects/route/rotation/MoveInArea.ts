@@ -20,7 +20,7 @@ export class MoveInArea extends MotionFilter {
     filterDirection(direction: Vector3) {
         const edge = this.routeController.getEdge();
         const character = this.routeController.getCharacter();
-        const inPolygon = this.testPointInPolyon(character.position, edge.dimensions);
+        const inPolygon = this.testPointInPolyon(character.position, edge.shape.bounds);
 
         if (inPolygon) {
             return direction;

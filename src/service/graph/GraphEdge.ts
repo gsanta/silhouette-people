@@ -1,9 +1,9 @@
 import { Mesh } from "babylonjs/Meshes/mesh";
 import { toVector2 } from "../../helpers";
+import { LinePathShape } from "../../model/math/path/LinePathShape";
+import { PathShape } from "../../model/math/path/PathShape";
 import { Rotation } from "../../model/math/Rotation";
 import { Line } from "../../model/math/shapes/Line";
-import { Quad } from "../../model/math/shapes/Quad";
-import { EdgeDimensionCalc } from "../import/map/EdgeDimensionCalc";
 import { Graph } from "./Graph";
 import { GraphVertex } from "./GraphImpl";
 
@@ -49,10 +49,10 @@ export class GraphEdge {
     private _v2: GraphVertex;
     private _thickness: number = 0;
     private _direction: [GraphVertex, GraphVertex];
-    dimensions: Quad;
     line: Line;
     mesh: Mesh;
     readonly yPos = 0.05;
+    shape: PathShape;
 
     private _angle: Rotation;
     private _oppositeAngle: Rotation;
@@ -143,7 +143,7 @@ export class GraphEdge {
 
     set thickness(thickness: number) {
         this._thickness = thickness;
-        this.dimensions = new EdgeDimensionCalc().calc(this);
+        this.reCalc();
     }
 
     get angle(): Rotation {
@@ -175,6 +175,6 @@ export class GraphEdge {
     private reCalc() {
         this.line = new Line(toVector2(this.v1.p), toVector2(this.v2.p));
         this.setAngles();
-        this.dimensions = new EdgeDimensionCalc().calc(this);
+        this.shape = new LinePathShape(LinePathShape.FromEdge(this));
     }
 }

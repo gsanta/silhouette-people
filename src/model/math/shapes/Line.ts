@@ -26,6 +26,37 @@ export class Line {
         return this._angle;
     }
 
+    get vector(): Vector2 {
+        return this.p2.subtract(this.p1);
+    }
+
+    get size(): number {
+        const diffX = this.p2.x - this.p1.x;
+        const diffY = this.p2.y - this.p1.y;
+        const size = Math.sqrt(diffX ** 2 + diffY ** 2);
+        return size;
+    }
+
+    get center(): Vector2 {
+        return new Vector2((this.p1.x + this.p2.x) / 2, (this.p1.y + this.p2.y) / 2);
+    }
+
+    getBisector(len: number) {
+        const c = this.center;
+        const v = this.vector;
+        const normalVx = Math.cos(Math.PI / 2) * v.x - Math.sin(Math.PI / 2) * v.y;
+        const normalVy = Math.sin(Math.PI / 2) * v.x + Math.cos(Math.PI / 2) * v.y;
+        const normalV = new Vector2(normalVx, normalVy).normalize()
+        ;
+
+        // const vector = this.vector;
+        // const norm = vector.normalize();
+        // const len = this.size;
+        const d = normalV.multiply(new Vector2(len / 2, len / 2));
+
+        return new Line(c.add(d), c.subtract(d));
+    }
+
     getMinDistance(point: Vector2): number {
         const AB = new Vector2(this.p2.x - this.p1.x, this.p2.y - this.p1.y);
         const BE = new Vector2(point.x - this.p2.x, point.y - this.p2.y);

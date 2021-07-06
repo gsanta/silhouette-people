@@ -1,20 +1,18 @@
+import { LinePathShape } from "../../../model/math/path/LinePathShape";
 import { GraphEdge } from "../../graph/GraphEdge";
 import { GraphImpl, GraphVertex } from "../../graph/GraphImpl";
 import { RouteConfig, RouteParser } from "../RouteParser";
 import { WorldMap } from "../WorldMap";
-import { EdgeDimensionCalc } from "./EdgeDimensionCalc";
 
 export class GraphParser {
 
     private readonly routeParser: RouteParser;
-    private readonly edgeDimensionCalc: EdgeDimensionCalc;
     private edges: GraphEdge[] = [];
     private vertices: GraphVertex[] = [];
     private charToVertex: Map<string, GraphVertex> = new Map();
 
     constructor() {
         this.routeParser = new RouteParser();
-        this.edgeDimensionCalc = new EdgeDimensionCalc();
     }
 
     parse(json: WorldMap): GraphImpl {
@@ -40,7 +38,7 @@ export class GraphParser {
             edge.thickness = edgeThickness.thickness;
         });
 
-        graph.edges.forEach(edge => edge.dimensions = this.edgeDimensionCalc.calc(edge));
+        graph.edges.forEach(edge => edge.shape = new LinePathShape(LinePathShape.FromEdge(edge)));
     }
 
     private parseRouteConfigs(routeConfigs: RouteConfig[]) {

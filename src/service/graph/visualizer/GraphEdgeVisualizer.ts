@@ -1,18 +1,21 @@
-import { Mesh, MeshBuilder, StandardMaterial, Vector3 } from "babylonjs";
-import { RouteItem } from "../../model/objects/route/RouteItem";
-import { MaterialStore } from "../../store/MaterialStore";
-import { SceneService } from "../SceneService";
-import { GraphEdge } from "./GraphEdge";
-
-type getMaterialFunc = (edge: GraphEdge) => string;
+import { Mesh, MeshBuilder } from "babylonjs";
+import { RouteItem } from "../../../model/objects/route/RouteItem";
+import { MaterialStore } from "../../../store/MaterialStore";
+import { SceneService } from "../../SceneService";
+import { GraphEdge } from "../GraphEdge";
+import { LinePathVisualizer } from "./LinePathVisualizer";
+import { getMaterialFunc, PathVisualizer } from "./PathVisualizer";
 
 export class GraphEdgeVisualizer {
-    private readonly worldProvider: SceneService;
+    private readonly sceneService: SceneService;
     private readonly materialStore: MaterialStore;
+    private visualizers: PathVisualizer[] = []
 
     constructor(worldProvider: SceneService, materialStore: MaterialStore) {
-        this.worldProvider = worldProvider;
+        this.sceneService = worldProvider;
         this.materialStore = materialStore;
+
+        this.visualizers.push(new LinePathVisualizer(this.sceneService, this.materialStore))
     }
 
     visualizeRoute(route: RouteItem, getMaterial: getMaterialFunc): Mesh[] {
@@ -35,26 +38,19 @@ export class GraphEdgeVisualizer {
 
     updateEdge(graphEdge: GraphEdge) {
         const id = this.getId(graphEdge);
-        const pathes = this.getPathes(graphEdge);
+        const pathes = graphEdge.shape.path;
 
-        MeshBuilder.CreateRibbon(id, {pathArray: pathes, updatable: true, instance: graphEdge.mesh}, this.worldProvider.scene);
+        MeshBuilder.CreateRibbon(id, {pathArray: pathes, updatable: true, instance: graphEdge.mesh}, this.sceneService.scene);
     }
 
     private createPathEdge(edge: GraphEdge, updatable: boolean, getMaterial: getMaterialFunc): Mesh {
         const id = this.getId(edge);
-        const pathes = this.getPathes(edge);
+        const pathes = edge.shape.path;
 
-        const mesh = MeshBuilder.CreateRibbon(id, {pathArray: pathes, updatable: updatable}, this.worldProvider.scene);
+        const mesh = MeshBuilder.CreateRibbon(id, {pathArray: pathes, updatable: updatable}, this.sceneService.scene);
         mesh.material = this.materialStore.getMaterialByName(getMaterial(edge));
 
         return mesh;
-    }
-
-    private getPathes(edge: GraphEdge): Vector3[][] {
-        const path1 = [edge.dimensions.p1, edge.dimensions.p2];
-        const path2 = [edge.dimensions.p4, edge.dimensions.p3];
-
-        return [path1, path2];
     }
 
     private getId(edge: GraphEdge): string {
