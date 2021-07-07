@@ -1,3 +1,4 @@
+import { PathShapeType } from "../../../model/math/path/PathShape";
 import { MaterialStore } from "../../../store/MaterialStore";
 import { EdgeColor, EdgeDirection, GraphEdge } from "../../graph/GraphEdge";
 import { GraphService } from "../../graph/GraphService";
@@ -103,6 +104,18 @@ export class GraphController {
 
     get color(): EdgeColor {
         return this.edge.color;
+    }
+
+    get shape(): PathShapeType {
+        if (this.edge) {
+            return this.edge.shape.type;
+        }
+    }
+
+    set shape(shape: PathShapeType) {
+        if (this.edge) {
+            this.renderGuiService.render();
+        }
     }
 
     deleteEdge() {

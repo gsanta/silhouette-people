@@ -22,12 +22,10 @@ export class RouteTool extends Tool {
     private readonly graphController: GraphController;
     private readonly gizmoManagerAdapter: GizmoManagerAdapter;
 
-    private vertex1Anchor: MoveAnchor;
-    private vertex2Anchor: MoveAnchor;
     private activeAnchor: MoveAnchor;
+    private moveAnchors: MoveAnchor[] = [];
 
     private xObserver: Observer<any>;
-    private yObserver: Observer<any>;
     private zObserver: Observer<any>;
 
     private hovered: EdgeInfo = {
@@ -159,9 +157,7 @@ export class RouteTool extends Tool {
 
         this.selected.edge.mesh.material = this.materialStore.getMaterialByName(MaterialName.ROUTE_EDGE_SELECTED);
 
-        this.vertex1Anchor = new MoveAnchor(this.selected.edge, this.selected.edge.v1, this.graphService);
-        this.vertex2Anchor = new MoveAnchor(this.selected.edge, this.selected.edge.v2, this.graphService);
-
+        this.createMoveAnchors();
         return true;
     }
 
@@ -197,14 +193,13 @@ export class RouteTool extends Tool {
         if (!this.selected.edge) { return undefined; }
 
         const dist = (anchorPos: Vector3) => Math.sqrt(Math.pow(point.x - anchorPos.x, 2) + Math.pow(point.z - anchorPos.z, 2));
-        return [this.vertex1Anchor, this.vertex2Anchor].find(anchor => dist(anchor.mesh.getAbsolutePosition()) < 0.5);
+        return this.moveAnchors.find(anchor => dist(anchor.mesh.getAbsolutePosition()) < 0.5);
     }
 
     private disposeAnchors() {
-        this.vertex1Anchor.dispose();
-        this.vertex2Anchor.dispose();
-        this.vertex1Anchor = undefined;
-        this.vertex2Anchor = undefined;
+        this.moveAnchors.forEach(moveAnchor => moveAnchor.dispose());
+        this.moveAnchors = [];
+        this.activeAnchor = undefined;
     }
 
     private dragObservable() {
@@ -215,44 +210,48 @@ export class RouteTool extends Tool {
 
     private onAnchorAttach(mesh: Mesh) {
         if (this.selected.edge) {
-            if (mesh === this.vertex1Anchor.mesh) {
-                this.activeAnchor = this.vertex1Anchor;
-                this.unHoverEdge();
-            } else if (mesh === this.vertex2Anchor.mesh) {
-                this.activeAnchor = this.vertex2Anchor;
+            const anchor = this.moveAnchors.find(anchor => anchor.mesh === mesh);
+
+            if (anchor) {
+                this.activeAnchor = anchor;
                 this.unHoverEdge();
             } else {
                 this.activeAnchor = undefined;
             }
         }
     }
+
+    private createMoveAnchors() {
+        const moveAnchors: MoveAnchor[] = [];
+        const controlPoints = this.selected.edge.shape.controlPoints;
+
+        moveAnchors.push(new MoveAnchor(controlPoints[0], 0, new VertexUpdater(this.selected.edge, this.selected.edge.v1, this.graphService)));
+
+        for (let i = 1; i < controlPoints.length - 1; i++) {
+            moveAnchors.push(new MoveAnchor(controlPoints[i], i));
+        }
+
+        const lastIndex = controlPoints.length - 1;
+        moveAnchors.push(new MoveAnchor(controlPoints[lastIndex], lastIndex, new VertexUpdater(this.selected.edge, this.selected.edge.v2, this.graphService)));
+
+        this.moveAnchors = moveAnchors;
+    }
 }
 
-class MoveAnchor {
-    readonly mesh: Mesh;
-    private readonly edge: GraphEdge;
-    private readonly vertexId: 'v1' | 'v2';
-    private readonly graphService: GraphService;
-    private vertex: GraphVertex;
+class VertexUpdater {
+    edge: GraphEdge;
+    vertex: GraphVertex;
+    graphService: GraphService;
 
     constructor(edge: GraphEdge, vertex: GraphVertex, graphService: GraphService) {
         this.edge = edge;
-        this.vertexId = vertex === edge.v1 ? 'v1' : 'v2';
         this.vertex = vertex;
         this.graphService = graphService;
-
-        this.mesh = this.getAnchorMesh(vertex, `anchor-${this.vertexId}`);
     }
 
-    update() {
-        const meshPos = this.mesh.getAbsolutePosition();
-        const pos = new Vector3(meshPos.x, this.vertex.p.y, meshPos.z);
-        const newVertex = new GraphVertex(this.vertex.id, pos);
+    update(p: Vector3) {
+        const newVertex = new GraphVertex(this.vertex.id, p);
 
-        this.updateEdgesForVertex(newVertex);
-    }
-
-    private updateEdgesForVertex(newVertex: GraphVertex) {
         const edges = this.graphService.getGraph().getEdges(this.vertex);
 
         edges.forEach(edge => {
@@ -266,15 +265,32 @@ class MoveAnchor {
 
         this.vertex = newVertex;
     }
+}
+
+class MoveAnchor {
+    readonly mesh: Mesh;
+    private p: Vector3;
+    private vertexUpdater: VertexUpdater;
+
+    constructor(p: Vector3, anchorIndex: number, vertexUpdater?: VertexUpdater) {
+        this.p = p;
+        this.vertexUpdater = vertexUpdater;
+        this.mesh = this.getAnchorMesh(`anchor-${anchorIndex}`);
+    }
+
+    update() {
+        const meshPos = this.mesh.getAbsolutePosition();
+        this.p = new Vector3(meshPos.x, this.p.y, meshPos.z);
+        this.vertexUpdater.update(this.p);
+    }
 
     dispose() {
         this.mesh.dispose();
     }
 
-    private getAnchorMesh(vertex: GraphVertex, name: string) {
+    private getAnchorMesh(name: string) {
         const mesh = MeshBuilder.CreateSphere(name, { diameter: 0.3 });
-        const p = new Vector3(vertex.p.x, this.edge.yPos, vertex.p.z);
-        mesh.setAbsolutePosition(p);
+        mesh.setAbsolutePosition(this.p.clone());
         return mesh; 
     }
 }

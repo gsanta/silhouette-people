@@ -38,7 +38,7 @@ export class GraphParser {
             edge.thickness = edgeThickness.thickness;
         });
 
-        graph.edges.forEach(edge => edge.shape = new LinePathShape(LinePathShape.FromEdge(edge)));
+        graph.edges.forEach(edge => edge.shape = LinePathShape.FromEdge([edge.v1.p, edge.v2.p], edge.yPos));
     }
 
     private parseRouteConfigs(routeConfigs: RouteConfig[]) {

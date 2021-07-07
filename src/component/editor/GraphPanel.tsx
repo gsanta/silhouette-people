@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Button, Dropdown } from "react-bootstrap";
+import { PathShapeType } from "../../model/math/path/PathShape";
 import { GraphController } from "../../service/editor/controllers/GraphController";
 import { EdgeColor, EdgeDirection } from "../../service/graph/GraphEdge";
 
@@ -39,6 +40,10 @@ export class GraphPanel extends React.Component<{ controller: GraphController }>
                 <div className="input-row">
                     <label htmlFor="edge-thickness">color</label>
                     {this.renderEdgeColorDropdown()}
+                </div>
+                <div className="input-row">
+                    <label htmlFor="edge-thickness">shape</label>
+                    {this.renderPathShapeTypes()}
                 </div>
                 
                 <div className="button-row start">
@@ -86,6 +91,28 @@ export class GraphPanel extends React.Component<{ controller: GraphController }>
                 </Dropdown.Menu>
             </Dropdown>
         );
+    }
+
+    private renderPathShapeTypes() {
+        const currentShape = this.props.controller.shape;
+
+        const colors = PathShapeType.all().map(shape => <Dropdown.Item className={shape} active={shape === currentShape} eventKey={shape}>{shape}</Dropdown.Item>);
+
+        return (
+            <Dropdown className="dropdown-button" onSelect={this.onPathShapeChange}>
+                <Dropdown.Toggle className={currentShape} variant="secondary" id="dropdown-basic">
+                    {currentShape}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                    {colors}
+                </Dropdown.Menu>
+            </Dropdown>
+        );
+    }
+
+    private onPathShapeChange(eventKey: PathShapeType) {
+        this.props.controller.shape = eventKey;
     }
 
     private onColorChange(eventKey: EdgeColor) {

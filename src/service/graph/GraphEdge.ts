@@ -175,6 +175,6 @@ export class GraphEdge {
     private reCalc() {
         this.line = new Line(toVector2(this.v1.p), toVector2(this.v2.p));
         this.setAngles();
-        this.shape = new LinePathShape(LinePathShape.FromEdge(this));
+        this.shape = LinePathShape.FromEdge([this.v1.p, this.v2.p], this.yPos);
     }
 }

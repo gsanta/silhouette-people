@@ -46,9 +46,7 @@ export class Line {
         const v = this.vector;
         const normalVx = Math.cos(Math.PI / 2) * v.x - Math.sin(Math.PI / 2) * v.y;
         const normalVy = Math.sin(Math.PI / 2) * v.x + Math.cos(Math.PI / 2) * v.y;
-        const normalV = new Vector2(normalVx, normalVy).normalize()
-        ;
-
+        const normalV = new Vector2(normalVx, normalVy).normalize();
         // const vector = this.vector;
         // const norm = vector.normalize();
         // const len = this.size;
