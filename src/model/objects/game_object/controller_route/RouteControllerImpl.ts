@@ -59,7 +59,7 @@ export class RouteControllerImpl extends MonoBehaviour implements RouteControlle
 
     setEdge(edge: GraphEdge): void {
         this.edge = edge;
-        this.t = 0;
+        this.t = this.getRoute().isReversed(edge) ? 1 : 0;
     }
 
     getTarget() {

@@ -25,7 +25,9 @@ export interface PathShape {
     path: Vector3[][];
     bounds: Quad;
     controlPoints: Vector3[];
+    internalControlPoints: Vector3[];
     size: number;
-    getT(ratio: number): Vector3;
+    getT(t: number): Vector3;
+    getDerivative(t: number, reversed?: boolean): Vector3;
     update(controlPointIndex: number, val: Vector3);
 }

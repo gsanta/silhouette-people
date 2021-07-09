@@ -28,8 +28,13 @@ export class BezierAdatper {
         return this.bezier.length();
     }
 
-    getT(ratio: number): Vector3 {
-        const p = this.bezier.get(ratio);
+    getT(t: number): Vector3 {
+        const p = this.bezier.get(t);
+        return new Vector3(p.x, this.y, p.y);
+    }
+
+    getDerivative(t: number): Vector3 {
+        const p = this.bezier.derivative(t);
         return new Vector3(p.x, this.y, p.y);
     }
 }

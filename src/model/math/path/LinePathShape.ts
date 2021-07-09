@@ -28,6 +28,10 @@ export class LinePathShape implements PathShape {
         return this._controlPoints;
     }
 
+    get internalControlPoints(): Vector3[] {
+        return [];
+    }
+
     get size(): number {
         return this.controlPoints[0].subtract(this.controlPoints[1]).length();
     }
@@ -35,6 +39,13 @@ export class LinePathShape implements PathShape {
     getT(ratio: number): Vector3 {
         const [cp1, cp2] = [this.controlPoints[0], this.controlPoints[1]];
         return cp1.add(cp2.subtract(cp1).multiply(new Vector3(ratio, ratio, ratio)));
+    }
+
+    getDerivative(t: number, reversed = false): Vector3 {
+        const [cp1, cp2] = [this.controlPoints[0], this.controlPoints[1]];
+
+        const vec = cp2.subtract(cp1).normalize();
+        return reversed ? vec.negate() : vec;
     }
 
     update(controlPointIndex: number, val: Vector3) {

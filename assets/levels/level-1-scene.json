@@ -285,11 +285,6 @@
                 "id": "A3"
             },
             {
-                "x": -18,
-                "y": -38,
-                "id": "A4"
-            },
-            {
                 "x": -14.924358413703992,
                 "y": 6.200038292469312,
                 "id": "v-19"
@@ -308,6 +303,11 @@
                 "x": -35.65621097743495,
                 "y": 43.80657726596937,
                 "id": "v-22"
+            },
+            {
+                "x": -14.890862464904785,
+                "y": -39.01408386230469,
+                "id": "A4"
             }
         ],
         "edges": [
@@ -315,124 +315,167 @@
                 "v1": 0,
                 "v2": 1,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 2,
                 "v2": 3,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 3,
                 "v2": 4,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 4,
                 "v2": 5,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 5,
                 "v2": 6,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 6,
                 "v2": 7,
                 "thickness": 2,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 7,
                 "v2": 8,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 8,
                 "v2": 9,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 9,
                 "v2": 10,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 10,
                 "v2": 11,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 11,
                 "v2": 12,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 14,
                 "v2": 15,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 15,
                 "v2": 16,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 16,
-                "v2": 17,
+                "v2": 21,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": [
+                    {
+                        "x": -14,
+                        "y": 0,
+                        "z": -28.51871681213379
+                    }
+                ]
             },
             {
                 "v1": 15,
                 "v2": 2,
                 "thickness": 2,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 2,
                 "v2": 0,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 15,
                 "v2": 13,
                 "thickness": 0,
-                "direction": "undirected"
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
+            },
+            {
+                "v1": 17,
+                "v2": 18,
+                "thickness": 0,
+                "color": "green",
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 18,
                 "v2": 19,
                 "thickness": 0,
                 "color": "green",
-                "direction": "undirected"
+                "direction": "undirected",
+                "internalControlPoints": []
             },
             {
                 "v1": 19,
                 "v2": 20,
                 "thickness": 0,
                 "color": "green",
-                "direction": "undirected"
-            },
-            {
-                "v1": 20,
-                "v2": 21,
-                "thickness": 0,
-                "color": "green",
-                "direction": "undirected"
+                "direction": "undirected",
+                "internalControlPoints": []
             }
         ]
     },

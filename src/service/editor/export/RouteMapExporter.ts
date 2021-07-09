@@ -30,7 +30,8 @@ export class RouteMapExporter {
                 v2: vertexArr.indexOf(edge.v2),
                 thickness: edge.thickness,
                 color: edge.color,
-                direction: EdgeDirection.getEnumDirection(edge)
+                direction: EdgeDirection.getEnumDirection(edge),
+                internalControlPoints: edge.shape.internalControlPoints.map(p => ({x: p.x, y: p.y, z: p.z}))
             }
         });
 

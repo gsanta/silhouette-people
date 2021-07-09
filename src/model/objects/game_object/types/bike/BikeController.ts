@@ -59,10 +59,17 @@ export class BikeController extends MotionController {
 
     update(deltaTime: number) {
         const edge = this.character.routeController.getEdge();
+        const route = this.character.routeController.getRoute();
+        const reversed = route.isReversed(edge);
 
         if (edge && this.speed > 0) {
             const displacement = this.speed * (deltaTime / 1000);
-            const displacementRatio = displacement / edge.shape.size;
+            let displacementRatio = displacement / edge.shape.size;
+            
+            if (reversed) {
+                displacementRatio = -displacementRatio;
+            }
+
             const t = this.character.routeController.getT() + displacementRatio;
 
             this.character.routeController.setT(t);
@@ -73,6 +80,8 @@ export class BikeController extends MotionController {
             const diff = pos.subtract(currPos);
             diff.y = 0;
             this.character.moveWithCollision(diff);
+            const tangent = edge.shape.getDerivative(t, reversed);
+            this.character.rotationY = vector3ToRotation(tangent);
         }
         // const character = this.character;
         // if (character.routeController && !character.routeController.isRunning()) {

@@ -63,6 +63,10 @@ export class GraphEdgeVisualizer {
         // }
     }
 
+    updateEdgeColor(edge: GraphEdge, getMaterial: getMaterialFunc) {
+        edge.mesh.material = this.materialStore.getMaterialByName(getMaterial(edge));
+    }
+
     private createPathEdge(edge: GraphEdge, updatable: boolean, getMaterial: getMaterialFunc): Mesh {
         const id = this.getId(edge);
         const pathes = edge.shape.path;

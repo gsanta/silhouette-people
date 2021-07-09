@@ -33,12 +33,21 @@ export class CurvedPathShape implements PathShape {
         return this._controlPoints;
     }
 
+    get internalControlPoints(): Vector3[] {
+        return [this.controlPoints[1]];
+    }
+
     get size() {
         return this.bezierAdapter.size;
     }
 
     getT(ratio: number): Vector3 {
         return this.bezierAdapter.getT(ratio);
+    }
+
+    getDerivative(t: number, reversed = false): Vector3 {
+        const vec = this.bezierAdapter.getDerivative(t);
+        return reversed ? vec.negate() : vec;
     }
 
     update(controlPointIndex: number, val: Vector3) {
@@ -56,6 +65,8 @@ export class CurvedPathShape implements PathShape {
 
             const curveP = line.getBisector(line.size).p1;
             this._controlPoints =  [line.p1, curveP, line.p2].map(p => toVector3(p, y));
+        } else if (controlPoints.length === 3) {
+            this._controlPoints = controlPoints;
         }
     }
 

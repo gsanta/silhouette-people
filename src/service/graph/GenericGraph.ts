@@ -12,6 +12,7 @@ export class GenericGraph<V, E> implements Graph<V, E> {
     private readonly config: GenericGraphConfig<V, E>;
 
     private vertexPairs: Map<V, Set<V>> = new Map();
+    private reverseVertexPairs: Map<V, Set<V>> = new Map();
     private edgeMap: Map<V, E[]> = new Map();
 
     constructor(vertices: V[], edges: E[], config: GenericGraphConfig<V, E>) {
@@ -32,6 +33,19 @@ export class GenericGraph<V, E> implements Graph<V, E> {
         }
     }
 
+    replaceVertex(oldV: V, newV: V): void {
+        this.vertices.delete(oldV);
+        this.vertices.add(newV);
+        const oldVPairs = this.vertexPairs.get(oldV);
+        this.vertexPairs.delete(oldV);
+        this.vertexPairs.set(newV, oldVPairs);
+        const reversePairs = this.reverseVertexPairs.get(oldV) || [];
+        reversePairs.forEach(pair => {
+            this.vertexPairs.get(pair).delete(oldV);
+            this.vertexPairs.get(pair).add(newV);
+        });
+    }
+
     private addEdgeVertex(v1: V, v2: V, edge: E, validDirection: boolean) {
         this.vertices.add(v1);
 
@@ -39,8 +53,13 @@ export class GenericGraph<V, E> implements Graph<V, E> {
             if (!this.vertexPairs.has(v1)) {
                 this.vertexPairs.set(v1, new Set());
             }
+
+            if (!this.reverseVertexPairs.has(v2))  {
+                this.reverseVertexPairs.set(v2, new Set());
+            }
     
             this.vertexPairs.get(v1).add(v2);
+            this.reverseVertexPairs.get(v2).add(v1);
         }
 
         if (!this.edgeMap.has(v1)) {
@@ -87,8 +106,13 @@ export class GenericGraph<V, E> implements Graph<V, E> {
 
     private removeEdgeVertex(vertex: V, otherVertex: V, edge: E, removeIsolatedVertex: boolean) {
         this.vertexPairs.get(vertex).delete(otherVertex);
+        this.reverseVertexPairs.get(otherVertex).delete(vertex);
         if (this.vertexPairs.get(vertex).size === 0) {
             this.vertexPairs.delete(vertex);
+        }
+
+        if (this.reverseVertexPairs.get(otherVertex).size === 0) {
+            this.reverseVertexPairs.delete(otherVertex);
         }
 
         this.edgeMap.set(vertex, this.edgeMap.get(vertex).filter(e => e !== edge));
@@ -110,15 +134,20 @@ export class GenericGraph<V, E> implements Graph<V, E> {
     }
 
     private createEdgeList() {
-        this.vertices.forEach(vertex => this.vertexPairs.set(vertex, new Set()));
+        this.vertices.forEach(vertex => {
+            this.vertexPairs.set(vertex, new Set());
+            this.reverseVertexPairs.set(vertex, new Set());
+        });
         this.vertices.forEach(vertex => this.edgeMap.set(vertex, []));
 
         this.edges.forEach(edge => {
             const [v1, v2] = this.config.getVertices(edge);
             this.vertexPairs.get(v1).add(v2);
+            this.reverseVertexPairs.get(v2).add(v1);
 
             if (this.config.isBidirectional(edge)) {
                 this.vertexPairs.get(v2).add(v1);
+                this.reverseVertexPairs.get(v1).add(v2);
             }
             this.edgeMap.get(v1).push(edge);
             this.edgeMap.get(v2).push(edge);

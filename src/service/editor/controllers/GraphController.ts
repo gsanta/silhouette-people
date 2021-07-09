@@ -103,6 +103,7 @@ export class GraphController {
     set color(color: EdgeColor) {
         if (this.edge) {
             this.edge.color = color;
+            this.graphService.getVisualizer().visualizeEdge(this.edge, true, edge => edge.color);
             this.renderGuiService.render();
         }
     }

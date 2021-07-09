@@ -4,7 +4,7 @@ import { Graph } from "./Graph";
 import { GraphEdge } from "./GraphEdge";
 
 export class GraphVertex {
-    readonly p: Vector3;
+    p: Vector3;
     id: string;
 
     constructor(id: string, p: Vector3) {
@@ -29,6 +29,10 @@ export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
         this.genericGraph = new GenericGraph(vertices, edges, genericGraphConfig);
 
         this.edges.forEach(edge => edge.graph = this);
+    }
+
+    replaceVertex(oldV: GraphVertex, newV: GraphVertex) {
+        this.genericGraph.replaceVertex(oldV, newV);
     }
 
     addEdge(edge: GraphEdge) {

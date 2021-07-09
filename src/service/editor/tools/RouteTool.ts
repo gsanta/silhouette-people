@@ -6,14 +6,12 @@ import { GraphVertex } from "../../graph/GraphImpl";
 import { GraphService } from "../../graph/GraphService";
 import { KeyName } from "../../input/KeyboardService";
 import { SceneService } from "../../SceneService";
-import { GraphController } from "../controllers/GraphController";
 import { ToolType } from "../controllers/TransformController";
 import { GizmoManagerAdapter } from "./GizmoManagerAdapter";
 import { Tool } from "./Tool";
 
 interface EdgeInfo {
     edge: GraphEdge;
-    origMaterial: StandardMaterial;
 }
 
 export class RouteTool extends Tool {
@@ -30,11 +28,9 @@ export class RouteTool extends Tool {
 
     private hovered: EdgeInfo = {
         edge: undefined,
-        origMaterial: undefined
     };
     private selected: EdgeInfo = {
         edge: undefined,
-        origMaterial: undefined
     };
 
     constructor(
@@ -139,28 +135,25 @@ export class RouteTool extends Tool {
         if (this.hovered.edge !== edge && this.selected.edge !== edge) {
             this.unHoverEdge();
             this.hovered.edge = edge;
-            this.hovered.origMaterial = <StandardMaterial> edge.mesh.material;
 
-            edge.mesh.material = this.materialStore.getMaterialByName(MaterialName.ROUTE_EDGE_HOVERED);
+            this.graphService.getVisualizer().updateEdgeColor(edge, () => MaterialName.ROUTE_EDGE_HOVERED);
         }
     }
 
     private unHoverEdge() {
         if (this.hovered.edge) {
             if ((!this.selected.edge || this.selected.edge !== this.hovered.edge)) {
-                this.hovered.edge.mesh.material = this.hovered.origMaterial;
+                this.graphService.getVisualizer().updateEdgeColor(this.hovered.edge, (edge) => edge.color);
             }
             this.hovered.edge = undefined;
-            this.hovered.origMaterial = undefined;
         }
     }
 
     private selectEdge(): boolean {
         this.unSelectEdge();
         this.selected.edge = this.hovered.edge;
-        this.selected.origMaterial = this.hovered.origMaterial;
 
-        this.selected.edge.mesh.material = this.materialStore.getMaterialByName(MaterialName.ROUTE_EDGE_SELECTED);
+        this.graphService.getVisualizer().updateEdgeColor(this.selected.edge, () => MaterialName.ROUTE_EDGE_SELECTED);
 
         this.createMoveAnchors();
         return true;
@@ -169,12 +162,9 @@ export class RouteTool extends Tool {
     private unSelectEdge(): boolean {
         if (this.selected.edge) {
             this.disposeAnchors();
-            if (this.hovered.edge !== this.selected.edge) {
-                this.selected.edge.mesh.material = this.selected.origMaterial;
-            }
 
+            this.graphService.getVisualizer().updateEdgeColor(this.selected.edge, (edge) => edge.color);
             this.selected.edge = undefined;
-            this.selected.origMaterial = undefined;
             this.onEdgeSelectedCallbacks.forEach(callback => callback(undefined));
             return true;
         }
@@ -277,6 +267,7 @@ class AnchorUpdater {
             } else {
                 edge.v2 = newVertex;
             }
+            this.graphService.getGraph().replaceVertex(vertex, newVertex);
             this.graphService.getVisualizer().updateEdge(edge);
         });
     }
