@@ -28,6 +28,15 @@ export class LinePathShape implements PathShape {
         return this._controlPoints;
     }
 
+    get size(): number {
+        return this.controlPoints[0].subtract(this.controlPoints[1]).length();
+    }
+
+    getT(ratio: number): Vector3 {
+        const [cp1, cp2] = [this.controlPoints[0], this.controlPoints[1]];
+        return cp1.add(cp2.subtract(cp1).multiply(new Vector3(ratio, ratio, ratio)));
+    }
+
     update(controlPointIndex: number, val: Vector3) {
         console.log(val.toString());
         this._controlPoints[controlPointIndex] = val.clone();

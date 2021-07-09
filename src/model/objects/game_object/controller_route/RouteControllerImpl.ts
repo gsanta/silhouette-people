@@ -14,6 +14,7 @@ export class RouteControllerImpl extends MonoBehaviour implements RouteControlle
     private currPos: Vector3;
 
     private edge: GraphEdge;
+    private t: number;
 
     private started = false;
 
@@ -22,6 +23,14 @@ export class RouteControllerImpl extends MonoBehaviour implements RouteControlle
         this.route = route;
         this.character = character;
         this.edge = route.firstEdge;
+    }
+
+    getT(): number {
+        return this.t;
+    }
+
+    setT(t: number) {
+        this.t = t > 1 ? 1 : t;
     }
 
     getRoute(): RouteItem {
@@ -50,6 +59,7 @@ export class RouteControllerImpl extends MonoBehaviour implements RouteControlle
 
     setEdge(edge: GraphEdge): void {
         this.edge = edge;
+        this.t = 0;
     }
 
     getTarget() {

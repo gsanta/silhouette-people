@@ -195,26 +195,6 @@
                 "_UI_CRETAED"
             ],
             "position": "-28.990524291992188:-0.04256463050842285:-43.92550277709961"
-        },
-        {
-            "id": "bike-1",
-            "model": {
-                "path": "bicycle1",
-                "removeRoot": false
-            },
-            "texture": {
-                "path": "palette.jpg"
-            },
-            "rotate": -8.130102957865134,
-            "collider": {
-                "dimension": "0:0:0"
-            },
-            "props": [],
-            "tags": [
-                "_UI_CRETAED"
-            ],
-            "type": "bicycle1",
-            "position": "-39.92998123168945:0.010583817958831787:19.774738311767578"
         }
     ],
     "routeMap": {

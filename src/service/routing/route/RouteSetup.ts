@@ -12,8 +12,8 @@ export class RouteSetup implements ISetup {
     }
 
     async setup(): Promise<void> {
-        const routes = this.routeStore.getRoutes();
+        // const routes = this.routeStore.getRoutes();
 
-        routes.forEach(route => this.routeFactory.create(route));
+        // routes.forEach(route => this.routeFactory.create(route));
     }
 }

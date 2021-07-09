@@ -27,4 +27,9 @@ export class BezierAdatper {
     get size(): number {
         return this.bezier.length();
     }
+
+    getT(ratio: number): Vector3 {
+        const p = this.bezier.get(ratio);
+        return new Vector3(p.x, this.y, p.y);
+    }
 }

@@ -8,6 +8,9 @@ import { MonoBehaviour } from "../../../behaviours/MonoBehaviour";
 export interface RouteController extends MonoBehaviour {
     update(deltaTime: number): boolean;
 
+    getT(): number;
+    setT(ratio: number): void;
+
     getRoute(): RouteItem;
     setRoute(route: RouteItem): void;
     getCharacter(): GameObject;

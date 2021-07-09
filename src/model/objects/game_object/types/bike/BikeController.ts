@@ -1,5 +1,5 @@
 import { Vector3 } from "babylonjs";
-import { rotateVec, vector3ToRotation } from "../../../../../helpers";
+import { toVector2, vector3ToRotation } from "../../../../../helpers";
 import { MotionController } from "../../MotionController";
 import { GameObject } from "../../GameObject";
 
@@ -58,23 +58,38 @@ export class BikeController extends MotionController {
     }
 
     update(deltaTime: number) {
-        const character = this.character;
-        if (character.routeController && !character.routeController.isRunning()) {
-            return;
+        const edge = this.character.routeController.getEdge();
+
+        if (edge && this.speed > 0) {
+            const displacement = this.speed * (deltaTime / 1000);
+            const displacementRatio = displacement / edge.shape.size;
+            const t = this.character.routeController.getT() + displacementRatio;
+
+            this.character.routeController.setT(t);
+
+            const pos = edge.shape.getT(t);
+            const currPos = this.character.position;
+
+            const diff = pos.subtract(currPos);
+            diff.y = 0;
+            this.character.moveWithCollision(diff);
         }
+        // const character = this.character;
+        // if (character.routeController && !character.routeController.isRunning()) {
+        //     return;
+        // }
 
-        this.bike.stateController.state.update(deltaTime);
+        // this.bike.stateController.state.update(deltaTime);
 
-        if (this.speed > 0) {
-            this.direction = this.updateDirection(deltaTime);
-            const deltaTimeSec = deltaTime / 1000;
-            const displacement = this.speed * deltaTimeSec;
-            const displacementVec = new Vector3(displacement, displacement, displacement);
-            let vel = this.direction.multiply(displacementVec);
+        // if (this.speed > 0) {
+        //     this.direction = this.updateDirection(deltaTime);
+        //     const displacement = this.speed * deltaTimeSec;
+        //     const displacementVec = new Vector3(displacement, displacement, displacement);
+        //     let vel = this.direction.multiply(displacementVec);
     
-            this.character.moveWithCollision(vel);
-            this.character.rotationY = vector3ToRotation(vel);
-        }
+        //     this.character.moveWithCollision(vel);
+        //     this.character.rotationY = vector3ToRotation(vel);
+        // }
         
     }
 }

@@ -17,6 +17,14 @@ export class RouteControllerListenerDecorator extends MonoBehaviour implements R
         this.delegate = delegate;
     }
 
+    getT() {
+        return this.delegate.getT();
+    }
+
+    setT(t: number): void {
+        this.delegate.setT(t);
+    }
+
     update(deltaTime: number): boolean {
         const ret = this.delegate.update(deltaTime);
         if (ret) {

@@ -37,6 +37,10 @@ export class CurvedPathShape implements PathShape {
         return this.bezierAdapter.size;
     }
 
+    getT(ratio: number): Vector3 {
+        return this.bezierAdapter.getT(ratio);
+    }
+
     update(controlPointIndex: number, val: Vector3) {
         this._controlPoints[controlPointIndex] = val;
         this.calcCurvePoints();

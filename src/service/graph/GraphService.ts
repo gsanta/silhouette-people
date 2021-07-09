@@ -1,7 +1,7 @@
 import { MaterialStore } from "../../store/MaterialStore";
 import { SceneService } from "../SceneService";
 import { Graph } from "./Graph";
-import { GraphEdge } from "./GraphEdge";
+import { EdgeColor, GraphEdge } from "./GraphEdge";
 import { GraphImpl, GraphVertex } from "./GraphImpl";
 import { GraphEdgeVisualizer } from "./visualizer/GraphEdgeVisualizer";
 
@@ -24,7 +24,7 @@ export class GraphService {
 
         this.graph = graph;
         this.visualizer = new GraphEdgeVisualizer(this.worldProvider, this.materialStore);
-        this.visualizer.visualizeEdges(graph.edges, edge => edge.color);
+        this.visualizer.visualizeEdges(graph.edges, edge => edge.color || EdgeColor.GRAY);
     }
 
     getVisualizer(): GraphEdgeVisualizer {
