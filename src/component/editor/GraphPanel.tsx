@@ -11,6 +11,7 @@ export class GraphPanel extends React.Component<{ controller: GraphController }>
 
         this.onDirectionChange = this.onDirectionChange.bind(this);
         this.onColorChange = this.onColorChange.bind(this);
+        this.onPathShapeChange = this.onPathShapeChange.bind(this);
     }
 
     render() {
@@ -112,7 +113,7 @@ export class GraphPanel extends React.Component<{ controller: GraphController }>
     }
 
     private onPathShapeChange(eventKey: PathShapeType) {
-        this.props.controller.shape = eventKey;
+        this.props.controller.shape = PathShapeType[eventKey];
     }
 
     private onColorChange(eventKey: EdgeColor) {

@@ -69,8 +69,6 @@ export class GraphEdge {
         if (isDirected) {
             this.direction = [v1, v2];
         }
-
-        this.reCalc();
     }
 
     set graph(graph: Graph<GraphVertex, GraphEdge>) {
@@ -103,6 +101,9 @@ export class GraphEdge {
 
     set v1(vertex: GraphVertex) {
         this._v1 = vertex;
+        if (this.shape) {
+            this.shape.update(0, vertex.p);
+        }
         this.reCalc();
     }
 
@@ -112,6 +113,9 @@ export class GraphEdge {
 
     set v2(vertex: GraphVertex) {
         this._v2 = vertex;
+        if (this.shape) {
+            this.shape.update(this.shape.controlPoints.length - 1, vertex.p);
+        }
         this.reCalc();
     }
 
@@ -175,6 +179,8 @@ export class GraphEdge {
     private reCalc() {
         this.line = new Line(toVector2(this.v1.p), toVector2(this.v2.p));
         this.setAngles();
-        this.shape = LinePathShape.FromEdge([this.v1.p, this.v2.p], this.yPos);
+        // if (this.shape) {
+        //     this.shape.update([this.v1.p, this.v2.p]);
+        // }
     }
 }

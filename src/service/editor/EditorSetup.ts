@@ -26,7 +26,7 @@ export class EditorSetup implements ISetup {
     private readonly eventService: EventService;
     private readonly graphService: GraphService;
     private readonly materialStore: MaterialStore;
-    private readonly renderGuiService: RenderGuiService;
+    private readonly routeTool: RouteTool;
 
     private gizmoManagerAdapter: GizmoManagerAdapter;
 
@@ -39,7 +39,7 @@ export class EditorSetup implements ISetup {
         eventService: EventService,
         graphService: GraphService,
         materialStore: MaterialStore,
-        renderGuiService: RenderGuiService
+        routeTool: RouteTool
     ) {
         this.sceneService = worldProvider;
         this.gameObjectStore = gameObjectStore;
@@ -49,7 +49,7 @@ export class EditorSetup implements ISetup {
         this.eventService = eventService;
         this.graphService = graphService;
         this.materialStore = materialStore;
-        this.renderGuiService = renderGuiService;
+        this.routeTool = routeTool;
     }
 
     async setup(): Promise<void> {
@@ -57,7 +57,7 @@ export class EditorSetup implements ISetup {
 
         this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, this.sceneService, this.editorService.selectionStore, ToolType.TRANSFORM));
         this.editorService.toolController.addTool(new TransformTool(this.gizmoManagerAdapter, this.eventService, this.sceneService, this.editorService.selectionStore, ToolType.ROTATE));
-        this.editorService.toolController.addTool(new RouteTool(this.sceneService, this.materialStore, this.graphService, this.editorService.graphController, this.gizmoManagerAdapter));
+        this.editorService.toolController.addTool(this.routeTool);
         this.editorService.toolController.addTool(new RouteCreateTool(this.sceneService, this.graphService));
 
         this.editorService.hotkeyController.addHotkey(new EraseHotkey(this.keyboardService, this.editorService.selectionStore, this.gameObjectStore, this.eventService));

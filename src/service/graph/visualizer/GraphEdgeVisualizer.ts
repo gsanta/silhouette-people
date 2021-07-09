@@ -1,4 +1,5 @@
 import { Mesh, MeshBuilder } from "babylonjs";
+import { PathShapeType } from "../../../model/math/path/PathShape";
 import { RouteItem } from "../../../model/objects/route/RouteItem";
 import { MaterialStore } from "../../../store/MaterialStore";
 import { SceneService } from "../../SceneService";
@@ -9,38 +10,57 @@ import { getMaterialFunc, PathVisualizer } from "./PathVisualizer";
 export class GraphEdgeVisualizer {
     private readonly sceneService: SceneService;
     private readonly materialStore: MaterialStore;
-    private visualizers: PathVisualizer[] = []
+    private visualizers: Map<PathShapeType, PathVisualizer> = new Map();
+    private linePathVisualizer: LinePathVisualizer;
 
     constructor(worldProvider: SceneService, materialStore: MaterialStore) {
         this.sceneService = worldProvider;
         this.materialStore = materialStore;
 
-        this.visualizers.push(new LinePathVisualizer(this.sceneService, this.materialStore))
+        this.linePathVisualizer = new LinePathVisualizer(this.sceneService, this.materialStore);
+
+        this.visualizers.set(PathShapeType.LINE, new LinePathVisualizer(this.sceneService, this.materialStore));
     }
 
     visualizeRoute(route: RouteItem, getMaterial: getMaterialFunc): Mesh[] {
         const meshes: Mesh[] = [];
-        meshes.push(...route.getEdges().map(edge => this.createPathEdge(edge, false, getMaterial)));
+        route.getEdges().forEach(edge => {
+            // if (this.visualizers.has(edge.shape.type)) {
+            //     meshes.push(this.createPathEdge(edge, false, getMaterial));
+            // }
+            meshes.push(this.linePathVisualizer.create(edge, false, getMaterial));
+        });
         return meshes;
     }
 
     visualizeEdges(graphEdge: GraphEdge[], getMaterial: getMaterialFunc) {
-        graphEdge.forEach(edge => edge.mesh = this.createPathEdge(edge, true, getMaterial));
+        graphEdge.forEach(edge => {
+            // if (this.visualizers.has(edge.shape.type)) {
+            //     edge.mesh = this.visualizers.get(edge.shape.type).create(edge, true, getMaterial)
+            // }
+            edge.mesh = this.linePathVisualizer.create(edge, true, getMaterial);
+
+        });
     }
 
-    visualizeEdge(graphEdge: GraphEdge, updatable: boolean, getMaterial: getMaterialFunc) {
-        if (graphEdge.mesh) {
-            graphEdge.mesh.dispose();
+    visualizeEdge(edge: GraphEdge, updatable: boolean, getMaterial: getMaterialFunc) {
+        if (edge.mesh) {
+            edge.mesh.dispose();
         }
 
-        graphEdge.mesh = this.createPathEdge(graphEdge, updatable, getMaterial)
+        edge.mesh = this.linePathVisualizer.create(edge, updatable, getMaterial);
+
+        // if (this.visualizers.has(edge.shape.type)) {
+        //     edge.mesh = this.visualizers.get(edge.shape.type).create(edge, updatable, getMaterial)
+        // }
     }
 
-    updateEdge(graphEdge: GraphEdge) {
-        const id = this.getId(graphEdge);
-        const pathes = graphEdge.shape.path;
+    updateEdge(edge: GraphEdge) {
+        this.linePathVisualizer.update(edge);
 
-        MeshBuilder.CreateRibbon(id, {pathArray: pathes, updatable: true, instance: graphEdge.mesh}, this.sceneService.scene);
+        // if (this.visualizers.has(edge.shape.type)) {
+        //     this.visualizers.get(edge.shape.type).update(edge);
+        // }
     }
 
     private createPathEdge(edge: GraphEdge, updatable: boolean, getMaterial: getMaterialFunc): Mesh {

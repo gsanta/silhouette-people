@@ -1,8 +1,9 @@
 import { PathShapeType } from "../../../model/math/path/PathShape";
-import { MaterialStore } from "../../../store/MaterialStore";
+import { PathShapeFactory } from "../../../model/math/path/PathShapeFactory";
 import { EdgeColor, EdgeDirection, GraphEdge } from "../../graph/GraphEdge";
 import { GraphService } from "../../graph/GraphService";
 import { RenderGuiService } from "../../RenderGuiService";
+import { RouteTool } from "../tools/RouteTool";
 import { ToolController } from "./ToolController";
 import { ToolType } from "./TransformController";
 
@@ -10,15 +11,19 @@ export class GraphController {
 
     private readonly renderGuiService: RenderGuiService;
     private readonly graphService: GraphService;
-    private readonly materialStore: MaterialStore;
+    private readonly pathShapeFactory: PathShapeFactory;
     private readonly toolController: ToolController;
+    private readonly routeTool: RouteTool;
     private _edge: GraphEdge;
 
-    constructor(renderGuiService: RenderGuiService, graphService: GraphService, materialStore: MaterialStore, toolController: ToolController) {
+    constructor(renderGuiService: RenderGuiService, graphService: GraphService, toolController: ToolController, routeTool: RouteTool) {
         this.renderGuiService = renderGuiService;
         this.graphService = graphService;
-        this.materialStore = materialStore;
         this.toolController = toolController;
+        this.routeTool = routeTool;
+        this.onEdgeSelected = this.onEdgeSelected.bind(this);
+        this.routeTool.onEdgeSelected(this.onEdgeSelected);
+        this.pathShapeFactory = new PathShapeFactory();
     }
 
     set edge(graphEdge: GraphEdge) {
@@ -114,6 +119,9 @@ export class GraphController {
 
     set shape(shape: PathShapeType) {
         if (this.edge) {
+            this.edge.shape = this.pathShapeFactory.create(this.edge, shape);
+            this.routeTool.updateEdge();
+            this.graphService.getVisualizer().visualizeEdge(this.edge, true, edge => edge.color);
             this.renderGuiService.render();
         }
     }
@@ -124,5 +132,9 @@ export class GraphController {
             this.edge.mesh.dispose();
             this.graphService.getGraph().removeEdge(this.edge, true);
         }
+    }
+
+    private onEdgeSelected(edge: GraphEdge) {
+        this.edge = edge;
     }
 }

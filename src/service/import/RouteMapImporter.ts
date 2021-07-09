@@ -1,4 +1,5 @@
 import { Vector3 } from "babylonjs";
+import { LinePathShape } from "../../model/math/path/LinePathShape";
 import { EdgeColor, EdgeDirection, GraphEdge } from "../graph/GraphEdge";
 import { GraphImpl, GraphVertex } from "../graph/GraphImpl";
 import { GraphService } from "../graph/GraphService";
@@ -32,6 +33,7 @@ export class RouteMapImporter {
         const vertices = routeJson.vertices.map(vertex => new GraphVertex(vertex.id, new Vector3(vertex.x, 0, vertex.y)));
         const edges = routeJson.edges.map(edgeJson => {
             const edge = new GraphEdge(vertices[edgeJson.v1], vertices[edgeJson.v2], undefined, edgeJson.thickness, false);
+            edge.shape = new LinePathShape([edge.v1.p, edge.v2.p], edge.thickness);
             edge.color = <EdgeColor> edgeJson.color;
             edge.direction = EdgeDirection.getDirectionFromEnum(<EdgeDirection> edgeJson.direction, edge);
             return edge;

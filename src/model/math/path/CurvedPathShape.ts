@@ -10,10 +10,12 @@ export class CurvedPathShape implements PathShape {
     readonly type = PathShapeType.CURVED;
     private _pathes: Vector3[][];
     private _controlPoints: Vector3[];
+    private _width: number;
 
-    constructor(controlPoints: Vector3[], pathes: Vector3[][]) {
-        this._pathes = pathes;
-        this._controlPoints = controlPoints;
+    constructor(controlPoints: Vector3[], width: number) {
+        this._width = width;
+        this.calcControlPoints(controlPoints);
+        this.calcPath();
     }
 
     get path(): Vector3[][] {
@@ -28,17 +30,31 @@ export class CurvedPathShape implements PathShape {
         return this._controlPoints;
     }
 
-    static FromEdge(endPoints: Vector3[], yPos: number): CurvedPathShape {
-        const linePath = LinePathShape.FromEdge(endPoints, yPos);
-        const bounds = linePath.bounds;
-        const controlPoints = this.getPath(toVector2(endPoints[0]), toVector2(endPoints[1])).map(p => toVector3(p, yPos));
-        const path1 = this.getPath(toVector2(bounds.p1), toVector2(bounds.p2)).map(p => toVector3(p, yPos));
-        const path2 = this.getPath(toVector2(bounds.p4), toVector2(bounds.p3)).map(p => toVector3(p, yPos));
-        
-        return new CurvedPathShape(controlPoints, [path1, path2]);
+    update(controlPointIndex: number, val: Vector3) {
+        this._controlPoints[controlPointIndex] = val;
+        this.calcPath();
     }
 
-    private static getPath(endP1: Vector2, endP2: Vector2): Vector2[] {
+    private calcControlPoints(controlPoints: Vector3[]) {
+        if (controlPoints.length === 2) {
+            const y = controlPoints[0].y;
+
+            this._controlPoints = this.getPath(toVector2(controlPoints[0]), toVector2(controlPoints[1])).map(p => toVector3(p, y));
+        }
+    }
+
+    private calcPath() {
+        const y = this._controlPoints[0].y;
+
+        const linePath = new LinePathShape([this._controlPoints[0], this._controlPoints[2]], this._width);
+        const bounds = linePath.bounds;
+        const path1 = this.getPath(toVector2(bounds.p1), toVector2(bounds.p2)).map(p => toVector3(p, y));
+        const path2 = this.getPath(toVector2(bounds.p4), toVector2(bounds.p3)).map(p => toVector3(p, y));
+
+        this._pathes = [path1, path2];
+    }
+
+    private getPath(endP1: Vector2, endP2: Vector2): Vector2[] {
         const line = new Line(endP1, endP2);
 
         const curveP = line.getBisector(line.size).p1;

@@ -1,7 +1,7 @@
 import { Color3, Matrix, Mesh, StandardMaterial, Vector2, MeshBuilder, Vector3, PointerDragBehavior, Observer } from "babylonjs";
 import { toVector2 } from "../../../helpers";
 import { MaterialName, MaterialStore } from "../../../store/MaterialStore";
-import { EdgeColor, EdgeDirection, GraphEdge } from "../../graph/GraphEdge";
+import { GraphEdge } from "../../graph/GraphEdge";
 import { GraphVertex } from "../../graph/GraphImpl";
 import { GraphService } from "../../graph/GraphService";
 import { KeyName } from "../../input/KeyboardService";
@@ -19,8 +19,8 @@ interface EdgeInfo {
 export class RouteTool extends Tool {
     private readonly graphService: GraphService;
     private readonly materialStore: MaterialStore;
-    private readonly graphController: GraphController;
     private readonly gizmoManagerAdapter: GizmoManagerAdapter;
+    private onEdgeSelectedCallbacks: ((edge: GraphEdge) => void)[] = [];
 
     private activeAnchor: MoveAnchor;
     private moveAnchors: MoveAnchor[] = [];
@@ -41,13 +41,11 @@ export class RouteTool extends Tool {
         sceneService: SceneService,
         materialStore: MaterialStore,
         graphService: GraphService,
-        graphController: GraphController,
         gizmoManagerAdapter: GizmoManagerAdapter
     ) {
         super(sceneService, ToolType.ROUTE);
         this.materialStore = materialStore;
         this.graphService = graphService;
-        this.graphController = graphController;
         this.gizmoManagerAdapter = gizmoManagerAdapter;
         this.onAnchorAttach = this.onAnchorAttach.bind(this);
         this.dragObservable = this.dragObservable.bind(this);
@@ -89,7 +87,7 @@ export class RouteTool extends Tool {
     up() {
         if (this.hovered.edge) {
             if (this.selectEdge()) {
-                this.graphController.edge = this.selected.edge;
+                this.onEdgeSelectedCallbacks.forEach(callback => callback(this.selected.edge));
             }
         }
     }
@@ -97,7 +95,7 @@ export class RouteTool extends Tool {
     keyDown(keyName: KeyName) {
         if (keyName === KeyName.ESCAPE) {
             this.unSelectEdge();
-            this.graphController.edge = undefined;
+            this.onEdgeSelectedCallbacks.forEach(callback => callback(undefined));
         } else if (keyName === KeyName.DELETE) {
 
         }
@@ -117,7 +115,6 @@ export class RouteTool extends Tool {
     deselect() {
         this.unHoverEdge();
         this.unSelectEdge();
-        this.graphController.edge = undefined;
         this.gizmoManagerAdapter.removeMeshFilter();
         this.gizmoManagerAdapter.manager.gizmos.positionGizmo.xGizmo.dragBehavior.onDragObservable.remove(this.xObserver);
         // this.gizmoManagerAdapter.manager.gizmos.positionGizmo.yGizmo.dragBehavior.onDragObservable.remove(this.yObserver);
@@ -128,6 +125,14 @@ export class RouteTool extends Tool {
 
     cancel() {
         this.unSelectEdge();
+    }
+
+    onEdgeSelected(callback: (edge: GraphEdge) => void) {
+        this.onEdgeSelectedCallbacks.push(callback);
+    }
+
+    updateEdge() {
+        this.createMoveAnchors();
     }
 
     private hoverEdge(edge: GraphEdge) {
@@ -170,6 +175,7 @@ export class RouteTool extends Tool {
 
             this.selected.edge = undefined;
             this.selected.origMaterial = undefined;
+            this.onEdgeSelectedCallbacks.forEach(callback => callback(undefined));
             return true;
         }
 
@@ -222,66 +228,74 @@ export class RouteTool extends Tool {
     }
 
     private createMoveAnchors() {
-        const moveAnchors: MoveAnchor[] = [];
+        this.activeAnchor = undefined;
         const controlPoints = this.selected.edge.shape.controlPoints;
 
-        moveAnchors.push(new MoveAnchor(controlPoints[0], 0, new VertexUpdater(this.selected.edge, this.selected.edge.v1, this.graphService)));
-
-        for (let i = 1; i < controlPoints.length - 1; i++) {
-            moveAnchors.push(new MoveAnchor(controlPoints[i], i));
-        }
-
-        const lastIndex = controlPoints.length - 1;
-        moveAnchors.push(new MoveAnchor(controlPoints[lastIndex], lastIndex, new VertexUpdater(this.selected.edge, this.selected.edge.v2, this.graphService)));
-
-        this.moveAnchors = moveAnchors;
+        this.moveAnchors = controlPoints.map((controlPoint, i) => new MoveAnchor(controlPoint, i, new AnchorUpdater(i, this.selected.edge, this.graphService)));
     }
 }
 
-class VertexUpdater {
-    edge: GraphEdge;
-    vertex: GraphVertex;
-    graphService: GraphService;
+class AnchorUpdater {
+    private readonly controlPointIndex: number;
+    private readonly edge: GraphEdge;
+    private readonly graphService: GraphService; 
 
-    constructor(edge: GraphEdge, vertex: GraphVertex, graphService: GraphService) {
+    constructor(controlPointIndex: number, edge: GraphEdge, graphService: GraphService) {
+        this.controlPointIndex = controlPointIndex;
         this.edge = edge;
-        this.vertex = vertex;
         this.graphService = graphService;
     }
 
-    update(p: Vector3) {
-        const newVertex = new GraphVertex(this.vertex.id, p);
+    updateAnchor(p: Vector3) {
+        const shape = this.edge.shape;
 
-        const edges = this.graphService.getGraph().getEdges(this.vertex);
+        if (this.controlPointIndex === 0) {
+            this.updateVertexAnchor(p, this.edge.v1);
+        } else if (this.controlPointIndex === shape.controlPoints.length - 1) {
+            this.updateVertexAnchor(p, this.edge.v2);
+        } else {
+            this.updateControlPointAnchor(p);
+        }
+    }
+
+    private updateControlPointAnchor(p: Vector3) {
+        const shape = this.edge.shape;
+
+        shape.update(this.controlPointIndex, p);
+    }
+
+    private updateVertexAnchor(p: Vector3, vertex: GraphVertex) {
+        const newVertex = new GraphVertex(vertex.id, p);
+
+        const edges = this.graphService.getGraph().getEdges(vertex);
 
         edges.forEach(edge => {
-            if (this.vertex === edge.v1) {
+            if (vertex === edge.v1) {
                 edge.v1 = newVertex;
             } else {
                 edge.v2 = newVertex;
             }
             this.graphService.getVisualizer().updateEdge(edge);
         });
-
-        this.vertex = newVertex;
     }
 }
 
 class MoveAnchor {
     readonly mesh: Mesh;
     private p: Vector3;
-    private vertexUpdater: VertexUpdater;
+    private anchorUpdater: AnchorUpdater;
 
-    constructor(p: Vector3, anchorIndex: number, vertexUpdater?: VertexUpdater) {
+    constructor(p: Vector3, anchorIndex: number, anchorUpdater?: AnchorUpdater) {
         this.p = p;
-        this.vertexUpdater = vertexUpdater;
+        this.anchorUpdater = anchorUpdater;
         this.mesh = this.getAnchorMesh(`anchor-${anchorIndex}`);
     }
 
     update() {
         const meshPos = this.mesh.getAbsolutePosition();
         this.p = new Vector3(meshPos.x, this.p.y, meshPos.z);
-        this.vertexUpdater.update(this.p);
+
+        this.anchorUpdater.updateAnchor(this.p);
     }
 
     dispose() {

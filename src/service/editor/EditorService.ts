@@ -16,7 +16,7 @@ import { SelectionStore } from "./SelectionStore";
 
 export class EditorService {
 
-    isEditorOpen = false;
+    isEditorOpen = true;
 
     readonly cameraController: CameraController;
     readonly meshLoaderController: MeshLoaderController;
@@ -42,7 +42,8 @@ export class EditorService {
         debugController: DebugController,
         gameObjectController: GameObjectController,
         routeController: RouteController,
-        eventService: EventService
+        selectionStore: SelectionStore,
+        hotkeyController: HotkeyController
     ) {
         this.meshLoaderController = meshLoaderController;
         this.cameraController = cameraController;
@@ -54,7 +55,7 @@ export class EditorService {
         this.debugController = debugController;
         this.gameObjectController = gameObjectController;
         this.routeController = routeController;
-        this.selectionStore = new SelectionStore(eventService);
-        this.hotkeyController = new HotkeyController();
+        this.selectionStore = selectionStore;
+        this.hotkeyController = hotkeyController;
     }
 }

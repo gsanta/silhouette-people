@@ -13,7 +13,7 @@ export class PlayerRadioButtonGroup implements IGUIComponent {
     private activePlayerService: ActivePlayerService;
 
     constructor() {
-        this.meshStore = lookup.gameObjecStore;
+        this.meshStore = lookup.gameObjectStore;
         this.activePlayerService = lookup.activePlayerService;
     }
     

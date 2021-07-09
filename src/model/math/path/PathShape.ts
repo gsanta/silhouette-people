@@ -25,4 +25,5 @@ export interface PathShape {
     path: Vector3[][];
     bounds: Quad;
     controlPoints: Vector3[];
+    update(controlPointIndex: number, val: Vector3);
 }
