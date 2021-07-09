@@ -26,6 +26,18 @@ export class Line {
         return this._angle;
     }
 
+    tangent(otherLine: Line) {
+        
+    }
+
+    angleBetween(otherLine: Line) {
+        const vector1 = this.vector;
+        const vector2 = otherLine.vector
+        const dot = Vector2.Dot(vector1, vector2);
+        const cos = dot / (vector1.length() * vector2.length());
+        return Math.acos(cos);
+    }
+
     get vector(): Vector2 {
         return this.p2.subtract(this.p1);
     }

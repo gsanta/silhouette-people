@@ -229,6 +229,7 @@ export class RouteTool extends Tool {
 
     private createMoveAnchors() {
         this.activeAnchor = undefined;
+        this.moveAnchors.forEach(anchor => anchor.dispose());
         const controlPoints = this.selected.edge.shape.controlPoints;
 
         this.moveAnchors = controlPoints.map((controlPoint, i) => new MoveAnchor(controlPoint, i, new AnchorUpdater(i, this.selected.edge, this.graphService)));
@@ -262,6 +263,7 @@ class AnchorUpdater {
         const shape = this.edge.shape;
 
         shape.update(this.controlPointIndex, p);
+        this.graphService.getVisualizer().updateEdge(this.edge);
     }
 
     private updateVertexAnchor(p: Vector3, vertex: GraphVertex) {

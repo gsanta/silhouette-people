@@ -139,3 +139,19 @@ describe('Line bisector', () => {
         expect(bisector.p2.y).toBeCloseTo(1.964);
     });
 });
+
+describe('Angle between two vectors', () => {
+    it ('90 deg angle', () => {
+        const line1 = new Line(new Vector2(0, 0), new Vector2(0, 5));
+        const line2 = new Line(new Vector2(0, 0), new Vector2(5, 0));
+        const angle = line1.angleBetween(line2);
+        expect(Tools.ToDegrees(angle)).toBeCloseTo(90);
+    });
+
+    it ('37 deg angle', () => {
+        const line1 = new Line(new Vector2(0, 0), new Vector2(1, 2));
+        const line2 = new Line(new Vector2(0, 0), new Vector2(2, 1));
+        const angle = line1.angleBetween(line2);
+        expect(Tools.ToDegrees(angle)).toBeCloseTo(36.869);
+    });
+});
