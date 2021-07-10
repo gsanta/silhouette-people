@@ -21,14 +21,6 @@ export class AssetContainerStore {
         this.indexes.set(name, 1);
     }
 
-    hasInstance(name: string): boolean {
-        return this.instances.has(name);
-    }
-
-    getInstance(name: string): AssetContainer {
-        return this.instances.get(name);
-    }
-
     instantiate(name: string, canUseOriginalInstance = true): InstantiatedAssets {
         if (!this.instantiated.get(name)) {
             const container = this.instances.get(name);

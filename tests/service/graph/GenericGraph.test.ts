@@ -1,25 +1,23 @@
-import { GenericGraph, GenericGraphConfig } from "../../../src/service/graph/GenericGraph";
-import { Graph } from "../../../src/service/graph/Graph";
-
+import { GenericGraph, GenericGraphConfig, GenericGraphEdge } from "../../../src/service/graph/GenericGraph";
 
 it ('finds edges between two vertices', () => {
     const vertices = [0, 1, 2, 3, 4, 5];
-    const edges: [number, number][] = [[0, 1], [0, 3], [1, 4], [4, 5]];
-    const config: GenericGraphConfig<number, [number, number]> = { getVertices: (e) => e, isBidirectional: () => true }
+    const edges = [{v1: 0, v2: 1}, {v1: 0, v2: 3}, {v1: 1, v2: 4}, {v1: 4, v2: 5}];
+    const config: GenericGraphConfig<number, GenericGraphEdge<number>> = { getVertices: (e) => [e.v1, e.v2], isBidirectional: () => true }
 
-    const graph: Graph<number, [number, number]> = new GenericGraph<number, [number, number]>(vertices, edges, config);
+    const graph = new GenericGraph<number, GenericGraphEdge<number>>(vertices, edges, config);
 
-    expect(graph.edgeBetween(0, 1)).toEqual([0, 1]);
+    expect(graph.edgeBetween(0, 1)).toEqual({v1: 0, v2: 1});
     expect(graph.edgeBetween(0, 2)).toBeFalsy();
-    expect(graph.edgeBetween(4, 5)).toEqual([4, 5]);
+    expect(graph.edgeBetween(4, 5)).toEqual({v1: 4, v2: 5});
 });
 
 it ('finds neighbours of vertices', () => {
     const vertices = [0, 1, 2, 3, 4, 5];
-    const edges: [number, number][] = [[0, 1], [0, 3], [1, 4], [4, 5]];
-    const config: GenericGraphConfig<number, [number, number]> = { getVertices: (e) => e, isBidirectional: () => true }
+    const edges = [{v1: 0, v2: 1}, {v1: 0, v2: 3}, {v1: 1, v2: 4}, {v1: 4, v2: 5}];
+    const config: GenericGraphConfig<number, GenericGraphEdge<number>> = { getVertices: (e) => [e.v1, e.v2], isBidirectional: () => true }
 
-    const graph: Graph<number, [number, number]> = new GenericGraph<number, [number, number]>(vertices, edges, config);
+    const graph = new GenericGraph<number, GenericGraphEdge<number>>(vertices, edges, config);
 
     expect(Array.from(graph.getNeighbours(0))).toEqual([1, 3]);
     expect(Array.from(graph.getNeighbours(2))).toEqual([]);
@@ -29,10 +27,10 @@ it ('finds neighbours of vertices', () => {
 
 it ('removes edge', () => {
     const vertices = [0, 1, 2, 3, 4, 5];
-    const edges: [number, number][] = [[0, 1], [0, 3], [1, 4], [4, 5]];
-    const config: GenericGraphConfig<number, [number, number]> = { getVertices: (e) => e, isBidirectional: () => true }
+    const edges = [{v1: 0, v2: 1}, {v1: 0, v2: 3}, {v1: 1, v2: 4}, {v1: 4, v2: 5}];
+    const config: GenericGraphConfig<number, GenericGraphEdge<number>> = { getVertices: (e) => [e.v1, e.v2], isBidirectional: () => true }
 
-    const graph: Graph<number, [number, number]> = new GenericGraph<number, [number, number]>(vertices, edges, config);
+    const graph = new GenericGraph<number, GenericGraphEdge<number>>(vertices, edges, config);
 
     const edge0 = edges[0];
     const edge2 = edges[2];
@@ -66,22 +64,34 @@ it ('removes edge', () => {
 
 it ('adds edge', () => {
     const vertices = [0, 1, 2, 3, 4, 5];
-    const edges: [number, number][] = [[0, 1], [1, 4]];
-    const config: GenericGraphConfig<number, [number, number]> = { getVertices: (e) => e, isBidirectional: () => true }
+    const edges: GenericGraphEdge<number>[] = [{v1: 0, v2: 1}, {v1: 1, v2: 4}];
+    const config: GenericGraphConfig<number, GenericGraphEdge<number>> = { getVertices: (e) => [e.v1, e.v2], isBidirectional: () => true }
 
-    const graph: Graph<number, [number, number]> = new GenericGraph<number, [number, number]>(vertices, edges, config);
+    const graph = new GenericGraph<number, GenericGraphEdge<number>>(vertices, edges, config);
 
-    let edge: [number, number] = [0, 3];
+    let edge = {v1: 0, v2: 3};
     graph.addEdge(edge);
     expect(graph.edgeBetween(0, 3)).toBeTruthy();
     expect(Array.from(graph.getNeighbours(0))).toEqual([1, 3]);
     expect(Array.from(graph.getNeighbours(3))).toEqual([0]);
     expect(graph.edges.includes(edge)).toBeTruthy();
 
-    edge = [4, 5];
+    edge = {v1: 4, v2: 5};
     graph.addEdge(edge);
     expect(graph.edgeBetween(4, 5)).toBeTruthy();
     expect(Array.from(graph.getNeighbours(4))).toEqual([1, 5]);
     expect(Array.from(graph.getNeighbours(5))).toEqual([4]);
     expect(graph.edges.includes(edge)).toBeTruthy();
+});
+
+it ('replace vertex', () => {
+    const vertices = [0, 1, 2];
+    const edges = [{v1: 0, v2: 1}, {v1: 1, v2: 2}];
+    const config: GenericGraphConfig<number, GenericGraphEdge<number>> = { getVertices: (e) => [e.v1, e.v2], isBidirectional: () => true }
+
+    const graph = new GenericGraph<number, GenericGraphEdge<number>>(vertices, edges, config);
+
+    graph.replaceVertex(2, 3);
+    // expect(Array.from())
+    // 1;
 });

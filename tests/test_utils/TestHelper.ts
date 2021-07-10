@@ -9,4 +9,16 @@ export class TestHelper {
         expect(vector3.y).toBeCloseTo(y);
         expect(vector3.z).toBeCloseTo(z);
     }
+
+    static numListCloseTo(expected: number[], actual: number[]) {
+        if (expected.length !== actual.length) {
+            throw new Error(`Length does not match: expected len (${expected.length}), actual len: (${actual.length})`);
+        }
+
+        expected.forEach((val, i) => expect(val).toBeCloseTo(actual[i]));
+    }
+
+    static numListAllCloseTo(expected: number[], actual: number) {
+        expected.forEach((val, i) => expect(val).toBeCloseTo(actual));
+    }
 }

@@ -17,8 +17,33 @@ export class GraphVertex {
     }
 }
 
+class IdGenerator {
+    private readonly graph: GraphImpl;
+    private readonly idRegex = /v-(\d+)/;
+
+    constructor(graph: GraphImpl) {
+        this.graph = graph;
+    }
+
+    generateId(): string {
+        const vertices = Array.from(this.graph.vertices);
+
+        if (vertices.length > 0) {
+            const indexes = vertices
+                .filter(v => v.id && v.id.match(this.idRegex))
+                .map(v => parseInt(v.id.match(this.idRegex)[1]));
+            indexes.sort((a, b) => b - a);
+    
+            return `v-${indexes[0] + 1}`;
+        } else {
+            return `v-0`;
+        }
+    }
+}
+
 export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
-    private genericGraph: GenericGraph<GraphVertex, GraphEdge>;
+    private readonly genericGraph: GenericGraph<GraphVertex, GraphEdge>;
+    private readonly idGenerator: IdGenerator;
 
     constructor(vertices: GraphVertex[], edges: GraphEdge[]) {
 
@@ -29,14 +54,23 @@ export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
         this.genericGraph = new GenericGraph(vertices, edges, genericGraphConfig);
 
         this.edges.forEach(edge => edge.graph = this);
+        this.idGenerator = new IdGenerator(this);
     }
 
     replaceVertex(oldV: GraphVertex, newV: GraphVertex) {
         this.genericGraph.replaceVertex(oldV, newV);
     }
 
+    addVertex(vertex: GraphVertex) {
+        this.genericGraph.addVertex(vertex);
+        if (!vertex.id) {
+            vertex.id = this.idGenerator.generateId();
+        }
+    }
+
     addEdge(edge: GraphEdge) {
         this.genericGraph.addEdge(edge);
+        edge.graph = this;
     }
     
     edgeBetween(v1: GraphVertex, v2: GraphVertex): GraphEdge {

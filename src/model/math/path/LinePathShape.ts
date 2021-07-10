@@ -49,7 +49,6 @@ export class LinePathShape implements PathShape {
     }
 
     update(controlPointIndex: number, val: Vector3) {
-        console.log(val.toString());
         this._controlPoints[controlPointIndex] = val.clone();
         this.calcBounds();
         this.calcPath();

@@ -1,5 +1,4 @@
 import { Vector3 } from "babylonjs";
-import { MaterialStore } from "../../../store/MaterialStore";
 import { GraphEdge } from "../../graph/GraphEdge";
 import { GraphVertex } from "../../graph/GraphImpl";
 import { GraphService } from "../../graph/GraphService";
@@ -20,7 +19,8 @@ export class RouteCreateTool extends Tool {
 
     move(cursorPos: Vector3) {
         if (this.edge && cursorPos) {
-            this.edge.v2 = new GraphVertex('tmp-v2', cursorPos);
+            const p = new Vector3(cursorPos.x, GraphEdge.yPos, cursorPos.z);
+            this.edge.v2 = new GraphVertex(undefined, p);
             this.graphService.getVisualizer().updateEdge(this.edge);
         }
     }
@@ -47,32 +47,34 @@ export class RouteCreateTool extends Tool {
 
     private startEdge(cursorPos: Vector3) {
         if (cursorPos) {
-            this.edge = new GraphEdge(new GraphVertex('tmp-v1', cursorPos), new GraphVertex('tmp-v2', cursorPos));
+            const p = new Vector3(cursorPos.x, GraphEdge.yPos, cursorPos.z);
+            this.edge = new GraphEdge(new GraphVertex(undefined, p), new GraphVertex(undefined, p));
             this.graphService.getVisualizer().visualizeEdge(this.edge, true, edge => edge.color);
         }
     }
 
     private finishEdge() {
+        const graph = this.graphService.getGraph();
         const closestVertForV1 = this.findClosestVertex(this.edge.v1.p);
         const closestVertForV2 = this.findClosestVertex(this.edge.v2.p);
 
         if (closestVertForV1[0] < 0.5) {
             this.edge.v1 = closestVertForV1[1];
         } else {
-            this.edge.v1.id = this.generateVertexId();
+            graph.addVertex(this.edge.v1);
         }
 
         if (closestVertForV2[0] < 0.5) {
             this.edge.v2 = closestVertForV2[1];
         } else {
-            this.edge.v2.id = this.generateVertexId();
-
+            graph.addVertex(this.edge.v2);
         }
 
         const edge = new GraphEdge(this.edge.v1, this.edge.v2, this.graphService.getGraph(), 0);
+        graph.addEdge(edge);
 
         this.graphService.getVisualizer().visualizeEdge(edge, true, edge => edge.color);
-        this.graphService.getGraph().addEdge(edge);
+
         this.edge.mesh.dispose();
         this.edge = undefined;
     }
@@ -82,10 +84,6 @@ export class RouteCreateTool extends Tool {
             this.edge.mesh.dispose();
             this.edge = undefined;
         }
-    }
-
-    private generateVertexId() {
-        return `v-${this.graphService.getGraph().vertices.size + 1}`;
     }
 
     private findClosestVertex(vertex: Vector3): [number, GraphVertex] {

@@ -210,16 +210,6 @@
                 "id": "C2"
             },
             {
-                "x": -36,
-                "y": -8,
-                "id": "B1"
-            },
-            {
-                "x": -40,
-                "y": -2,
-                "id": "B2"
-            },
-            {
                 "x": -18,
                 "y": -2,
                 "id": "B3"
@@ -265,26 +255,6 @@
                 "id": "B11"
             },
             {
-                "x": -42,
-                "y": -10,
-                "id": "D1"
-            },
-            {
-                "x": -40,
-                "y": -42,
-                "id": "A1"
-            },
-            {
-                "x": -40,
-                "y": -28,
-                "id": "A2"
-            },
-            {
-                "x": -20,
-                "y": -28,
-                "id": "A3"
-            },
-            {
                 "x": -14.924358413703992,
                 "y": 6.200038292469312,
                 "id": "v-19"
@@ -305,15 +275,73 @@
                 "id": "v-22"
             },
             {
-                "x": -14.890862464904785,
-                "y": -39.01408386230469,
-                "id": "A4"
+                "x": -34.77566909790039,
+                "y": -48.54536437988281,
+                "id": "A1"
+            },
+            {
+                "x": -40.3974494934082,
+                "y": -36.9202766418457,
+                "id": "v-24"
+            },
+            {
+                "x": -39.87974548339844,
+                "y": -47.858436584472656,
+                "id": "v-23"
+            },
+            {
+                "x": -34.50578689575195,
+                "y": -36.98645782470703,
+                "id": "A2"
+            },
+            {
+                "x": -34.25682229680214,
+                "y": -28.359207537614793,
+                "id": "v-25"
+            },
+            {
+                "x": -21.659542083740234,
+                "y": -28,
+                "id": "A3"
+            },
+            {
+                "x": -22.24623337143763,
+                "y": -46.247133161008236,
+                "id": "v-26"
+            },
+            {
+                "x": -15.56965279186604,
+                "y": -45.40795232749103,
+                "id": "v-27"
+            },
+            {
+                "x": -15.125795410029315,
+                "y": -20.11777143181618,
+                "id": "v-28"
+            },
+            {
+                "x": -34.11910119314295,
+                "y": -20.910727715137597,
+                "id": "v-29"
+            },
+            {
+                "x": -33.96615982055664,
+                "y": -2,
+                "id": "B2"
             }
         ],
         "edges": [
             {
                 "v1": 0,
                 "v2": 1,
+                "thickness": 0,
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
+            },
+            {
+                "v1": 25,
+                "v2": 2,
                 "thickness": 0,
                 "color": "gray",
                 "direction": "undirected",
@@ -338,7 +366,7 @@
             {
                 "v1": 4,
                 "v2": 5,
-                "thickness": 0,
+                "thickness": 2,
                 "color": "gray",
                 "direction": "undirected",
                 "internalControlPoints": []
@@ -354,7 +382,7 @@
             {
                 "v1": 6,
                 "v2": 7,
-                "thickness": 2,
+                "thickness": 0,
                 "color": "gray",
                 "direction": "undirected",
                 "internalControlPoints": []
@@ -384,8 +412,8 @@
                 "internalControlPoints": []
             },
             {
-                "v1": 10,
-                "v2": 11,
+                "v1": 15,
+                "v2": 18,
                 "thickness": 0,
                 "color": "gray",
                 "direction": "undirected",
@@ -395,20 +423,28 @@
                 "v1": 11,
                 "v2": 12,
                 "thickness": 0,
-                "color": "gray",
+                "color": "green",
                 "direction": "undirected",
                 "internalControlPoints": []
             },
             {
-                "v1": 14,
-                "v2": 15,
+                "v1": 12,
+                "v2": 13,
                 "thickness": 0,
-                "color": "gray",
+                "color": "green",
                 "direction": "undirected",
                 "internalControlPoints": []
             },
             {
-                "v1": 15,
+                "v1": 13,
+                "v2": 14,
+                "thickness": 0,
+                "color": "green",
+                "direction": "undirected",
+                "internalControlPoints": []
+            },
+            {
+                "v1": 17,
                 "v2": 16,
                 "thickness": 0,
                 "color": "gray",
@@ -417,55 +453,23 @@
             },
             {
                 "v1": 16,
-                "v2": 21,
+                "v2": 18,
                 "thickness": 0,
                 "color": "gray",
                 "direction": "undirected",
                 "internalControlPoints": [
                     {
-                        "x": -14,
+                        "x": -37.41852569580078,
                         "y": 0,
-                        "z": -28.51871681213379
+                        "z": -31.45408058166504
                     }
                 ]
-            },
-            {
-                "v1": 15,
-                "v2": 2,
-                "thickness": 2,
-                "color": "gray",
-                "direction": "undirected",
-                "internalControlPoints": []
-            },
-            {
-                "v1": 2,
-                "v2": 0,
-                "thickness": 0,
-                "color": "gray",
-                "direction": "undirected",
-                "internalControlPoints": []
-            },
-            {
-                "v1": 15,
-                "v2": 13,
-                "thickness": 0,
-                "color": "gray",
-                "direction": "undirected",
-                "internalControlPoints": []
-            },
-            {
-                "v1": 17,
-                "v2": 18,
-                "thickness": 0,
-                "color": "green",
-                "direction": "undirected",
-                "internalControlPoints": []
             },
             {
                 "v1": 18,
                 "v2": 19,
                 "thickness": 0,
-                "color": "green",
+                "color": "gray",
                 "direction": "undirected",
                 "internalControlPoints": []
             },
@@ -473,7 +477,61 @@
                 "v1": 19,
                 "v2": 20,
                 "thickness": 0,
-                "color": "green",
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
+            },
+            {
+                "v1": 20,
+                "v2": 21,
+                "thickness": 0,
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
+            },
+            {
+                "v1": 21,
+                "v2": 22,
+                "thickness": 0,
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": [
+                    {
+                        "x": -18.992229461669922,
+                        "y": 0.05,
+                        "z": -50.92416000366211
+                    }
+                ]
+            },
+            {
+                "v1": 22,
+                "v2": 23,
+                "thickness": 0,
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
+            },
+            {
+                "v1": 23,
+                "v2": 24,
+                "thickness": 0,
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
+            },
+            {
+                "v1": 19,
+                "v2": 24,
+                "thickness": 0,
+                "color": "gray",
+                "direction": "undirected",
+                "internalControlPoints": []
+            },
+            {
+                "v1": 24,
+                "v2": 25,
+                "thickness": 0,
+                "color": "gray",
                 "direction": "undirected",
                 "internalControlPoints": []
             }

@@ -45,6 +45,7 @@ export namespace EdgeDirection {
 }
 
 export class GraphEdge {
+    static yPos = 0.05;
     private _v1: GraphVertex;
     private _v2: GraphVertex;
     private _thickness: number = 0;
@@ -66,17 +67,29 @@ export class GraphEdge {
         this._graph = graph;
         this.thickness = thickness;
 
+        this.shape = new LinePathShape([v1.p, v2.p], this.thickness);
+
         if (isDirected) {
             this.direction = [v1, v2];
         }
+
+        this.reCalc();
     }
 
     set graph(graph: Graph<GraphVertex, GraphEdge>) {
         this._graph = graph;
     }
 
+    get graph() {
+        return this._graph;
+    }
+
     get direction(): [GraphVertex, GraphVertex] {
         return this._direction;
+    }
+
+    isDirected() {
+        return !this.graph.edgeBetween(this.v1, this.v2) || !this.graph.edgeBetween(this.v2, this.v1);
     }
 
     set direction(vertices: [GraphVertex, GraphVertex]) {

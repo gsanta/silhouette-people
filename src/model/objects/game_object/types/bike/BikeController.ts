@@ -83,22 +83,5 @@ export class BikeController extends MotionController {
             const tangent = edge.shape.getDerivative(t, reversed);
             this.character.rotationY = vector3ToRotation(tangent);
         }
-        // const character = this.character;
-        // if (character.routeController && !character.routeController.isRunning()) {
-        //     return;
-        // }
-
-        // this.bike.stateController.state.update(deltaTime);
-
-        // if (this.speed > 0) {
-        //     this.direction = this.updateDirection(deltaTime);
-        //     const displacement = this.speed * deltaTimeSec;
-        //     const displacementVec = new Vector3(displacement, displacement, displacement);
-        //     let vel = this.direction.multiply(displacementVec);
-    
-        //     this.character.moveWithCollision(vel);
-        //     this.character.rotationY = vector3ToRotation(vel);
-        // }
-        
     }
 }

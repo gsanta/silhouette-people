@@ -5,14 +5,19 @@ export interface GenericGraphConfig<V, E> {
     isBidirectional(edge: E): boolean;
 }
 
-export class GenericGraph<V, E> implements Graph<V, E> {
+export interface GenericGraphEdge<V> {
+    v1: V;
+    v2: V;
+}
+
+export class GenericGraph<V, E extends GenericGraphEdge<V>> implements Graph<V, E> {
     vertices: Set<V>;
     edges: E[];
 
     private readonly config: GenericGraphConfig<V, E>;
 
-    private vertexPairs: Map<V, Set<V>> = new Map();
-    private reverseVertexPairs: Map<V, Set<V>> = new Map();
+    private adjacencyList: Map<V, Set<V>> = new Map();
+    private reverseAdjacencyList: Map<V, Set<V>> = new Map();
     private edgeMap: Map<V, E[]> = new Map();
 
     constructor(vertices: V[], edges: E[], config: GenericGraphConfig<V, E>) {
@@ -23,43 +28,65 @@ export class GenericGraph<V, E> implements Graph<V, E> {
         this.createEdgeList();
     }
 
+    addVertex(v: V) {
+        if (!this.vertices.has(v)) {
+            this.vertices.add(v);
+            this.adjacencyList.set(v, new Set());
+            this.reverseAdjacencyList.set(v, new Set());
+        }
+    }
+
     addEdge(edge: E) {
         if (!this.edges.includes(edge)) {
             this.edges.push(edge);
 
             const [v1, v2] = this.config.getVertices(edge);
+
+            if (!this.vertices.has(v1)) { this.addVertex(v1); }
+            if (!this.vertices.has(v2)) { this.addVertex(v2); }
+
             this.addEdgeVertex(v1, v2, edge, true);
             this.addEdgeVertex(v2, v1, edge, this.config.isBidirectional(edge));
         }
     }
 
     replaceVertex(oldV: V, newV: V): void {
+
+        this.edges.forEach(edge => {
+            if (edge.v1 === oldV) {
+                edge.v1 = newV;
+            } else if (edge.v2 === oldV) {
+                edge.v2 = newV;
+            }
+        })
+
         this.vertices.delete(oldV);
         this.vertices.add(newV);
-        const oldVPairs = this.vertexPairs.get(oldV);
-        this.vertexPairs.delete(oldV);
-        this.vertexPairs.set(newV, oldVPairs);
-        const reversePairs = this.reverseVertexPairs.get(oldV) || [];
-        reversePairs.forEach(pair => {
-            this.vertexPairs.get(pair).delete(oldV);
-            this.vertexPairs.get(pair).add(newV);
+        const neighbours = this.adjacencyList.get(oldV);
+
+        this.adjacencyList.delete(oldV);
+        this.adjacencyList.set(newV, neighbours);
+
+        const reverseNeighbours = this.reverseAdjacencyList.get(oldV) || new Set();
+        this.reverseAdjacencyList.delete(oldV);
+        this.reverseAdjacencyList.set(newV, reverseNeighbours);
+
+        reverseNeighbours.forEach(pair => {
+            this.adjacencyList.get(pair).delete(oldV);
+            this.adjacencyList.get(pair).add(newV);
+            this.reverseAdjacencyList.get(pair).delete(oldV);
+            this.reverseAdjacencyList.get(pair).add(newV);
         });
     }
 
     private addEdgeVertex(v1: V, v2: V, edge: E, validDirection: boolean) {
-        this.vertices.add(v1);
+        if (!this.vertices.has(v1)) {
+            this.vertices.add(v1);
+        }
 
         if (validDirection) {
-            if (!this.vertexPairs.has(v1)) {
-                this.vertexPairs.set(v1, new Set());
-            }
-
-            if (!this.reverseVertexPairs.has(v2))  {
-                this.reverseVertexPairs.set(v2, new Set());
-            }
-    
-            this.vertexPairs.get(v1).add(v2);
-            this.reverseVertexPairs.get(v2).add(v1);
+            this.adjacencyList.get(v1).add(v2);
+            this.reverseAdjacencyList.get(v2).add(v1);
         }
 
         if (!this.edgeMap.has(v1)) {
@@ -75,7 +102,7 @@ export class GenericGraph<V, E> implements Graph<V, E> {
     }
     
     edgeBetween(v1: V, v2: V): E {
-        if (this.vertexPairs.has(v1) && this.vertexPairs.get(v1).has(v2)) {
+        if (this.adjacencyList.has(v1) && this.adjacencyList.get(v1).has(v2)) {
             const edges = this.edgeMap.get(v1);
             return edges.find(edge => {
                 const [vertex1, vertex2] = this.config.getVertices(edge);
@@ -85,7 +112,7 @@ export class GenericGraph<V, E> implements Graph<V, E> {
     }
 
     getNeighbours(vertex: V): Set<V> {
-        return this.vertexPairs.has(vertex) ? this.vertexPairs.get(vertex) : new Set([]);
+        return this.adjacencyList.has(vertex) ? this.adjacencyList.get(vertex) : new Set([]);
     }
 
     getEdges(vertex: V): E[] {
@@ -105,22 +132,18 @@ export class GenericGraph<V, E> implements Graph<V, E> {
     }
 
     private removeEdgeVertex(vertex: V, otherVertex: V, edge: E, removeIsolatedVertex: boolean) {
-        this.vertexPairs.get(vertex).delete(otherVertex);
-        this.reverseVertexPairs.get(otherVertex).delete(vertex);
-        if (this.vertexPairs.get(vertex).size === 0) {
-            this.vertexPairs.delete(vertex);
+        this.adjacencyList.get(vertex).delete(otherVertex);
+        if (this.reverseAdjacencyList.has(otherVertex)) {
+            this.reverseAdjacencyList.get(otherVertex).delete(vertex);
         }
-
-        if (this.reverseVertexPairs.get(otherVertex).size === 0) {
-            this.reverseVertexPairs.delete(otherVertex);
-        }
-
         this.edgeMap.set(vertex, this.edgeMap.get(vertex).filter(e => e !== edge));
 
         
         if (removeIsolatedVertex) {
-            if (!this.vertexPairs.has(vertex)) {
+            if (!this.adjacencyList.has(vertex) || this.adjacencyList.get(vertex).size === 0) {
                 this.vertices.delete(vertex);
+                this.adjacencyList.delete(vertex);
+                this.reverseAdjacencyList.delete(vertex);
             }
         }
     }
@@ -129,25 +152,21 @@ export class GenericGraph<V, E> implements Graph<V, E> {
         return this.edges.length;
     }
 
-    setup(vertices: V[], edges: E[]) {
-        
-    }
-
     private createEdgeList() {
         this.vertices.forEach(vertex => {
-            this.vertexPairs.set(vertex, new Set());
-            this.reverseVertexPairs.set(vertex, new Set());
+            this.adjacencyList.set(vertex, new Set());
+            this.reverseAdjacencyList.set(vertex, new Set());
         });
         this.vertices.forEach(vertex => this.edgeMap.set(vertex, []));
 
         this.edges.forEach(edge => {
             const [v1, v2] = this.config.getVertices(edge);
-            this.vertexPairs.get(v1).add(v2);
-            this.reverseVertexPairs.get(v2).add(v1);
+            this.adjacencyList.get(v1).add(v2);
+            this.reverseAdjacencyList.get(v2).add(v1);
 
             if (this.config.isBidirectional(edge)) {
-                this.vertexPairs.get(v2).add(v1);
-                this.reverseVertexPairs.get(v1).add(v2);
+                this.adjacencyList.get(v2).add(v1);
+                this.reverseAdjacencyList.get(v1).add(v2);
             }
             this.edgeMap.get(v1).push(edge);
             this.edgeMap.get(v2).push(edge);

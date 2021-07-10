@@ -87,7 +87,7 @@
         "H4": "house2",
         "H3": "house3",
         "H5": "house3",
-        "B": "bicycle1",
+        "B": "bicycle2",
         "R": "road1",
         "R1": "road1",
         "S": "busStop"
@@ -104,7 +104,8 @@
         "house2, house2.glb",
         "house3, house3.glb",
         "road1, road1.glb",
-        "bicycle1, bicycle1.glb"
+        "bicycle1, bicycle1.glb",
+        "bicycle2, bicycle_new.glb"
     ],
     "objects": {
         "tree1": {
@@ -260,11 +261,11 @@
                 }
             }
         },
-        "bicycle1": {
+        "bicycle2": {
             "properties": {
                 "positionY": 25,
                 "model": {
-                    "path": "bicycle1",
+                    "path": "bicycle2",
                     "mainMeshIndex": 0,
                     "canUseOriginalInstance": false
                 },

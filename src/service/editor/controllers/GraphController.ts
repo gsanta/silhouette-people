@@ -129,9 +129,9 @@ export class GraphController {
 
     deleteEdge() {
         if (this.edge) {
-            this.toolController.getToolByType(ToolType.ROUTE).cancel();
             this.edge.mesh.dispose();
             this.graphService.getGraph().removeEdge(this.edge, true);
+            this.toolController.getToolByType(ToolType.ROUTE).cancel();
         }
     }
 

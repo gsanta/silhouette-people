@@ -30,7 +30,7 @@ export class RouteControllerImpl extends MonoBehaviour implements RouteControlle
     }
 
     setT(t: number) {
-        this.t = t > 1 ? 1 : t;
+        this.t = t;
     }
 
     getRoute(): RouteItem {

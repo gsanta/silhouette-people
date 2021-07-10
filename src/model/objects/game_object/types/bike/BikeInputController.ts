@@ -30,7 +30,9 @@ export class BikeInputController extends InputController {
                 this.nextEdgeSelector.choosePrevEdge();
             break;
             case KeyName.R:
-                this.character.routeController.reverseRoute();
+                if (!this.character.routeController.getEdge().isDirected()) {
+                    this.character.routeController.reverseRoute();
+                }
             break;
             case KeyName.FORWARD2:
                 const nextGear = this.motionController.gear === this.motionController.maxGear ? this.motionController.maxGear : this.motionController.gear + 1; 

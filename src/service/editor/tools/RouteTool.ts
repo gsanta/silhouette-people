@@ -262,7 +262,7 @@ class AnchorUpdater {
         const edges = this.graphService.getGraph().getEdges(vertex);
 
         edges.forEach(edge => {
-            if (vertex === edge.v1) {
+            if (vertex.id === edge.v1.id) {
                 edge.v1 = newVertex;
             } else {
                 edge.v2 = newVertex;
