@@ -132,6 +132,22 @@ export class GraphEdge {
         this.reCalc();
     }
 
+    updateVertex(vertex: GraphVertex) {
+        let index: number = undefined;
+        if (this.v1 === vertex) {
+            index = 0;
+        } else if (this.v2 === vertex) {
+            index = this.shape.controlPoints.length - 1;
+        }
+
+        if (index !== undefined) {
+            if (this.shape) {
+                this.shape.update(index, vertex.p);
+            }
+            this.reCalc();
+        }
+    }
+
     hasVertex(v: GraphVertex) {
         return this.v1 === v || this.v2 === v;
     }

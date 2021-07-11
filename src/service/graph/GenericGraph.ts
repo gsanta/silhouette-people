@@ -50,35 +50,6 @@ export class GenericGraph<V, E extends GenericGraphEdge<V>> implements Graph<V, 
         }
     }
 
-    replaceVertex(oldV: V, newV: V): void {
-
-        this.edges.forEach(edge => {
-            if (edge.v1 === oldV) {
-                edge.v1 = newV;
-            } else if (edge.v2 === oldV) {
-                edge.v2 = newV;
-            }
-        })
-
-        this.vertices.delete(oldV);
-        this.vertices.add(newV);
-        const neighbours = this.adjacencyList.get(oldV);
-
-        this.adjacencyList.delete(oldV);
-        this.adjacencyList.set(newV, neighbours);
-
-        const reverseNeighbours = this.reverseAdjacencyList.get(oldV) || new Set();
-        this.reverseAdjacencyList.delete(oldV);
-        this.reverseAdjacencyList.set(newV, reverseNeighbours);
-
-        reverseNeighbours.forEach(pair => {
-            this.adjacencyList.get(pair).delete(oldV);
-            this.adjacencyList.get(pair).add(newV);
-            this.reverseAdjacencyList.get(pair).delete(oldV);
-            this.reverseAdjacencyList.get(pair).add(newV);
-        });
-    }
-
     private addEdgeVertex(v1: V, v2: V, edge: E, validDirection: boolean) {
         if (!this.vertices.has(v1)) {
             this.vertices.add(v1);

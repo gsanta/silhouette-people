@@ -57,10 +57,6 @@ export class GraphImpl implements Graph<GraphVertex, GraphEdge> {
         this.idGenerator = new IdGenerator(this);
     }
 
-    replaceVertex(oldV: GraphVertex, newV: GraphVertex) {
-        this.genericGraph.replaceVertex(oldV, newV);
-    }
-
     addVertex(vertex: GraphVertex) {
         this.genericGraph.addVertex(vertex);
         if (!vertex.id) {

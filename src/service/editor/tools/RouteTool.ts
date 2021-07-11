@@ -257,17 +257,12 @@ class AnchorUpdater {
     }
 
     private updateVertexAnchor(p: Vector3, vertex: GraphVertex) {
-        const newVertex = new GraphVertex(vertex.id, p);
+        vertex.p = p;
 
         const edges = this.graphService.getGraph().getEdges(vertex);
 
         edges.forEach(edge => {
-            if (vertex.id === edge.v1.id) {
-                edge.v1 = newVertex;
-            } else {
-                edge.v2 = newVertex;
-            }
-            this.graphService.getGraph().replaceVertex(vertex, newVertex);
+            edge.updateVertex(vertex);
             this.graphService.getVisualizer().updateEdge(edge);
         });
     }

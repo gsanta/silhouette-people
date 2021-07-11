@@ -83,15 +83,3 @@ it ('adds edge', () => {
     expect(Array.from(graph.getNeighbours(5))).toEqual([4]);
     expect(graph.edges.includes(edge)).toBeTruthy();
 });
-
-it ('replace vertex', () => {
-    const vertices = [0, 1, 2];
-    const edges = [{v1: 0, v2: 1}, {v1: 1, v2: 2}];
-    const config: GenericGraphConfig<number, GenericGraphEdge<number>> = { getVertices: (e) => [e.v1, e.v2], isBidirectional: () => true }
-
-    const graph = new GenericGraph<number, GenericGraphEdge<number>>(vertices, edges, config);
-
-    graph.replaceVertex(2, 3);
-    // expect(Array.from())
-    // 1;
-});
